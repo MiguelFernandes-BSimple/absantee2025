@@ -1,4 +1,4 @@
-using Classes;
+using Domain;
 
 public class ProjetoTest{
     public static IEnumerable<object[]> GetProjetoData_CamposValidos()

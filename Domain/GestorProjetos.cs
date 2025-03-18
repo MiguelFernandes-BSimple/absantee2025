@@ -1,4 +1,4 @@
-namespace Classes;
+namespace Domain;
 public class GestorProjetos {
     private DateTime DataInicio;
     private DateTime DataFim;

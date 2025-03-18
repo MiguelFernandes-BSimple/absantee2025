@@ -1,4 +1,4 @@
-using Classes;
+using Domain;
 
 public class PeriodoFormacaoTest{
     public static IEnumerable<object[]> GetPeriodoFormacaoData_CamposValidos()

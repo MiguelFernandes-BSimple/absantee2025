@@ -1,5 +1,5 @@
 
-namespace Classes;
+namespace Domain;
 public class PeriodoFerias : IPeriodoFerias {
     private DateOnly DataInicio;
     private DateOnly DataFim;

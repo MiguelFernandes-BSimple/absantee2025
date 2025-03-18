@@ -1,4 +1,4 @@
-namespace Classes;
+namespace Domain;
 public class GestorRH {
     private DateTime DataInicio;
     private DateTime DataFim;

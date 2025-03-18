@@ -1,4 +1,4 @@
-namespace Classes;
+namespace Domain;
 public class PeriodoFormacao {
     public PeriodoFormacao(DateOnly dataInicio, DateOnly dataFim)
     {

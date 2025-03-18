@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Classes;
+namespace Domain;
 public class Projeto : IProjeto
 {
     private string Titulo;

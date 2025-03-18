@@ -1,4 +1,4 @@
-using Classes;
+using Domain;
 
 public class UtilizadorTest{
     public static IEnumerable<object[]> GetUserData_CamposValidos()

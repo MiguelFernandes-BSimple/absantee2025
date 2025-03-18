@@ -1,7 +1,7 @@
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
-namespace Classes;
+namespace Domain;
 public class Utilizador : IUtilizador {
     public Utilizador(string nomes, string apelidos, string email, DateTime? dataDesativacao = null)
     {

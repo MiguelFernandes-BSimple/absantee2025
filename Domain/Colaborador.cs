@@ -1,5 +1,5 @@
 
-namespace Classes;
+namespace Domain;
 
 
 public class Colaborador : IColaborador {

@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using Classes;
+using Domain;
 
 public class PlanoFerias {
     private List<IPeriodoFerias> periodoFeriasList;

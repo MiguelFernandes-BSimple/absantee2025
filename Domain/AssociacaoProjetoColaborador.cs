@@ -1,4 +1,4 @@
-namespace Classes;
+namespace Domain;
 
 public class AssociacaoProjetoColaborador {
     private DateOnly DataInicio;
