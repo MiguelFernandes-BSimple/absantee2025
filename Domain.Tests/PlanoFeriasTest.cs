@@ -78,4 +78,29 @@ public class PlanoFeriasTest{
         
         Assert.Equal("Invalid Arguments", exception.Message);
     }
+
+    [Fact]
+    public void AdicionarPlanoFerias_Sucesso(){
+        //arrange
+        Mock<IPeriodoFerias> periodoFerias1 = new Mock<IPeriodoFerias>();
+        Mock<IPeriodoFerias> periodoFerias2 = new Mock<IPeriodoFerias>();
+
+        Mock<IPeriodoFerias> periodoFeriasAdicionar = new Mock<IPeriodoFerias>();
+
+        var periodoFeriasList = new List<IPeriodoFerias> { periodoFerias1.Object, periodoFerias2.Object };
+
+        periodoFeriasAdicionar.Setup(pf => pf.PeriodoFeriasOverlap(It.IsAny<IPeriodoFerias>())).Returns(false);
+
+        Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
+        ColaboradorMock.Setup(c => c.CompareWithDataInicio(It.IsAny<DateTime>())).Returns(1); 
+        ColaboradorMock.Setup(c => c.CompareWithDataFim(It.IsAny<DateTime>())).Returns(-1); 
+
+        PlanoFerias planoFerias = new PlanoFerias(periodoFeriasList, ColaboradorMock.Object);
+        //act
+        bool result = planoFerias.AddPeriodoFerias(periodoFeriasAdicionar.Object);       
+
+        //assert
+        Assert.True(result);
+        Assert.True(planoFerias.IsSizeList(3));
+    }
 }
