@@ -4,10 +4,13 @@ public class GestorProjetos {
     private DateTime DataFim;
     private IUtilizador Utilizador;
 
-    public GestorProjetos(DateTime DataInicio, DateTime DataFim, IUtilizador Utilizador){
-        if(checkInputFields(DataInicio, DataFim, Utilizador)) {
+    public GestorProjetos(IUtilizador Utilizador, DateTime DataInicio, DateTime? DataFim)
+    {
+        if(!DataFim.HasValue)
+            DataFim = DateTime.MaxValue;
+        if(checkInputFields(DataInicio, (DateTime)DataFim, Utilizador)) {
             this.DataInicio = DataInicio;
-            this.DataFim = DataFim;
+            this.DataFim = (DateTime)DataFim;
             this.Utilizador = Utilizador;
         } else 
             throw new ArgumentException("Invalid Arguments");

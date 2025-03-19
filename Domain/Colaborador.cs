@@ -3,11 +3,13 @@ namespace Domain;
 
 
 public class Colaborador : IColaborador {
-    public Colaborador(DateTime DataInicio, DateTime DataFim, IUtilizador Utilizador)
+    public Colaborador(IUtilizador Utilizador, DateTime DataInicio, DateTime? DataFim = null)
     {
-        if (checkInputFields(DataInicio, DataFim, Utilizador)){
+        if(!DataFim.HasValue)
+            DataFim = DateTime.MaxValue;
+        if (checkInputFields(DataInicio, (DateTime)DataFim, Utilizador)){
             this.DataInicio = DataInicio;
-            this.DataFim = DataFim;
+            this.DataFim = (DateTime)DataFim;
             this.Utilizador = Utilizador;
         } else
             throw new ArgumentException("Invalid Arguments");

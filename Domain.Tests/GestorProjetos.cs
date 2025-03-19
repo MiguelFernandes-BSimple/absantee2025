@@ -6,18 +6,19 @@ public class GestorProjetosTest{
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now, DateTime.Now.AddYears(3) };
+        yield return new object[] { DateTime.Now, null! };
     }
 
     [Theory]
     [MemberData(nameof(GetGestorProjetosData_CamposValidos))]
-    public void CriarGestorProjetos_CamposValidos(DateTime dataInicio, DateTime dataFim){
+    public void CriarGestorProjetos_CamposValidos(DateTime dataInicio, DateTime? dataFim){
         //arrange
         Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(false);
+        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(It.IsAny<DateTime>())).Returns(false);
         utilizador.Setup(u => u.IsDesativo()).Returns(false);
 
         //act
-        new GestorProjetos(dataInicio, dataFim, utilizador.Object);
+        new GestorProjetos(utilizador.Object, dataInicio, dataFim);
 
         //assert
     }
@@ -40,7 +41,7 @@ public class GestorProjetosTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(dataInicio, dataFim, utilizador.Object));
+            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -56,7 +57,7 @@ public class GestorProjetosTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(dataInicio, dataFim, utilizador.Object));
+            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -72,7 +73,7 @@ public class GestorProjetosTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(dataInicio, dataFim, utilizador.Object));
+            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -88,7 +89,7 @@ public class GestorProjetosTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(dataInicio, dataFim, utilizador.Object));
+            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }

@@ -6,18 +6,19 @@ public class ColaboradorTest{
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(2) };
+        yield return new object[] { DateTime.Now.AddYears(-1), null! };
     }
 
     [Theory]
     [MemberData(nameof(GetColaboradorData_CamposValidos))]
-    public void CriarColaborador_CamposValidos(DateTime dataInicio, DateTime dataFim){
+    public void CriarColaborador_CamposValidos(DateTime dataInicio, DateTime? dataFim){
         //arrange
         Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(false);
+        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(It.IsAny<DateTime>())).Returns(false);
         utilizador.Setup(u => u.IsDesativo()).Returns(false);
 
         //act
-        new Colaborador(dataInicio, dataFim, utilizador.Object);
+        new Colaborador(utilizador.Object, dataInicio, dataFim);
 
         //assert
     }
@@ -41,7 +42,7 @@ public class ColaboradorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new Colaborador(dataInicio, dataFim, utilizador.Object));
+            new Colaborador(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -57,7 +58,7 @@ public class ColaboradorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new Colaborador(dataInicio, dataFim, utilizador.Object));
+            new Colaborador(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -73,7 +74,7 @@ public class ColaboradorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new Colaborador(dataInicio, dataFim, utilizador.Object));
+            new Colaborador(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -89,7 +90,7 @@ public class ColaboradorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new Colaborador(dataInicio, dataFim, utilizador.Object));
+            new Colaborador(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }

@@ -6,18 +6,19 @@ public class GestorRHTest{
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now.AddDays(10), DateTime.Now.AddYears(3) };
+        yield return new object[] { DateTime.Now.AddDays(10), null! };
     }
 
     [Theory]
     [MemberData(nameof(GetGestorRHData_CamposValidos))]
-    public void CriarGestorRH_CamposValidos(DateTime dataInicio, DateTime dataFim){
+    public void CriarGestorRH_CamposValidos(DateTime dataInicio, DateTime? dataFim){
         //arrange
         Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(false);
+        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(It.IsAny<DateTime>())).Returns(false);
         utilizador.Setup(u => u.IsDesativo()).Returns(false);
 
         //act
-        new GestorRH(dataInicio, dataFim, utilizador.Object);
+        new GestorRH(utilizador.Object, dataInicio, dataFim);
 
         //assert
     }
@@ -39,7 +40,7 @@ public class GestorRHTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorRH(dataInicio, dataFim, utilizador.Object));
+            new GestorRH(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -55,7 +56,7 @@ public class GestorRHTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorRH(dataInicio, dataFim, utilizador.Object));
+            new GestorRH(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -71,7 +72,7 @@ public class GestorRHTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorRH(dataInicio, dataFim, utilizador.Object));
+            new GestorRH(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -87,7 +88,7 @@ public class GestorRHTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorRH(dataInicio, dataFim, utilizador.Object));
+            new GestorRH(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
