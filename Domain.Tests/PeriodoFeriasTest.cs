@@ -36,4 +36,19 @@ public class PeriodoFeriasTest{
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
+
+    [Theory]
+    [MemberData(nameof(GetPeriodoFeriasData_CamposValidos))]
+    public void GetDatas_Sucesso(DateOnly dataInicio, DateOnly dataFim){
+        //arrange
+
+        //act
+        PeriodoFerias periodoFerias = new PeriodoFerias(dataInicio, dataFim);
+        DateOnly actualDataInicio = periodoFerias.GetDataInicio();
+        DateOnly actualDataFim = periodoFerias.GetDataFim();
+
+        //assert
+        Assert.Equal(dataInicio, actualDataInicio);
+        Assert.Equal(dataFim, actualDataFim);
+    }
 }

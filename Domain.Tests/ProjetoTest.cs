@@ -96,4 +96,44 @@ public class ProjetoTest{
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
+
+    public static IEnumerable<object[]> GetProjetoData_CompareDataInicio()
+    {
+        yield return new object[] { DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now).AddDays(1), 1 };
+        yield return new object[] { DateOnly.FromDateTime(DateTime.Now).AddYears(-1), DateOnly.FromDateTime(DateTime.Now).AddYears(-3), -1 };
+        yield return new object[] { new DateOnly(2000, 1, 1),  new DateOnly(2000, 1, 1), 0};
+    }
+
+    [Theory]
+    [MemberData(nameof(GetProjetoData_CompareDataInicio))]
+    public void CompareWithDataInicio_Sucesso(DateOnly dataInicio, DateOnly dateCompare, int expected){
+        //arrange
+        Projeto projeto = new Projeto("Titulo 1", "T1", dataInicio, DateOnly.MaxValue);
+
+        //act
+        int result = projeto.CompareWithDataInicio(dateCompare);
+
+        //assert
+        Assert.Equal(expected, result);
+    }
+
+    public static IEnumerable<object[]> GetProjetoData_CompareDataFim()
+    {
+        yield return new object[] { DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now).AddDays(1), 1 };
+        yield return new object[] { DateOnly.FromDateTime(DateTime.Now).AddYears(-1), DateOnly.FromDateTime(DateTime.Now).AddYears(-3), -1 };
+        yield return new object[] { new DateOnly(2000, 1, 1),  new DateOnly(2000, 1, 1), 0};
+    }
+
+    [Theory]
+    [MemberData(nameof(GetProjetoData_CompareDataFim))]
+    public void CompareWithDataFim_Sucesso(DateOnly dataFim, DateOnly dateCompare, int expected){
+        //arrange
+        Projeto projeto = new Projeto("Titulo 1", "T1", DateOnly.MinValue, dataFim);
+
+        //act
+        int result = projeto.CompareWithDataFim(dateCompare);
+
+        //assert
+        Assert.Equal(expected, result);
+    }
 }

@@ -13,11 +13,11 @@ public class PeriodoFerias : IPeriodoFerias {
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public DateOnly getDataInicio(){
+    public DateOnly GetDataInicio(){
         return DataInicio;
     }
 
-    public DateOnly getDataFim(){
+    public DateOnly GetDataFim(){
         return DataFim;
     }
 
@@ -29,7 +29,7 @@ public class PeriodoFerias : IPeriodoFerias {
     }
 
     public bool PeriodoFeriasOverlap(IPeriodoFerias periodoFerias){
-        return DataInicio < periodoFerias.getDataFim() 
-            && periodoFerias.getDataInicio() < DataFim;
+        return DataInicio < periodoFerias.GetDataFim() 
+            && periodoFerias.GetDataInicio() < DataFim;
     }
 }

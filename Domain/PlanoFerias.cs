@@ -43,9 +43,9 @@ public class PlanoFerias
 
     private bool CanInsertPeriodoFerias(IPeriodoFerias periodoFerias, List<IPeriodoFerias> periodoFeriasList, IColaborador colaborador)
     {
-        if (colaborador.CompareWithDataInicio(periodoFerias.getDataInicio()
+        if (colaborador.CompareWithDataInicio(periodoFerias.GetDataInicio()
                                                     .ToDateTime(TimeOnly.MinValue)) < 0
-            || colaborador.CompareWithDataFim(periodoFerias.getDataFim()
+            || colaborador.CompareWithDataFim(periodoFerias.GetDataFim()
                                                     .ToDateTime(TimeOnly.MinValue)) > 0)
             return false;
         foreach (IPeriodoFerias pf in periodoFeriasList)

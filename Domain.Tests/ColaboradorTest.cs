@@ -94,4 +94,47 @@ public class ColaboradorTest{
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
+
+
+    public static IEnumerable<object[]> GetColaboradorData_CompareDataInicio()
+    {
+        yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1), 1 };
+        yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3), -1 };
+        yield return new object[] { new DateTime(2000, 1, 1),  new DateTime(2000, 1, 1), 0};
+    }
+
+    [Theory]
+    [MemberData(nameof(GetColaboradorData_CompareDataInicio))]
+    public void CompareWithDataInicio_Sucesso(DateTime dataInicio, DateTime dateCompare, int expected){
+        //arrange
+        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
+        Colaborador colaborador = new Colaborador(utilizador.Object, dataInicio);
+
+        //act
+        int result = colaborador.CompareWithDataInicio(dateCompare);
+
+        //assert
+        Assert.Equal(expected, result);
+    }
+
+    public static IEnumerable<object[]> GetColaboradorData_CompareDataFim()
+    {
+        yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1), 1 };
+        yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3), -1 };
+        yield return new object[] { new DateTime(2000, 1, 1),  new DateTime(2000, 1, 1), 0};
+    }
+
+    [Theory]
+    [MemberData(nameof(GetColaboradorData_CompareDataFim))]
+    public void CompareWithDataFim_Sucesso(DateTime dataFim, DateTime dateCompare, int expected){
+        //arrange
+        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
+        Colaborador colaborador = new Colaborador(utilizador.Object, DateTime.MinValue, dataFim);
+
+        //act
+        int result = colaborador.CompareWithDataFim(dateCompare);
+
+        //assert
+        Assert.Equal(expected, result);
+    }
 }
