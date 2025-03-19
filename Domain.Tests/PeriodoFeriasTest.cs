@@ -4,6 +4,7 @@ public class PeriodoFeriasTest{
     public static IEnumerable<object[]> GetPeriodoFeriasData_CamposValidos()
     {
         yield return new object[] { DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)) };
+        yield return new object[] { DateOnly.FromDateTime(DateTime.Now.AddYears(1)), DateOnly.FromDateTime(DateTime.Now.AddYears(2)) };
     }
 
     [Theory]
@@ -20,6 +21,7 @@ public class PeriodoFeriasTest{
     public static IEnumerable<object[]> GetPeriodoFeriasData_DatasInvalidas()
     {
         yield return new object[] { DateOnly.FromDateTime(DateTime.Now).AddDays(5), DateOnly.FromDateTime(DateTime.Now.AddDays(1)) };
+        yield return new object[] { DateOnly.FromDateTime(DateTime.Now).AddYears(-1), DateOnly.FromDateTime(DateTime.Now.AddYears(-3)) };
     }
 
     [Theory]

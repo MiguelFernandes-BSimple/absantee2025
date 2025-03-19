@@ -25,7 +25,7 @@ public class AssociacaoProjetoColaborador {
             || projeto.CompareWithDataFim(dataFim) > 0)
             return false;
 
-        if(projeto.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today)) < 0)
+        if(projeto.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today)) > 0)
             return false;
 
         if(colaborador.CompareWithDataInicio(dataInicio.ToDateTime(TimeOnly.MinValue)) < 0 

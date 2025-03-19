@@ -5,11 +5,16 @@ public class PlanoFerias
     private List<IPeriodoFerias> periodoFeriasList;
     private IColaborador colaborador;
 
-    public PlanoFerias(List<IPeriodoFerias> periodoFerias, IColaborador colaborador)
+    public PlanoFerias(IPeriodoFerias periodoFerias, IColaborador colaborador) :
+        this(new List<IPeriodoFerias>() {periodoFerias}, colaborador)
     {
-        if (CheckInputValues(periodoFerias, colaborador))
+    }
+
+    public PlanoFerias(List<IPeriodoFerias> periodoFeriasList, IColaborador colaborador)
+    {
+        if (CheckInputValues(periodoFeriasList, colaborador))
         {
-            this.periodoFeriasList = periodoFerias;
+            this.periodoFeriasList = new List<IPeriodoFerias>(periodoFeriasList);
             this.colaborador = colaborador;
         }
         else

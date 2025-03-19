@@ -16,7 +16,7 @@ public class AssociacaoProjetoColaboradorTest{
         ProjetoMock.Setup(p => p.CompareWithDataInicio(dataInicio)).Returns(1);
         ProjetoMock.Setup(p => p.CompareWithDataFim(dataFim)).Returns(-1);
 
-        ProjetoMock.Setup(c => c.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today))).Returns(1); 
+        ProjetoMock.Setup(c => c.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today))).Returns(-1); 
 
         Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
         ColaboradorMock.Setup(c => c.CompareWithDataInicio(dataInicio.ToDateTime(TimeOnly.MinValue))).Returns(1); 
@@ -42,7 +42,7 @@ public class AssociacaoProjetoColaboradorTest{
         ProjetoMock.Setup(p => p.CompareWithDataInicio(dataInicio)).Returns(1);
         ProjetoMock.Setup(p => p.CompareWithDataFim(dataFim)).Returns(-1);
 
-        ProjetoMock.Setup(c => c.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today))).Returns(1); 
+        ProjetoMock.Setup(c => c.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today))).Returns(-1); 
 
         Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
         ColaboradorMock.Setup(c => c.CompareWithDataInicio(dataInicio.ToDateTime(TimeOnly.MinValue))).Returns(1); 
@@ -60,13 +60,13 @@ public class AssociacaoProjetoColaboradorTest{
     {
         yield return new object[] { 
             DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
-            -1, -1, 1, 1, -1 }; //Data Inicio Associacao > Data Inicio Projeto
+            -1, -1, -1, 1, -1 }; //Data Inicio Associacao > Data Inicio Projeto
          yield return new object[] { 
             DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
-            1, 1, 1, 1, -1 }; //Data Fim Associacao > Data Fim Projeto
+            1, 1, 1, -1, -1 }; //Data Fim Associacao > Data Fim Projeto
         yield return new object[] { 
             DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
-            -1, 1, 1, 1, -1 }; //Data Inicio Associacao > Data Inicio Projeto && Data Fim Associacao > Data Fim Projeto
+            -1, 1, 1, -1, -1 }; //Data Inicio Associacao > Data Inicio Projeto && Data Fim Associacao > Data Fim Projeto
     }
 
     [Theory]
@@ -107,7 +107,7 @@ public class AssociacaoProjetoColaboradorTest{
         ProjetoMock.Setup(p => p.CompareWithDataInicio(dataInicio)).Returns(1);
         ProjetoMock.Setup(p => p.CompareWithDataFim(dataFim)).Returns(-1);
 
-        ProjetoMock.Setup(c => c.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today))).Returns(-1); 
+        ProjetoMock.Setup(c => c.CompareWithDataFim(DateOnly.FromDateTime(DateTime.Today))).Returns(1); 
 
         Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
         ColaboradorMock.Setup(c => c.CompareWithDataInicio(dataInicio.ToDateTime(TimeOnly.MinValue))).Returns(1); 
@@ -125,13 +125,13 @@ public class AssociacaoProjetoColaboradorTest{
     {
         yield return new object[] { 
             DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)), 
-            1, -1, 1, -1, -1 }; //Data Inicio Associacao > Data Inicio Colaborador
+            1, -1, -1, -1, -1 }; //Data Inicio Associacao > Data Inicio Colaborador
          yield return new object[] { 
             DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
-            1, -1, 1, 1, 1 }; //Data Fim Associacao > Data Fim Colaborador
+            1, -1, -1, 1, 1 }; //Data Fim Associacao > Data Fim Colaborador
         yield return new object[] { 
             DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
-            1, -1, 1, -1, 1 }; //Data Inicio Associacao > Data Inicio Colaborador && Data Fim Associacao > Data Fim Colaborador
+            1, -1, -1, -1, 1 }; //Data Inicio Associacao > Data Inicio Colaborador && Data Fim Associacao > Data Fim Colaborador
     }
 
     [Theory]

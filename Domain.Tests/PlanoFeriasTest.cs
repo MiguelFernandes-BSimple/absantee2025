@@ -4,7 +4,7 @@ using Moq;
 public class PlanoFeriasTest{
 
     [Fact]
-    public void CriarPlanoFerias_CamposValidos(){
+    public void CriarPlanoFerias_ListaPeriodoFerias_CamposValidos(){
         //arrange
         Mock<IPeriodoFerias> periodoFerias1 = new Mock<IPeriodoFerias>();
         Mock<IPeriodoFerias> periodoFerias2 = new Mock<IPeriodoFerias>();
@@ -19,6 +19,23 @@ public class PlanoFeriasTest{
 
         //act
         new PlanoFerias(periodoFeriasList, ColaboradorMock.Object);
+
+        //assert
+    }
+
+    [Fact]
+    public void CriarPlanoFerias_UnicoPeriodoFerias_CamposValidos(){
+        //arrange
+        Mock<IPeriodoFerias> periodoFerias1 = new Mock<IPeriodoFerias>();
+
+        periodoFerias1.Setup(pf => pf.PeriodoFeriasOverlap(It.IsAny<IPeriodoFerias>())).Returns(false);
+
+        Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
+        ColaboradorMock.Setup(c => c.CompareWithDataInicio(It.IsAny<DateTime>())).Returns(1); 
+        ColaboradorMock.Setup(c => c.CompareWithDataFim(It.IsAny<DateTime>())).Returns(-1); 
+
+        //act
+        new PlanoFerias(periodoFerias1.Object, ColaboradorMock.Object);
 
         //assert
     }
