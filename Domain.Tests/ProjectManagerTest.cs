@@ -7,6 +7,7 @@ public class ProjectManagerTest
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now, DateTime.Now.AddYears(3) };
+        yield return new object[] { DateTime.Today, DateTime.Today };
         yield return new object[] { DateTime.Now, null! };
     }
 
