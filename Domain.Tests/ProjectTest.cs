@@ -110,10 +110,10 @@ public class ProjectTest{
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
-        Project projeto = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
+        Project project = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
 
         //act
-        bool result = projeto.IsInside(InitDate, FinalDate);
+        bool result = project.IsInside(InitDate, FinalDate);
 
         //assert
         Assert.False(result);
@@ -125,10 +125,10 @@ public class ProjectTest{
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
-        Project projeto = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
+        Project project = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
 
         //act
-        bool result = projeto.IsFinished();
+        bool result = project.IsFinished();
 
         //assert
         Assert.True(result);
@@ -144,10 +144,10 @@ public class ProjectTest{
     public void WhenProjectIsNotFinished_ReturnFalse(DateOnly ProjectFinalDate){
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
-        Project projeto = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
+        Project project = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
 
         //act
-        bool result = projeto.IsFinished();
+        bool result = project.IsFinished();
 
         //assert
         Assert.False(result);
