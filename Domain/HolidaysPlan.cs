@@ -5,8 +5,8 @@ public class HolidaysPlan
     private List<IHolidayPeriod> _holidaysPeriods;
     private IColaborator _colaborator;
 
-    public HolidaysPlan(IHolidayPeriod holidaysPeriods, IColaborator colaborator) :
-        this(new List<IHolidayPeriod>() {holidaysPeriods}, colaborator)
+    public HolidaysPlan(IHolidayPeriod holidayPeriods, IColaborator colaborator) :
+        this(new List<IHolidayPeriod>() {holidayPeriods}, colaborator)
     {
     }
 
