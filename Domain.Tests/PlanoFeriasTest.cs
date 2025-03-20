@@ -120,4 +120,64 @@ public class PlanoFeriasTest{
         Assert.True(result);
         Assert.True(planoFerias.IsSizeList(3));
     }
+
+    [Fact]
+    public void AdicionarPlanoFerias_PeriodoFeriasOverlap_ReturnFalse(){
+        //arrange
+        Mock<IPeriodoFerias> periodoFerias1 = new Mock<IPeriodoFerias>();
+        Mock<IPeriodoFerias> periodoFerias2 = new Mock<IPeriodoFerias>();
+
+        Mock<IPeriodoFerias> periodoFeriasAdicionar = new Mock<IPeriodoFerias>();
+
+        var periodoFeriasList = new List<IPeriodoFerias> { periodoFerias1.Object, periodoFerias2.Object };
+
+        periodoFerias1.Setup(pf => pf.PeriodoFeriasOverlap(It.IsAny<IPeriodoFerias>())).Returns(false);
+        periodoFeriasAdicionar.Setup(pf => pf.PeriodoFeriasOverlap(periodoFerias1.Object)).Returns(true);
+
+        Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
+        ColaboradorMock.Setup(c => c.CompareWithDataInicio(It.IsAny<DateTime>())).Returns(1); 
+        ColaboradorMock.Setup(c => c.CompareWithDataFim(It.IsAny<DateTime>())).Returns(-1); 
+
+        PlanoFerias planoFerias = new PlanoFerias(periodoFeriasList, ColaboradorMock.Object);
+        //act
+        bool result = planoFerias.AddPeriodoFerias(periodoFeriasAdicionar.Object);       
+
+        //assert
+        Assert.False(result);
+        Assert.True(planoFerias.IsSizeList(2));
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPlanoFeriasData_DataColaboradorInvalidaPeriodoFerias))]
+    public void AdicionarPlanoFerias_DataColaboradorInvalidaPeriodoFerias_ReturnFalse(
+        int colaboradorCompareDataInicio,
+        int colaboradorCompareDataFim
+    ){
+        //arrange
+        Mock<IPeriodoFerias> periodoFerias1 = new Mock<IPeriodoFerias>();
+
+        Mock<IPeriodoFerias> periodoFeriasAdicionar = new Mock<IPeriodoFerias>();
+
+        var periodoFeriasList = new List<IPeriodoFerias> { periodoFerias1.Object };
+
+        periodoFeriasAdicionar.Setup(pf => pf.PeriodoFeriasOverlap(It.IsAny<IPeriodoFerias>())).Returns(false);
+
+        Mock<IColaborador> ColaboradorMock = new Mock<IColaborador>();
+        ColaboradorMock.SetupSequence(c => c.CompareWithDataInicio(
+                                        It.IsAny<DateTime>()))
+                                        .Returns(1) //Returns true in the constructor
+                                        .Returns(colaboradorCompareDataInicio);
+        ColaboradorMock.SetupSequence(c => c.CompareWithDataFim(
+                                        It.IsAny<DateTime>()))
+                                        .Returns(-1) //Returns true in the constructor
+                                        .Returns(colaboradorCompareDataFim);
+
+        PlanoFerias planoFerias = new PlanoFerias(periodoFeriasList, ColaboradorMock.Object);
+        //act
+        bool result = planoFerias.AddPeriodoFerias(periodoFeriasAdicionar.Object);       
+
+        //assert
+        Assert.False(result);
+        Assert.True(planoFerias.IsSizeList(1));
+    }
 }
