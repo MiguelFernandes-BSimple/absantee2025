@@ -9,8 +9,8 @@ public class AssociationProjectColaborator {
     public AssociationProjectColaborator(DateOnly initDate, DateOnly finalDate, IColaborator colaborator, IProject project)
     {
         if(CheckInputValues(initDate, finalDate, colaborator, project)){
-           this._initDate = initDate;
-            this._finalDate = finalDate;
+            _initDate = initDate;
+            _finalDate = finalDate;
             _colaborator = colaborator;
             _project = project; 
         } else  	
@@ -21,7 +21,7 @@ public class AssociationProjectColaborator {
         if(initDate > finalDate)
             return false;
         
-        if(project.IsInside(initDate, finalDate))
+        if(!project.IsInside(initDate, finalDate))
             return false;
 
         if(project.IsFinished())
