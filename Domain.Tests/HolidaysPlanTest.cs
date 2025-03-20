@@ -6,7 +6,7 @@ public class HolidaysPlanTest
     // Happy Path - Testing constructor with Single HolidayPeriod
     // Can Instatiate a HolidaysPlan Object successfuly
     [Fact]
-    public void WhenPassingValidSinglePeriod_HolidaysPlanIsCreated()
+    public void WhenPassingValidSinglePeriod_ThenHolidaysPlanIsCreated()
     {
         // Arrange
         // Test double for Holiday Period
@@ -22,29 +22,31 @@ public class HolidaysPlanTest
         colaboratorDouble.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Act
-        new HolidaysPlan(holidayPeriodDouble.Object, colaboratorDouble.Object);
+        HolidaysPlan holidaysPlan = new HolidaysPlan(holidayPeriodDouble.Object, colaboratorDouble.Object);
 
         // Assert
-        // No assertions needed
+        Assert.True(holidaysPlan.IsSizeList(1));
     }
 
     // Happy Path - Testing constructor with Single HolidayPeriod
     // Can Instatiate a HolidaysPlan Object successfuly
     [Fact]
-    public void WhenPassingValidMultiplePeriods_HolidaysPlanIsCreated()
+    public void WhenPassingValidMultiplePeriods_ThenHolidaysPlanIsCreated()
     {
         // Arrange
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
+        Mock<IHolidayPeriod> holidayPeriodDouble3 = new Mock<IHolidayPeriod>();
 
         // Can't overlap with any other holiday periods
         holidayPeriodDouble1.Setup(hp => hp.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
         holidayPeriodDouble2.Setup(hp => hp.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
+        holidayPeriodDouble3.Setup(hp => hp.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
 
         // Create Holiday Periods list
         List<IHolidayPeriod> holidayPeriods =
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object };
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object, holidayPeriodDouble3.Object };
 
         // Test double for Colaborator
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
@@ -53,16 +55,17 @@ public class HolidaysPlanTest
         colaboratorDouble.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Act
-        new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidaysPlan holidaysPlan = new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Assert
-        // No assertions needed
+        Assert.True(holidaysPlan.IsSizeList(holidayPeriods.Count));
+
     }
 
     // Validate exception - Two holiday periods collide
     // Happens when date periods intersect
     [Fact]
-    public void WhenHolidayPeriodDatesOverlap_ShouldThrowException()
+    public void WhenHolidayPeriodDatesOverlap_ThenThrowException()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -94,7 +97,7 @@ public class HolidaysPlanTest
 
     // Validate exception - Holiday period dates are not in the colaborator contract time frame
     [Fact]
-    public void WhenHolidayPeriodDatesNotInColabContractTimeFrame_ShouldThrowException()
+    public void WhenHolidayPeriodDatesNotInColabContractTimeFrame_ThenThrowException()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -128,7 +131,7 @@ public class HolidaysPlanTest
     // Validate if a valid Holiday period can be added to a holiday plan
     // If its successfully added, returns true
     [Fact]
-    public void AddHolidayPeriod_WhenPassingValidPeriod_ReturnTrue()
+    public void AddHolidayPeriod_WhenPassingValidPeriod_ThenReturnTrue()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -168,7 +171,7 @@ public class HolidaysPlanTest
     // intercects other holiday periods
     // If its not added, returns false
     [Fact]
-    public void AddHolidayPeriod_WhenPassingIntersectingPeriod_ReturnFalse()
+    public void AddHolidayPeriod_WhenPassingIntersectingPeriod_ThenReturnFalse()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -210,7 +213,7 @@ public class HolidaysPlanTest
     // isn't in the colaborator contract time frame
     // If its not added, returns false
     [Fact]
-    public void AddHolidayPeriod_WhenPassingPeriodNotInColabContractTimeFrame_ReturnFalse()
+    public void AddHolidayPeriod_WhenPassingPeriodNotInColabContractTimeFrame_ThenReturnFalse()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -251,7 +254,7 @@ public class HolidaysPlanTest
 
     // Testing if comparrison is well done - Size should be correct
     [Fact]
-    public void IsSizeList_WhenPassingCorrectInput_ReturnTrue()
+    public void IsSizeList_WhenPassingCorrectInput_ThenReturnTrue()
     {
         // Arrange
         // Test doubles for Holiday Period
