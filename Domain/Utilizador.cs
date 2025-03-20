@@ -3,7 +3,13 @@ using System.Text.RegularExpressions;
 
 namespace Domain;
 public class Utilizador : IUtilizador {
-    public Utilizador(string nomes, string apelidos, string email, DateTime? dataDesativacao = null)
+    private string Nomes;
+    private string Apelidos;
+    private string Email;
+    private DateTime DataCriacao;
+    private DateTime DataDesativacao;
+
+    public Utilizador(string nomes, string apelidos, string email, DateTime? dataDesativacao)
     {
         dataDesativacao ??= DateTime.MaxValue;
 
@@ -18,24 +24,15 @@ public class Utilizador : IUtilizador {
         }
     }
 
-
-    private string Nomes;
-    private string Apelidos;
-    private string Email;
-    private DateTime DataCriacao;
-    private DateTime DataDesativacao;
-
     private bool CheckInputValues(string nomes, string apelidos, string email, DateTime dataDesativacao)
     {
-        // Regex to allow only letters (including accented characters) and spaces, max 50 chars
         Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
 
         if (!nameRegex.IsMatch(nomes) || !nameRegex.IsMatch(apelidos))
         {
-            return false; // nomes or apelidos contain invalid characters or exceed 50 chars
+            return false;
         }
 
-        // Email validation
         try
         {
             var emailValidator = new MailAddress(email);
@@ -45,12 +42,12 @@ public class Utilizador : IUtilizador {
         }
 
         // Date validation
-        if (IsDesativo())
+        if (DateTime.Now >= dataDesativacao)
         {
-            return false; // dataDesativacao must be in the future
+            return false;
         }
 
-        return true; // All validations passed
+        return true;
     }
 
     public bool IsDesativo(){
