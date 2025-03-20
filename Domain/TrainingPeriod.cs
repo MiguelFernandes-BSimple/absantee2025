@@ -1,24 +1,27 @@
 namespace Domain;
-public class TrainingPeriod {
 
+public class TrainingPeriod
+{
     private DateOnly _initDate;
     private DateOnly _finalDate;
-    public TrainingPeriod(DateOnly dataInicio, DateOnly dataFim)
+
+    public TrainingPeriod(DateOnly initDate, DateOnly finalDate)
     {
-        if(CheckInputValues(dataInicio, dataFim)){
-            _initDate = dataInicio;
-            _finalDate = dataFim;
+        if (CheckInputValues(initDate, finalDate))
+        {
+            _initDate = initDate;
+            _finalDate = finalDate;
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool CheckInputValues(DateOnly _initDate, DateOnly _finalDate)
+    private bool CheckInputValues(DateOnly initDate, DateOnly finalDate)
     {
-        if (_initDate > _finalDate)
+        if (initDate > finalDate)
             return false;
 
-        if (_initDate < DateOnly.FromDateTime(DateTime.Now))
+        if (initDate < DateOnly.FromDateTime(DateTime.Now))
             return false;
 
         return true;
