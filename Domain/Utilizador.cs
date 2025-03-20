@@ -45,7 +45,7 @@ public class Utilizador : IUtilizador {
         }
 
         // Date validation
-        if (DateTime.Now >= dataDesativacao)
+        if (IsDesativo())
         {
             return false; // dataDesativacao must be in the future
         }
@@ -55,9 +55,9 @@ public class Utilizador : IUtilizador {
 
     public bool IsDesativo(){
         if (DateTime.Now >= DataDesativacao)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
 
     public bool IsBiggerThenDataDesativacao(DateTime date){

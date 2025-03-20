@@ -97,4 +97,44 @@ public class UtilizadorTest{
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
+
+
+    public static IEnumerable<object[]> GetDataDesativacao()
+    {
+        yield return new object[] { DateTime.Now.AddHours(1) };
+        yield return new object[] { DateTime.Now.AddYears(1) };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetDataDesativacao))]
+    public void IsDesativo_ReturnFalse(DateTime dataDesativacao){
+        //arrange
+        Utilizador utilizador = new Utilizador("Jonh", "Doe", "jonh@email.com", dataDesativacao);
+        
+        //act
+        bool result = utilizador.IsDesativo();
+            
+        //assert
+        Assert.False(result);
+    }
+
+
+    public static IEnumerable<object[]> GetDataDesativacaoAndDate()
+    {
+        yield return new object[] { DateTime.Now.AddHours(1), DateTime.Now.AddHours(2) };
+        yield return new object[] { DateTime.Now.AddYears(1), DateTime.Now.AddYears(2) };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetDataDesativacaoAndDate))]
+    public void IsBiggerThenDataDesativacao(DateTime dataDesativacao, DateTime dateCompare){
+        //arrange
+        Utilizador utilizador = new Utilizador("Jonh", "Doe", "jonh@email.com", dataDesativacao);
+        
+        //act
+        bool result = utilizador.IsBiggerThenDataDesativacao(dateCompare);
+            
+        //assert
+        Assert.True(result);
+    }
 }
