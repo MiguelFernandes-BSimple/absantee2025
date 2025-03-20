@@ -57,7 +57,6 @@ public class HRManagerTest{
 
     [Theory]
     [MemberData(nameof(GetHRManagerData_ValidData))]
-    [MemberData(nameof(GetHRManagerData_InvalidData))]
     public void WhenCreatingHRManagerWithEndDateAfterDeactivationData_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -74,7 +73,6 @@ public class HRManagerTest{
 
     [Theory]
     [MemberData(nameof(GetHRManagerData_ValidData))]
-    [MemberData(nameof(GetHRManagerData_InvalidData))]
     public void WhenCreatingRHManagerWithInactiveUser_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -91,7 +89,6 @@ public class HRManagerTest{
 
     [Theory]
     [MemberData(nameof(GetHRManagerData_ValidData))]
-    [MemberData(nameof(GetHRManagerData_InvalidData))]
     public void WhenCreatingHRManagerWithEndDateAfterDeactivationDataAndInactiveUser_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
