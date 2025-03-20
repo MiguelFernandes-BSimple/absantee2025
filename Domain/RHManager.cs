@@ -17,7 +17,7 @@ public class RHManager {
     }
 
     private bool checkInputFields(DateTime initDate, DateTime finalDate, IUser user){
-        if(initDate > finalDate)
+        if(initDate >= finalDate)
             return false;
 
         if(user.DeactivationDateIsBeforeThen(finalDate))
