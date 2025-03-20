@@ -68,7 +68,7 @@ public class ProjectManagerTest
 
     [Theory]
     [MemberData(nameof(GetProjectManager_WithValidDates))]
-    public void CriarGestorProjetos_UtilizadorInativo_Exception(DateTime initDate, DateTime endDate)
+    public void WhenGivenInactiveUser_ThenExceptionIsThrown(DateTime initDate, DateTime endDate)
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -85,7 +85,7 @@ public class ProjectManagerTest
 
     [Theory]
     [MemberData(nameof(GetProjectManager_WithInvalidDates))]
-    public void CriarGestorProjetos_InputsInvalidos_Exception(DateTime initDate, DateTime endDate)
+    public void WhenGivenInvalidInputs_ThenExceptionIsThrown(DateTime initDate, DateTime endDate)
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
