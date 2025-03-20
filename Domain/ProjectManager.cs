@@ -8,15 +8,23 @@ public class ProjectManager
     public ProjectManager(IUser _user, DateTime _initDate, DateTime? _finalDate)
     {
         if (!_finalDate.HasValue)
+        {
             _finalDate = DateTime.MaxValue;
+
+        }
+
         if (checkInputFields(_initDate, (DateTime)_finalDate, _user))
         {
+
             this._initDate = _initDate;
             this._finalDate = (DateTime)_finalDate;
             this._user = _user;
+
         }
         else
-            throw new ArgumentException("Invalid Arguments");
+        {
+            throw new ArgumentException("Invalid arguments.");
+        }
     }
 
     private bool checkInputFields(DateTime initDate, DateTime finalDate, IUser user)
@@ -32,5 +40,4 @@ public class ProjectManager
 
         return true;
     }
-
 }
