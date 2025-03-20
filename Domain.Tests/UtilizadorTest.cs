@@ -15,7 +15,7 @@ public class UtilizadorTest{
         //arrange
 
         //act
-        new Utilizador(nomes, apelidos, email, dataDesativacao);
+        new User(nomes, apelidos, email, dataDesativacao);
 
         //assert
     }
@@ -35,7 +35,7 @@ public class UtilizadorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => 
             // act
-            new Utilizador(nomes, apelidos, email, dataDesativacao));
+            new User(nomes, apelidos, email, dataDesativacao));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -54,7 +54,7 @@ public class UtilizadorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => 
             // act
-            new Utilizador(nomes, apelidos, email, dataDesativacao));
+            new User(nomes, apelidos, email, dataDesativacao));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -72,7 +72,7 @@ public class UtilizadorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => 
             // act
-            new Utilizador(nomes, apelidos, email, dataDesativacao));
+            new User(nomes, apelidos, email, dataDesativacao));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -93,7 +93,7 @@ public class UtilizadorTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => 
             // act
-            new Utilizador(nomes, apelidos, email, dataDesativacao));
+            new User(nomes, apelidos, email, dataDesativacao));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -109,10 +109,10 @@ public class UtilizadorTest{
     [MemberData(nameof(GetDataDesativacao))]
     public void IsDesativo_ReturnFalse(DateTime dataDesativacao){
         //arrange
-        Utilizador utilizador = new Utilizador("Jonh", "Doe", "jonh@email.com", dataDesativacao);
+        User utilizador = new User("Jonh", "Doe", "jonh@email.com", dataDesativacao);
         
         //act
-        bool result = utilizador.IsDesativo();
+        bool result = utilizador.IsDeactivated();
             
         //assert
         Assert.False(result);
@@ -129,10 +129,10 @@ public class UtilizadorTest{
     [MemberData(nameof(GetDataDesativacaoAndDate))]
     public void IsBiggerThenDataDesativacao(DateTime dataDesativacao, DateTime dateCompare){
         //arrange
-        Utilizador utilizador = new Utilizador("Jonh", "Doe", "jonh@email.com", dataDesativacao);
+        User utilizador = new User("Jonh", "Doe", "jonh@email.com", dataDesativacao);
         
         //act
-        bool result = utilizador.IsBiggerThenDataDesativacao(dateCompare);
+        bool result = utilizador.DeactivationDateIsBeforeThen(dateCompare);
             
         //assert
         Assert.True(result);

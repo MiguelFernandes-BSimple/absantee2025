@@ -13,7 +13,7 @@ public class PeriodoFeriasTest{
         //arrange
 
         //act
-        new PeriodoFerias(dataInicio, dataFim);
+        new HolidayPeriod(dataInicio, dataFim);
 
         //assert
     }
@@ -32,7 +32,7 @@ public class PeriodoFeriasTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new PeriodoFerias(dataInicio, dataFim));
+            new HolidayPeriod(dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -43,12 +43,37 @@ public class PeriodoFeriasTest{
         //arrange
 
         //act
-        PeriodoFerias periodoFerias = new PeriodoFerias(dataInicio, dataFim);
-        DateOnly actualDataInicio = periodoFerias.GetDataInicio();
-        DateOnly actualDataFim = periodoFerias.GetDataFim();
+        HolidayPeriod periodoFerias = new HolidayPeriod(dataInicio, dataFim);
+        DateOnly actualDataInicio = periodoFerias.GetInitDate();
+        DateOnly actualDataFim = periodoFerias.GetFinalDate();
 
         //assert
         Assert.Equal(dataInicio, actualDataInicio);
         Assert.Equal(dataFim, actualDataFim);
+    }
+
+    public static IEnumerable<object[]> GetPeriodoFeriasOverlapData()
+    {
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2021, 1, 1)), true };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 2)), DateOnly.FromDateTime(new DateTime(2020, 12, 31)), true };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2019, 12, 31)), DateOnly.FromDateTime(new DateTime(2021, 1, 1)), false };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 2)), DateOnly.FromDateTime(new DateTime(2021, 1, 2)), false };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2019, 12, 31)), DateOnly.FromDateTime(new DateTime(2021, 1, 2)), false };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPeriodoFeriasOverlapData))]
+    public void PeriodoFeriasOverlap_Sucesso(DateOnly dataInicioNew, DateOnly dataFimNew, bool expected){
+        //arrange
+        DateOnly dataInicio = DateOnly.FromDateTime(new DateTime(2020, 1, 1));
+        DateOnly dataFim = DateOnly.FromDateTime(new DateTime(2021, 1, 1));
+        HolidayPeriod periodoFerias = new HolidayPeriod(dataInicio, dataFim);
+        HolidayPeriod periodoFeriasNew = new HolidayPeriod(dataInicioNew, dataFimNew);
+
+        //act
+        bool result = periodoFerias.HolidayPeriodOverlap(periodoFeriasNew);
+
+        //assert
+        Assert.Equal(expected, result);
     }
 }

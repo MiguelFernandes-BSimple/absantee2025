@@ -13,12 +13,12 @@ public class GestorProjetosTest{
     [MemberData(nameof(GetGestorProjetosData_CamposValidos))]
     public void CriarGestorProjetos_CamposValidos(DateTime dataInicio, DateTime? dataFim){
         //arrange
-        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(It.IsAny<DateTime>())).Returns(false);
-        utilizador.Setup(u => u.IsDesativo()).Returns(false);
+        Mock<IUser> utilizador = new Mock<IUser>();
+        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
+        utilizador.Setup(u => u.IsDeactivated()).Returns(false);
 
         //act
-        new GestorProjetos(utilizador.Object, dataInicio, dataFim);
+        new ProjectManager(utilizador.Object, dataInicio, dataFim);
 
         //assert
     }
@@ -34,14 +34,14 @@ public class GestorProjetosTest{
     [MemberData(nameof(GetGestorProjetosData_DatasInvalidas))]
     public void CriarGestorProjetos_DatasInvalidas_Exception(DateTime dataInicio, DateTime dataFim){
         //arrange
-        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(false);
-        utilizador.Setup(u => u.IsDesativo()).Returns(false);
+        Mock<IUser> utilizador = new Mock<IUser>();
+        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(false);
+        utilizador.Setup(u => u.IsDeactivated()).Returns(false);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
+            new ProjectManager(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -50,14 +50,14 @@ public class GestorProjetosTest{
     [MemberData(nameof(GetGestorProjetosData_CamposValidos))]
     public void CriarGestorProjetos_DataFimMaiorDataDesativacao_Exception(DateTime dataInicio, DateTime dataFim){
         //arrange
-        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(true);
-        utilizador.Setup(u => u.IsDesativo()).Returns(false);
+        Mock<IUser> utilizador = new Mock<IUser>();
+        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
+        utilizador.Setup(u => u.IsDeactivated()).Returns(false);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
+            new ProjectManager(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -66,14 +66,14 @@ public class GestorProjetosTest{
     [MemberData(nameof(GetGestorProjetosData_CamposValidos))]
     public void CriarGestorProjetos_UtilizadorInativo_Exception(DateTime dataInicio, DateTime dataFim){
         //arrange
-        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(false);
-        utilizador.Setup(u => u.IsDesativo()).Returns(true);
+        Mock<IUser> utilizador = new Mock<IUser>();
+        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(false);
+        utilizador.Setup(u => u.IsDeactivated()).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
+            new ProjectManager(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -82,14 +82,14 @@ public class GestorProjetosTest{
     [MemberData(nameof(GetGestorProjetosData_DatasInvalidas))]
     public void CriarGestorProjetos_InputsInvalidos_Exception(DateTime dataInicio, DateTime dataFim){
         //arrange
-        Mock<IUtilizador> utilizador = new Mock<IUtilizador>();
-        utilizador.Setup(u => u.IsBiggerThenDataDesativacao(dataFim)).Returns(true);
-        utilizador.Setup(u => u.IsDesativo()).Returns(true);
+        Mock<IUser> utilizador = new Mock<IUser>();
+        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
+        utilizador.Setup(u => u.IsDeactivated()).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new GestorProjetos(utilizador.Object, dataInicio, dataFim));
+            new ProjectManager(utilizador.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }

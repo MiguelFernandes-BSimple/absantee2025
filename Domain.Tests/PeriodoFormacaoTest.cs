@@ -13,7 +13,7 @@ public class PeriodoFormacaoTest{
         //arrange
 
         //act
-        new PeriodoFormacao(dataInicio, dataFim);
+        new TrainingPeriod(dataInicio, dataFim);
 
         //assert
     }
@@ -32,7 +32,7 @@ public class PeriodoFormacaoTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new PeriodoFormacao(dataInicio, dataFim));
+            new TrainingPeriod(dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -51,7 +51,7 @@ public class PeriodoFormacaoTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new PeriodoFormacao(dataInicio, dataFim));
+            new TrainingPeriod(dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
