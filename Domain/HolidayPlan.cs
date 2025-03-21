@@ -46,7 +46,7 @@ public class HolidayPlan
 
     private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, IColaborator colaborator)
     {
-        if (!colaborator.IsInside(holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue), holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue)))
+        if (!colaborator.ContainsDates(holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue), holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue)))
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {

@@ -14,12 +14,12 @@ public class AssociationProjectColaboratorTest{
     public void WhenPassingValidData_ThenAssociationProjectColaboratorIsCreated(DateOnly initDate, DateOnly finalDate){
         //arrange
         Mock<IProject> ProjetoMock = new Mock<IProject>();
-        ProjetoMock.Setup(p => p.IsInside(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        ProjetoMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
 
         ProjetoMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        ColaboradorMock.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         //act
         new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjetoMock.Object);
@@ -53,12 +53,12 @@ public class AssociationProjectColaboratorTest{
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
 
         Mock<IProject> ProjetoMock = new Mock<IProject>();
-        ProjetoMock.Setup(p => p.IsInside(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(false);
+        ProjetoMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(false);
 
         ProjetoMock.Setup(c => c.IsFinished()).Returns(false); 
 
         Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        ColaboradorMock.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -75,12 +75,12 @@ public class AssociationProjectColaboratorTest{
         DateOnly dataFim = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
 
         Mock<IProject> ProjetoMock = new Mock<IProject>();
-        ProjetoMock.Setup(p => p.IsInside(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        ProjetoMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
 
         ProjetoMock.Setup(c => c.IsFinished()).Returns(true); 
 
         Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        ColaboradorMock.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -97,12 +97,12 @@ public class AssociationProjectColaboratorTest{
         DateOnly dataFim = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
 
         Mock<IProject> ProjetoMock = new Mock<IProject>();
-        ProjetoMock.Setup(p => p.IsInside(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        ProjetoMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
 
         ProjetoMock.Setup(c => c.IsFinished()).Returns(false); 
 
         Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
+        ColaboradorMock.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
 
 
         //assert

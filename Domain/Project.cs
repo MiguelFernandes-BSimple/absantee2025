@@ -37,11 +37,13 @@ public class Project : IProject
         return true;
     }
 
-    public bool IsInside(DateOnly dataInicio, DateOnly dataFim){
+    public bool ContainsDates(DateOnly dataInicio, DateOnly dataFim)
+    {
         return dataInicio >= this._initDate && dataFim <= this._finalDate;
     }
 
-    public bool IsFinished(){
+    public bool IsFinished()
+    {
         return DateOnly.FromDateTime(DateTime.Today) > this._finalDate;
     }
 }

@@ -33,7 +33,7 @@ public class Colaborator : IColaborator
         return true;
     }
 
-    public bool IsInside(DateTime initDate, DateTime finalDate)
+    public bool ContainsDates(DateTime initDate, DateTime finalDate)
     {
         return initDate >= this._initDate && finalDate <= this._finalDate;
     }
