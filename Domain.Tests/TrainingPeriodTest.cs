@@ -23,7 +23,10 @@ public class TrainingPeriodTest
 
     [Theory]
     [MemberData(nameof(GetTrainingPeriodData_ValidDates))]
-    public void WhenPassingValidDates_CreateTrainingPeriod(DateOnly initDate, DateOnly finalDate)
+    public void WhenPassingValidDates_ThenCreateTrainingPeriod(
+        DateOnly initDate,
+        DateOnly finalDate
+    )
     {
         //arrange
 
@@ -49,7 +52,7 @@ public class TrainingPeriodTest
 
     [Theory]
     [MemberData(nameof(GetTrainingPeriodData_InvalidDates))]
-    public void WhenPassingStartDateAfterFinalDate_ThrowsArgumentException(
+    public void WhenPassingStartDateAfterFinalDate_ThenThrowsArgumentException(
         DateOnly initDate,
         DateOnly finalDate
     )
@@ -82,7 +85,7 @@ public class TrainingPeriodTest
 
     [Theory]
     [MemberData(nameof(GetTrainingPeriodData_InvalidInitialDate))]
-    public void WhenPassingDatesInThePast_ThrowsArgumentException(
+    public void WhenPassingDatesInThePast_ThenThrowsArgumentException(
         DateOnly initDate,
         DateOnly finalDate
     )
