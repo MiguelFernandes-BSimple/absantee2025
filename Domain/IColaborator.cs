@@ -1,3 +1,4 @@
-public interface IColaborator{
-    public bool IsInside(DateTime dataInicio, DateTime dataFim);
+public interface IColaborator
+{
+    public bool IsInside(DateTime _initDate, DateTime _finalDate);
 }
