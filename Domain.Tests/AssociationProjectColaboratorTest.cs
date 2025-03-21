@@ -11,7 +11,7 @@ public class AssociationProjectColaboratorTest{
 
     [Theory]
     [MemberData(nameof(ValidDates))]
-    public void WhenPassingValidData_AssociationProjectColaboratorIsCreated(DateOnly initDate, DateOnly finalDate){
+    public void WhenPassingValidData_ThenAssociationProjectColaboratorIsCreated(DateOnly initDate, DateOnly finalDate){
         //arrange
         Mock<IProject> ProjetoMock = new Mock<IProject>();
         ProjetoMock.Setup(p => p.IsInside(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
@@ -29,7 +29,7 @@ public class AssociationProjectColaboratorTest{
 
 
     [Fact]
-    public void WhenAssociationDatesAreInvalid_ThrowException(){
+    public void WhenAssociationDatesAreInvalid_ThenThrowException(){
         //arrange
         DateOnly initDate = DateOnly.FromDateTime(DateTime.Now).AddYears(2);
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
@@ -47,7 +47,7 @@ public class AssociationProjectColaboratorTest{
 
 
     [Fact]
-    public void WhenProjectDatesOutsideAssociation_ThrowException(){
+    public void WhenProjectDatesOutsideAssociation_ThenThrowException(){
         //arrange
         DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
@@ -69,7 +69,7 @@ public class AssociationProjectColaboratorTest{
     }
 
     [Fact]
-    public void WhenProjectIsFinished_ThrowException(){
+    public void WhenProjectIsFinished_ThenThrowException(){
         //arrange
         DateOnly dataInicio = DateOnly.FromDateTime(DateTime.Now);
         DateOnly dataFim = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
@@ -91,7 +91,7 @@ public class AssociationProjectColaboratorTest{
     }
 
     [Fact]
-    public void WhenColaboradorDatesOutsideAssociationDates_ThrowException(){
+    public void WhenColaboradorDatesOutsideAssociationDates_ThenThrowException(){
         //arrange
         DateOnly dataInicio = DateOnly.FromDateTime(DateTime.Now);
         DateOnly dataFim = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
