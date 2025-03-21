@@ -1,12 +1,11 @@
 namespace Domain;
-
-public class Colaborator : IColaborator
+public class HRManager
 {
     private DateTime _initDate;
     private DateTime _finalDate;
     private IUser _user;
 
-    public Colaborator(IUser user, DateTime initDate, DateTime? finalDate = null)
+    public HRManager(IUser user, DateTime initDate, DateTime? finalDate = null)
     {
         if (!finalDate.HasValue)
             finalDate = DateTime.MaxValue;
@@ -22,7 +21,7 @@ public class Colaborator : IColaborator
 
     private bool checkInputFields(DateTime initDate, DateTime finalDate, IUser user)
     {
-        if (initDate > finalDate)
+        if (initDate >= finalDate)
             return false;
 
         if (user.DeactivationDateIsBeforeThen(finalDate))
@@ -30,11 +29,7 @@ public class Colaborator : IColaborator
 
         if (user.IsDeactivated())
             return false;
-        return true;
-    }
 
-    public bool ContainsDates(DateTime initDate, DateTime finalDate)
-    {
-        return initDate >= this._initDate && finalDate <= this._finalDate;
+        return true;
     }
 }

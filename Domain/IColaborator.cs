@@ -1,4 +1,4 @@
 public interface IColaborator
 {
-    public bool IsInside(DateTime _initDate, DateTime _finalDate);
+    public bool ContainsDates(DateTime _initDate, DateTime _finalDate);
 }

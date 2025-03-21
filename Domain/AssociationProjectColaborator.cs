@@ -21,13 +21,13 @@ public class AssociationProjectColaborator {
         if(initDate > finalDate)
             return false;
         
-        if(!project.IsInside(initDate, finalDate))
+        if(!project.ContainsDates(initDate, finalDate))
             return false;
 
         if(project.IsFinished())
             return false;
 
-        if(!colaborator.IsInside(initDate.ToDateTime(TimeOnly.MinValue), finalDate.ToDateTime(TimeOnly.MinValue)))
+        if(!colaborator.ContainsDates(initDate.ToDateTime(TimeOnly.MinValue), finalDate.ToDateTime(TimeOnly.MinValue)))
             return false;
 
         return true;

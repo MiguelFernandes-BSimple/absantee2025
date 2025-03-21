@@ -1,16 +1,16 @@
 namespace Domain;
 
-public class HolidaysPlan
+public class HolidayPlan
 {
     private List<IHolidayPeriod> _holidaysPeriods;
     private IColaborator _colaborator;
 
-    public HolidaysPlan(IHolidayPeriod holidayPeriods, IColaborator colaborator) :
-        this(new List<IHolidayPeriod>() {holidayPeriods}, colaborator)
+    public HolidayPlan(IHolidayPeriod holidayPeriods, IColaborator colaborator) :
+        this(new List<IHolidayPeriod>() { holidayPeriods }, colaborator)
     {
     }
 
-    public HolidaysPlan(List<IHolidayPeriod> holidaysPeriods, IColaborator colaborator)
+    public HolidayPlan(List<IHolidayPeriod> holidaysPeriods, IColaborator colaborator)
     {
         if (CheckInputValues(holidaysPeriods, colaborator))
         {
@@ -23,10 +23,12 @@ public class HolidaysPlan
 
     public bool AddHolidayPeriod(IHolidayPeriod holidayPeriod)
     {
-        if(CanInsertHolidayPeriod(holidayPeriod, this._holidaysPeriods, this._colaborator)){
+        if (CanInsertHolidayPeriod(holidayPeriod, this._holidaysPeriods, this._colaborator))
+        {
             _holidaysPeriods.Add(holidayPeriod);
             return true;
-        } else
+        }
+        else
             return false;
     }
 
@@ -34,7 +36,8 @@ public class HolidaysPlan
     {
         for (int i = 0; i < periodoFerias.Count; i++)
         {
-            if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), colaborador)){
+            if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), colaborador))
+            {
                 return false;
             }
         }
@@ -43,7 +46,7 @@ public class HolidaysPlan
 
     private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, IColaborator colaborator)
     {
-        if (!colaborator.IsInside(holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue), holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue)))
+        if (!colaborator.ContainsDates(holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue), holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue)))
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {
@@ -55,7 +58,8 @@ public class HolidaysPlan
         return true;
     }
 
-    public bool IsSizeList(int size){
+    public bool IsSizeList(int size)
+    {
         return size == this._holidaysPeriods.Count();
     }
 }

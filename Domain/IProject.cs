@@ -1,4 +1,5 @@
-public interface IProject {
-    public bool IsInside(DateOnly dataInicio, DateOnly dataFim);
+public interface IProject
+{
+    public bool ContainsDates(DateOnly intiDate, DateOnly finalDate);
     public bool IsFinished();
 }
