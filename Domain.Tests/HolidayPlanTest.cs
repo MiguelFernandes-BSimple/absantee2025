@@ -1,10 +1,10 @@
 using Domain;
 using Moq;
 
-public class HolidaysPlanTest
+public class HolidayPlanTest
 {
     // Happy Path - Testing constructor with Single HolidayPeriod
-    // Can Instatiate a HolidaysPlan Object successfuly
+    // Can Instatiate a HolidayPlan Object successfuly
     [Fact]
     public void WhenPassingValidSinglePeriod_ThenHolidayPlanIsCreated()
     {
@@ -26,7 +26,7 @@ public class HolidaysPlanTest
     }
 
     // Happy Path - Testing constructor with Single HolidayPeriod
-    // Can Instatiate a HolidaysPlan Object successfuly
+    // Can Instatiate a HolidayPlan Object successfuly
     [Fact]
     public void WhenPassingValidMultiplePeriods_ThenHolidayPlanIsCreated()
     {
@@ -145,7 +145,7 @@ public class HolidaysPlanTest
         List<IHolidayPeriod> holidayPeriods =
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
-        // Instatiate Holidays plan class object
+        // Instatiate Holiday plan class object
         HolidaysPlan holidayPlan =
             new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
 
@@ -186,7 +186,7 @@ public class HolidaysPlanTest
         List<IHolidayPeriod> holidayPeriods =
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
-        // Instatiate Holidays plan class object
+        // Instatiate Holiday plan class object
         HolidaysPlan holidayPlan =
             new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
 
@@ -230,7 +230,7 @@ public class HolidaysPlanTest
         List<IHolidayPeriod> holidayPeriods =
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
-        // Instatiate Holidays plan class object
+        // Instatiate Holiday plan class object
         HolidaysPlan holidayPlan =
             new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
 
