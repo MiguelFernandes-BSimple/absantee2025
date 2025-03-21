@@ -125,4 +125,40 @@ public class UserTest{
         // Assert
         Assert.True(result);
     }
+
+        [Theory]
+        [InlineData(1, false)]  
+        [InlineData(10, false)] 
+        public void WhenCheckingIfUserIsDeactivated_ThenReturnsCorrectValue(int daysOffset, bool expectedResult)
+        {
+            // Arrange
+            DateTime deactivationDate = DateTime.Now.AddDays(daysOffset); 
+            var user = new User("John", "Doe", "john@email.com", deactivationDate);
+
+            // Act
+            bool result = user.IsDeactivated();
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        
+        [Theory]
+        [InlineData(1, 2, true)]   
+        [InlineData(1, 1, true)]  
+        [InlineData(1, 0, false)]  
+        public void WhenCheckingDeactivationDateIsBefore_ThenReturnsCorrectValue(int deactivationOffset, int testDateOffset, bool expectedResult)
+        {
+            // Arrange
+            DateTime deactivationDate = DateTime.Now.AddDays(deactivationOffset);
+            var user = new User("John", "Doe", "john@email.com", deactivationDate);
+
+            // Act
+            bool result = user.DeactivationDateIsBeforeThen(DateTime.Now.AddDays(testDateOffset));
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+     
+        
 }

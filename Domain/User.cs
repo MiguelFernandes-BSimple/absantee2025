@@ -20,6 +20,7 @@ public class User : IUser {
             _email = email;
             _creationDate = DateTime.Now;
             _deactivationDate = (DateTime)deactivationDate;
+            
         } else {
             throw new ArgumentException("Invalid Arguments");
         }
@@ -61,9 +62,4 @@ public class User : IUser {
     public bool DeactivationDateIsBeforeThen(DateTime date){
         return date > _deactivationDate;
     }
-
-
-    
-
-
 }
