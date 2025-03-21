@@ -1,8 +1,9 @@
 using Domain;
 using Moq;
 
-public class ColaboradorTest{
-    public static IEnumerable<object[]> GetColaboradorData_CamposValidos()
+public class ColaboradorTest
+{
+    public static IEnumerable<object[]> MethodGetToTestIfDateFieldsAreValidToColaborator()
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(2) };
@@ -10,131 +11,152 @@ public class ColaboradorTest{
     }
 
     [Theory]
-    [MemberData(nameof(GetColaboradorData_CamposValidos))]
-    public void CriarColaborador_CamposValidos(DateTime dataInicio, DateTime? dataFim){
+    [MemberData(nameof(MethodGetToTestIfDateFieldsAreValidToColaborator))]
+    public void WhenCreatingColaboratorWIthValidData_ThenSeeIfColaboratorIsCreatedCorrectly(
+        DateTime _initDate,
+        DateTime? _finalDate
+    )
+    {
         //arrange
-        Mock<IUser> utilizador = new Mock<IUser>();
-        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
-        utilizador.Setup(u => u.IsDeactivated()).Returns(false);
-
+        Mock<IUser> user = new Mock<IUser>();
+        user.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
+        user.Setup(u => u.IsDeactivated()).Returns(false);
         //act
-        new Colaborator(utilizador.Object, dataInicio, dataFim);
-
+        new Colaborator(user.Object, _initDate, _finalDate);
         //assert
     }
 
-
-    public static IEnumerable<object[]> GetColaboradorData_DatasInvalidas()
+    public static IEnumerable<object[]> MethodGetToTestIfDateFieldsAreInvalidToColaborator()
     {
         yield return new object[] { DateTime.Now.AddDays(5), DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3) };
-
     }
 
     [Theory]
-    [MemberData(nameof(GetColaboradorData_DatasInvalidas))]
-    public void CriarColaborador_DatasInvalidas_Exception(DateTime dataInicio, DateTime dataFim){
-        //arrange
-        Mock<IUser> utilizador = new Mock<IUser>();
-        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(false);
-        utilizador.Setup(u => u.IsDeactivated()).Returns(false);
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new Colaborator(utilizador.Object, dataInicio, dataFim));
-
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
-    [Theory]
-    [MemberData(nameof(GetColaboradorData_CamposValidos))]
-    public void CriarColaborador_DataFimMaiorDataDesativacao_Exception(DateTime dataInicio, DateTime dataFim){
-        //arrange
-        Mock<IUser> utilizador = new Mock<IUser>();
-        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
-        utilizador.Setup(u => u.IsDeactivated()).Returns(false);
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new Colaborator(utilizador.Object, dataInicio, dataFim));
-
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
-    [Theory]
-    [MemberData(nameof(GetColaboradorData_CamposValidos))]
-    public void CriarColaborador_UtilizadorInativo_Exception(DateTime dataInicio, DateTime dataFim){
-        //arrange
-        Mock<IUser> utilizador = new Mock<IUser>();
-        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(false);
-        utilizador.Setup(u => u.IsDeactivated()).Returns(true);
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new Colaborator(utilizador.Object, dataInicio, dataFim));
-
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
-    [Theory]
-    [MemberData(nameof(GetColaboradorData_DatasInvalidas))]
-    public void CriarColaborador_InputsInvalidos_Exception(DateTime dataInicio, DateTime dataFim){
-        //arrange
-        Mock<IUser> utilizador = new Mock<IUser>();
-        utilizador.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
-        utilizador.Setup(u => u.IsDeactivated()).Returns(true);
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new Colaborator(utilizador.Object, dataInicio, dataFim));
-
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
-
-    public static IEnumerable<object[]> GetColaboradorData_CompareDataInicio()
+    [MemberData(nameof(MethodGetToTestIfDateFieldsAreInvalidToColaborator))]
+    public void WhenCreatingColaboratorWIthInValidData_ThenSeeIfShowTheThrowException(
+        DateTime _initDate,
+        DateTime _finalDate
+    )
     {
-        yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1), 1 };
-        yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3), -1 };
-        yield return new object[] { new DateTime(2000, 1, 1),  new DateTime(2000, 1, 1), 0};
+        //arrange
+        Mock<IUser> user = new Mock<IUser>();
+        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(false);
+        user.Setup(u => u.IsDeactivated()).Returns(false);
+        //assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new Colaborator(user.Object, _initDate, _finalDate)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
     }
 
-    // [Theory]
-    // [MemberData(nameof(GetColaboradorData_CompareDataInicio))]
-    // public void CompareWithDataInicio_Sucesso(DateTime dataInicio, DateTime dateCompare, int expected){
-    //     //arrange
-    //     Mock<IUser> utilizador = new Mock<IUser>();
-    //     Colaborator colaborador = new Colaborator(utilizador.Object, dataInicio);
+    [Theory]
+    [MemberData(nameof(MethodGetToTestIfDateFieldsAreValidToColaborator))]
+    public void WhenCreatingColaboratorWhereFinalDateIsAfterDeactivationDate_ThenShouldThrowException(
+        DateTime _initDate,
+        DateTime _finalDate
+    )
+    {
+        //arrange
+        Mock<IUser> user = new Mock<IUser>();
+        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(true);
+        user.Setup(u => u.IsDeactivated()).Returns(false);
+        //assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new Colaborator(user.Object, _initDate, _finalDate)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
+    }
 
-    //     //act
-    //     int result = colaborador.CompareWithDataInicio(dateCompare);
+    [Theory]
+    [MemberData(nameof(MethodGetToTestIfDateFieldsAreValidToColaborator))]
+    public void WhenCreatingColaboratorWhereUserIsDeactivated_ThenShowThrowException(
+        DateTime _initDate,
+        DateTime _finalDate
+    )
+    {
+        //arrange
+        Mock<IUser> user = new Mock<IUser>();
+        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(false);
+        user.Setup(u => u.IsDeactivated()).Returns(true);
+        //assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new Colaborator(user.Object, _initDate, _finalDate)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
+    }
 
-    //     //assert
-    //     Assert.Equal(expected, result);
-    // }
+    [Theory]
+    [MemberData(nameof(MethodGetToTestIfDateFieldsAreInvalidToColaborator))]
+    public void WhenCreatingColaboratorWhereInputsAreInvalid_ThenShouldThrowException(
+        DateTime _initDate,
+        DateTime _finalDate
+    )
+    {
+        //arrange
+        Mock<IUser> user = new Mock<IUser>();
+        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(true);
+        user.Setup(u => u.IsDeactivated()).Returns(true);
+        //assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new Colaborator(user.Object, _initDate, _finalDate)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
+    }
 
-    // public static IEnumerable<object[]> GetColaboradorData_CompareDataFim()
-    // {
-    //     yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1), 1 };
-    //     yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3), -1 };
-    //     yield return new object[] { new DateTime(2000, 1, 1),  new DateTime(2000, 1, 1), 0};
-    // }
+    public static IEnumerable<object[]> ValidRangeDatesToColaborator()
+    {
+        yield return new object[] { new DateTime(2023, 6, 1), new DateTime(2024, 6, 1) };
+        yield return new object[] { new DateTime(2022, 12, 31), new DateTime(2023, 1, 1) };
+        yield return new object[] { new DateTime(2025, 1, 1), new DateTime(2025, 12, 31) };
+        yield return new object[] { new DateTime(2023, 1, 1), new DateTime(2025, 1, 1) };
+        yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 12, 31) };
+        yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 1, 1) };
+    }
 
-    // [Theory]
-    // [MemberData(nameof(GetColaboradorData_CompareDataFim))]
-    // public void CompareWithDataFim_Sucesso(DateTime dataFim, DateTime dateCompare, int expected){
-    //     //arrange
-    //     Mock<IUser> utilizador = new Mock<IUser>();
-    //     Colaborator colaborador = new Colaborator(utilizador.Object, DateTime.MinValue, dataFim);
+    [Theory]
+    [MemberData(nameof(ValidRangeDatesToColaborator))]
+    public void WhenComparingInitDateWithFinalDate_ThenSeeIfTheResultIsSucess(
+        DateTime _initDate,
+        DateTime _finalDate
+    )
+    {
+        // Arrange
+        Mock<IUser> user = new Mock<IUser>();
+        Colaborator colaborator = new Colaborator(user.Object, _initDate, _finalDate);
+        // Act
+        bool result = colaborator.IsInside(_initDate, _finalDate);
+        // Assert
+        Assert.True(result);
+    }
 
-    //     //act
-    //     int result = colaborador.CompareWithDataFim(dateCompare);
+    public static IEnumerable<object[]> InvalidDateRangesToColaborator()
+    {
+        yield return new object[] { new DateTime(2027, 6, 1), new DateTime(2024, 6, 1) };
+        yield return new object[] { new DateTime(2023, 12, 30), new DateTime(2022, 12, 31) };
+    }
 
-    //     //assert
-    //     Assert.Equal(expected, result);
-    // }
+    [Theory]
+    [MemberData(nameof(InvalidDateRangesToColaborator))]
+    public void WhenComparingInvalidInitDateWithFinalDate_ThenShouldThrowException(
+        DateTime _initDate,
+        DateTime _finalDate
+    )
+    {
+        // Arrange
+        Mock<IUser> user = new Mock<IUser>();
+        // Act & Assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => new Colaborator(user.Object, _initDate, _finalDate)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
+    }
 }
