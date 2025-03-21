@@ -6,8 +6,13 @@ public class User : IUser {
     private string _names;
     private string _surnames;
     private string _email;
+<<<<<<< Updated upstream
     private DateTime  _creationDate;
     private DateTime ? _deactivationDate;
+=======
+    private DateTime _creationDate;
+    private DateTime ?_deactivationDate;
+>>>>>>> Stashed changes
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
@@ -61,10 +66,15 @@ public class User : IUser {
         return date > _deactivationDate;
     }
 
+<<<<<<< Updated upstream
     public bool EstaAtivoNoPeriodo(DateOnly inicio, DateOnly fim){
         DateTime dataFimUtilizador = _deactivationDate ?? DateTime.MaxValue;
         return inicio >= DateOnly.FromDateTime(_creationDate) && fim <= DateOnly.FromDateTime(dataFimUtilizador);
 
     }
+=======
+
+  
+>>>>>>> Stashed changes
 
 }
