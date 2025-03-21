@@ -6,8 +6,9 @@ public class User : IUser {
     private string _names;
     private string _surnames;
     private string _email;
-    private DateTime _creationDate;
-    private DateTime _deactivationDate;
+
+    private DateTime  _creationDate;
+    private DateTime ? _deactivationDate;
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
@@ -60,4 +61,9 @@ public class User : IUser {
     public bool DeactivationDateIsBeforeThen(DateTime date){
         return date > _deactivationDate;
     }
+
+
+    
+
+
 }
