@@ -19,7 +19,7 @@ public class HolidayPlanTest
         colaboratorDouble.Setup(c => c.IsInside(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Act
-        HolidaysPlan holidayPlan = new HolidaysPlan(holidayPeriodDouble.Object, colaboratorDouble.Object);
+        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriodDouble.Object, colaboratorDouble.Object);
 
         // Assert
         Assert.True(holidayPlan.IsSizeList(1));
@@ -52,7 +52,7 @@ public class HolidayPlanTest
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object, holidayPeriodDouble3.Object };
 
         // Act
-        HolidaysPlan holidayPlan = new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Assert
         Assert.True(holidayPlan.IsSizeList(holidayPeriods.Count));
@@ -86,7 +86,7 @@ public class HolidayPlanTest
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             // Act
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object));
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -118,7 +118,7 @@ public class HolidayPlanTest
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             // Act
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object));
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -146,8 +146,8 @@ public class HolidayPlanTest
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
         // Instatiate Holiday plan class object
-        HolidaysPlan holidayPlan =
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidayPlan holidayPlan =
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Test double for Holiday Period to be added
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
@@ -187,8 +187,8 @@ public class HolidayPlanTest
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
         // Instatiate Holiday plan class object
-        HolidaysPlan holidayPlan =
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidayPlan holidayPlan =
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Test double for holiday period to be added to plan
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
@@ -231,8 +231,8 @@ public class HolidayPlanTest
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
         // Instatiate Holiday plan class object
-        HolidaysPlan holidayPlan =
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidayPlan holidayPlan =
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Test double for holiday period to be added to plan
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
@@ -272,8 +272,8 @@ public class HolidayPlanTest
         List<IHolidayPeriod> holidayPeriods =
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
-        HolidaysPlan holidayPlan =
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidayPlan holidayPlan =
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Assert
         Assert.True(
@@ -305,8 +305,8 @@ public class HolidayPlanTest
         List<IHolidayPeriod> holidayPeriods =
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
 
-        HolidaysPlan holidayPlan =
-            new HolidaysPlan(holidayPeriods, colaboratorDouble.Object);
+        HolidayPlan holidayPlan =
+            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         Random random = new Random();
         int randomInt = random.Next(1, 101);

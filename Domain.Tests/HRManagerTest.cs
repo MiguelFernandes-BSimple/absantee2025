@@ -23,7 +23,7 @@ public class HRManagerTest{
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //act
-        new RHManager(user.Object, dataInicio, dataFim);
+        new HRManager(user.Object, dataInicio, dataFim);
 
         //assert
     }
@@ -50,7 +50,7 @@ public class HRManagerTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new RHManager(user.Object, dataInicio, dataFim));
+            new HRManager(user.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -68,13 +68,13 @@ public class HRManagerTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new RHManager(user.Object, dataInicio, dataFim));
+            new HRManager(user.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
     [Fact]
-    public void WhenCreatingRHManagerWithInactiveUser_ThenThrowsException(){
+    public void WhenCreatingHRManagerWithInactiveUser_ThenThrowsException(){
         //arrange
         DateTime dataInicio = DateTime.Now;
         DateTime dataFim = DateTime.Now.AddDays(10);
@@ -86,7 +86,7 @@ public class HRManagerTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new RHManager(user.Object, dataInicio, dataFim));
+            new HRManager(user.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -104,7 +104,7 @@ public class HRManagerTest{
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new RHManager(user.Object, dataInicio, dataFim));
+            new HRManager(user.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     } 
