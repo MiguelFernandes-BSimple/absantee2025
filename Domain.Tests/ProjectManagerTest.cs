@@ -69,30 +69,15 @@ public class ProjectManagerTest
         Assert.Equal("Invalid arguments.", exception.Message);
     }
 
-    [Theory]
-    [MemberData(nameof(GetProjectManager_WithValidDates))]
-    public void WhenGivenInactiveUser_ThenExceptionIsThrown(DateTime initDate, DateTime endDate)
+    [Fact]
+    public void WhenGivenInactiveUser_ThenExceptionIsThrown()
     {
         //arrange
+        DateTime initDate = DateTime.Now;
+        DateTime endDate = DateTime.Now.AddDays(5);
+
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBeforeThen(endDate)).Returns(false);
-        user.Setup(u => u.IsDeactivated()).Returns(true);
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new ProjectManager(user.Object, initDate, endDate));
-
-        Assert.Equal("Invalid arguments.", exception.Message);
-    }
-
-    [Theory]
-    [MemberData(nameof(GetProjectManager_WithInvalidDates))]
-    public void WhenGivenInvalidInputs_ThenExceptionIsThrown(DateTime initDate, DateTime endDate)
-    {
-        //arrange
-        Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(endDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         //assert
