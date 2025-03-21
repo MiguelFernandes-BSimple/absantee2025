@@ -14,17 +14,6 @@ public class HRManagerTest{
         yield return new object[] { DateTime.MinValue, DateTime.MaxValue };
     }
 
-    public static IEnumerable<object[]> GetHRManagerData_InvalidData()
-    {
-        yield return new object[] { DateTime.Now, DateTime.Now.AddDays(-10) };
-        yield return new object[] { DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-20) };
-        yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-2) };
-        yield return new object[] { DateTime.MaxValue, DateTime.MinValue };
-        yield return new object[] { DateTime.MinValue, DateTime.MinValue };
-        yield return new object[] { DateTime.MaxValue, DateTime.MaxValue };
-        yield return new object[] { DateTime.MaxValue, null! };
-    }
-
     [Theory]
     [MemberData(nameof(GetHRManagerData_ValidData))]
     public void WhenCreatingHRManagerWithValidData_ThenShouldBeInstantiated(DateTime dataInicio, DateTime? dataFim){
@@ -37,6 +26,17 @@ public class HRManagerTest{
         new RHManager(user.Object, dataInicio, dataFim);
 
         //assert
+    }
+
+    public static IEnumerable<object[]> GetHRManagerData_InvalidData()
+    {
+        yield return new object[] { DateTime.Now, DateTime.Now.AddDays(-10) };
+        yield return new object[] { DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-20) };
+        yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-2) };
+        yield return new object[] { DateTime.MaxValue, DateTime.MinValue };
+        yield return new object[] { DateTime.MinValue, DateTime.MinValue };
+        yield return new object[] { DateTime.MaxValue, DateTime.MaxValue };
+        yield return new object[] { DateTime.MaxValue, null! };
     }
 
     [Theory]
@@ -55,10 +55,12 @@ public class HRManagerTest{
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
-    [Theory]
-    [MemberData(nameof(GetHRManagerData_ValidData))]
-    public void WhenCreatingHRManagerWithEndDateAfterDeactivationData_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
+    [Fact]
+    public void WhenCreatingHRManagerWithEndDateAfterDeactivationData_ThenThrowsException(){
         //arrange
+        DateTime dataInicio = DateTime.Now;
+        DateTime dataFim = DateTime.Now.AddDays(10);
+        
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
@@ -71,10 +73,12 @@ public class HRManagerTest{
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
-    [Theory]
-    [MemberData(nameof(GetHRManagerData_ValidData))]
-    public void WhenCreatingRHManagerWithInactiveUser_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
+    [Fact]
+    public void WhenCreatingRHManagerWithInactiveUser_ThenThrowsException(){
         //arrange
+        DateTime dataInicio = DateTime.Now;
+        DateTime dataFim = DateTime.Now.AddDays(10);
+
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
@@ -87,10 +91,12 @@ public class HRManagerTest{
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
-    [Theory]
-    [MemberData(nameof(GetHRManagerData_ValidData))]
-    public void WhenCreatingHRManagerWithEndDateAfterDeactivationDataAndInactiveUser_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
+    [Fact]
+    public void WhenCreatingHRManagerWithEndDateAfterDeactivationDataAndInactiveUser_ThenThrowsException(){
         //arrange
+        DateTime dataInicio = DateTime.Now;
+        DateTime dataFim = DateTime.Now.AddDays(10);
+        
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(true);
