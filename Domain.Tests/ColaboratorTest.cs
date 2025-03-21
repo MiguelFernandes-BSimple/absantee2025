@@ -7,7 +7,7 @@ public class ColaboratorTest
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(1) };
         yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(2) };
-        yield return new object[] { DateTime.Now.AddYears(-1), null! };
+        yield return new object[] { DateTime.Today, DateTime.Today };
     }
 
     [Theory]
@@ -29,6 +29,7 @@ public class ColaboratorTest
     public static IEnumerable<object[]> ColaboratorData_InvalidFields()
     {
         yield return new object[] { DateTime.Now.AddDays(5), DateTime.Now.AddDays(1) };
+        yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3) };
         yield return new object[] { DateTime.Now.AddYears(-1), DateTime.Now.AddYears(-3) };
     }
 
@@ -112,51 +113,52 @@ public class ColaboratorTest
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
-    public static IEnumerable<object[]> ValidRangeDatesToColaborator()
+    public static IEnumerable<object[]> IsInside_ValidDates()
     {
-        yield return new object[] { new DateTime(2023, 6, 1), new DateTime(2024, 6, 1) };
-        yield return new object[] { new DateTime(2022, 12, 31), new DateTime(2023, 1, 1) };
-        yield return new object[] { new DateTime(2025, 1, 1), new DateTime(2025, 12, 31) };
-        yield return new object[] { new DateTime(2023, 1, 1), new DateTime(2025, 1, 1) };
-        yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 12, 31) };
-        yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 1, 1) };
+        yield return new object[] { new DateTime(2020,1,1), new DateTime(2021,1,1) };
+        yield return new object[] { new DateTime(2020,1,2), new DateTime(2020,12,31) };
     }
 
     [Theory]
-    [MemberData(nameof(ValidRangeDatesToColaborator))]
-    public void WhenComparingInitDateWithFinalDate_ThenResultIsSucess(
+    [MemberData(nameof(IsInside_ValidDates))]
+    public void WhenPassingValidDatesToIsInside_ThenResultIsTrue(
         DateTime _initDate,
         DateTime _finalDate
     )
     {
         // Arrange
         Mock<IUser> user = new Mock<IUser>();
-        Colaborator colaborator = new Colaborator(user.Object, _initDate, _finalDate);
+        DateTime colaboratorInitDate = new DateTime(2020,1,1);
+        DateTime colaboratorFinalDate = new DateTime(2021,1,1);
+        Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
         bool result = colaborator.IsInside(_initDate, _finalDate);
         // Assert
         Assert.True(result);
     }
 
-    public static IEnumerable<object[]> InvalidDateRangesToColaborator()
+    public static IEnumerable<object[]> IsInside_InvalidDates()
     {
-        yield return new object[] { new DateTime(2027, 6, 1), new DateTime(2024, 6, 1) };
-        yield return new object[] { new DateTime(2023, 12, 30), new DateTime(2022, 12, 31) };
+        yield return new object[] { new DateTime(2019,1,1), new DateTime(2021,1,1) };
+        yield return new object[] { new DateTime(2020,1,2), new DateTime(2022,12,31) };
     }
 
     [Theory]
-    [MemberData(nameof(InvalidDateRangesToColaborator))]
-    public void WhenComparingInvalidInitDateWithFinalDate_ThenShouldThrowException(
+    [MemberData(nameof(IsInside_InvalidDates))]
+    public void WhenPassingInvalidDatesToIsInside_ThenResultIsFalse(
         DateTime _initDate,
         DateTime _finalDate
     )
     {
         // Arrange
         Mock<IUser> user = new Mock<IUser>();
-        // Act & Assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
-            () => new Colaborator(user.Object, _initDate, _finalDate)
-        );
-        Assert.Equal("Invalid Arguments", exception.Message);
+        DateTime colaboratorInitDate = new DateTime(2020,1,1);
+        DateTime colaboratorFinalDate = new DateTime(2021,1,1);
+        Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
+        // Act
+        bool result = colaborator.IsInside(_initDate, _finalDate);
+        // Assert
+        Assert.False(result);
     }
+
 }
