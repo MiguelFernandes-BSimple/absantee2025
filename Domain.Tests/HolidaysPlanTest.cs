@@ -126,7 +126,7 @@ public class HolidaysPlanTest
     // Validate if a valid Holiday period can be added to a holiday plan
     // If its successfully added, returns true
     [Fact]
-    public void AddHolidayPeriod_WhenPassingValidPeriod_ThenReturnTrue()
+    public void WhenPassingValidPeriod_ThenAddHolidayPeriodReturnTrue()
     {
         // Arrange
         // Test double for Holiday Period
@@ -170,7 +170,7 @@ public class HolidaysPlanTest
     // intercects other holiday periods
     // If its not added, returns false
     [Fact]
-    public void AddHolidayPeriod_WhenPassingIntersectingPeriod_ThenReturnFalse()
+    public void WhenPassingIntersectingPeriod_ThenAddHolidayPeriodReturnFalse()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -211,7 +211,7 @@ public class HolidaysPlanTest
     // isn't in the colaborator contract time frame
     // If its not added, returns false
     [Fact]
-    public void AddHolidayPeriod_WhenPassingPeriodNotInColabContractTimeFrame_ThenReturnFalse()
+    public void WhenPassingPeriodNotInColabContractTimeFrame_ThenAddHolidayPeriodReturnFalse()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -253,7 +253,7 @@ public class HolidaysPlanTest
 
     // Testing if comparrison is well done - Size should be correct
     [Fact]
-    public void IsSizeList_WhenPassingCorrectInput_ThenReturnTrue()
+    public void WhenPassingCorrectInput_ThenIsSizeListReturnTrue()
     {
         // Arrange
         // Test doubles for Holiday Period
@@ -286,7 +286,7 @@ public class HolidaysPlanTest
 
     // Testing if comparrison is well done - It asserts false
     [Fact]
-    public void IsSizeList_WhenPassingIncorrectInput_ThenReturnFalse()
+    public void WhenPassingIncorrectInput_ThenIsSizeListReturnFalse()
     {
         // Arrange
         // Test doubles for Holiday Period
