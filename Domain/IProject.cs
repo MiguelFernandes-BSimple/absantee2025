@@ -1,5 +1,5 @@
 public interface IProject
 {
-    public bool ContainsDates(DateOnly dataInicio, DateOnly dataFim);
+    public bool ContainsDates(DateOnly intiDate, DateOnly finalDate);
     public bool IsFinished();
 }
