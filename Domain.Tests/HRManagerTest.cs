@@ -2,7 +2,7 @@ using Domain;
 using Moq;
 
 public class HRManagerTest{
-    public static IEnumerable<object[]> GetHRManagerData_ValidData()
+    public static IEnumerable<object[]> ValidData()
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(10) };
         yield return new object[] { DateTime.Now.AddDays(10), DateTime.Now.AddDays(20) };
@@ -15,7 +15,7 @@ public class HRManagerTest{
     }
 
     [Theory]
-    [MemberData(nameof(GetHRManagerData_ValidData))]
+    [MemberData(nameof(ValidData))]
     public void WhenCreatingHRManagerWithValidData_ThenShouldBeInstantiated(DateTime dataInicio, DateTime? dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -28,7 +28,7 @@ public class HRManagerTest{
         //assert
     }
 
-    public static IEnumerable<object[]> GetHRManagerData_InvalidData()
+    public static IEnumerable<object[]> InvalidData()
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(-10) };
         yield return new object[] { DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-20) };
@@ -40,7 +40,7 @@ public class HRManagerTest{
     }
 
     [Theory]
-    [MemberData(nameof(GetHRManagerData_InvalidData))]
+    [MemberData(nameof(InvalidData))]
     public void WhenCreatingHRManagerWithInvalidData_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
