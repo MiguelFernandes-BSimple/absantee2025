@@ -12,7 +12,7 @@ public interface IHolidayPlanRepository
     public IEnumerable<IHolidayPeriod> FindOverlappingHolidayPeriodsForCollaboratorsBetween(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate);
     public IEnumerable<IHolidayPeriod> FindHolidayPeriodsForProjectCollaboratorsBetween(IProject project, DateOnly initDate, DateOnly endDate);
     //DUVIDA ASSOCIAR?
-    public int GetHolidayDaysForProjectCollaboratorBetween(AssociationProjectColaborator association, DateOnly initDate, DateOnly endDate);
+    public int GetHolidayDaysForProjectCollaboratorBetween(IAssociationProjectColaborator association, DateOnly initDate, DateOnly endDate);
     public int GetHolidayDaysForAllProjectCollaboratorsBetween(IProject project, DateOnly initDate, DateOnly endDate);
 
 }
