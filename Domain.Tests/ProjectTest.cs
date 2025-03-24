@@ -1,17 +1,19 @@
 using Domain;
 
-public class ProjectTest{
+public class ProjectTest
+{
     public static IEnumerable<object[]> ProjectData_ValidData()
     {
         yield return new object[] { "Titulo 1", "T1", DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)) };
         yield return new object[] { "Projeto_Academia_2024", "PA2024", DateOnly.FromDateTime(DateTime.Now.AddYears(1)), DateOnly.FromDateTime(DateTime.Now.AddYears(3)) };
-        yield return new object[] { "Projeto-Academia-2024(2)", "PA2024V2",DateOnly.FromDateTime(DateTime.Now.AddYears(-2)), DateOnly.FromDateTime(DateTime.Now.AddYears(1)) };
-        yield return new object[] { "Projeto-Academia-2024(3)", "PA2024V3",DateOnly.FromDateTime(DateTime.Now.AddYears(1)), DateOnly.FromDateTime(DateTime.Now.AddYears(1)) };
+        yield return new object[] { "Projeto-Academia-2024(2)", "PA2024V2", DateOnly.FromDateTime(DateTime.Now.AddYears(-2)), DateOnly.FromDateTime(DateTime.Now.AddYears(1)) };
+        yield return new object[] { "Projeto-Academia-2024(3)", "PA2024V3", DateOnly.FromDateTime(DateTime.Now.AddYears(1)), DateOnly.FromDateTime(DateTime.Now.AddYears(1)) };
     }
 
     [Theory]
     [MemberData(nameof(ProjectData_ValidData))]
-    public void WhenPassingValidData_ThenProjectIsCreated(string Title, string Acronym, DateOnly InitData, DateOnly FinalDate){
+    public void WhenPassingValidData_ThenProjectIsCreated(string Title, string Acronym, DateOnly InitData, DateOnly FinalDate)
+    {
         //arrange
 
         //act
@@ -28,7 +30,8 @@ public class ProjectTest{
 
     [Theory]
     [MemberData(nameof(ProjectData_InvalidTitle))]
-    public void WhenPassingInvalidTitle_ThenThrowException(string Title, string Acronym, DateOnly InitDate, DateOnly FinalDate){
+    public void WhenPassingInvalidTitle_ThenThrowException(string Title, string Acronym, DateOnly InitDate, DateOnly FinalDate)
+    {
         //arrange
 
         //assert
@@ -49,7 +52,8 @@ public class ProjectTest{
 
     [Theory]
     [MemberData(nameof(ProjectData_InvalidAcronym))]
-    public void WhenPassingInvalidAcronym_ThenThrowException(string Title, string Acronym, DateOnly InitDate, DateOnly FinalDate){
+    public void WhenPassingInvalidAcronym_ThenThrowException(string Title, string Acronym, DateOnly InitDate, DateOnly FinalDate)
+    {
         //arrange
 
         //assert
@@ -62,7 +66,8 @@ public class ProjectTest{
 
 
     [Fact]
-    public void WhenPassingInvalidProjectDates_ThenThrowException(){
+    public void WhenPassingInvalidProjectDates_ThenThrowException()
+    {
         //arrange
         string Title = "Titulo 1";
         string Acronym = "T1";
@@ -85,7 +90,8 @@ public class ProjectTest{
 
     [Theory]
     [MemberData(nameof(ContainsDates_ValidCompareData))]
-    public void WhenPassingValidData_ThenContainsDatesReturnTrue(DateOnly InitDate, DateOnly FinalDate){
+    public void WhenPassingValidData_ThenContainsDatesReturnTrue(DateOnly InitDate, DateOnly FinalDate)
+    {
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
@@ -106,7 +112,8 @@ public class ProjectTest{
 
     [Theory]
     [MemberData(nameof(ContainsDates_InvalidCompareData))]
-    public void WhenPassingInvalidData_ThenContainsDatesReturnFalse(DateOnly InitDate, DateOnly FinalDate){
+    public void WhenPassingInvalidData_ThenContainsDatesReturnFalse(DateOnly InitDate, DateOnly FinalDate)
+    {
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
@@ -121,7 +128,8 @@ public class ProjectTest{
 
 
     [Fact]
-    public void WhenProjectIsFinished_ThenReturnTrue(){
+    public void WhenProjectIsFinished_ThenReturnTrue()
+    {
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
@@ -141,7 +149,8 @@ public class ProjectTest{
     }
     [Theory]
     [MemberData(nameof(ProjectEndDate_NotFinished))]
-    public void WhenProjectIsNotFinished_ThenReturnFalse(DateOnly ProjectFinalDate){
+    public void WhenProjectIsNotFinished_ThenReturnFalse(DateOnly ProjectFinalDate)
+    {
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
         Project project = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);

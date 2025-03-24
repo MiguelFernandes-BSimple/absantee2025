@@ -1,7 +1,8 @@
 using Domain;
 using Moq;
 
-public class HRManagerTest{
+public class HRManagerTest
+{
     public static IEnumerable<object[]> ValidData()
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddDays(10) };
@@ -16,7 +17,8 @@ public class HRManagerTest{
 
     [Theory]
     [MemberData(nameof(ValidData))]
-    public void WhenCreatingHRManagerWithValidData_ThenShouldBeInstantiated(DateTime dataInicio, DateTime? dataFim){
+    public void WhenCreatingHRManagerWithValidData_ThenShouldBeInstantiated(DateTime dataInicio, DateTime? dataFim)
+    {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
@@ -41,7 +43,8 @@ public class HRManagerTest{
 
     [Theory]
     [MemberData(nameof(InvalidData))]
-    public void WhenCreatingHRManagerWithInvalidData_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
+    public void WhenCreatingHRManagerWithInvalidData_ThenThrowsException(DateTime dataInicio, DateTime dataFim)
+    {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
@@ -56,11 +59,12 @@ public class HRManagerTest{
     }
 
     [Fact]
-    public void WhenCreatingHRManagerWithEndDateAfterDeactivationData_ThenThrowsException(){
+    public void WhenCreatingHRManagerWithEndDateAfterDeactivationData_ThenThrowsException()
+    {
         //arrange
         DateTime dataInicio = DateTime.Now;
         DateTime dataFim = DateTime.Now.AddDays(10);
-        
+
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(dataFim)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
@@ -74,7 +78,8 @@ public class HRManagerTest{
     }
 
     [Fact]
-    public void WhenCreatingHRManagerWithInactiveUser_ThenThrowsException(){
+    public void WhenCreatingHRManagerWithInactiveUser_ThenThrowsException()
+    {
         //arrange
         DateTime dataInicio = DateTime.Now;
         DateTime dataFim = DateTime.Now.AddDays(10);
@@ -92,11 +97,12 @@ public class HRManagerTest{
     }
 
     [Fact]
-    public void WhenCreatingHRManagerWithEndDateAfterDeactivationDataAndInactiveUser_ThenThrowsException(){
+    public void WhenCreatingHRManagerWithEndDateAfterDeactivationDataAndInactiveUser_ThenThrowsException()
+    {
         //arrange
         DateTime dataInicio = DateTime.Now;
         DateTime dataFim = DateTime.Now.AddDays(10);
-        
+
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(dataFim)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(true);
@@ -107,6 +113,6 @@ public class HRManagerTest{
             new HRManager(user.Object, dataInicio, dataFim));
 
         Assert.Equal("Invalid Arguments", exception.Message);
-    } 
+    }
 
 }

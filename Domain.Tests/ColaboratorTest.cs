@@ -115,8 +115,8 @@ public class ColaboratorTest
 
     public static IEnumerable<object[]> ContainsDates_ValidDates()
     {
-        yield return new object[] { new DateTime(2020,1,1), new DateTime(2021,1,1) };
-        yield return new object[] { new DateTime(2020,1,2), new DateTime(2020,12,31) };
+        yield return new object[] { new DateTime(2020, 1, 1), new DateTime(2021, 1, 1) };
+        yield return new object[] { new DateTime(2020, 1, 2), new DateTime(2020, 12, 31) };
     }
 
     [Theory]
@@ -128,8 +128,8 @@ public class ColaboratorTest
     {
         // Arrange
         Mock<IUser> user = new Mock<IUser>();
-        DateTime colaboratorInitDate = new DateTime(2020,1,1);
-        DateTime colaboratorFinalDate = new DateTime(2021,1,1);
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
         Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
         bool result = colaborator.ContainsDates(_initDate, _finalDate);
@@ -139,8 +139,8 @@ public class ColaboratorTest
 
     public static IEnumerable<object[]> ContainsDates_InvalidDates()
     {
-        yield return new object[] { new DateTime(2019,1,1), new DateTime(2021,1,1) };
-        yield return new object[] { new DateTime(2020,1,2), new DateTime(2022,12,31) };
+        yield return new object[] { new DateTime(2019, 1, 1), new DateTime(2021, 1, 1) };
+        yield return new object[] { new DateTime(2020, 1, 2), new DateTime(2022, 12, 31) };
     }
 
     [Theory]
@@ -152,8 +152,8 @@ public class ColaboratorTest
     {
         // Arrange
         Mock<IUser> user = new Mock<IUser>();
-        DateTime colaboratorInitDate = new DateTime(2020,1,1);
-        DateTime colaboratorFinalDate = new DateTime(2021,1,1);
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
         Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
         bool result = colaborator.ContainsDates(_initDate, _finalDate);

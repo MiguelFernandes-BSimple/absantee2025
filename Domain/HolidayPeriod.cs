@@ -1,6 +1,7 @@
 
 namespace Domain;
-public class HolidayPeriod : IHolidayPeriod {
+public class HolidayPeriod : IHolidayPeriod 
+{
     private DateOnly _initDate;
     private DateOnly _finalDate;
 
