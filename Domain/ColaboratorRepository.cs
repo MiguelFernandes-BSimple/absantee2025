@@ -3,7 +3,7 @@ namespace Domain;
 
 public class ColaboratorRepository : IColaboratorRepository
 {
-    private IEnumerable<IColaborator> _colaborators;
+    private List<IColaborator> _colaborators;
 
     public IEnumerable<IColaborator> FindAllColaborators()
     {
