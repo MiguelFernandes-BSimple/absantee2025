@@ -1,5 +1,5 @@
 namespace Domain;
-public class ProjectManager
+public class ProjectManager : IProjectManager
 {
     private DateTime _initDate;
     private DateTime _finalDate;

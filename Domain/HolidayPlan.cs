@@ -1,6 +1,6 @@
 namespace Domain;
 
-public class HolidayPlan
+public class HolidayPlan : IHolidayPlan
 {
     private List<IHolidayPeriod> _holidaysPeriods;
     private IColaborator _colaborator;

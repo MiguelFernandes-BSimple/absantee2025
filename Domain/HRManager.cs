@@ -1,5 +1,5 @@
 namespace Domain;
-public class HRManager
+public class HRManager : IHRManager
 {
     private DateTime _initDate;
     private DateTime _finalDate;

@@ -2,7 +2,8 @@ namespace Domain.Tests;
 
 using Domain;
 
-public class HolidayPeriodTest {
+public class HolidayPeriodTest
+{
     public static IEnumerable<object[]> GetHolidayPeriodData_ValidFields()
     {
         yield return new object[] { DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(1)) };
@@ -12,7 +13,8 @@ public class HolidayPeriodTest {
 
     [Theory]
     [MemberData(nameof(GetHolidayPeriodData_ValidFields))]
-    public void WhenGivenGoodFields_ThenObjectIsInstantized(DateOnly ini, DateOnly end){
+    public void WhenGivenGoodFields_ThenObjectIsInstantized(DateOnly ini, DateOnly end)
+    {
         //arrange
 
         //act
@@ -29,7 +31,8 @@ public class HolidayPeriodTest {
 
     [Theory]
     [MemberData(nameof(GetHolidayPeriodData_InvalidFields))]
-    public void WhenGivenBadDateFields_ThenExceptionIsThrown(DateOnly ini, DateOnly end){
+    public void WhenGivenBadDateFields_ThenExceptionIsThrown(DateOnly ini, DateOnly end)
+    {
         //arrange
 
         //assert
@@ -51,7 +54,8 @@ public class HolidayPeriodTest {
 
     [Theory]
     [MemberData(nameof(GetHolidayPeriodData_Overlap))]
-    public void WhenTimePeriodIsGiven_ThenOverlapIsEvaluated(DateOnly ini, DateOnly end, bool expected){
+    public void WhenTimePeriodIsGiven_ThenOverlapIsEvaluated(DateOnly ini, DateOnly end, bool expected)
+    {
         //arrange
         DateOnly _ini = DateOnly.FromDateTime(new DateTime(2020, 1, 1));
         DateOnly _end = DateOnly.FromDateTime(new DateTime(2021, 1, 1));

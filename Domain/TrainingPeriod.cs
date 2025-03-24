@@ -1,6 +1,6 @@
 namespace Domain;
 
-public class TrainingPeriod
+public class TrainingPeriod : ITrainingPeriod
 {
     private DateOnly _initDate;
     private DateOnly _finalDate;

@@ -1,6 +1,6 @@
 namespace Domain;
 
-public class AssociationProjectColaborator {
+public class AssociationProjectColaborator : IAssociationProjectColaborator {
     private DateOnly _initDate;
     private DateOnly _finalDate;
     private IColaborator _colaborator;
