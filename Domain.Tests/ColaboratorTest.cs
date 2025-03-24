@@ -19,7 +19,7 @@ public class ColaboratorTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
         //act
         new Colaborator(user.Object, _initDate, _finalDate);
@@ -42,7 +42,7 @@ public class ColaboratorTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
@@ -62,7 +62,7 @@ public class ColaboratorTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(true);
+        user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
@@ -82,7 +82,7 @@ public class ColaboratorTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
@@ -102,7 +102,7 @@ public class ColaboratorTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(_finalDate)).Returns(true);
+        user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(true);
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(

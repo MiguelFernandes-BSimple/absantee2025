@@ -17,7 +17,7 @@ public class ProjectManagerTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //act
@@ -39,7 +39,7 @@ public class ProjectManagerTest
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(endDate)).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(endDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //assert
@@ -58,7 +58,7 @@ public class ProjectManagerTest
         DateTime endDate = DateTime.Now.AddDays(5);
 
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(endDate)).Returns(true);
+        user.Setup(u => u.DeactivationDateIsBefore(endDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //assert
@@ -77,7 +77,7 @@ public class ProjectManagerTest
         DateTime endDate = DateTime.Now.AddDays(5);
 
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(endDate)).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(endDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         //assert

@@ -19,7 +19,7 @@ public class HRManagerTest{
     public void WhenCreatingHRManagerWithValidData_ThenShouldBeInstantiated(DateTime dataInicio, DateTime? dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //act
@@ -44,7 +44,7 @@ public class HRManagerTest{
     public void WhenCreatingHRManagerWithInvalidData_ThenThrowsException(DateTime dataInicio, DateTime dataFim){
         //arrange
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(It.IsAny<DateTime>())).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //assert
@@ -62,7 +62,7 @@ public class HRManagerTest{
         DateTime dataFim = DateTime.Now.AddDays(10);
         
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
+        user.Setup(u => u.DeactivationDateIsBefore(dataFim)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         //assert
@@ -80,7 +80,7 @@ public class HRManagerTest{
         DateTime dataFim = DateTime.Now.AddDays(10);
 
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(dataFim)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         //assert
@@ -98,7 +98,7 @@ public class HRManagerTest{
         DateTime dataFim = DateTime.Now.AddDays(10);
         
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBeforeThen(dataFim)).Returns(true);
+        user.Setup(u => u.DeactivationDateIsBefore(dataFim)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         //assert

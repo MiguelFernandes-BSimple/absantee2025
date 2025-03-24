@@ -120,7 +120,7 @@ public class UserTest{
         User user = new User("John", "Doe", "john@email.com", deactivationDate);
 
         // Act
-        bool result = user.DeactivationDateIsBeforeThen(dateCompare);
+        bool result = user.DeactivationDateIsBefore(dateCompare);
 
         // Assert
         Assert.True(result);

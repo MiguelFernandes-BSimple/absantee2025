@@ -24,7 +24,7 @@ public class HRManager
         if (initDate >= finalDate)
             return false;
 
-        if (user.DeactivationDateIsBeforeThen(finalDate))
+        if (user.DeactivationDateIsBefore(finalDate))
             return false;
 
         if (user.IsDeactivated())

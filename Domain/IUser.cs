@@ -1,4 +1,4 @@
 public interface IUser{
     public bool IsDeactivated();
-    public bool DeactivationDateIsBeforeThen(DateTime date);
+    public bool DeactivationDateIsBefore(DateTime date);
 }
