@@ -6,10 +6,9 @@ public class Colaborator : IColaborator
     private DateTime _finalDate;
     private IUser _user;
 
-    public Colaborator(IUser user, DateTime initDate, DateTime? finalDate = null)
+    public Colaborator(IUser user, DateTime initDate, DateTime? finalDate)
     {
-        if (!finalDate.HasValue)
-            finalDate = DateTime.MaxValue;
+        finalDate ??= DateTime.MaxValue;
         if (checkInputFields(initDate, (DateTime)finalDate, user))
         {
             this._initDate = initDate;

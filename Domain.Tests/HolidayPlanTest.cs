@@ -22,7 +22,6 @@ public class HolidayPlanTest
         HolidayPlan holidayPlan = new HolidayPlan(holidayPeriodDouble.Object, colaboratorDouble.Object);
 
         // Assert
-        Assert.True(holidayPlan.IsSizeList(1));
     }
 
     // Happy Path - Testing constructor with Single HolidayPeriod
@@ -55,8 +54,6 @@ public class HolidayPlanTest
         HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
 
         // Assert
-        Assert.True(holidayPlan.IsSizeList(holidayPeriods.Count));
-
     }
 
     // Validate exception - Two holiday periods collide
@@ -161,9 +158,6 @@ public class HolidayPlanTest
 
         // Assert
         Assert.True(result);
-
-        //Verify if list has the new holiday period
-        Assert.True(holidayPlan.IsSizeList(holidayPeriods.Count + 1));
     }
 
     // Validate bool result when the Holiday period to be added to holiday plan
@@ -202,9 +196,6 @@ public class HolidayPlanTest
 
         // Assert
         Assert.False(result);
-
-        //Verify if list has the new holiday period
-        Assert.True(holidayPlan.IsSizeList(holidayPeriods.Count));
     }
 
     // Validate bool result when the Holiday period to be added to holiday plan
@@ -246,77 +237,5 @@ public class HolidayPlanTest
 
         // Assert
         Assert.False(result);
-
-        //Verify if list has the new holiday period
-        Assert.True(holidayPlan.IsSizeList(holidayPeriods.Count));
-    }
-
-    // Testing if comparrison is well done - Size should be correct
-    [Fact]
-    public void WhenPassingCorrectInput_ThenIsSizeListReturnTrue()
-    {
-        // Arrange
-        // Test doubles for Holiday Period
-        Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
-
-        // Test double for Colaborator
-        Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
-
-        // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
-
-        // Can't overlap with any other holiday periods
-        holidayPeriodDouble1.Setup(hp => hp.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
-
-        // Create Holiday Periods list - Only has ONE element
-        List<IHolidayPeriod> holidayPeriods =
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
-
-        HolidayPlan holidayPlan =
-            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
-
-        // Assert
-        Assert.True(
-            // Act
-            // we have access to the list here, so we know its count
-            // The function must return true, if properly implemented
-            holidayPlan.IsSizeList(holidayPeriods.Count)
-        );
-    }
-
-    // Testing if comparrison is well done - It asserts false
-    [Fact]
-    public void WhenPassingIncorrectInput_ThenIsSizeListReturnFalse()
-    {
-        // Arrange
-        // Test doubles for Holiday Period
-        Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
-
-        // Test double for Colaborator
-        Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
-
-        // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
-
-        // Can't overlap with any other holiday periods
-        holidayPeriodDouble1.Setup(hp => hp.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
-
-        // Create Holiday Periods list - Only has ONE element
-        List<IHolidayPeriod> holidayPeriods =
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
-
-        HolidayPlan holidayPlan =
-            new HolidayPlan(holidayPeriods, colaboratorDouble.Object);
-
-        Random random = new Random();
-        int randomInt = random.Next(1, 101);
-
-        // Assert
-        Assert.False(
-            // Act
-            // we have access to the list here, so we know its count
-            // The function must return true, if properly implemented
-            holidayPlan.IsSizeList(holidayPeriods.Count + randomInt)
-        );
     }
 }

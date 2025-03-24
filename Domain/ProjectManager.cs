@@ -7,11 +7,7 @@ public class ProjectManager
 
     public ProjectManager(IUser _user, DateTime _initDate, DateTime? _finalDate)
     {
-        if (!_finalDate.HasValue)
-        {
-            _finalDate = DateTime.MaxValue;
-
-        }
+        _finalDate ??= DateTime.MaxValue;
 
         if (checkInputFields(_initDate, (DateTime)_finalDate, _user))
         {

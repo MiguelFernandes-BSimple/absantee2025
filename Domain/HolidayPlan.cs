@@ -5,8 +5,8 @@ public class HolidayPlan
     private List<IHolidayPeriod> _holidaysPeriods;
     private IColaborator _colaborator;
 
-    public HolidayPlan(IHolidayPeriod holidayPeriods, IColaborator colaborator) :
-        this(new List<IHolidayPeriod>() { holidayPeriods }, colaborator)
+    public HolidayPlan(IHolidayPeriod holidayPeriod, IColaborator colaborator) :
+        this(new List<IHolidayPeriod>() { holidayPeriod }, colaborator)
     {
     }
 
@@ -46,7 +46,9 @@ public class HolidayPlan
 
     private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, IColaborator colaborator)
     {
-        if (!colaborator.ContainsDates(holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue), holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue)))
+        DateTime holidayPeriodInitDate = holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue);
+        DateTime holidayPeriodFinalDate = holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue);
+        if (!colaborator.ContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {
@@ -56,10 +58,5 @@ public class HolidayPlan
             }
         }
         return true;
-    }
-
-    public bool IsSizeList(int size)
-    {
-        return size == this._holidaysPeriods.Count();
     }
 }

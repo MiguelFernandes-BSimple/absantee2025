@@ -27,7 +27,9 @@ public class AssociationProjectColaborator {
         if(project.IsFinished())
             return false;
 
-        if(!colaborator.ContainsDates(initDate.ToDateTime(TimeOnly.MinValue), finalDate.ToDateTime(TimeOnly.MinValue)))
+        DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
+        DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
+        if(!colaborator.ContainsDates(associationInitDate, associationFinalDate))
             return false;
 
         return true;
