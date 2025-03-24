@@ -63,6 +63,15 @@ public class User : IUser {
         return date > _deactivationDate;
     }
 
+    public bool DeactivateUser(){
+    if (this.IsDeactivated()){
+        return false; 
+    }
+
+    this._deactivationDate = DateTime.Now; 
+    return true; 
+}
+
 
     
 
