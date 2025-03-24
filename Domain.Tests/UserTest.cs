@@ -136,19 +136,16 @@ public class UserTest
 
 
     [Fact]
-    public void WhenTheUserIsntDeactivated_ThenReturnTrue()
+    public void WhenDeactivatingAnActiveUser_ThenReturnTrue()
     {
         // Arrange 
-        User user = new User("John", "Doe", "john.doe@email.com", null); // Usuário não desativado
+        User user = new User("John", "Doe", "john.doe@email.com", null); 
 
         // Act
-        bool result = user.DeactivateUser(); // O usuário deve ser desativado agora
+        bool result = user.DeactivateUser(); 
 
         // Assert
-        Assert.True(result); // O método deve retornar true
+        Assert.True(result); 
     }
 
-    
-
-    
 }
