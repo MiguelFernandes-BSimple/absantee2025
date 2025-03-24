@@ -1,6 +1,7 @@
 using Domain;
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
+    private List<IHolidayPlan> holidayPlans = new List<IHolidayPlan>();
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
