@@ -1,12 +1,12 @@
 using Domain;
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    public IEnumerable<IHolidayPeriod> FindHolidayPeriodsForCollaboratorBetween(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetween(DateOnly initDate, DateOnly endDate)
+    public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
@@ -26,32 +26,32 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindHolidayPeriodsForCollaboratorBetweenLongerThan(IColaborator colaborator, DateOnly initDate, DateOnly endDate, int days)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate, int days)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindHolidayPeriodsForCollaboratorThatIncludeWeekends(IColaborator colaborator)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(IColaborator colaborator)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindOverlappingHolidayPeriodsForCollaboratorsBetween(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate)
+    public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindHolidayPeriodsForProjectCollaboratorsBetween(IProject project, DateOnly initDate, DateOnly endDate)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
 
-    public int GetHolidayDaysForProjectCollaboratorBetween(IAssociationProjectColaborator association, DateOnly initDate, DateOnly endDate)
+    public int GetHolidayDaysForProjectCollaboratorBetweenDates(IAssociationProjectColaborator association, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
 
-    public int GetHolidayDaysForAllProjectCollaboratorsBetween(IProject project, DateOnly initDate, DateOnly endDate)
+    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
