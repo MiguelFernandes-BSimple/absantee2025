@@ -1,4 +1,4 @@
 public interface IColaborator
 {
-    public bool ContainsDates(DateTime _initDate, DateTime _finalDate);
+    public bool ContractContainsDates(DateTime _initDate, DateTime _finalDate);
 }
