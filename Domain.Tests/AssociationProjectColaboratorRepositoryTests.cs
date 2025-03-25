@@ -3,21 +3,24 @@ namespace Domain.Tests;
 using Domain;
 using Moq;
 
-public class AssociationProjectColaboratorRepositoryTest{
+public class AssociationProjectColaboratorRepositoryTest
+{
     [Fact]
-    public void WhenPassingCorrectValues_ThenObjectIsCreated(){
+    public void WhenPassingCorrectValues_ThenObjectIsCreated()
+    {
         //arrange
         Mock<IAssociationProjectColaborator> assocMock = new Mock<IAssociationProjectColaborator>();
-        List<IAssociationProjectColaborator> associationsProjectColaborator = new List<IAssociationProjectColaborator> {assocMock.Object};
+        List<IAssociationProjectColaborator> associationsProjectColaborator = new List<IAssociationProjectColaborator> { assocMock.Object };
 
         //act
         new AssociationProjectColaboratorRepository(associationsProjectColaborator);
-    
+
         //assert
     }
 
     [Fact]
-    public void WhenPassingProject_ThenReturnAllProjectCollaborators(){
+    public void WhenPassingProject_ThenReturnAllProjectCollaborators()
+    {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
 
@@ -35,12 +38,12 @@ public class AssociationProjectColaboratorRepositoryTest{
         assocMock1.Setup(a => a.GetColaborator()).Returns(colab1.Object);
 
         assocMock2.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
-        assocMock2.Setup(a => a.GetColaborator()).Returns(colab2.Object);    
+        assocMock2.Setup(a => a.GetColaborator()).Returns(colab2.Object);
 
         List<IColaborator> expected = new List<IColaborator> { colab2.Object };
 
         var assoc = new AssociationProjectColaboratorRepository(associationsProjectColaborator);
-        
+
         //act
         var result = assoc.FindAllProjectCollaborators(projectMock.Object);
 
@@ -50,7 +53,8 @@ public class AssociationProjectColaboratorRepositoryTest{
     }
 
     [Fact]
-    public void GivenProjectWithNoAssociation_ThenReturnEmptyList(){
+    public void GivenProjectWithNoAssociation_ThenReturnEmptyList()
+    {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
 
@@ -66,7 +70,7 @@ public class AssociationProjectColaboratorRepositoryTest{
         assocMock1.Setup(a => a.GetColaborator()).Returns(colab1.Object);
 
         var assoc = new AssociationProjectColaboratorRepository(associationsProjectColaborator);
-        
+
         //act
         var result = assoc.FindAllProjectCollaboratorsBetween(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
@@ -75,7 +79,8 @@ public class AssociationProjectColaboratorRepositoryTest{
     }
 
     [Fact]
-    public void GivenDatesDoNotIntersectAssociation_ThenReturnEmptyList(){
+    public void GivenDatesDoNotIntersectAssociation_ThenReturnEmptyList()
+    {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
 
@@ -91,7 +96,7 @@ public class AssociationProjectColaboratorRepositoryTest{
         assocMock1.Setup(a => a.GetColaborator()).Returns(colab1.Object);
 
         var assoc = new AssociationProjectColaboratorRepository(associationsProjectColaborator);
-        
+
         //act
         var result = assoc.FindAllProjectCollaboratorsBetween(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
@@ -100,7 +105,8 @@ public class AssociationProjectColaboratorRepositoryTest{
     }
 
     [Fact]
-    public void GivenProjectWithNoAssociation_And_DatesDoNotIntersectAssociation_ThenReturnEmptyList(){
+    public void GivenProjectWithNoAssociation_And_DatesDoNotIntersectAssociation_ThenReturnEmptyList()
+    {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
 
@@ -116,7 +122,7 @@ public class AssociationProjectColaboratorRepositoryTest{
         assocMock1.Setup(a => a.GetColaborator()).Returns(colab1.Object);
 
         var assoc = new AssociationProjectColaboratorRepository(associationsProjectColaborator);
-        
+
         //act
         var result = assoc.FindAllProjectCollaboratorsBetween(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
@@ -126,7 +132,8 @@ public class AssociationProjectColaboratorRepositoryTest{
 
 
     [Fact]
-    public void WhenPassingProjectWithAssociationAndDatesIntersect_ThenReturnCollaborator(){
+    public void WhenPassingProjectWithAssociationAndDatesIntersect_ThenReturnCollaborator()
+    {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
 
@@ -144,9 +151,9 @@ public class AssociationProjectColaboratorRepositoryTest{
         List<IColaborator> expected = new List<IColaborator> { colab1.Object };
 
         var assoc = new AssociationProjectColaboratorRepository(associationsProjectColaborator);
-        
+
         //act
-        var result = assoc.FindAllProjectCollaboratorsBetween(projectMock.Object,It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllProjectCollaboratorsBetween(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         //assert
         Assert.Equal(expected.Count(), result.Count());

@@ -17,7 +17,7 @@ public class AssociationProjectColaboratorRepository : IAssociationProjectColabo
     public IEnumerable<IColaborator> FindAllProjectCollaboratorsBetween(IProject project, DateOnly InitDate, DateOnly FinalDate)
     {
         return _associationsProjectColaborator
-                .Where(a => a.HasProject(project) 
+                .Where(a => a.HasProject(project)
                     && a.AssociationIntersectDates(InitDate, FinalDate))
                 .Select(a => a.GetColaborator());
     }
