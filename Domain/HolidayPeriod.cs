@@ -33,4 +33,9 @@ public class HolidayPeriod : IHolidayPeriod
         return _initDate <= holidayPeriod.GetInitDate()
             && _finalDate >= holidayPeriod.GetFinalDate();
     }
+
+    public bool ContainsDate(DateOnly date) {
+        return _initDate <= date
+            && _finalDate >= date;
+    }
 }

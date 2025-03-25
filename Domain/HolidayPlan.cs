@@ -59,4 +59,13 @@ public class HolidayPlan : IHolidayPlan
         }
         return true;
     }
+
+    public bool HasCollaborator(IColaborator colab) {
+        return colab == _colaborator;
+    }
+
+    public IHolidayPeriod GetHolidayPeriodContainingDate(DateOnly date) {
+        var result = _holidaysPeriods.Where(a => a.ContainsDate(date)).First();
+        return result;
+    }
 }
