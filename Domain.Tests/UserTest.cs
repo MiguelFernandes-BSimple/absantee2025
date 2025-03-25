@@ -140,6 +140,10 @@ public class UserTest
     [InlineData("FirstName SecondName")]
     [InlineData("FirstName")]
     [InlineData("SecondName")]
+    [InlineData("First")]
+    [InlineData("name")]
+    [InlineData("Sec")]
+    [InlineData("second")]
     public void WhenHasNamesGetsCorrectName_ReturnTrue(string nameToSearch)
     {
         // Arrange
@@ -184,6 +188,10 @@ public class UserTest
     [InlineData("FirstSurname SecondSurname")]
     [InlineData("FirstSurname")]
     [InlineData("SecondSurname")]
+    [InlineData("First")]
+    [InlineData("Name")]
+    [InlineData("Sec")]
+    [InlineData("second")]
     public void WhenHasSurnamesGetsACorrectSurname_ReturnTrue(string surnameToSearch)
     {
         //Arrange

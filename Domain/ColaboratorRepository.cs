@@ -12,7 +12,7 @@ public class ColaboratorRepository : IColaboratorRepository
 
     public IEnumerable<IColaborator> FindAllColaborators()
     {
-        // Because we are sharing the pointer, put it as read only
+        // Create a new list - to not share the pointer
         return new List<IColaborator>(_colaborators);
     }
 

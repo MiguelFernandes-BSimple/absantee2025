@@ -78,12 +78,7 @@ public class User : IUser
             return false;
         }
 
-        // Split both names and _names into individual words
-        var nameWords = names.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var _nameWords = _names.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-        // Check if every word in 'names' exists in '_names' (case insensitive)
-        return nameWords.All(name => _nameWords.Any(word => word.Equals(name, StringComparison.OrdinalIgnoreCase)));
+        return _names.Contains(names, StringComparison.OrdinalIgnoreCase);
     }
 
     public bool HasSurnames(string surnames)
@@ -93,11 +88,7 @@ public class User : IUser
         {
             return false;
         }
-        // Split both surnames and _surnames into individual words
-        var surnameWords = surnames.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var _surnameWords = _surnames.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        // Check if every word in 'surnames' exists in '_surnames' (case insensitive)
-        return surnameWords.All(surname => _surnameWords.Any(word => word.Equals(surname, StringComparison.OrdinalIgnoreCase)));
+        return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
     }
 }

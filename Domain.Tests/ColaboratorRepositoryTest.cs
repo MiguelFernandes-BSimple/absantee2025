@@ -6,6 +6,20 @@ namespace Domain.Tests;
 public class ColaboratorRepositoryTest
 {
     [Fact]
+    public void WhenPassingCorrectValues_ThenObjectIsCreated()
+    {
+        //Arrange
+        Mock<IColaborator> doubleCollab = new Mock<IColaborator>();
+
+        List<IColaborator> listCollab = new List<IColaborator> { doubleCollab.Object };
+
+        //Act
+        new ColaboratorRepository(listCollab);
+
+        //Assert
+    }
+
+    [Fact]
     public void WhenQueriedFindAllColaborators_ThenReturnList()
     {
         //Arrange
