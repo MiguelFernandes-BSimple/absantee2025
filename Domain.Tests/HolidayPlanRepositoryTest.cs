@@ -23,9 +23,31 @@ public class HolidayPlanRepositoryTest
 
         //act
         var result = hpRepo.GetHolidayPeriodContainingDate(colab.Object, date);
-        var count = result.Count();
 
         //assert
         Assert.Single(result);
+    }
+
+    [Fact]
+    public void WhenGivenCollaboratorAndBadDate_ThenReturnEmpty() {
+        //arrange
+        DateOnly date = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        var colab = new Mock<IColaborator>();
+
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+        holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(false);
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(colab.Object)).Returns(true);
+        holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns(holidayPeriod.Object);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.GetHolidayPeriodContainingDate(colab.Object, date);
+        var count = result.Count();
+
+        //assert
+        Assert.Empty(result);
     }
 }
