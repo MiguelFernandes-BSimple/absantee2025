@@ -3,13 +3,22 @@ namespace Domain;
 public class AssociationProjectColaboratorRepository : IAssociationProjectColaboratorRepository
 {
     private List<IAssociationProjectColaborator> _associationsProjectColaborator;
-    public IEnumerable<IColaborator> FindAllProjectCollaborators(IProject project)
+
+    public AssociationProjectColaboratorRepository(List<IAssociationProjectColaborator> associationsProjectColaborator)
     {
-        throw new NotImplementedException();
+        _associationsProjectColaborator = associationsProjectColaborator;
     }
 
-    public IEnumerable<IColaborator> FindAllProjectCollaboratorsIn(IProject project, DateOnly InitDate, DateOnly FinalDate)
+    public IEnumerable<IColaborator> FindAllProjectCollaborators(IProject project)
     {
-        throw new NotImplementedException();
+        return _associationsProjectColaborator.Where(a => a.HasProject(project)).Select(a => a.GetColaborator());
+    }
+
+    public IEnumerable<IColaborator> FindAllProjectCollaboratorsBetween(IProject project, DateOnly InitDate, DateOnly FinalDate)
+    {
+        return _associationsProjectColaborator
+                .Where(a => a.HasProject(project) 
+                    && a.AssociationIntersectDates(InitDate, FinalDate))
+                .Select(a => a.GetColaborator());
     }
 }
