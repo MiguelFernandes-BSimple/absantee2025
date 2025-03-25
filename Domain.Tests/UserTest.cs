@@ -136,40 +136,18 @@ public class UserTest
         Assert.True(result);
     }
 
-    public static IEnumerable<object[]> GetCorrectSearchNames()
-    {
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstName SecondName" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstName" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "SecondName" };
-    }
-
     [Theory]
-    [MemberData(nameof(GetCorrectSearchNames))]
-    public void WhenHasNamesGetsCorrectName_ReturnTrue(
-        string names,
-        string surnames,
-        string email,
-        DateTime deactivationDate,
-        string nameToSearch)
+    [InlineData("FirstName SecondName")]
+    [InlineData("FirstName")]
+    [InlineData("SecondName")]
+    public void WhenHasNamesGetsCorrectName_ReturnTrue(string nameToSearch)
     {
         // Arrange
+        string names = "FirstName SecondName";
+        string surnames = "Surnames";
+        string email = "email@domain.pt";
+        DateTime deactivationDate = DateTime.Now.AddYears(1);
+
         // Create User instance
         User user = new User(names, surnames, email, deactivationDate);
 
@@ -180,40 +158,18 @@ public class UserTest
         );
     }
 
-    public static IEnumerable<object[]> GetWrongSearchNames()
-    {
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstNames" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstName SecondNames" };
-    }
-
     [Theory]
-    [MemberData(nameof(GetWrongSearchNames))]
-    public void WhenHasNamesGetsWrongName_ReturnFalse(
-        string names,
-        string surnames,
-        string email,
-        DateTime deactivationDate,
-        string nameToSearch)
+    [InlineData("")]
+    [InlineData("FirstNames")]
+    [InlineData("FirstName SecondNames")]
+    public void WhenHasNamesGetsWrongName_ReturnFalse(string nameToSearch)
     {
         //Arrange
+        string names = "FirstName SecondName";
+        string surnames = "Surnames";
+        string email = "email@domain.pt";
+        DateTime deactivationDate = DateTime.Now.AddYears(1);
+
         //User instance
         User user = new User(names, surnames, email, deactivationDate);
 
@@ -224,40 +180,18 @@ public class UserTest
         );
     }
 
-    public static IEnumerable<object[]> GetCorrectSearchSurnames()
-    {
-        yield return new object[] {
-            "FirstName SecondName",
-            "FirstSurname SecondSurname",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstSurname SecondSurname" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "FirstSurname SecondSurname",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstSurname" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "FirstSurname SecondSurname",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "SecondSurname" };
-    }
-
     [Theory]
-    [MemberData(nameof(GetCorrectSearchSurnames))]
-    public void WhenHasSurnamesGetsACorrectSurname_ReturnTrue(
-        string names,
-        string surnames,
-        string email,
-        DateTime deactivationDate,
-        string surnameToSearch)
+    [InlineData("FirstSurname SecondSurname")]
+    [InlineData("FirstSurname")]
+    [InlineData("SecondSurname")]
+    public void WhenHasSurnamesGetsACorrectSurname_ReturnTrue(string surnameToSearch)
     {
         //Arrange
+        string names = "FirstName SecondName";
+        string surnames = "FirstSurname SecondSurname";
+        string email = "email@domain.pt";
+        DateTime deactivationDate = DateTime.Now.AddYears(1);
+
         //User instance
         User user = new User(names, surnames, email, deactivationDate);
 
@@ -268,40 +202,18 @@ public class UserTest
         );
     }
 
-    public static IEnumerable<object[]> GetWrongSearchSurnames()
-    {
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "Surnames",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "Surname" };
-
-        yield return new object[] {
-            "FirstName SecondName",
-            "FirstSurname SecondSurname",
-            "email@domain.pt",
-            DateTime.Now.AddYears(1),
-            "FirstSurname SecondSurnames" };
-    }
-
     [Theory]
-    [MemberData(nameof(GetWrongSearchSurnames))]
-    public void WhenHasSurnamesGetsWrongName_ReturnFalse(
-        string names,
-        string surnames,
-        string email,
-        DateTime deactivationDate,
-        string surnameToSearch)
+    [InlineData("")]
+    [InlineData("FirstSurnames")]
+    [InlineData("FirstSurname SecondSurnames")]
+    public void WhenHasSurnamesGetsWrongName_ReturnFalse(string surnameToSearch)
     {
         //Arrange
+        string names = "FirstName SecondName";
+        string surnames = "FirstSurname SecondSurname";
+        string email = "email@domain.pt";
+        DateTime deactivationDate = DateTime.Now.AddYears(1);
+
         //User instance
         User user = new User(names, surnames, email, deactivationDate);
 
