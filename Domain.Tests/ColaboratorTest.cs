@@ -115,8 +115,8 @@ public class ColaboratorTest
 
     public static IEnumerable<object[]> ContainsDates_ValidDates()
     {
-        yield return new object[] { new DateTime(2020,1,1), new DateTime(2021,1,1) };
-        yield return new object[] { new DateTime(2020,1,2), new DateTime(2020,12,31) };
+        yield return new object[] { new DateTime(2020, 1, 1), new DateTime(2021, 1, 1) };
+        yield return new object[] { new DateTime(2020, 1, 2), new DateTime(2020, 12, 31) };
     }
 
     [Theory]
@@ -128,8 +128,8 @@ public class ColaboratorTest
     {
         // Arrange
         Mock<IUser> user = new Mock<IUser>();
-        DateTime colaboratorInitDate = new DateTime(2020,1,1);
-        DateTime colaboratorFinalDate = new DateTime(2021,1,1);
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
         Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
         bool result = colaborator.ContainsDates(_initDate, _finalDate);
@@ -139,8 +139,8 @@ public class ColaboratorTest
 
     public static IEnumerable<object[]> ContainsDates_InvalidDates()
     {
-        yield return new object[] { new DateTime(2019,1,1), new DateTime(2021,1,1) };
-        yield return new object[] { new DateTime(2020,1,2), new DateTime(2022,12,31) };
+        yield return new object[] { new DateTime(2019, 1, 1), new DateTime(2021, 1, 1) };
+        yield return new object[] { new DateTime(2020, 1, 2), new DateTime(2022, 12, 31) };
     }
 
     [Theory]
@@ -152,8 +152,8 @@ public class ColaboratorTest
     {
         // Arrange
         Mock<IUser> user = new Mock<IUser>();
-        DateTime colaboratorInitDate = new DateTime(2020,1,1);
-        DateTime colaboratorFinalDate = new DateTime(2021,1,1);
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
         Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
         bool result = colaborator.ContainsDates(_initDate, _finalDate);
@@ -161,4 +161,99 @@ public class ColaboratorTest
         Assert.False(result);
     }
 
+    [Fact]
+    public void WhenHasNamesGetsCorrectName_ReturnTrue()
+    {
+        //Arrange
+        // User double 
+        Mock<IUser> doubleUser = new Mock<IUser>();
+
+        // Name of the user
+        string names = "First Name";
+        // The user has the name defined 
+        doubleUser.Setup(u => u.HasNames(names)).Returns(true);
+
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
+
+        Colaborator colaborator = new Colaborator(doubleUser.Object, colaboratorInitDate, colaboratorFinalDate);
+
+        // Assert 
+        Assert.True(
+            //Act 
+            colaborator.HasNames(names)
+        );
+    }
+
+    [Fact]
+    public void WhenHasNamesGetsWrongName_ReturnFalse()
+    {
+        //Arrange
+        // User double 
+        Mock<IUser> doubleUser = new Mock<IUser>();
+
+        // Name of the user
+        string names = "First Name";
+        // The user has the name defined 
+        doubleUser.Setup(u => u.HasNames(names)).Returns(false);
+
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
+
+        Colaborator colaborator = new Colaborator(doubleUser.Object, colaboratorInitDate, colaboratorFinalDate);
+
+        // Assert 
+        Assert.False(
+            //Act 
+            colaborator.HasNames(names)
+        );
+    }
+
+    [Fact]
+    public void WhenHasSurnamesGetsCorrectSurname_ReturnTrue()
+    {
+        //Arrange
+        // User double 
+        Mock<IUser> doubleUser = new Mock<IUser>();
+
+        // Name of the user
+        string surnames = "Surnames";
+        // The user has the name defined 
+        doubleUser.Setup(u => u.HasSurnames(surnames)).Returns(true);
+
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
+
+        Colaborator colaborator = new Colaborator(doubleUser.Object, colaboratorInitDate, colaboratorFinalDate);
+
+        // Assert 
+        Assert.True(
+            //Act 
+            colaborator.HasSurnames(surnames)
+        );
+    }
+
+    [Fact]
+    public void WhenHasSurnamesGetsWrongName_ReturnFalse()
+    {
+        //Arrange
+        // User double 
+        Mock<IUser> doubleUser = new Mock<IUser>();
+
+        // Name of the user
+        string names = "Surnames";
+        // The user has the name defined 
+        doubleUser.Setup(u => u.HasSurnames(names)).Returns(false);
+
+        DateTime colaboratorInitDate = new DateTime(2020, 1, 1);
+        DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
+
+        Colaborator colaborator = new Colaborator(doubleUser.Object, colaboratorInitDate, colaboratorFinalDate);
+
+        // Assert 
+        Assert.False(
+            //Act 
+            colaborator.HasSurnames(names)
+        );
+    }
 }
