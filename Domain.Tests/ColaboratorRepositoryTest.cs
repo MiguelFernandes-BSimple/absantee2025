@@ -128,6 +128,7 @@ public class ColaboratorRepositoryTest
         Mock<IColaborator> doubleColaborator1 = new Mock<IColaborator>();
         Mock<IColaborator> doubleColaborator2 = new Mock<IColaborator>();
         Mock<IColaborator> doubleColaborator3 = new Mock<IColaborator>();
+        Mock<IColaborator> doubleColaborator4 = new Mock<IColaborator>();
 
         string names = "First names";
         string surnames = "Surnames";
@@ -136,11 +137,13 @@ public class ColaboratorRepositoryTest
         doubleColaborator1.Setup(c => c.HasNames(names)).Returns(true);
         doubleColaborator2.Setup(c => c.HasNames(names)).Returns(false);
         doubleColaborator3.Setup(c => c.HasNames(names)).Returns(true);
+        doubleColaborator4.Setup(c => c.HasNames(names)).Returns(false);
 
         //Setup the names for each colaborator
         doubleColaborator1.Setup(c => c.HasSurnames(surnames)).Returns(false);
         doubleColaborator2.Setup(c => c.HasSurnames(surnames)).Returns(false);
         doubleColaborator3.Setup(c => c.HasSurnames(surnames)).Returns(true);
+        doubleColaborator4.Setup(c => c.HasSurnames(surnames)).Returns(true);
 
         //Create a colaborator list
         List<IColaborator> totalList = new List<IColaborator> {
