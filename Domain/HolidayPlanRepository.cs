@@ -2,6 +2,9 @@ using Domain;
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
     private List<IHolidayPlan> holidayPlans = new List<IHolidayPlan>();
+
+
+
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
@@ -14,7 +17,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
-        throw new NotImplementedException();
+        return holidayPlans
+            .Where(p => p.HasPeriodBiggerThan(days))
+            .Select(p => p.GetColaborator())
+            .Distinct();
+
     }
 
     public int GetHolidayDaysInProject(IProject project)
