@@ -18,7 +18,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
         return holidayPlans
-            .Where(p => p.HasPeriodBiggerThan(days))
+            .Where(p => p.HasPeriodLongerThan(days))
             .Select(p => p.GetColaborator())
             .Distinct();
 

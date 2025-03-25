@@ -32,17 +32,12 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
-    public bool HasPeriodBiggerThan(int days)
+    public bool HasPeriodLongerThan(int days)
     {
         foreach (var period in _holidaysPeriods)
         {
-            int duration = period.GetFinalDate().DayNumber - period.GetInitDate().DayNumber + 1;
-
-            if (duration > days)
-            {
+            if (period.IsLongerThan(days))
                 return true;
-            }
-
         }
 
         return false;
