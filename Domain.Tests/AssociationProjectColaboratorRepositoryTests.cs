@@ -53,7 +53,7 @@ public class AssociationProjectColaboratorRepositoryTest
     }
 
     [Fact]
-    public void GivenProjectWithNoAssociation_ThenReturnEmptyList()
+    public void WhenProjectHasNoAssociation_ThenReturnEmptyList()
     {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
@@ -79,7 +79,7 @@ public class AssociationProjectColaboratorRepositoryTest
     }
 
     [Fact]
-    public void GivenDatesDoNotIntersectAssociation_ThenReturnEmptyList()
+    public void WhenDatesDontIntersect_ThenReturnEmptyList()
     {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
@@ -105,7 +105,7 @@ public class AssociationProjectColaboratorRepositoryTest
     }
 
     [Fact]
-    public void GivenProjectWithNoAssociation_And_DatesDoNotIntersectAssociation_ThenReturnEmptyList()
+    public void WhenProjectHasNoAssociation_AndDatesDontIntersect_ThenReturnEmptyList()
     {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
@@ -132,7 +132,7 @@ public class AssociationProjectColaboratorRepositoryTest
 
 
     [Fact]
-    public void WhenPassingProjectWithAssociationAndDatesIntersect_ThenReturnCollaborator()
+    public void WhenProjectHasAssociationAndDatesIntersect_ThenReturnCollaborator()
     {
         //arrange
         Mock<IProject> projectMock = new Mock<IProject>();
