@@ -20,9 +20,9 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(h => h.HasColaborator(colaborator))
             .SelectMany(h => h.GetHolidayPeriods())
             .Where(p =>
-                (p.GetInitDate() >= initDate && p.GetInitDate() <= endDate)
-                || (p.GetFinalDate() >= initDate && p.GetFinalDate() <= endDate)
-                || (p.GetInitDate() <= initDate && p.GetFinalDate() >= endDate)
+                p.GetInitDate() <= p.GetFinalDate()
+                && p.GetInitDate() <= endDate
+                && p.GetFinalDate() >= initDate
             );
     }
 
@@ -36,9 +36,9 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(h =>
                 h.GetHolidayPeriods()
                     .Any(p =>
-                        (p.GetInitDate() >= initDate && p.GetInitDate() <= endDate)
-                        || (p.GetFinalDate() >= initDate && p.GetFinalDate() <= endDate)
-                        || (p.GetInitDate() <= initDate && p.GetFinalDate() >= endDate)
+                        p.GetInitDate() <= p.GetFinalDate()
+                        && p.GetInitDate() <= endDate
+                        && p.GetFinalDate() >= initDate
                     )
             )
             .Select(h => h.GetColaborator())
