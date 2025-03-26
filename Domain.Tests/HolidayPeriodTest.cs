@@ -68,4 +68,54 @@ public class HolidayPeriodTest
         //assert
         Assert.Equal(expected, result);
     }
+
+    public class HolidayPeriodTests
+{
+    [Fact]
+    public void GetDurationInDays_FullOverlap_ReturnsFullDuration()
+    {
+        var holidayPeriod = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+        int duration = holidayPeriod.GetDurationInDays(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+        Assert.Equal(10, duration);
+    }
+
+    [Fact]
+    public void GetDurationInDays_PartialOverlap_StartInside_ReturnsCorrectDays()
+    {
+        var holidayPeriod = new HolidayPeriod(new DateOnly(2024, 6, 5), new DateOnly(2024, 6, 15));
+        int duration = holidayPeriod.GetDurationInDays(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+        Assert.Equal(6, duration); // 5 a 10
+    }
+
+    [Fact]
+    public void GivenFullOverlap_WhenGetDurationInDays_ThenReturnsFullDuration()
+    {
+        var period1 = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+        var period2 = new HolidayPeriod(new DateOnly(2024, 6, 3), new DateOnly(2024, 6, 8)); // Totalmente dentro
+
+        Assert.True(period1.HolidayPeriodOverlap(period2)); // Esperado: True
+    }
+
+    [Fact]
+    public void GivenPartialOverlap_WhenGetDurationInDays_ThenReturnsCorrectDays()
+    {
+        var period1 = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 5));
+        var period2 = new HolidayPeriod(new DateOnly(2024, 6, 10), new DateOnly(2024, 6, 15));
+
+        Assert.False(period1.HolidayPeriodOverlap(period2));
+    }
+
+    
+
+    [Fact]
+    public void GivenPeriodIsFullyContained_WhenHolidayPeriodOverlap_ThenReturnsTrue()
+    {
+        // O período 2 está totalmente dentro do período 1
+        var period1 = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+        var period2 = new HolidayPeriod(new DateOnly(2024, 6, 3), new DateOnly(2024, 6, 8)); // Dentro de period1
+
+        Assert.True(period1.HolidayPeriodOverlap(period2)); // Esperado: True
+    }
+}
+
 }

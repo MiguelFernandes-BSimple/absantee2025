@@ -33,4 +33,16 @@ public class HolidayPeriod : IHolidayPeriod
         return _initDate <= holidayPeriod.GetInitDate()
             && _finalDate >= holidayPeriod.GetFinalDate();
     }
+
+    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
+{
+    DateOnly effectiveStart = _initDate > initDate ? _initDate : initDate;
+    DateOnly effectiveEnd = _finalDate < endDate ? _finalDate : endDate;
+
+    if (effectiveStart > effectiveEnd)
+        return 0;
+
+    return effectiveEnd.DayNumber - effectiveStart.DayNumber + 1;
+}
+
 }

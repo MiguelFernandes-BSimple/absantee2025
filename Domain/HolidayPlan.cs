@@ -59,4 +59,19 @@ public class HolidayPlan : IHolidayPlan
         }
         return true;
     }
+
+    public IColaborator GetCollaborator()
+{
+    return _colaborator;
+}
+
+    public List<IHolidayPeriod> GetHolidayPeriods()
+{
+    return [.. _holidaysPeriods];
+}
+
+    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
+{
+    return _holidaysPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+}
 }

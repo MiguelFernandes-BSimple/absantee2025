@@ -1,3 +1,4 @@
+
 namespace Domain;
 
 public class AssociationProjectColaborator : IAssociationProjectColaborator {
@@ -33,6 +34,16 @@ public class AssociationProjectColaborator : IAssociationProjectColaborator {
             return false;
 
         return true;
+    }
+
+    public List<IColaborator> GetCollaborators(IProject project)
+    {
+        if (_project.Equals(project))
+        {
+            return new List<IColaborator> { _colaborator };
+        }
+
+        return new List<IColaborator>();
     }
 
 }

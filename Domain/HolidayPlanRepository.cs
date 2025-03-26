@@ -47,13 +47,33 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         throw new NotImplementedException();
     }
 
+
+
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(IAssociationProjectColaborator association, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
     }
 
-    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
+    IAssociationProjectColaborator association,
+    IProject project,
+    DateOnly initDate,
+    DateOnly endDate)
+{
+    var collaborators = association.GetCollaborators(project);
+    int totalHolidayDays = 0;
+
+    foreach (var collaborator in collaborators)
     {
-        throw new NotImplementedException();
+        var holidayPeriods = holidayPlans
+            .Where(hp => hp.GetCollaborator().Equals(collaborator))
+            .SelectMany(hp => hp.GetHolidayPeriods()
+                .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+            );
+
+        totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
     }
+
+    return totalHolidayDays;
+}
 }
