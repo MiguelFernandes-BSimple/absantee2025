@@ -71,8 +71,8 @@ public class HolidayPeriodTest
 
     public static IEnumerable<object[]> GetHolidayPeriod_ContainingDate()
     {
-        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2021, 1, 5)), DateOnly.FromDateTime(new DateTime(2021, 1, 3)), true };
-        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 4, 1)), DateOnly.FromDateTime(new DateTime(2020, 4, 5)), DateOnly.FromDateTime(new DateTime(2021, 1, 3)), false };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), new DateOnly(2020, 1, 3), true };
+        yield return new object[] { new DateOnly(2020, 4, 1), new DateOnly(2020, 4, 5), new DateOnly(2020, 1, 3), false };
     }
 
     [Theory]
@@ -90,8 +90,9 @@ public class HolidayPeriodTest
 
     public static IEnumerable<object[]> GetHolidayPeriod_ContaininedBetween()
     {
-        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 2)), DateOnly.FromDateTime(new DateTime(2020, 1, 3)), DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 5)), true };
-        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 4, 2)), DateOnly.FromDateTime(new DateTime(2020, 4, 3)), DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 5)), false };
+        yield return new object[] { new DateOnly(2020, 1, 2), new DateOnly(2020, 1, 3), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), true };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), true };
+        yield return new object[] { new DateOnly(2020, 4, 2), new DateOnly(2020, 4, 3), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), false };
     }
 
     [Theory]
@@ -109,6 +110,7 @@ public class HolidayPeriodTest
 
     public static IEnumerable<object[]> GetHolidayPeriod_OfLength()
     {
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 1)), 1 };
         yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 3)), 3 };
         yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 5)), 5 };
     }

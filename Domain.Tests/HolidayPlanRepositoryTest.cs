@@ -9,7 +9,7 @@ public class HolidayPlanRepositoryTest
     [Fact]
     public void WhenGivenCollaboratorAndGoodDate_ThenReturnPeriod() {
         //arrange
-        DateOnly date = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        DateOnly date = new DateOnly(2020, 1, 1);
         var colab = new Mock<IColaborator>();
         
         var holidayPeriod = new Mock<IHolidayPeriod>();
@@ -30,7 +30,7 @@ public class HolidayPlanRepositoryTest
     [Fact]
     public void WhenGivenCollaboratorAndBadDate_ThenReturnEmpty() {
         //arrange
-        DateOnly date = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        DateOnly date = new DateOnly(2020, 1, 1);
         var colab = new Mock<IColaborator>();
 
         var holidayPlan = new Mock<IHolidayPlan>();
@@ -49,8 +49,8 @@ public class HolidayPlanRepositoryTest
     [Fact]
     public void WhenGivenGoodCollaboratorAndDatesAndLength_ThenReturnPeriods() {
         //arrange
-        DateOnly ini = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
-        DateOnly end = DateOnly.FromDateTime(DateTime.Parse("1 Mar 2020"));
+        DateOnly ini = new DateOnly(2020, 1, 1);
+        DateOnly end = new DateOnly(2020, 3, 1);
         var colab = new Mock<IColaborator>();
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
@@ -71,10 +71,10 @@ public class HolidayPlanRepositoryTest
     }
 
     [Fact]
-    public void WhenGivenBadCollaboratorAndDatesAndLength_ThenReturnPeriods() {
+    public void WhenGivenBadCollaboratorAndDatesAndLength_ThenReturnEmptyLists() {
         //arrange
-        DateOnly ini = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
-        DateOnly end = DateOnly.FromDateTime(DateTime.Parse("1 Mar 2020"));
+        DateOnly ini = new DateOnly(2020, 1, 1);
+        DateOnly end = new DateOnly(2020, 3, 1);
         var colab = new Mock<IColaborator>();
 
         var holidayPlan = new Mock<IHolidayPlan>();

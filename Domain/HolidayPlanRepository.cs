@@ -41,7 +41,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate, int days)
     {
         return _holidayPlans.Where(a => a.HasCollaborator(colaborator))
-                .Select(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(initDate, endDate, days)).FirstOrDefault();
+                .SelectMany(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(initDate, endDate, days));
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(IColaborator colaborator)
