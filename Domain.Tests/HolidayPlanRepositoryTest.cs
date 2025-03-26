@@ -15,11 +15,11 @@ public class HolidayPlanRepositoryTest
         DateOnly initDate = new DateOnly(2025, 6, 1);
         DateOnly finalDate = new DateOnly(2025, 6, 10);
 
-        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
+        associationDouble.Setup(a => a.GetColaborator()).Returns(collaboratorDouble.Object);
         associationDouble.Setup(a => a.GetInitDate()).Returns(initDate);
         associationDouble.Setup(a => a.GetFinalDate()).Returns(finalDate);
 
-        holidayPlanDouble.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
+        holidayPlanDouble.Setup(hp => hp.GetColaborator()).Returns(collaboratorDouble.Object);
         holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(initDate, finalDate)).Returns(5);
 
         IHolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble.Object });

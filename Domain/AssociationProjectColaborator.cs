@@ -30,11 +30,6 @@ public class AssociationProjectColaborator : IAssociationProjectColaborator
         return _finalDate;
     }
 
-    public IColaborator GetCollaborator()
-    {
-        return _colaborator;
-    }
-
     private bool CheckInputValues(DateOnly initDate, DateOnly finalDate, IColaborator colaborator, IProject project)
     {
         if (initDate > finalDate)
