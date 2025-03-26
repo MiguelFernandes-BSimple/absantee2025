@@ -9,5 +9,4 @@ public interface IHolidayPlan
     int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate);
 
     bool HasPeriodLongerThan(int days);
-    IColaborator GetColaborator();
 }

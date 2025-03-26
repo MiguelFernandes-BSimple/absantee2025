@@ -30,19 +30,17 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
-    public IColaborator GetColaborator() => _colaborator;
-
     public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
     {
-        return _holidaysPeriods.Sum(period => period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate));
+        return _holidaysPeriods.Sum(period =>
+            period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate)
+        );
     }
-
 
     public bool HasPeriodLongerThan(int days)
     {
         return _holidaysPeriods.Any(period => period.IsLongerThan(days));
     }
-
 
     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, IColaborator colaborador)
     {
@@ -72,8 +70,7 @@ public class HolidayPlan : IHolidayPlan
         DateTime holidayPeriodFinalDate = holidayPeriod
             .GetFinalDate()
             .ToDateTime(TimeOnly.MinValue);
-        if (!colaborator.ContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
-
+        if (!colaborator.ContractContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {

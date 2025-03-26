@@ -9,11 +9,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         _holidayPlans = holidayPlans;
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
-    {
-        _holidayPlans = holidayPlans;
-    }
-
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
         return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
@@ -66,20 +61,23 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(p => p.HasPeriodLongerThan(days))
             .Select(p => p.GetColaborator())
             .Distinct();
-
     }
 
     public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectColaborator association)
     {
-
         int numberOfHolidayDays = 0;
 
-        IHolidayPlan? collaboratorHolidayPlan = _holidayPlans.SingleOrDefault(p => p.GetColaborator() == association.GetColaborator());
+        IHolidayPlan? collaboratorHolidayPlan = _holidayPlans.SingleOrDefault(p =>
+            p.GetColaborator() == association.GetColaborator()
+        );
 
         if (collaboratorHolidayPlan == null)
             return 0;
 
-        numberOfHolidayDays = collaboratorHolidayPlan.GetNumberOfHolidayDaysBetween(association.GetInitDate(), association.GetFinalDate());
+        numberOfHolidayDays = collaboratorHolidayPlan.GetNumberOfHolidayDaysBetween(
+            association.GetInitDate(),
+            association.GetFinalDate()
+        );
 
         return numberOfHolidayDays;
     }
