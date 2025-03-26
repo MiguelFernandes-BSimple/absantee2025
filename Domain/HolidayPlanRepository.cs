@@ -2,11 +2,24 @@ using Domain;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private List<IHolidayPlan> holidayPlans = new List<IHolidayPlan>();
+    private List<IHolidayPlan> _holidayPlans;
 
-    public void AddHolidayPlan(IHolidayPlan holidayPlan)
+    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
     {
-        holidayPlans.Add(holidayPlan);
+        _holidayPlans = holidayPlans;
+    }
+
+    private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
+    {
+        return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
+    }
+
+    private void ValidateDateRange(DateOnly initDate, DateOnly endDate)
+    {
+        if (initDate > endDate)
+        {
+            throw new ArgumentException("The start date cannot be greater than the end date.");
+        }
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
@@ -16,14 +29,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     )
     {
         // US13 - Como gestor de RH, quero listar os períodos de férias dum colaborador num período
-        return holidayPlans
+        ValidateDateRange(initDate, endDate);
+
+        return _holidayPlans
             .Where(h => h.HasColaborator(colaborator))
             .SelectMany(h => h.GetHolidayPeriods())
-            .Where(p =>
-                p.GetInitDate() <= p.GetFinalDate()
-                && p.GetInitDate() <= endDate
-                && p.GetFinalDate() >= initDate
-            );
+            .Where(p => IsHolidayPeriodValid(p, initDate, endDate));
     }
 
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
@@ -32,15 +43,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     )
     {
         // US14 - Como gestor de RH, quero listar os colaboradores que têm de férias num período
-        return holidayPlans
-            .Where(h =>
-                h.GetHolidayPeriods()
-                    .Any(p =>
-                        p.GetInitDate() <= p.GetFinalDate()
-                        && p.GetInitDate() <= endDate
-                        && p.GetFinalDate() >= initDate
-                    )
-            )
+        ValidateDateRange(initDate, endDate);
+
+        return _holidayPlans
+            .Where(h => h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate)))
             .Select(h => h.GetColaborator())
             .Distinct();
     }
