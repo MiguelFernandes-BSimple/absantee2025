@@ -59,7 +59,14 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate)
     {
-        throw new NotImplementedException();
+        IEnumerable<IHolidayPeriod> holidayPeriodListColab1 = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator1, initDate, endDate);
+        IEnumerable<IHolidayPeriod> holidayPeriodListColab2 = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator2, initDate, endDate);
+
+        return holidayPeriodListColab1
+            .SelectMany(period1 => holidayPeriodListColab2
+                .Where(period2 => period1.GetInitDate() <= period2.GetFinalDate() && period1.GetFinalDate() >= period2.GetInitDate())
+                .SelectMany(period2 => new List<IHolidayPeriod>{period1, period2}))
+                    .Distinct();
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
