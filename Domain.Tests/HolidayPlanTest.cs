@@ -304,7 +304,7 @@ public class HolidayPlanTest
         holidayPeriod4.Setup(a => a.ContainedBetween(ini, ini)).Returns(true);
         holidayPeriod4.Setup(a => a.Length()).Returns(3);
 
-        var holidayPeriods = new List<IHolidayPeriod> {holidayPeriod1.Object, holidayPeriod2.Object};
+        var holidayPeriods = new List<IHolidayPeriod> {holidayPeriod1.Object, holidayPeriod2.Object, holidayPeriod3.Object, holidayPeriod4.Object};
         HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, colab.Object);
         
         //act
