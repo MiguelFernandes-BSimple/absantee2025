@@ -32,6 +32,13 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
+    public bool HasPeriodLongerThan(int days)
+    {
+        return _holidaysPeriods.Any(period => period.IsLongerThan(days));
+    }
+
+    public IColaborator GetColaborator() => _colaborator;
+
     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, IColaborator colaborador)
     {
         for (int i = 0; i < periodoFerias.Count; i++)
