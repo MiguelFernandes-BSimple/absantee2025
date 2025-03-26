@@ -132,7 +132,7 @@ public class ColaboratorTest
         DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
         Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
-        bool result = colaborator.ContainsDates(_initDate, _finalDate);
+        bool result = colaborator.ContractContainsDates(_initDate, _finalDate);
         // Assert
         Assert.True(result);
     }
@@ -156,7 +156,7 @@ public class ColaboratorTest
         DateTime colaboratorFinalDate = new DateTime(2021, 1, 1);
         Colaborator colaborator = new Colaborator(user.Object, colaboratorInitDate, colaboratorFinalDate);
         // Act
-        bool result = colaborator.ContainsDates(_initDate, _finalDate);
+        bool result = colaborator.ContractContainsDates(_initDate, _finalDate);
         // Assert
         Assert.False(result);
     }
