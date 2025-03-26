@@ -32,6 +32,24 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
+    public IColaborator GetCollaborator()
+    {
+        return _colaborator;
+    }
+
+    public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
+    {
+
+        int numberOfDays = 0;
+
+        foreach (var period in _holidaysPeriods)
+        {
+            numberOfDays += period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate);
+        }
+
+        return numberOfDays;
+    }
+
     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, IColaborator colaborador)
     {
         for (int i = 0; i < periodoFerias.Count; i++)

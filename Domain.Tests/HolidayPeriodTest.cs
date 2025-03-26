@@ -68,4 +68,33 @@ public class HolidayPeriodTest
         //assert
         Assert.Equal(expected, result);
     }
+
+    public static IEnumerable<object[]> GetNumberOfCommonDaysBetweenPeriods()
+    {
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 1)), DateOnly.FromDateTime(new DateTime(2020, 7, 1)), 15 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 3)), DateOnly.FromDateTime(new DateTime(2020, 6, 9)), 7 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 4, 1)), DateOnly.FromDateTime(new DateTime(2020, 5, 1)), 0 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 1)), DateOnly.FromDateTime(new DateTime(2020, 6, 10)), 10 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 5)), DateOnly.FromDateTime(new DateTime(2020, 6, 15)), 11 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 10)), DateOnly.FromDateTime(new DateTime(2020, 6, 10)), 1 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 16)), DateOnly.FromDateTime(new DateTime(2020, 6, 20)), 0 };
+
+    }
+
+    [Theory]
+    [MemberData(nameof(GetNumberOfCommonDaysBetweenPeriods))]
+    public void WhenCalculatingTheNumberOfCommonDaysBetweenPeriods_ThenCorrectNumberIsReturned(DateOnly initDate, DateOnly endDate, int expectedDays)
+    {
+
+        //arrange
+        DateOnly _ini = DateOnly.FromDateTime(new DateTime(2020, 6, 1));
+        DateOnly _end = DateOnly.FromDateTime(new DateTime(2020, 6, 15));
+        HolidayPeriod hp = new HolidayPeriod(_ini, _end);
+
+        //act
+        int numberOfDays = hp.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate);
+
+        //assert
+        Assert.Equal(expectedDays, numberOfDays);
+    }
 }
