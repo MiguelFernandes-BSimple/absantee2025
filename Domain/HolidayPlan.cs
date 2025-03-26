@@ -39,16 +39,10 @@ public class HolidayPlan : IHolidayPlan
 
     public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
     {
-
-        int numberOfDays = 0;
-
-        foreach (var period in _holidaysPeriods)
-        {
-            numberOfDays += period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate);
-        }
-
-        return numberOfDays;
+        return _holidaysPeriods.Sum(period => period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate));
     }
+
+
 
     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, IColaborator colaborador)
     {
