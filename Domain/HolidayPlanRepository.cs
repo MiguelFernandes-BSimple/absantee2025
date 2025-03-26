@@ -7,6 +7,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     {
         _holidayPlans = holidayPlans;
     }
+
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
@@ -19,7 +20,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
-        throw new NotImplementedException();
+        return _holidayPlans
+            .Where(p => p.HasPeriodLongerThan(days))
+            .Select(p => p.GetColaborator())
+            .Distinct();
+
     }
 
     public int GetHolidayDaysInProject(IProject project)
@@ -52,31 +57,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         if (!hasWeekend)
             throw new Exception("The given period does not include a weekend.");
 
-        // GetHolidayPeriodsListByCollaborator   ????
-        List<IHolidayPeriod> holidayPeriodsList = _holidayPlans
-            .FirstOrDefault(holidayPlan => holidayPlan.GetColaborator().Equals(colaborator))
-            ?.GetHolidayPeriodsList() ?? throw new Exception("The collaborator doesn't have an Holiday Plan.");
-
-
-        // GetHolidayPeriodListBetweenDates ????
-        List<IHolidayPeriod> holidayPeriodsBetweenDates = holidayPeriodsList
-            .Where(holidayPeriod => holidayPeriod.GetInitDate() <= endDate && holidayPeriod.GetFinalDate() >= initDate)
-            .ToList();
-
-        if (holidayPeriodsBetweenDates.Count == 0)
-            throw new Exception("The collaborator doesn't have an Holiday Plan in the given period.");
-
+        List<IHolidayPeriod> holidayPeriodsBetweenDates = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator, initDate, endDate).ToList();
 
         List<IHolidayPeriod> holidayPeriodsBetweenDatesThatIncludeWeekends = holidayPeriodsBetweenDates
-            .Where(holidayPeriod =>
-                Enumerable.Range(0, holidayPeriod.GetFinalDate().DayNumber - holidayPeriod.GetInitDate().DayNumber + 1)
-                .Any(days => holidayPeriod.GetInitDate().AddDays(days).DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Saturday))
-                .ToList();
-
-        if (holidayPeriodsBetweenDatesThatIncludeWeekends.Count == 0)
-            throw new Exception("The collaborator doesn't have an Holiday Period that include weekends in the given period.");
-
-
+            .Where(holidayPeriod => holidayPeriod.ContainsWeekend(holidayPeriod.GetInitDate(), holidayPeriod.GetFinalDate()))
+            .ToList();
+                
         return holidayPeriodsBetweenDatesThatIncludeWeekends;
     }
 

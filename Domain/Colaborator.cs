@@ -32,8 +32,18 @@ public class Colaborator : IColaborator
         return true;
     }
 
-    public bool ContainsDates(DateTime initDate, DateTime finalDate)
+    public bool ContractContainsDates(DateTime initDate, DateTime finalDate)
     {
         return initDate >= this._initDate && finalDate <= this._finalDate;
+    }
+
+    public bool HasNames(string names)
+    {
+        return _user.HasNames(names);
+    }
+
+    public bool HasSurnames(string surnames)
+    {
+        return _user.HasSurnames(surnames);
     }
 }
