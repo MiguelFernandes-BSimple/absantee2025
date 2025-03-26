@@ -9,5 +9,4 @@ public interface IHolidayPeriod
     public bool HolidayPeriodOverlap(IHolidayPeriod periodoFerias);
     public int GetNumberOfCommonDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate);
     public bool IsLongerThan(int days);
-    public bool ContainsWeekend(DateOnly initDate, DateOnly endDate);
 }
