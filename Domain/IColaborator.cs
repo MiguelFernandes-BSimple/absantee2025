@@ -1,6 +1,6 @@
 public interface IColaborator
 {
-    public bool ContainsDates(DateTime _initDate, DateTime _finalDate);
+    public bool ContractContainsDates(DateTime _initDate, DateTime _finalDate);
 
     /**
     * Method to verify if a given string is found inside the names of an User
