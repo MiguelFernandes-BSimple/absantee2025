@@ -16,7 +16,7 @@ public class HolidayPlanTest
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
 
         // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        colaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Act
         HolidayPlan holidayPlan = new HolidayPlan(holidayPeriodDouble.Object, colaboratorDouble.Object);
@@ -39,7 +39,7 @@ public class HolidayPlanTest
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
 
         // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        colaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Can't overlap with any other holiday periods
         holidayPeriodDouble1.Setup(hp1 => hp1.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
@@ -70,7 +70,7 @@ public class HolidayPlanTest
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
 
         // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        colaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // There is overlap with other holiday periods
         // If there is two dates that overlap, the exception shall happen
@@ -102,7 +102,7 @@ public class HolidayPlanTest
 
         // At least one holiday period is outside the colaborator contract time frame - ContainsDates = false
         // In order for the exception to be thrown 
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
+        colaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
 
         // There no overlap with other holiday periods
         holidayPeriodDouble1.Setup(hp1 => hp1.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
@@ -133,7 +133,7 @@ public class HolidayPlanTest
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
 
         // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        colaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Can't overlap with any other holiday periods
         holidayPeriodDouble1.Setup(hp1 => hp1.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>())).Returns(false);
@@ -174,7 +174,7 @@ public class HolidayPlanTest
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
 
         // Holiday period dates must be in the colaborator contract time frame
-        colaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        colaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         // Create Holiday Periods list (wth only one period)
         List<IHolidayPeriod> holidayPeriods =
@@ -214,7 +214,7 @@ public class HolidayPlanTest
         // The first Holiday period date will be in the colaborator contract time frame
         // Therefore it will be added
         // The second one shall not be, to verify if it returns false
-        colaboratorDouble.SetupSequence(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+        colaboratorDouble.SetupSequence(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .Returns(true).Returns(false);
 
         // Create Holiday Periods list (wth only one period)
@@ -262,7 +262,7 @@ public class HolidayPlanTest
         }
 
         var collaboratorDouble = new Mock<IColaborator>();
-        collaboratorDouble.Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        collaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         var holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
 
@@ -277,4 +277,81 @@ public class HolidayPlanTest
     }
 
 
+    [Theory]
+    [InlineData(true, true)]
+    [InlineData(true, false)]
+    public void WhenCheckingIfHolidayPlanHasPeriodLongerThanGivenDays_ThenReturnTrueIfAtLeastOnePeriodIsLonger(bool methodResult1, bool methodResult2)
+    {
+        //arrange
+        Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
+
+        holidayPeriodDouble1
+            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
+            .Returns(methodResult1);
+        holidayPeriodDouble1
+        .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+        .Returns(false);
+
+        holidayPeriodDouble2
+            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
+            .Returns(methodResult2);
+        holidayPeriodDouble2
+            .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+            .Returns(false);
+
+        Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
+        colaboratorDouble
+            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Returns(true);
+
+        IHolidayPlan holidayPlan = new HolidayPlan(
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object },
+            colaboratorDouble.Object
+        );
+
+        //act
+        bool result = holidayPlan.HasPeriodLongerThan(5);
+
+        //assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void WhenCheckingIfHolidayPlanHasPeriodLongerThanGivenDays_ThenReturnFalseIfNoPeriodIsLonger()
+    {
+        //arrange
+        Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
+
+        holidayPeriodDouble1
+            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
+            .Returns(false);
+        holidayPeriodDouble1
+        .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+        .Returns(false);
+
+        holidayPeriodDouble2
+            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
+            .Returns(false);
+        holidayPeriodDouble2
+            .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+            .Returns(false);
+
+        Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
+        colaboratorDouble
+            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Returns(true);
+
+        IHolidayPlan holidayPlan = new HolidayPlan(
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object },
+            colaboratorDouble.Object
+        );
+
+        //act
+        bool result = holidayPlan.HasPeriodLongerThan(5);
+
+        //assert
+        Assert.False(result);
+    }
 }

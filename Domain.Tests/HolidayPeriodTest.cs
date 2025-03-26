@@ -97,4 +97,59 @@ public class HolidayPeriodTest
         //assert
         Assert.Equal(expectedDays, numberOfDays);
     }
+
+    public static IEnumerable<object[]> GetPeriodDuration()
+    {
+        yield return new object[] { new DateOnly(2025, 6, 1), new DateOnly(2025, 6, 1), 1 };
+        yield return new object[] { new DateOnly(2025, 6, 1), new DateOnly(2025, 6, 5), 5 };
+        yield return new object[] { new DateOnly(2025, 6, 1), new DateOnly(2025, 7, 20), 50 };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPeriodDuration))]
+    public void WhenCalculatingDurationOfPeriod_ThenResultShouldBeCorrect(DateOnly initDate, DateOnly finalDate, int expectedResult)
+    {
+        //arrange
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+
+        //act
+        int duration = holidayPeriod.GetDuration();
+
+        //assert
+        Assert.Equal(expectedResult, duration);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(10)]
+    public void WhenPeriodDurationIsGreaterThanLimit_ThenShouldReturnTrue(int days)
+    {
+        //arrange
+        DateOnly initDate = new DateOnly(2020, 6, 1);
+        DateOnly finalDate = new DateOnly(2020, 6, 15);
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+
+        //act
+        bool result = holidayPeriod.IsLongerThan(days);
+
+        //assert
+        Assert.True(result);
+    }
+
+    [Theory]
+    [InlineData(15)]
+    [InlineData(20)]
+    public void WhenPeriodDurationIsLessOrEqualThanLimit_ThenShouldReturnFalse(int days)
+    {
+        //arrange
+        DateOnly initDate = new DateOnly(2020, 6, 1);
+        DateOnly finalDate = new DateOnly(2020, 6, 15);
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+
+        //act
+        bool result = holidayPeriod.IsLongerThan(days);
+
+        //assert
+        Assert.False(result);
+    }
 }

@@ -26,6 +26,19 @@ public class HolidayPeriod : IHolidayPeriod
         return _finalDate;
     }
 
+    public int GetDuration()
+    {
+        return _finalDate.DayNumber - _initDate.DayNumber + 1;
+    }
+
+    public bool IsLongerThan(int days)
+    {
+        if (GetDuration() > days)
+            return true;
+
+        return false;
+    }
+
     private bool CheckInputValues(DateOnly dataInicio, DateOnly dataFim)
     {
         if (dataInicio > dataFim)

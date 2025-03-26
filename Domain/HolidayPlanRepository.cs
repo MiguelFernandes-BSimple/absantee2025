@@ -7,6 +7,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     {
         _holidayPlans = holidayPlans;
     }
+
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
@@ -19,7 +20,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
-        throw new NotImplementedException();
+        return _holidayPlans
+            .Where(p => p.HasPeriodLongerThan(days))
+            .Select(p => p.GetColaborator())
+            .Distinct();
+
     }
 
     public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectColaborator association)
@@ -27,7 +32,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
         int numberOfHolidayDays = 0;
 
-        IHolidayPlan? collaboratorHolidayPlan = _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == association.GetCollaborator());
+        IHolidayPlan? collaboratorHolidayPlan = _holidayPlans.SingleOrDefault(p => p.GetColaborator() == association.GetColaborator());
 
         if (collaboratorHolidayPlan == null)
             return 0;
