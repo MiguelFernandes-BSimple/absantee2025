@@ -73,6 +73,8 @@ public class HolidayPeriodTest
     {
         yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), new DateOnly(2020, 1, 3), true };
         yield return new object[] { new DateOnly(2020, 4, 1), new DateOnly(2020, 4, 5), new DateOnly(2020, 1, 3), false };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), true };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 3), new DateOnly(2020, 1, 3), true };
     }
 
     [Theory]
