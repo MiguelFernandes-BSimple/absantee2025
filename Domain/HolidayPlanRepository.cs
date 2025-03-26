@@ -67,13 +67,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         if (!hasWeekend)
             throw new Exception("The given period does not include a weekend.");
 
-        List<IHolidayPeriod> holidayPeriodsBetweenDates = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator, initDate, endDate).ToList();
-
-        List<IHolidayPeriod> holidayPeriodsBetweenDatesThatIncludeWeekends = holidayPeriodsBetweenDates
-            .Where(holidayPeriod => holidayPeriod.ContainsWeekend(holidayPeriod.GetInitDate(), holidayPeriod.GetFinalDate()))
-            .ToList();
+        IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator, initDate, endDate);
                 
-        return holidayPeriodsBetweenDatesThatIncludeWeekends;
+        return holidayPeriodsBetweenDates
+            .Where(holidayPeriod => holidayPeriod.ContainsWeekend(holidayPeriod.GetInitDate(), holidayPeriod.GetFinalDate()));
     }
 
     public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate)
