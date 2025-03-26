@@ -206,18 +206,15 @@ public class HolidayPlanRepositoryTest
         var initDate = new DateOnly(2025, 8, 15);
         var endDate = new DateOnly(2025, 7, 1);
 
-        ArgumentException exception = Assert.Throws<ArgumentException>(
-            () =>
-                // Act
-                hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
-                    colaborator.Object,
-                    initDate,
-                    endDate
-                )
+        // Act
+        var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
+            colaborator.Object,
+            initDate,
+            endDate
         );
 
         // asset
-        Assert.Equal("The start date cannot be greater than the end date.", exception.Message);
+        Assert.Empty(result);
     }
 
     // US14
@@ -473,10 +470,8 @@ public class HolidayPlanRepositoryTest
         var endDate = new DateOnly(2025, 7, 1);
 
         // Act & Assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
-            () => hpRepo.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate)
-        );
+        var result = hpRepo.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate);
 
-        Assert.Equal("The start date cannot be greater than the end date.", exception.Message);
+        Assert.Empty(result);
     }
 }
