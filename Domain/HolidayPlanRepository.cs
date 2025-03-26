@@ -1,7 +1,12 @@
 using Domain;
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private List<IHolidayPlan> holidayPlans = new List<IHolidayPlan>();
+    private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
+
+    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
+    {
+        _holidayPlans = holidayPlans;
+    }
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
     {
         throw new NotImplementedException();
@@ -65,7 +70,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     foreach (var collaborator in collaborators)
     {
-        var holidayPeriods = holidayPlans
+        var holidayPeriods = _holidayPlans
             .Where(hp => hp.GetCollaborator().Equals(collaborator))
             .SelectMany(hp => hp.GetHolidayPeriods()
                 .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
