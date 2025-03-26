@@ -6,6 +6,19 @@ namespace Domain.Tests;
 public class HolidayPlanRepositoryTest
 {
     [Fact]
+    public void WhenPassingCorrectValues_ThenObjectIsCreated()
+    {
+        //arrange
+        Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
+        List<IHolidayPlan> holidayPlans = new List<IHolidayPlan> { holidayPlanDouble.Object };
+
+        //act
+        new HolidayPlanRepository(holidayPlans);
+
+        //assert
+    }
+
+    [Fact]
     public void WhenFindingALlCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()
     {
         //arrange
