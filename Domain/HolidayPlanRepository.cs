@@ -1,12 +1,29 @@
 using Domain;
+
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate)
+    private List<IHolidayPlan> holidayPlans = new List<IHolidayPlan>();
+    private readonly IAssociationProjectColaboratorRepository _associationRepo;
+
+    public HolidayPlanRepository(IAssociationProjectColaboratorRepository associationRepo)
+    {
+        _associationRepo =
+            associationRepo ?? throw new ArgumentNullException(nameof(associationRepo));
+    }
+
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
+        IColaborator colaborator,
+        DateOnly initDate,
+        DateOnly endDate
+    )
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate)
+    public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
+        DateOnly initDate,
+        DateOnly endDate
+    )
     {
         throw new NotImplementedException();
     }
@@ -26,33 +43,104 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate, int days)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(
+        IColaborator colaborator,
+        DateOnly initDate,
+        DateOnly endDate,
+        int days
+    )
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(IColaborator colaborator)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(
+        IColaborator colaborator
+    )
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate)
+    public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(
+        IColaborator colaborator1,
+        IColaborator colaborator2,
+        DateOnly initDate,
+        DateOnly endDate
+    )
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+    //uc21
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
+        IProject project,
+        DateOnly initDate,
+        DateOnly endDate
+    )
+    {
+        var validCollaborators = _associationRepo.FindAllProjectCollaboratorsBetween(
+            project,
+            initDate,
+            endDate
+        );
+
+        if (project == null)
+            throw new ArgumentNullException(nameof(project));
+        return holidayPlans
+            .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
+            .SelectMany(hp =>
+                hp.GetHolidayPeriods()
+                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+            );
+    }
+
+    //uc22
+    public int GetHolidayDaysForProjectCollaboratorBetweenDates(
+        IProject project,
+        IColaborator colaborator,
+        DateOnly initDate,
+        DateOnly endDate
+    )
+    {
+        var validCollaborators = _associationRepo.FindAllProjectCollaboratorsBetween(
+            project,
+            initDate,
+            endDate
+        );
+        if (project == null)
+            throw new ArgumentNullException(nameof(project));
+        if (colaborator == null)
+            throw new ArgumentNullException(nameof(colaborator));
+        var holidayPeriods = holidayPlans
+            .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
+            .SelectMany(hp =>
+                hp.GetHolidayPeriods()
+                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+            )
+            .ToList();
+        if (!holidayPeriods.Any()) // If no matching holiday periods
+        {
+            return 0;
+        }
+
+        return holidayPeriods.Sum(period =>
+        {
+            var periodStart = period.GetInitDate() < initDate ? initDate : period.GetInitDate();
+            var periodEnd = period.GetFinalDate() > endDate ? endDate : period.GetFinalDate();
+            return (periodEnd.DayNumber - periodStart.DayNumber) + 1;
+        });
+    }
+
+    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
+        IProject project,
+        DateOnly initDate,
+        DateOnly endDate
+    )
     {
         throw new NotImplementedException();
     }
 
-    public int GetHolidayDaysForProjectCollaboratorBetweenDates(IAssociationProjectColaborator association, DateOnly initDate, DateOnly endDate)
+    public void AddHolidayPlan(IHolidayPlan holidayPlan)
     {
-        throw new NotImplementedException();
-    }
-
-    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
-    {
-        throw new NotImplementedException();
+        holidayPlans.Add(holidayPlan);
     }
 }
