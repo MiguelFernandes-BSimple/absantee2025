@@ -6,7 +6,7 @@ public interface IHolidayPlanRepository
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate);
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days);
     public int GetHolidayDaysInProject(IProject project);
-    public IEnumerable<IHolidayPeriod> GetHolidayPeriodContainingDate(IColaborator colaborator, DateOnly date);
+    public IHolidayPeriod? GetHolidayPeriodContainingDate(IColaborator colaborator, DateOnly date);
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate, int days);
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(IColaborator colaborator);
     public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(IColaborator colaborator1, IColaborator colaborator2, DateOnly initDate, DateOnly endDate);

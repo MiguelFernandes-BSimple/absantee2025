@@ -64,8 +64,11 @@ public class HolidayPlan : IHolidayPlan
         return colab == _colaborator;
     }
 
-    public IHolidayPeriod GetHolidayPeriodContainingDate(DateOnly date) {
-        var result = _holidaysPeriods.Where(a => a.ContainsDate(date)).First();
-        return result;
+    public IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date) {
+        return _holidaysPeriods.Where(a => a.ContainsDate(date)).FirstOrDefault();
+    }
+
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(DateOnly ini, DateOnly end, int days) {
+        return _holidaysPeriods.Where(a => a.ContainedBetween(ini, end) && a.Length() > days);
     }
 }

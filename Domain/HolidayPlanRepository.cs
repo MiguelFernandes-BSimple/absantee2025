@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using Domain;
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
@@ -31,15 +32,16 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         throw new NotImplementedException();
     }
 
-    public IEnumerable<IHolidayPeriod> GetHolidayPeriodContainingDate(IColaborator colaborator, DateOnly date)
+    public IHolidayPeriod? GetHolidayPeriodContainingDate(IColaborator colaborator, DateOnly date)
     {
         return _holidayPlans.Where(a => a.HasCollaborator(colaborator))
-                .Select(a => a.GetHolidayPeriodContainingDate(date));
+                .Select(a => a.GetHolidayPeriodContainingDate(date)).FirstOrDefault();
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(IColaborator colaborator, DateOnly initDate, DateOnly endDate, int days)
     {
-        throw new NotImplementedException();
+        return _holidayPlans.Where(a => a.HasCollaborator(colaborator))
+                .Select(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(initDate, endDate, days)).FirstOrDefault();
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(IColaborator colaborator)

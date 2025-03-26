@@ -13,7 +13,6 @@ public class HolidayPlanRepositoryTest
         var colab = new Mock<IColaborator>();
         
         var holidayPeriod = new Mock<IHolidayPeriod>();
-        holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(true);
 
         var holidayPlan = new Mock<IHolidayPlan>();
         holidayPlan.Setup(a => a.HasCollaborator(colab.Object)).Returns(true);
@@ -25,7 +24,7 @@ public class HolidayPlanRepositoryTest
         var result = hpRepo.GetHolidayPeriodContainingDate(colab.Object, date);
 
         //assert
-        Assert.Single(result);
+        Assert.NotNull(result);
     }
 
     [Fact]
@@ -34,18 +33,60 @@ public class HolidayPlanRepositoryTest
         DateOnly date = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
         var colab = new Mock<IColaborator>();
 
-        var holidayPeriod = new Mock<IHolidayPeriod>();
-        holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(false);
-
         var holidayPlan = new Mock<IHolidayPlan>();
         holidayPlan.Setup(a => a.HasCollaborator(colab.Object)).Returns(true);
-        holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns(holidayPeriod.Object);
+        holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns((IHolidayPeriod?)null);
 
         var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
 
         //act
         var result = hpRepo.GetHolidayPeriodContainingDate(colab.Object, date);
-        var count = result.Count();
+
+        //assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void WhenGivenGoodCollaboratorAndDatesAndLength_ThenReturnPeriods() {
+        //arrange
+        DateOnly ini = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        DateOnly end = DateOnly.FromDateTime(DateTime.Parse("1 Mar 2020"));
+        var colab = new Mock<IColaborator>();
+
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(colab.Object)).Returns(true);
+
+        IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>() {holidayPeriod.Object};
+        holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4)).Returns(ret);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(colab.Object, ini, end, 4);
+
+        //assert
+        Assert.Equal(ret, result);
+    }
+
+    [Fact]
+    public void WhenGivenBadCollaboratorAndDatesAndLength_ThenReturnPeriods() {
+        //arrange
+        DateOnly ini = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        DateOnly end = DateOnly.FromDateTime(DateTime.Parse("1 Mar 2020"));
+        var colab = new Mock<IColaborator>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(colab.Object)).Returns(true);
+
+        IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>();
+        holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4)).Returns(ret);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(colab.Object, ini, end, 4);
 
         //assert
         Assert.Empty(result);

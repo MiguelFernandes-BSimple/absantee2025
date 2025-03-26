@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Domain;
 using Moq;
 
@@ -237,5 +238,71 @@ public class HolidayPlanTest
 
         // Assert
         Assert.False(result);
+    }
+
+    [Fact]
+    public void WhenGivenCorrectDate_ThenReturnPeriod() {
+        //arrange
+        var colab = new Mock<IColaborator>();
+        colab.Setup(a => a.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+        DateOnly date = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(true);
+
+        var holidayPlan = new HolidayPlan(holidayPeriod.Object, colab.Object);
+
+        //act
+        var result = holidayPlan.GetHolidayPeriodContainingDate(date);
+
+        //assert
+        Assert.Equal(holidayPeriod.Object, result);
+    }
+
+        [Fact]
+    public void WhenGivenIncorrectDate_ThenReturnNull() {
+        //arrange
+        var colab = new Mock<IColaborator>();
+        colab.Setup(a => a.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+        DateOnly date = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(false);
+
+        var holidayPlan = new HolidayPlan(holidayPeriod.Object, colab.Object);
+
+        //act
+        var result = holidayPlan.GetHolidayPeriodContainingDate(date);
+
+        //assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void WhenGivenValidDatesAndLength_ThenReturnPeriods() {
+        //arrange
+        var colab = new Mock<IColaborator>();
+        DateOnly ini = DateOnly.FromDateTime(DateTime.Parse("1 Jan 2020"));
+        DateOnly end = ini.AddDays(5);
+        colab.Setup(a => a.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        DateOnly ini2 = ini.AddMonths(1);
+        DateOnly end2 = end.AddMonths(1);
+        
+        var holidayPeriod1 = new Mock<IHolidayPeriod>();
+        holidayPeriod1.Setup(a => a.ContainedBetween(ini, end)).Returns(true);
+        holidayPeriod1.Setup(a => a.Length()).Returns(5);
+
+        var holidayPeriod2 = new Mock<IHolidayPeriod>();
+        holidayPeriod2.Setup(a => a.ContainedBetween(ini2, end2)).Returns(false);
+        holidayPeriod2.Setup(a => a.Length()).Returns(5);
+
+        var holidayPeriods = new List<IHolidayPeriod> {holidayPeriod1.Object, holidayPeriod2.Object};
+        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, colab.Object);
+        
+        //act
+        var result = holidayPlan.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4);
+        
+        //assert
+        Assert.Single(result);
     }
 }
