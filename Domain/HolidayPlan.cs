@@ -21,6 +21,14 @@ public class HolidayPlan : IHolidayPlan
             throw new ArgumentException("Invalid Arguments");
     }
 
+    public List<IHolidayPeriod> GetHolidayPeriodsList(){
+        return new List<IHolidayPeriod>(_holidaysPeriods);
+    }
+
+    public IColaborator GetColaborator() {
+        return this._colaborator;
+    }
+
     public bool AddHolidayPeriod(IHolidayPeriod holidayPeriod)
     {
         if (CanInsertHolidayPeriod(holidayPeriod, this._holidaysPeriods, this._colaborator))
