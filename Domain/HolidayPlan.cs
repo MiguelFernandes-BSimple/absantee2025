@@ -34,14 +34,7 @@ public class HolidayPlan : IHolidayPlan
 
     public bool HasPeriodLongerThan(int days)
     {
-        foreach (var period in _holidaysPeriods)
-        {
-            if (period.IsLongerThan(days))
-                return true;
-        }
-
-        return false;
-
+        return _holidaysPeriods.Any(period => period.IsLongerThan(days));
     }
 
     public IColaborator GetColaborator() => _colaborator;

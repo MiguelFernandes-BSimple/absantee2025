@@ -240,38 +240,25 @@ public class HolidayPlanTest
     }
 
     [Theory]
-    [InlineData(true, true, true, true)]
-    [InlineData(true, true, false, true)]
-    [InlineData(true, false, false, true)]
-    [InlineData(false, false, false, false)]
-
-    public void WhenCheckingIfHolidayPlanHasPeriodLongerThanGivenDays_ThenReturnExpectedResult(bool methodResult1, bool methodResult2, bool methodResult3, bool expectedResult)
+    [InlineData(true, true)]
+    [InlineData(true, false)]
+    public void WhenCheckingIfHolidayPlanHasPeriodLongerThanGivenDays_ThenReturnTrueIfAtLeastOnePeriodIsLonger(bool methodResult1, bool methodResult2)
     {
         //arrange
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
-        Mock<IHolidayPeriod> holidayPeriodDouble3 = new Mock<IHolidayPeriod>();
 
         holidayPeriodDouble1
             .Setup(h => h.IsLongerThan(It.IsAny<int>()))
             .Returns(methodResult1);
+        holidayPeriodDouble1
+        .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+        .Returns(false);
+
         holidayPeriodDouble2
             .Setup(h => h.IsLongerThan(It.IsAny<int>()))
             .Returns(methodResult2);
-
-        holidayPeriodDouble3
-            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
-            .Returns(methodResult3);
-
-        holidayPeriodDouble1
-            .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
-            .Returns(false);
-
         holidayPeriodDouble2
-            .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
-            .Returns(false);
-
-        holidayPeriodDouble3
             .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
             .Returns(false);
 
@@ -281,7 +268,7 @@ public class HolidayPlanTest
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object, holidayPeriodDouble3.Object },
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object },
             colaboratorDouble.Object
         );
 
@@ -289,6 +276,44 @@ public class HolidayPlanTest
         bool result = holidayPlan.HasPeriodLongerThan(5);
 
         //assert
-        Assert.Equal(expectedResult, result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void WhenCheckingIfHolidayPlanHasPeriodLongerThanGivenDays_ThenReturnFalseIfNoPeriodIsLonger()
+    {
+        //arrange
+        Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
+
+        holidayPeriodDouble1
+            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
+            .Returns(false);
+        holidayPeriodDouble1
+        .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+        .Returns(false);
+
+        holidayPeriodDouble2
+            .Setup(h => h.IsLongerThan(It.IsAny<int>()))
+            .Returns(false);
+        holidayPeriodDouble2
+            .Setup(p => p.HolidayPeriodOverlap(It.IsAny<IHolidayPeriod>()))
+            .Returns(false);
+
+        Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
+        colaboratorDouble
+            .Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Returns(true);
+
+        IHolidayPlan holidayPlan = new HolidayPlan(
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object },
+            colaboratorDouble.Object
+        );
+
+        //act
+        bool result = holidayPlan.HasPeriodLongerThan(5);
+
+        //assert
+        Assert.False(result);
     }
 }
