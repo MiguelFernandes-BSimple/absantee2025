@@ -32,6 +32,17 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
+    public IColaborator GetCollaborator()
+    {
+        return _colaborator;
+    }
+
+    public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
+    {
+        return _holidaysPeriods.Sum(period => period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate));
+    }
+
+
     public bool HasPeriodLongerThan(int days)
     {
         return _holidaysPeriods.Any(period => period.IsLongerThan(days));

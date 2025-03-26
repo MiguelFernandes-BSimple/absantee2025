@@ -7,5 +7,6 @@ public interface IHolidayPeriod
     public DateOnly GetFinalDate();
     public int GetDuration();
     public bool HolidayPeriodOverlap(IHolidayPeriod periodoFerias);
+    public int GetNumberOfCommonDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate);
     public bool IsLongerThan(int days);
 }
