@@ -46,6 +46,6 @@ public class HolidayPeriod : IHolidayPeriod
     }
 
     public int Length() {
-        return _finalDate.DayNumber - _initDate.DayNumber;
+        return _finalDate.DayNumber - _initDate.DayNumber + 1;
     }
 }
