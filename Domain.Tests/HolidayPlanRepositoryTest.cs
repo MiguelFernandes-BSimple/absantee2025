@@ -5,7 +5,7 @@ namespace Domain.Tests;
 
 public class HolidayPlanRepositoryTest
 {
-    // US13 Tests - Como gestor de RH, quero listar os períodos de férias dum colaborador num período
+    // US13
 
     [Fact]
     public void WhenHolidayPeriodIsTheSameAsTheOneBeingSearchedFor_ThenReturnsCorrectPeriod()
@@ -40,16 +40,70 @@ public class HolidayPlanRepositoryTest
         Assert.Single(result);
     }
 
-    [Fact]
-    public void WhenHolidayPeriodIsBiggerThanTheOneBeingSearchedFor_ThenReturnsCorrectPeriod()
+    public static IEnumerable<object[]> ValidDates()
+    {
+        yield return new object[]
+        {
+            // data dentro do periodo procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 20),
+            new DateOnly(2025, 7, 25),
+        };
+        yield return new object[]
+        {
+            // começa antes, mas termina dentro do periodo procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 5),
+            new DateOnly(2025, 7, 20),
+        };
+        yield return new object[]
+        {
+            // começa antes, mas termina exatamente no inicio do periodo procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 5),
+            new DateOnly(2025, 7, 15),
+        };
+        yield return new object[]
+        {
+            // começa dentro, mas termina depois do periodo procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 25),
+            new DateOnly(2025, 8, 15),
+        };
+        yield return new object[]
+        {
+            // começa dentro e termina exatamente no ultimo dia do periodo procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 25),
+            new DateOnly(2025, 8, 1),
+        };
+        yield return new object[]
+        {
+            // tudo no mesmo dia
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 7, 15),
+        };
+    }
+
+    [Theory]
+    [MemberData(nameof(ValidDates))]
+    public void WhenPassinValidDates_ThenReturnsCorrectPeriod(
+        DateOnly initDateForSearching,
+        DateOnly endDateForSearching,
+        DateOnly initDateForPeriod,
+        DateOnly endDateForPeriod
+    )
     {
         // Arrange
         var hpRepo = new HolidayPlanRepository();
         var colaborator = new Mock<IColaborator>();
-        var initDateForSearching = new DateOnly(2025, 7, 15);
-        var endDateForSearching = new DateOnly(2025, 8, 1);
-        var initDateForPeriod = new DateOnly(2025, 7, 20);
-        var endDateForPeriod = new DateOnly(2025, 7, 25);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         holidayPeriod.Setup(p => p.GetInitDate()).Returns(initDateForPeriod);
@@ -75,12 +129,76 @@ public class HolidayPlanRepositoryTest
         Assert.Single(result);
     }
 
-    // De acordo com a resposta do professor:
-    // quando o periodo procurado é mais pequeno do que o periodo de ferias
-    // quando o periodo procurado coincide com o periodo de ferias, mas nao na totalidade (inicio/fim)
+    public static IEnumerable<object[]> MultipleValidDates()
+    {
+        yield return new object[]
+        {
+            // quando o primeiro acaba no ultimo dia procurado, e o segundo começa no primeiro dia procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 5),
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 8, 10),
+        };
+        yield return new object[]
+        {
+            // quando o primeiro começa no primeiro dia procurado, e o segundo termina no ultimo dia procurado
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 7, 20),
+            new DateOnly(2025, 7, 25),
+            new DateOnly(2025, 8, 1),
+        };
+    }
+
+    [Theory]
+    [MemberData(nameof(MultipleValidDates))]
+    public void WhenTwoPeriodsStartAndEndAtSearchingEdgeCase_ThenReturnsCorrectPeriods(
+        DateOnly initDateForSearching,
+        DateOnly endDateForSearching,
+        DateOnly initDateForPeriod_1,
+        DateOnly endDateForPeriod_1,
+        DateOnly initDateForPeriod_2,
+        DateOnly endDateForPeriod_2
+    )
+    {
+        var hpRepo = new HolidayPlanRepository();
+        var colaborator = new Mock<IColaborator>();
+
+        var holidayPeriod1 = new Mock<IHolidayPeriod>();
+        holidayPeriod1.Setup(p => p.GetInitDate()).Returns(initDateForPeriod_1);
+        holidayPeriod1.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod_1);
+
+        var holidayPeriod2 = new Mock<IHolidayPeriod>();
+        holidayPeriod2.Setup(p => p.GetInitDate()).Returns(initDateForPeriod_2);
+        holidayPeriod2.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod_2);
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan
+            .Setup(hp => hp.GetHolidayPeriods())
+            .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object, holidayPeriod2.Object });
+
+        // Adicionar o plano de férias ao repositório
+        hpRepo.AddHolidayPlan(holidayPlan.Object);
+
+        // Act
+        var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
+            colaborator.Object,
+            initDateForSearching,
+            endDateForSearching
+        );
+
+        // assert
+        Assert.Equal(2, result.Count());
+        Assert.Contains(holidayPeriod1.Object, result);
+        Assert.Contains(holidayPeriod2.Object, result);
+    }
 
     [Fact]
-    public void WhenHolidayPeriodIsOutOfRangeThanTheOneBeingSearchedFor_ThenReturnsCorrectPeriod()
+    public void WhenHolidayPeriodIsOutOfRangeThanTheOneBeingSearchedFor_ThenReturnsEmptyList()
     {
         // Arrange
         var hpRepo = new HolidayPlanRepository();
@@ -114,65 +232,62 @@ public class HolidayPlanRepositoryTest
         Assert.Empty(result);
     }
 
-    [Fact]
-    public void WhenColaboratorHolidayPeriodsStartAndEndAtSearchedStartAndEndPeriod_ThenThenReturnsCorrectPeriods()
+    // US14
+    public static IEnumerable<object[]> ValidDatesColaborator()
     {
-        // dados dois periodos, quando o primeiro começa exatamente no mesmo dia que o primeiro dia procurado
-        // e o segundo termina exatamente no ultimo dia procurado, então retorna dois periodos.
-        // Arrange
-        var hpRepo = new HolidayPlanRepository();
-        var colaborator = new Mock<IColaborator>();
-        var initDateForSearching = new DateOnly(2025, 7, 15);
-        var endDateForSearching = new DateOnly(2025, 8, 1);
-
-        var initDateForPeriod_1 = new DateOnly(2025, 7, 15);
-        var endDateForPeriod_1 = new DateOnly(2025, 7, 20);
-        var initDateForPeriod_2 = new DateOnly(2025, 7, 25);
-        var endDateForPeriod_2 = new DateOnly(2025, 8, 1);
-
-        var holidayPeriod1 = new Mock<IHolidayPeriod>();
-        holidayPeriod1.Setup(p => p.GetInitDate()).Returns(initDateForPeriod_1);
-        holidayPeriod1.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod_1);
-
-        var holidayPeriod2 = new Mock<IHolidayPeriod>();
-        holidayPeriod2.Setup(p => p.GetInitDate()).Returns(initDateForPeriod_2);
-        holidayPeriod2.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod_2);
-
-        var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
-        holidayPlan
-            .Setup(hp => hp.GetHolidayPeriods())
-            .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object, holidayPeriod2.Object });
-
-        // Adicionar o plano de férias ao repositório
-        hpRepo.AddHolidayPlan(holidayPlan.Object);
-
-        // Act
-        var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
-            colaborator.Object,
-            initDateForSearching,
-            endDateForSearching
-        );
-
-        // assert
-        Assert.Equal(2, result.Count());
-        Assert.Contains(holidayPeriod1.Object, result);
-        Assert.Contains(holidayPeriod2.Object, result);
+        yield return new object[]
+        {
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 20),
+            new DateOnly(2025, 7, 25),
+        };
+        yield return new object[]
+        {
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 5),
+            new DateOnly(2025, 7, 25),
+        };
+        yield return new object[]
+        {
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 25),
+            new DateOnly(2025, 8, 5),
+        };
+        yield return new object[]
+        {
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 7, 5),
+            new DateOnly(2025, 7, 15),
+        };
+        yield return new object[]
+        {
+            new DateOnly(2025, 7, 15),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 8, 1),
+            new DateOnly(2025, 8, 10),
+        };
     }
 
-    // US14 - Como gestor de RH, quero listar os colaboradores que têm de férias num período
-    [Fact]
-    public void WhenCollaboratorHasHolidayPeriodWithinDateRange_ThenReturnsCollaborator()
+    [Theory]
+    [MemberData(nameof(ValidDatesColaborator))]
+    public void WhenCollaboratorHasHolidayPeriodWithinDateRange_ThenReturnsCollaborator(
+        DateOnly initDate,
+        DateOnly endDate,
+        DateOnly initDatePeriod,
+        DateOnly endDatePeriod
+    )
     {
         // Arrange
         var hpRepo = new HolidayPlanRepository();
         var colaborator = new Mock<IColaborator>();
-        var initDate = new DateOnly(2025, 7, 15);
-        var endDate = new DateOnly(2025, 8, 1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
-        holidayPeriod.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 7, 10));
-        holidayPeriod.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 7, 20));
+        holidayPeriod.Setup(p => p.GetInitDate()).Returns(initDatePeriod);
+        holidayPeriod.Setup(p => p.GetFinalDate()).Returns(endDatePeriod);
 
         var holidayPlan = new Mock<IHolidayPlan>();
         holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
@@ -263,6 +378,4 @@ public class HolidayPlanRepositoryTest
         // Assert
         Assert.Empty(result);
     }
-
-    // sobreposições a espera de resposta do professor
 }
