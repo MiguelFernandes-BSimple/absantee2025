@@ -48,7 +48,7 @@ public class HolidayPlan : IHolidayPlan
     {
         DateTime holidayPeriodInitDate = holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue);
         DateTime holidayPeriodFinalDate = holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue);
-        if (!colaborator.ContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
+        if (!colaborator.ContractContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {

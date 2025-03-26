@@ -29,10 +29,23 @@ public class AssociationProjectColaborator : IAssociationProjectColaborator {
 
         DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
         DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
-        if(!colaborator.ContainsDates(associationInitDate, associationFinalDate))
+        if(!colaborator.ContractContainsDates(associationInitDate, associationFinalDate))
             return false;
 
         return true;
+    }
+
+    public IColaborator GetColaborator(){
+        return this._colaborator;
+    }
+
+    public bool HasProject(IProject project){
+        return this._project.Equals(project);
+    }
+
+    public bool AssociationIntersectDates(DateOnly initDate, DateOnly finalDate)
+    {
+        return _initDate <= finalDate && initDate <= _finalDate;
     }
 
 }
