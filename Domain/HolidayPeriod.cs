@@ -53,7 +53,7 @@ public class HolidayPeriod : IHolidayPeriod
             && _finalDate >= holidayPeriod.GetFinalDate();
     }
 
-    public int GetNumberOfCommonDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate)
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate)
     {
         DateOnly interceptionStart = initDate > _initDate ? initDate : _initDate;
 
@@ -61,7 +61,16 @@ public class HolidayPeriod : IHolidayPeriod
 
         if (interceptionStart <= interceptionEnd)
         {
-            return interceptionEnd.DayNumber - interceptionStart.DayNumber + 1;
+            int weekdayCount = 0;
+
+            for (DateOnly date = interceptionStart; date <= interceptionEnd; date = date.AddDays(1))
+            {
+                if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    weekdayCount++;
+                }
+            }
+            return weekdayCount;
         }
 
         return 0;

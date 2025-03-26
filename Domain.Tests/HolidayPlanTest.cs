@@ -410,7 +410,7 @@ public class HolidayPlanTest
             var holidayPeriodDouble = new Mock<IHolidayPeriod>();
             holidayPeriodDouble
                 .Setup(p =>
-                    p.GetNumberOfCommonDaysBetweenPeriods(
+                    p.GetNumberOfCommonUtilDaysBetweenPeriods(
                         It.IsAny<DateOnly>(),
                         It.IsAny<DateOnly>()
                     )

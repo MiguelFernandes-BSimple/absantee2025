@@ -33,7 +33,7 @@ public class HolidayPlan : IHolidayPlan
     public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
     {
         return _holidaysPeriods.Sum(period =>
-            period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate)
+            period.GetNumberOfCommonUtilDaysBetweenPeriods(initDate, endDate)
         );
     }
 
