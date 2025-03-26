@@ -264,7 +264,7 @@ public class HolidayPlanTest
 
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
         colaboratorDouble
-            .Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
@@ -302,7 +302,7 @@ public class HolidayPlanTest
 
         Mock<IColaborator> colaboratorDouble = new Mock<IColaborator>();
         colaboratorDouble
-            .Setup(c => c.ContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
