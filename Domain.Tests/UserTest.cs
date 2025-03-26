@@ -148,4 +148,19 @@ public class UserTest
         Assert.True(result); 
     }
 
+    [Fact]
+    public void WhenDeactivatingAnAlreadyDeactivatedUser_ThenReturnTrue()
+    {
+        // Arrange
+        
+        User user = new User("John", "Doe", "john.doe@email.com", DateTime.MaxValue);
+
+        // Act
+        bool result = user.DeactivateUser(); 
+
+        // Assert
+        Assert.True(result); 
+
+}
+
 }
