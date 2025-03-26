@@ -46,7 +46,6 @@ public class ColaboratorRepositoryTest
 
         //Assert
         //Verifying that the lists are the same
-        Assert.Equal(expectedList.Count(), resultList.Count());
         Assert.True(expectedList.SequenceEqual(resultList));
     }
 
@@ -88,7 +87,6 @@ public class ColaboratorRepositoryTest
 
         //Assert
         //Verifying that the lists only has the elements that were not filtered
-        Assert.Equal(expectedList.Count(), resultList.Count());
         Assert.True(expectedList.SequenceEqual(resultList));
     }
 
@@ -130,7 +128,6 @@ public class ColaboratorRepositoryTest
 
         //Assert
         //Verifying that the lists are the same
-        Assert.Equal(expectedList.Count(), resultList.Count());
         Assert.True(expectedList.SequenceEqual(resultList));
     }
 
@@ -181,7 +178,6 @@ public class ColaboratorRepositoryTest
 
         //Assert
         //Verifying that the lists are the same
-        Assert.Equal(expectedList.Count(), resultList.Count());
         Assert.True(expectedList.SequenceEqual(resultList));
     }
 }
