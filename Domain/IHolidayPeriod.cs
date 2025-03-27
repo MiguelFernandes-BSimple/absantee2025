@@ -9,6 +9,6 @@ public interface IHolidayPeriod
     public bool HolidayPeriodOverlap(IHolidayPeriod periodoFerias);
     public bool ContainsDate(DateOnly date);
     public bool ContainedBetween(DateOnly ini, DateOnly end);
-    public int GetNumberOfCommonDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate);
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate);
     public bool IsLongerThan(int days);
 }
