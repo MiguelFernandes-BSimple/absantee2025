@@ -78,7 +78,30 @@ public class User : IUser
         }
 
         this._deactivationDate = DateTime.Now;
+
         return true;
     }
 
+
+    public bool HasNames(string names)
+    {
+        // Return false if 'names' is null, empty, or contains only whitespace
+        if (string.IsNullOrWhiteSpace(names))
+        {
+            return false;
+        }
+
+        return _names.Contains(names, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public bool HasSurnames(string surnames)
+    {
+        // Return false if 'names' is null, empty, or contains only whitespace
+        if (string.IsNullOrWhiteSpace(surnames))
+        {
+            return false;
+        }
+
+        return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
+    }
 }
