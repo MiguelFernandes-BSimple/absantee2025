@@ -598,32 +598,30 @@ public class HolidayPlanRepositoryTest
     public void WhenRetrievingAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends_ThenReturnSucessfully(DateOnly initDate, DateOnly endDate)
     {
         //arrange
-        Mock<ICollaborator> colab = new Mock<ICollaborator>();
+        Mock<ICollaborator> collab = new Mock<ICollaborator>();
 
         Mock<IHolidayPlan> holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(colab.Object);
+        holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collab.Object);
         
         Mock<IHolidayPeriod> holidayPeriod = new Mock<IHolidayPeriod>();
-        DateOnly startDate = new DateOnly(2023, 04, 04);
-        DateOnly finalDate = new DateOnly(2023, 04, 07);
-        holidayPeriod.Setup(hp => hp.GetInitDate()).Returns(startDate);
-        holidayPeriod.Setup(hp => hp.GetFinalDate()).Returns(finalDate);
+        DateOnly holidayPeriodStartDate = new DateOnly(2025, 03, 30);
+        DateOnly holidayPeriodFinalDate = new DateOnly(2025, 04, 09);
+        holidayPeriod.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate);
+        holidayPeriod.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate);
         
         var holidayPeriodsList = new List<IHolidayPeriod>{ holidayPeriod.Object };
+        holidayPlan.Setup(hp => hp.HasCollaborator(collab.Object)).Returns(true);
         holidayPlan.Setup(hp => hp.GetHolidayPeriodsList()).Returns(holidayPeriodsList);
 
-        Mock<IHolidayPlanRepository> repositoryMock = new Mock<IHolidayPlanRepository>();
-        repositoryMock.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(colab.Object, initDate, endDate)).Returns(holidayPeriodsList);
 
-        IHolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
-
+        HolidayPlanRepository repository = new HolidayPlanRepository(holidayPlan.Object);
+        
         //act
-        var result = repository.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(colab.Object, initDate, endDate);
+        var result = repository.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(collab.Object, initDate, endDate);
 
         //assert
-        Assert.Equal(startDate, result.First().GetInitDate());
-        Assert.Equal(finalDate, result.First().GetFinalDate());
-        
+        Assert.Equal(holidayPeriodStartDate, result.First().GetInitDate());
+        Assert.Equal(holidayPeriodFinalDate, result.First().GetFinalDate());    
     }
 
     [Fact]
