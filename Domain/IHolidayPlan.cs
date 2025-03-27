@@ -2,7 +2,6 @@ namespace Domain;
 
 public interface IHolidayPlan
 {
-    public List<IHolidayPeriod> GetHolidayPeriodsList();
     bool AddHolidayPeriod(IHolidayPeriod holidayPeriod);
     public bool HasCollaborator(ICollaborator collab);
     IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date);
@@ -10,6 +9,5 @@ public interface IHolidayPlan
     public ICollaborator GetCollaborator();
     public IEnumerable<IHolidayPeriod> GetHolidayPeriods();
     int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate);
-
     bool HasPeriodLongerThan(int days);
 }

@@ -19,10 +19,6 @@ public class HolidayPlan : IHolidayPlan
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public List<IHolidayPeriod> GetHolidayPeriodsList(){
-        return new List<IHolidayPeriod>(_holidaysPeriods);
-    }
-
     public bool AddHolidayPeriod(IHolidayPeriod holidayPeriod)
     {
         if (CanInsertHolidayPeriod(holidayPeriod, this._holidaysPeriods, this._collaborator))
@@ -109,11 +105,13 @@ public class HolidayPlan : IHolidayPlan
         return _collaborator;
     }
 
-    public IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date) {
+    public IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date)
+    {
         return _holidaysPeriods.Where(a => a.ContainsDate(date)).FirstOrDefault();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(DateOnly ini, DateOnly end, int days) {
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(DateOnly ini, DateOnly end, int days)
+    {
         return _holidaysPeriods.Where(a => a.ContainedBetween(ini, end) && a.GetDuration() > days);
     }
 }
