@@ -24,7 +24,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         DateOnly endDate
     )
     {
-        // US13 - Como gestor de RH, quero listar os períodos de férias dum colaborador num período
+        // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
         if (initDate > endDate)
         {
             return Enumerable.Empty<IHolidayPeriod>();
@@ -38,15 +38,15 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
-    public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
         DateOnly initDate,
         DateOnly endDate
     )
     {
-        // US14 - Como gestor de RH, quero listar os colaboradores que têm de férias num período
+        // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
         if (initDate > endDate)
         {
-            return Enumerable.Empty<IColaborator>();
+            return Enumerable.Empty<ICollaborator>();
         }
         else
         {
@@ -54,25 +54,25 @@ public class HolidayPlanRepository : IHolidayPlanRepository
                 .Where(h =>
                     h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate))
                 )
-                .Select(h => h.GetColaborator())
+                .Select(h => h.GetCollaborator())
                 .Distinct();
         }
     }
 
-    public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
         return _holidayPlans
             .Where(p => p.HasPeriodLongerThan(days))
-            .Select(p => p.GetColaborator())
+            .Select(p => p.GetCollaborator())
             .Distinct();
     }
 
-    public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectColaborator association)
+    public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectCollaborator association)
     {
         int numberOfHolidayDays = 0;
 
         IHolidayPlan? collaboratorHolidayPlan = _holidayPlans.SingleOrDefault(p =>
-            p.GetColaborator() == association.GetColaborator()
+            p.GetCollaborator() == association.GetCollaborator()
         );
 
         if (collaboratorHolidayPlan == null)
@@ -86,33 +86,33 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return numberOfHolidayDays;
     }
 
-    public IHolidayPeriod? GetHolidayPeriodContainingDate(IColaborator colaborator, DateOnly date)
+    public IHolidayPeriod? GetHolidayPeriodContainingDate(ICollaborator collaborator, DateOnly date)
     {
-        return _holidayPlans.Where(a => a.HasCollaborator(colaborator))
+        return _holidayPlans.Where(a => a.HasCollaborator(collaborator))
                 .Select(a => a.GetHolidayPeriodContainingDate(date)).FirstOrDefault();
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(
-        IColaborator colaborator,
+        ICollaborator collaborator,
         DateOnly initDate,
         DateOnly endDate,
         int days
     )
     {
-        return _holidayPlans.Where(a => a.HasCollaborator(colaborator))
+        return _holidayPlans.Where(a => a.HasCollaborator(collaborator))
                 .SelectMany(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(initDate, endDate, days));
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(
-        IColaborator colaborator
+        ICollaborator collaborator
     )
     {
         throw new NotImplementedException();
     }
 
     public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(
-        IColaborator colaborator1,
-        IColaborator colaborator2,
+        ICollaborator collaborator1,
+        ICollaborator collaborator2,
         DateOnly initDate,
         DateOnly endDate
     )
@@ -130,7 +130,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(
-        IAssociationProjectColaborator association,
+        IAssociationProjectCollaborator association,
         DateOnly initDate,
         DateOnly endDate
     )

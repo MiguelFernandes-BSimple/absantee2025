@@ -1,12 +1,12 @@
 namespace Domain;
 
-public class Colaborator : IColaborator
+public class Collaborator : ICollaborator
 {
     private DateTime _initDate;
     private DateTime _finalDate;
     private IUser _user;
 
-    public Colaborator(IUser user, DateTime initDate, DateTime? finalDate)
+    public Collaborator(IUser user, DateTime initDate, DateTime? finalDate)
     {
         finalDate ??= DateTime.MaxValue;
         if (checkInputFields(initDate, (DateTime)finalDate, user))
