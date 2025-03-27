@@ -29,7 +29,7 @@ public class HolidayPeriod : IHolidayPeriod
         return true;
     }
 
-    public bool HolidayPeriodOverlap(IHolidayPeriod holidayPeriod){
+    public bool Contains(IHolidayPeriod holidayPeriod){
         return _initDate <= holidayPeriod.GetInitDate()
             && _finalDate >= holidayPeriod.GetFinalDate();
     }

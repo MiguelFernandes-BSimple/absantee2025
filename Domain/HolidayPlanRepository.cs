@@ -60,25 +60,23 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
-    IAssociationProjectColaborator association,
-    IProject project,
+    IEnumerable<IColaborator> collaborators,
     DateOnly initDate,
     DateOnly endDate)
-{
-    var collaborators = association.GetCollaborators(project);
-    int totalHolidayDays = 0;
-
-    foreach (var collaborator in collaborators)
     {
-        var holidayPeriods = _holidayPlans
-            .Where(hp => hp.GetCollaborator().Equals(collaborator))
-            .SelectMany(hp => hp.GetHolidayPeriods()
-                .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
-            );
+        int totalHolidayDays = 0;
 
-        totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+        foreach (var collaborator in collaborators)
+        {
+            var holidayPeriods = _holidayPlans
+                .Where(hp => hp.GetCollaborator().Equals(collaborator))
+                .SelectMany(hp => hp.GetHolidayPeriods()
+                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+                );
+
+            totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+        }
+
+        return totalHolidayDays;
     }
-
-    return totalHolidayDays;
-}
 }

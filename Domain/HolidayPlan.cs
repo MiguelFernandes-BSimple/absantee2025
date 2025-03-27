@@ -52,7 +52,7 @@ public class HolidayPlan : IHolidayPlan
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {
-            if (holidayPeriod.HolidayPeriodOverlap(pf))
+            if (holidayPeriod.Contains(pf))
             {
                 return false;
             }
@@ -61,17 +61,17 @@ public class HolidayPlan : IHolidayPlan
     }
 
     public IColaborator GetCollaborator()
-{
-    return _colaborator;
-}
+    {
+        return _colaborator;
+    }
 
     public List<IHolidayPeriod> GetHolidayPeriods()
-{
-    return [.. _holidaysPeriods];
-}
+    {
+        return [.. _holidaysPeriods];
+    }
 
     public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
-{
-    return _holidaysPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
-}
+    {
+        return _holidaysPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+    }
 }
