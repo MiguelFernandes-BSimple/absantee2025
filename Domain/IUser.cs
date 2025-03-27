@@ -2,7 +2,7 @@ public interface IUser
 {
     public bool IsDeactivated();
     public bool DeactivationDateIsBefore(DateTime date);
-
+    public bool DeactivateUser();
     /**
     * Method to verify if a given string is found inside the names of an User
     * It just needs to contain the string, it doesn't need to be the exact same

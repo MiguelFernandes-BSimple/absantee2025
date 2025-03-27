@@ -70,6 +70,19 @@ public class User : IUser
         return date > _deactivationDate;
     }
 
+    public bool DeactivateUser()
+    {
+        if (this.IsDeactivated())
+        {
+            return false;
+        }
+
+        this._deactivationDate = DateTime.Now;
+
+        return true;
+    }
+
+
     public bool HasNames(string names)
     {
         // Return false if 'names' is null, empty, or contains only whitespace
