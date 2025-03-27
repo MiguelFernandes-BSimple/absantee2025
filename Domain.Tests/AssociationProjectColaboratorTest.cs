@@ -1,7 +1,7 @@
 using Domain;
 using Moq;
 
-public class AssociationProjectColaboratorTest
+public class AssociationProjectCollaboratorTest
 {
 
     public static IEnumerable<object[]> ValidDates()
@@ -12,7 +12,7 @@ public class AssociationProjectColaboratorTest
 
     [Theory]
     [MemberData(nameof(ValidDates))]
-    public void WhenPassingValidData_ThenAssociationProjectColaboratorIsCreated(DateOnly initDate, DateOnly finalDate)
+    public void WhenPassingValidData_ThenAssociationProjectCollaboratorIsCreated(DateOnly initDate, DateOnly finalDate)
     {
         //arrange
         Mock<IProject> ProjectMock = new Mock<IProject>();
@@ -20,11 +20,11 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         //act
-        new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object);
+        new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
 
         //assert
     }
@@ -38,12 +38,12 @@ public class AssociationProjectColaboratorTest
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
         Mock<IProject> ProjectMock = new Mock<IProject>();
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -61,13 +61,13 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -84,19 +84,19 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(true);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
     [Fact]
-    public void WhenColaboradorDatesOutsideAssociationDates_ThenThrowException()
+    public void WhenCollaboradorDatesOutsideAssociationDates_ThenThrowException()
     {
         //arrange
         DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
@@ -107,14 +107,14 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
 
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -131,10 +131,10 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
-        var assocProjCollab = new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object);
+        var assocProjCollab = new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
         bool result = assocProjCollab.HasProject(ProjectMock.Object);
@@ -154,10 +154,10 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
-        var assocProjCollab = new AssociationProjectColaborator(initDate, finalDate, ColaboradorMock.Object, ProjectMock.Object);
+        var assocProjCollab = new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
 
         Mock<IProject> ProjectMock2 = new Mock<IProject>();
         //act
@@ -186,10 +186,10 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
-        var assocProjCollab = new AssociationProjectColaborator(initDateAssoc, finalDateAssoc, ColaboradorMock.Object, ProjectMock.Object);
+        var assocProjCollab = new AssociationProjectCollaborator(initDateAssoc, finalDateAssoc, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
         bool result = assocProjCollab.AssociationIntersectDates(InitDate, FinalDate);
@@ -217,10 +217,10 @@ public class AssociationProjectColaboratorTest
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
-        Mock<IColaborator> ColaboradorMock = new Mock<IColaborator>();
-        ColaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
 
-        var assocProjCollab = new AssociationProjectColaborator(initDateAssoc, finalDateAssoc, ColaboradorMock.Object, ProjectMock.Object);
+        var assocProjCollab = new AssociationProjectCollaborator(initDateAssoc, finalDateAssoc, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
         bool result = assocProjCollab.AssociationIntersectDates(InitDate, FinalDate);

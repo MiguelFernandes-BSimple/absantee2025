@@ -1,24 +1,24 @@
 namespace Domain;
 
-public class AssociationProjectColaboratorRepository : IAssociationProjectColaboratorRepository
+public class AssociationProjectCollaboratorRepository : IAssociationProjectCollaboratorRepository
 {
-    private List<IAssociationProjectColaborator> _associationsProjectColaborator;
+    private List<IAssociationProjectCollaborator> _associationsProjectCollaborator;
 
-    public AssociationProjectColaboratorRepository(List<IAssociationProjectColaborator> associationsProjectColaborator)
+    public AssociationProjectCollaboratorRepository(List<IAssociationProjectCollaborator> associationsProjectCollaborator)
     {
-        _associationsProjectColaborator = associationsProjectColaborator;
+        _associationsProjectCollaborator = associationsProjectCollaborator;
     }
 
-    public IEnumerable<IColaborator> FindAllProjectCollaborators(IProject project)
+    public IEnumerable<ICollaborator> FindAllProjectCollaborators(IProject project)
     {
-        return _associationsProjectColaborator.Where(a => a.HasProject(project)).Select(a => a.GetColaborator());
+        return _associationsProjectCollaborator.Where(a => a.HasProject(project)).Select(a => a.GetCollaborator());
     }
 
-    public IEnumerable<IColaborator> FindAllProjectCollaboratorsBetween(IProject project, DateOnly InitDate, DateOnly FinalDate)
+    public IEnumerable<ICollaborator> FindAllProjectCollaboratorsBetween(IProject project, DateOnly InitDate, DateOnly FinalDate)
     {
-        return _associationsProjectColaborator
+        return _associationsProjectCollaborator
                 .Where(a => a.HasProject(project)
                     && a.AssociationIntersectDates(InitDate, FinalDate))
-                .Select(a => a.GetColaborator());
+                .Select(a => a.GetCollaborator());
     }
 }

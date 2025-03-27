@@ -1,4 +1,6 @@
 
+using System.ComponentModel;
+
 namespace Domain;
 public class HolidayPeriod : IHolidayPeriod
 {
@@ -74,5 +76,14 @@ public class HolidayPeriod : IHolidayPeriod
         }
 
         return 0;
+    }
+
+    public bool ContainsDate(DateOnly date) {
+        return _initDate <= date
+            && _finalDate >= date;
+    }
+
+    public bool ContainedBetween(DateOnly ini, DateOnly end) {
+        return _initDate >= ini && _finalDate <= end;
     }
 }

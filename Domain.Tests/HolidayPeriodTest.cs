@@ -69,6 +69,67 @@ public class HolidayPeriodTest
         Assert.Equal(expected, result);
     }
 
+    public static IEnumerable<object[]> GetHolidayPeriod_ContainingDate()
+    {
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), new DateOnly(2020, 1, 3), true };
+        yield return new object[] { new DateOnly(2020, 4, 1), new DateOnly(2020, 4, 5), new DateOnly(2020, 1, 3), false };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), true };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 3), new DateOnly(2020, 1, 3), true };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetHolidayPeriod_ContainingDate))]
+    public void WhenGivenDate_ThenEvaluateIfContains(DateOnly ini, DateOnly end, DateOnly date, bool ret) {
+        //arrange
+        var holidayPeriod = new HolidayPeriod(ini, end);
+
+        //act
+        var result = holidayPeriod.ContainsDate(date);
+
+        //assert
+        Assert.Equal(ret, result);
+    }
+
+    public static IEnumerable<object[]> GetHolidayPeriod_ContaininedBetween()
+    {
+        yield return new object[] { new DateOnly(2020, 1, 2), new DateOnly(2020, 1, 3), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), true };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1), true };
+        yield return new object[] { new DateOnly(2020, 4, 2), new DateOnly(2020, 4, 3), new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), false };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetHolidayPeriod_ContaininedBetween))]
+    public void WhenGivenDates_ThenEvaluateIfContainedBetween(DateOnly ini, DateOnly end, DateOnly containsIni, DateOnly containsEnd, bool ret) {
+        //arrange
+        var holidayPeriod = new HolidayPeriod(ini, end);
+
+        //act
+        var result = holidayPeriod.ContainedBetween(containsIni, containsEnd);
+        
+        //assert
+        Assert.Equal(ret, result);
+    }
+
+    public static IEnumerable<object[]> GetHolidayPeriod_OfLength()
+    {
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 1)), 1 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 3)), 3 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 1, 1)), DateOnly.FromDateTime(new DateTime(2020, 1, 5)), 5 };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetHolidayPeriod_OfLength))]
+    public void WhenGivenGoodPeriod_ThenReturnLength(DateOnly ini, DateOnly end, int len) {
+        //arrange
+        var holidayPeriod = new HolidayPeriod(ini, end);
+
+        //act
+        var result = holidayPeriod.GetDuration();
+        
+        //assert
+        Assert.Equal(len, result);
+    }
+    
     public static IEnumerable<object[]> GetNumberOfCommonUtilDaysBetweenPeriods()
     {
         yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 1)), DateOnly.FromDateTime(new DateTime(2020, 7, 1)), 11 };
