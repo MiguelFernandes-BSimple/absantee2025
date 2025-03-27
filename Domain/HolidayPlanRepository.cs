@@ -113,12 +113,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(
         ICollaborator collaborator1,
         ICollaborator collaborator2,
-        DateOnly initDate,
-        DateOnly endDate
+        DateOnly searchInitDate,
+        DateOnly searchEndDate
     )
     {
-        IEnumerable<IHolidayPeriod> holidayPeriodListColab1 = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator1, initDate, endDate);
-        IEnumerable<IHolidayPeriod> holidayPeriodListColab2 = FindAllHolidayPeriodsForCollaboratorBetweenDates(colaborator2, initDate, endDate);
+        IEnumerable<IHolidayPeriod> holidayPeriodListColab1 = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator1, searchInitDate, searchEndDate);
+        IEnumerable<IHolidayPeriod> holidayPeriodListColab2 = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator2, searchInitDate, searchEndDate);
 
         return holidayPeriodListColab1
             .SelectMany(period1 => holidayPeriodListColab2
