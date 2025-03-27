@@ -139,28 +139,47 @@ public class UserTest
     public void WhenDeactivatingAnActiveUser_ThenReturnTrue()
     {
         // Arrange 
-        User user = new User("John", "Doe", "john.doe@email.com", null); 
-
-        // Act
-        bool result = user.DeactivateUser(); 
-
-        // Assert
-        Assert.True(result); 
-    }
-
-    [Fact]
-    public void WhenDeactivatingAnAlreadyDeactivatedUser_ThenReturnTrue()
-    {
-        // Arrange
-        
         User user = new User("John", "Doe", "john.doe@email.com", DateTime.MaxValue);
 
         // Act
-        bool result = user.DeactivateUser(); 
+        bool result = user.DeactivateUser();
 
         // Assert
-        Assert.True(result); 
+        Assert.True(result);
+    }
 
-}
+    [Fact]
+    public void WhenDeactivatingAnAlreadyDeactivatedUser_ThenReturnFalse()
+    {
+        // Arrange
 
+        User user = new User("John", "Doe", "john.doe@email.com", DateTime.MaxValue);
+        user.DeactivateUser();
+
+        // Act
+        bool result = user.DeactivateUser();
+
+        // Assert
+        Assert.False(result);
+
+    }
+
+    public static IEnumerable<object[]> GetDatesEqualAndBeforeDeactivatonDate()
+    {
+        yield return new object[] { DateTime.MaxValue };
+        yield return new object[] { new DateTime(2045, 4, 1, 1, 1, 1) };
+    }
+    [Theory]
+    [MemberData(nameof(GetDatesEqualAndBeforeDeactivatonDate))]
+    public void WhenDeactivationDateIsEqualOrAfter_ThenReturnFalse(DateTime date)
+    {
+        //arrange
+        User user = new User("John", "Doe", "john.doe@email.com", DateTime.MaxValue);
+
+        //act
+        bool result = user.DeactivationDateIsBefore(date);
+
+        //assert
+        Assert.False(result);
+    }
 }
