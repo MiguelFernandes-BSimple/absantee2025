@@ -703,7 +703,7 @@ public class HolidayPlanRepositoryTest
         Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
 
         Mock<IHolidayPlan> holidayPlan2 = new Mock<IHolidayPlan>();
-        holidayPlan1.Setup(hp => hp.GetCollaborator()).Returns(collab2.Object);
+        holidayPlan2.Setup(hp => hp.GetCollaborator()).Returns(collab2.Object);
 
         Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
         DateOnly holidayPeriodStartDate2 = new DateOnly(2025, 04, 05);
@@ -712,7 +712,7 @@ public class HolidayPlanRepositoryTest
         holidayPeriod2.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate2);
 
         var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
-        holidayPlan2.Setup(hp => hp.HasCollaborator(collab1.Object)).Returns(true);
+        holidayPlan2.Setup(hp => hp.HasCollaborator(collab2.Object)).Returns(true);
         holidayPlan2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriodsList2);
 
         
