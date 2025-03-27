@@ -6,7 +6,7 @@ public static class Utils
     {
         if (initDate > endDate)
             throw new Exception("The start date can't be after the end date.");
-            
+
         for (var date = initDate; date <= endDate; date = date.AddDays(1))
         {
             if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
@@ -15,6 +15,16 @@ public static class Utils
             }
         }
         return false;
+    }
+
+    public static DateOnly DataMax(DateOnly date1, DateOnly date2)
+    {
+        return date1 > date2 ? date1 : date2;
+
+    }
+    public static DateOnly DataMin(DateOnly date1, DateOnly date2)
+    {
+        return date1 < date2 ? date1 : date2;
     }
 
 }

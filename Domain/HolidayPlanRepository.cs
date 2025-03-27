@@ -11,7 +11,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
     public HolidayPlanRepository(IHolidayPlan holidayPlan)
     {
-        _holidayPlans = new List<IHolidayPlan>(){ holidayPlan };
+        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
     }
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
@@ -105,19 +105,23 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(
         ICollaborator collaborator,
-        DateOnly initDate,
-        DateOnly endDate
+        DateOnly searchInitDate,
+        DateOnly searchEndDate
     )
     {
-        if (!Utils.ContainsWeekend(initDate, endDate))
+        if (!Utils.ContainsWeekend(searchInitDate, searchEndDate))
             return Enumerable.Empty<IHolidayPeriod>();
 
-        IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, initDate, endDate).ToList();
+        IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, searchInitDate, searchEndDate);
 
         IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates
-            .Where(holidayPeriod => Utils.ContainsWeekend(holidayPeriod.GetInitDate(), holidayPeriod.GetFinalDate()))
-            .ToList();
-   
+            .Where(holidayPeriod =>
+            {
+                DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetInitDate(), searchInitDate);
+                DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetFinalDate(), searchEndDate);
+                return intersectionStart <= intersectionEnd && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
+            });
+
         return hp;
     }
 
