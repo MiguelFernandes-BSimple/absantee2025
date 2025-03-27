@@ -32,6 +32,20 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
+    public IColaborator GetColaborator() => _colaborator;
+
+    public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
+    {
+        return _holidaysPeriods.Sum(period => period.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate));
+    }
+
+
+    public bool HasPeriodLongerThan(int days)
+    {
+        return _holidaysPeriods.Any(period => period.IsLongerThan(days));
+    }
+
+
     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, IColaborator colaborador)
     {
         for (int i = 0; i < periodoFerias.Count; i++)
@@ -48,7 +62,7 @@ public class HolidayPlan : IHolidayPlan
     {
         DateTime holidayPeriodInitDate = holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue);
         DateTime holidayPeriodFinalDate = holidayPeriod.GetFinalDate().ToDateTime(TimeOnly.MinValue);
-        if (!colaborator.ContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
+        if (!colaborator.ContractContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {
@@ -69,6 +83,6 @@ public class HolidayPlan : IHolidayPlan
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(DateOnly ini, DateOnly end, int days) {
-        return _holidaysPeriods.Where(a => a.ContainedBetween(ini, end) && a.Length() > days);
+        return _holidaysPeriods.Where(a => a.ContainedBetween(ini, end) && a.GetDuration() > days);
     }
 }

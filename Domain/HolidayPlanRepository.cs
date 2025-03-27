@@ -24,12 +24,26 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IColaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
-        throw new NotImplementedException();
+        return _holidayPlans
+            .Where(p => p.HasPeriodLongerThan(days))
+            .Select(p => p.GetColaborator())
+            .Distinct();
+
     }
 
-    public int GetHolidayDaysInProject(IProject project)
+    public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectColaborator association)
     {
-        throw new NotImplementedException();
+
+        int numberOfHolidayDays = 0;
+
+        IHolidayPlan? collaboratorHolidayPlan = _holidayPlans.SingleOrDefault(p => p.GetColaborator() == association.GetColaborator());
+
+        if (collaboratorHolidayPlan == null)
+            return 0;
+
+        numberOfHolidayDays = collaboratorHolidayPlan.GetNumberOfHolidayDaysBetween(association.GetInitDate(), association.GetFinalDate());
+
+        return numberOfHolidayDays;
     }
 
     public IHolidayPeriod? GetHolidayPeriodContainingDate(IColaborator colaborator, DateOnly date)
@@ -65,6 +79,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int GetHolidayDaysInProject(IProject project)
     {
         throw new NotImplementedException();
     }

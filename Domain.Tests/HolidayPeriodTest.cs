@@ -124,9 +124,93 @@ public class HolidayPeriodTest
         var holidayPeriod = new HolidayPeriod(ini, end);
 
         //act
-        var result = holidayPeriod.Length();
+        var result = holidayPeriod.GetDuration();
         
         //assert
         Assert.Equal(len, result);
+    }
+    
+    public static IEnumerable<object[]> GetNumberOfCommonDaysBetweenPeriods()
+    {
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 1)), DateOnly.FromDateTime(new DateTime(2020, 7, 1)), 15 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 3)), DateOnly.FromDateTime(new DateTime(2020, 6, 9)), 7 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 4, 1)), DateOnly.FromDateTime(new DateTime(2020, 5, 1)), 0 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 1)), DateOnly.FromDateTime(new DateTime(2020, 6, 10)), 10 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 5)), DateOnly.FromDateTime(new DateTime(2020, 6, 15)), 11 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 10)), DateOnly.FromDateTime(new DateTime(2020, 6, 10)), 1 };
+        yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 16)), DateOnly.FromDateTime(new DateTime(2020, 6, 20)), 0 };
+
+    }
+
+    [Theory]
+    [MemberData(nameof(GetNumberOfCommonDaysBetweenPeriods))]
+    public void WhenCalculatingTheNumberOfCommonDaysBetweenPeriods_ThenCorrectNumberIsReturned(DateOnly initDate, DateOnly endDate, int expectedDays)
+    {
+
+        //arrange
+        DateOnly _ini = DateOnly.FromDateTime(new DateTime(2020, 6, 1));
+        DateOnly _end = DateOnly.FromDateTime(new DateTime(2020, 6, 15));
+        HolidayPeriod hp = new HolidayPeriod(_ini, _end);
+
+        //act
+        int numberOfDays = hp.GetNumberOfCommonDaysBetweenPeriods(initDate, endDate);
+
+        //assert
+        Assert.Equal(expectedDays, numberOfDays);
+    }
+
+    public static IEnumerable<object[]> GetPeriodDuration()
+    {
+        yield return new object[] { new DateOnly(2025, 6, 1), new DateOnly(2025, 6, 1), 1 };
+        yield return new object[] { new DateOnly(2025, 6, 1), new DateOnly(2025, 6, 5), 5 };
+        yield return new object[] { new DateOnly(2025, 6, 1), new DateOnly(2025, 7, 20), 50 };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPeriodDuration))]
+    public void WhenCalculatingDurationOfPeriod_ThenResultShouldBeCorrect(DateOnly initDate, DateOnly finalDate, int expectedResult)
+    {
+        //arrange
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+
+        //act
+        int duration = holidayPeriod.GetDuration();
+
+        //assert
+        Assert.Equal(expectedResult, duration);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(10)]
+    public void WhenPeriodDurationIsGreaterThanLimit_ThenShouldReturnTrue(int days)
+    {
+        //arrange
+        DateOnly initDate = new DateOnly(2020, 6, 1);
+        DateOnly finalDate = new DateOnly(2020, 6, 15);
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+
+        //act
+        bool result = holidayPeriod.IsLongerThan(days);
+
+        //assert
+        Assert.True(result);
+    }
+
+    [Theory]
+    [InlineData(15)]
+    [InlineData(20)]
+    public void WhenPeriodDurationIsLessOrEqualThanLimit_ThenShouldReturnFalse(int days)
+    {
+        //arrange
+        DateOnly initDate = new DateOnly(2020, 6, 1);
+        DateOnly finalDate = new DateOnly(2020, 6, 15);
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+
+        //act
+        bool result = holidayPeriod.IsLongerThan(days);
+
+        //assert
+        Assert.False(result);
     }
 }
