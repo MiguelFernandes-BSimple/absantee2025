@@ -612,7 +612,7 @@ public class HolidayPlanRepositoryTest
         holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collab.Object);
 
         Mock<IHolidayPeriod> holidayPeriod = new Mock<IHolidayPeriod>();
-        DateOnly holidayPeriodStartDate = new DateOnly(2025, 03, 02);
+        DateOnly holidayPeriodStartDate = new DateOnly(2025, 04, 02);
         DateOnly holidayPeriodFinalDate = new DateOnly(2025, 04, 07);
         holidayPeriod.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate);
         holidayPeriod.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate);
