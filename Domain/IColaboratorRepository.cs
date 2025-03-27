@@ -1,34 +1,34 @@
 namespace Domain;
 
-public interface IColaboratorRepository
+public interface ICollaboratorRepository
 {
     /**
-    * Method that returns all the colaborators within the repository
-    * Returns: IEnumerable<IColaborator>
+    * Method that returns all the collaborators within the repository
+    * Returns: IEnumerable<ICollaborator>
     */
-    IEnumerable<IColaborator> FindAllColaborators();
+    IEnumerable<ICollaborator> FindAllCollaborators();
 
     /**
-    * Method that returns all the colaborators that have a name
+    * Method that returns all the collaborators that have a name
     * This can be the only string or just a substring of their name
     * It just has to be included - Users can have multiple names
-    * Returns: IEnumerable<IColaborator>
+    * Returns: IEnumerable<ICollaborator>
     */
-    IEnumerable<IColaborator> FindAllColaboratorsWithName(string name);
+    IEnumerable<ICollaborator> FindAllCollaboratorsWithName(string name);
 
     /**
-    * Method that returns all the colaborators that have a surname
+    * Method that returns all the collaborators that have a surname
     * This can be the only string or just a substring of their surname
     * It just has to be included - Users can have multiple surnames
-    * Returns: IEnumerable<IColaborator>
+    * Returns: IEnumerable<ICollaborator>
     */
-    IEnumerable<IColaborator> FindAllColaboratorsWithSurname(string surname);
+    IEnumerable<ICollaborator> FindAllCollaboratorsWithSurname(string surname);
 
     /**
-    * Method that returns all the colaborators that have a name and surname
+    * Method that returns all the collaborators that have a name and surname
     * This can be the only string or just a substring of their name/surname
     * It just has to be included - Users can have multiple names/surnames
-    * Returns: IEnumerable<IColaborator>
+    * Returns: IEnumerable<ICollaborator>
     */
-    IEnumerable<IColaborator> FindAllColaboratorsWithNameAndSurname(string name, string surname);
+    IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string name, string surname);
 }

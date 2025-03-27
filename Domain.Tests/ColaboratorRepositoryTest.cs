@@ -3,46 +3,46 @@ using Moq;
 
 namespace Domain.Tests;
 
-public class ColaboratorRepositoryTest
+public class CollaboratorRepositoryTest
 {
     [Fact]
     public void WhenPassingCorrectValues_ThenObjectIsCreated()
     {
         //Arrange
-        Mock<IColaborator> doubleCollab = new Mock<IColaborator>();
+        Mock<ICollaborator> doubleCollab = new Mock<ICollaborator>();
 
-        List<IColaborator> listCollab = new List<IColaborator> { doubleCollab.Object };
+        List<ICollaborator> listCollab = new List<ICollaborator> { doubleCollab.Object };
 
         //Act
-        new ColaboratorRepository(listCollab);
+        new CollaboratorRepository(listCollab);
 
         //Assert
     }
 
     [Fact]
-    public void WhenQueriedFindAllColaborators_ThenReturnCollaboratorList()
+    public void WhenQueriedFindAllCollaborators_ThenReturnCollaboratorList()
     {
         //Arrange
-        //Double for colaborators to be added
-        Mock<IColaborator> doubleColaborator1 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator2 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator3 = new Mock<IColaborator>();
+        //Double for collaborators to be added
+        Mock<ICollaborator> doubleCollaborator1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator3 = new Mock<ICollaborator>();
 
-        //Create a colaborator list
-        List<IColaborator> expectedList = new List<IColaborator> {
-            doubleColaborator1.Object,
-            doubleColaborator2.Object,
-            doubleColaborator3.Object };
+        //Create a collaborator list
+        List<ICollaborator> expectedList = new List<ICollaborator> {
+            doubleCollaborator1.Object,
+            doubleCollaborator2.Object,
+            doubleCollaborator3.Object };
 
-        //Instatiate ColaboratorRepository with the list 
-        ColaboratorRepository collabRepo = new ColaboratorRepository(expectedList);
+        //Instatiate CollaboratorRepository with the list 
+        CollaboratorRepository collabRepo = new CollaboratorRepository(expectedList);
 
         //Act
-        //Get all Colaborators
-        IEnumerable<IColaborator> result = collabRepo.FindAllColaborators();
+        //Get all Collaborators
+        IEnumerable<ICollaborator> result = collabRepo.FindAllCollaborators();
 
         // convert to list for comparison
-        List<IColaborator> resultList = result.ToList();
+        List<ICollaborator> resultList = result.ToList();
 
         //Assert
         //Verifying that the lists are the same
@@ -53,37 +53,37 @@ public class ColaboratorRepositoryTest
     public void WhenPassingCorrectName_ThenReturnCollaboratorList()
     {
         //Arrange
-        //Double for colaborators to be added
-        Mock<IColaborator> doubleColaborator1 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator2 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator3 = new Mock<IColaborator>();
+        //Double for collaborators to be added
+        Mock<ICollaborator> doubleCollaborator1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator3 = new Mock<ICollaborator>();
 
         string names = "First names";
 
-        doubleColaborator1.Setup(c => c.HasNames(names)).Returns(true);
-        doubleColaborator2.Setup(c => c.HasNames(names)).Returns(false);
-        doubleColaborator3.Setup(c => c.HasNames(names)).Returns(true);
+        doubleCollaborator1.Setup(c => c.HasNames(names)).Returns(true);
+        doubleCollaborator2.Setup(c => c.HasNames(names)).Returns(false);
+        doubleCollaborator3.Setup(c => c.HasNames(names)).Returns(true);
 
-        //Create a colaborator list
-        List<IColaborator> totalList = new List<IColaborator> {
-            doubleColaborator1.Object,
-            doubleColaborator2.Object,
-            doubleColaborator3.Object };
+        //Create a collaborator list
+        List<ICollaborator> totalList = new List<ICollaborator> {
+            doubleCollaborator1.Object,
+            doubleCollaborator2.Object,
+            doubleCollaborator3.Object };
 
         //Create Expected list
-        List<IColaborator> expectedList = new List<IColaborator> {
-            doubleColaborator1.Object,
-            doubleColaborator3.Object };
+        List<ICollaborator> expectedList = new List<ICollaborator> {
+            doubleCollaborator1.Object,
+            doubleCollaborator3.Object };
 
-        //Instatiate ColaboratorRepository with the list 
-        ColaboratorRepository collabRepo = new ColaboratorRepository(totalList);
+        //Instatiate CollaboratorRepository with the list 
+        CollaboratorRepository collabRepo = new CollaboratorRepository(totalList);
 
         //Act
-        //Get all Colaborators
-        IEnumerable<IColaborator> result = collabRepo.FindAllColaboratorsWithName(names);
+        //Get all Collaborators
+        IEnumerable<ICollaborator> result = collabRepo.FindAllCollaboratorsWithName(names);
 
         // convert to list for comparison
-        List<IColaborator> resultList = result.ToList();
+        List<ICollaborator> resultList = result.ToList();
 
         //Assert
         //Verifying that the lists only has the elements that were not filtered
@@ -94,37 +94,37 @@ public class ColaboratorRepositoryTest
     public void WhenPassingCorrectSurname_ThenReturnCollaboratorList()
     {
         //Arrange
-        //Double for colaborators to be added
-        Mock<IColaborator> doubleColaborator1 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator2 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator3 = new Mock<IColaborator>();
+        //Double for collaborators to be added
+        Mock<ICollaborator> doubleCollaborator1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator3 = new Mock<ICollaborator>();
 
         string surnames = "Surnames";
 
-        doubleColaborator1.Setup(c => c.HasSurnames(surnames)).Returns(true);
-        doubleColaborator2.Setup(c => c.HasSurnames(surnames)).Returns(false);
-        doubleColaborator3.Setup(c => c.HasSurnames(surnames)).Returns(true);
+        doubleCollaborator1.Setup(c => c.HasSurnames(surnames)).Returns(true);
+        doubleCollaborator2.Setup(c => c.HasSurnames(surnames)).Returns(false);
+        doubleCollaborator3.Setup(c => c.HasSurnames(surnames)).Returns(true);
 
-        //Create a colaborator list
-        List<IColaborator> totalList = new List<IColaborator> {
-            doubleColaborator1.Object,
-            doubleColaborator2.Object,
-            doubleColaborator3.Object };
+        //Create a collaborator list
+        List<ICollaborator> totalList = new List<ICollaborator> {
+            doubleCollaborator1.Object,
+            doubleCollaborator2.Object,
+            doubleCollaborator3.Object };
 
         //Create Expected list
-        List<IColaborator> expectedList = new List<IColaborator> {
-            doubleColaborator1.Object,
-            doubleColaborator3.Object };
+        List<ICollaborator> expectedList = new List<ICollaborator> {
+            doubleCollaborator1.Object,
+            doubleCollaborator3.Object };
 
-        //Instatiate ColaboratorRepository with the list 
-        ColaboratorRepository collabRepo = new ColaboratorRepository(totalList);
+        //Instatiate CollaboratorRepository with the list 
+        CollaboratorRepository collabRepo = new CollaboratorRepository(totalList);
 
         //Act
-        //Get all Colaborators
-        IEnumerable<IColaborator> result = collabRepo.FindAllColaboratorsWithSurname(surnames);
+        //Get all Collaborators
+        IEnumerable<ICollaborator> result = collabRepo.FindAllCollaboratorsWithSurname(surnames);
 
         // convert to list for comparison
-        List<IColaborator> resultList = result.ToList();
+        List<ICollaborator> resultList = result.ToList();
 
         //Assert
         //Verifying that the lists are the same
@@ -135,46 +135,46 @@ public class ColaboratorRepositoryTest
     public void WhenPassingCorrectNameAndSurname_ThenReturnCollaboratorList()
     {
         //Arrange
-        //Double for colaborators to be added
-        Mock<IColaborator> doubleColaborator1 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator2 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator3 = new Mock<IColaborator>();
-        Mock<IColaborator> doubleColaborator4 = new Mock<IColaborator>();
+        //Double for collaborators to be added
+        Mock<ICollaborator> doubleCollaborator1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator3 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator4 = new Mock<ICollaborator>();
 
         string names = "First names";
         string surnames = "Surnames";
 
-        //Setup the names for each colaborator
-        doubleColaborator1.Setup(c => c.HasNames(names)).Returns(true);
-        doubleColaborator2.Setup(c => c.HasNames(names)).Returns(false);
-        doubleColaborator3.Setup(c => c.HasNames(names)).Returns(true);
-        doubleColaborator4.Setup(c => c.HasNames(names)).Returns(false);
+        //Setup the names for each collaborator
+        doubleCollaborator1.Setup(c => c.HasNames(names)).Returns(true);
+        doubleCollaborator2.Setup(c => c.HasNames(names)).Returns(false);
+        doubleCollaborator3.Setup(c => c.HasNames(names)).Returns(true);
+        doubleCollaborator4.Setup(c => c.HasNames(names)).Returns(false);
 
-        //Setup the names for each colaborator
-        doubleColaborator1.Setup(c => c.HasSurnames(surnames)).Returns(false);
-        doubleColaborator2.Setup(c => c.HasSurnames(surnames)).Returns(false);
-        doubleColaborator3.Setup(c => c.HasSurnames(surnames)).Returns(true);
-        doubleColaborator4.Setup(c => c.HasSurnames(surnames)).Returns(true);
+        //Setup the names for each collaborator
+        doubleCollaborator1.Setup(c => c.HasSurnames(surnames)).Returns(false);
+        doubleCollaborator2.Setup(c => c.HasSurnames(surnames)).Returns(false);
+        doubleCollaborator3.Setup(c => c.HasSurnames(surnames)).Returns(true);
+        doubleCollaborator4.Setup(c => c.HasSurnames(surnames)).Returns(true);
 
-        //Create a colaborator list
-        List<IColaborator> totalList = new List<IColaborator> {
-            doubleColaborator1.Object,
-            doubleColaborator2.Object,
-            doubleColaborator3.Object,
-            doubleColaborator4.Object };
+        //Create a collaborator list
+        List<ICollaborator> totalList = new List<ICollaborator> {
+            doubleCollaborator1.Object,
+            doubleCollaborator2.Object,
+            doubleCollaborator3.Object,
+            doubleCollaborator4.Object };
 
         //Create Expected list
-        List<IColaborator> expectedList = new List<IColaborator> { doubleColaborator3.Object };
+        List<ICollaborator> expectedList = new List<ICollaborator> { doubleCollaborator3.Object };
 
-        //Instatiate ColaboratorRepository with the list 
-        ColaboratorRepository collabRepo = new ColaboratorRepository(totalList);
+        //Instatiate CollaboratorRepository with the list 
+        CollaboratorRepository collabRepo = new CollaboratorRepository(totalList);
 
         //Act
-        //Get all Colaborators
-        IEnumerable<IColaborator> result = collabRepo.FindAllColaboratorsWithNameAndSurname(names, surnames);
+        //Get all Collaborators
+        IEnumerable<ICollaborator> result = collabRepo.FindAllCollaboratorsWithNameAndSurname(names, surnames);
 
         // convert to list for comparison
-        List<IColaborator> resultList = result.ToList();
+        List<ICollaborator> resultList = result.ToList();
 
         //Assert
         //Verifying that the lists are the same
