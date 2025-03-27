@@ -68,14 +68,14 @@ public class HolidayPlanRepositoryTest
     )
     {
         // Arrange
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         holidayPeriod.Setup(p => p.GetInitDate()).Returns(initDateForPeriod);
         holidayPeriod.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod);
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
@@ -85,7 +85,7 @@ public class HolidayPlanRepositoryTest
 
         // Act
         var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
-            colaborator.Object,
+            collaborator.Object,
             initDateForSearching,
             endDateForSearching
         );
@@ -129,7 +129,7 @@ public class HolidayPlanRepositoryTest
         DateOnly endDateForPeriod_2
     )
     {
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
 
         var holidayPeriod1 = new Mock<IHolidayPeriod>();
         holidayPeriod1.Setup(p => p.GetInitDate()).Returns(initDateForPeriod_1);
@@ -140,7 +140,7 @@ public class HolidayPlanRepositoryTest
         holidayPeriod2.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod_2);
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object, holidayPeriod2.Object });
@@ -150,7 +150,7 @@ public class HolidayPlanRepositoryTest
 
         // Act
         var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
-            colaborator.Object,
+            collaborator.Object,
             initDateForSearching,
             endDateForSearching
         );
@@ -165,7 +165,7 @@ public class HolidayPlanRepositoryTest
     public void WhenHolidayPeriodIsOutOfRangeThanTheOneBeingSearchedFor_ThenReturnsEmptyList()
     {
         // Arrange
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
         var initDateForSearching = new DateOnly(2025, 7, 15);
         var endDateForSearching = new DateOnly(2025, 8, 1);
         var initDateForPeriod = new DateOnly(2025, 9, 20);
@@ -176,7 +176,7 @@ public class HolidayPlanRepositoryTest
         holidayPeriod.Setup(p => p.GetFinalDate()).Returns(endDateForPeriod);
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
@@ -186,7 +186,7 @@ public class HolidayPlanRepositoryTest
 
         // Act
         var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
-            colaborator.Object,
+            collaborator.Object,
             initDateForSearching,
             endDateForSearching
         );
@@ -201,13 +201,13 @@ public class HolidayPlanRepositoryTest
         // Arrange
         var holidayPlans = new List<IHolidayPlan>();
         var hpRepo = new HolidayPlanRepository(holidayPlans);
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
         var initDate = new DateOnly(2025, 8, 15);
         var endDate = new DateOnly(2025, 7, 1);
 
         // Act
         var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
-            colaborator.Object,
+            collaborator.Object,
             initDate,
             endDate
         );
@@ -217,7 +217,7 @@ public class HolidayPlanRepositoryTest
     }
 
     // US14
-    public static IEnumerable<object[]> ValidDatesColaborator()
+    public static IEnumerable<object[]> ValidDatesCollaborator()
     {
         // quando o periodo de ferias está dentro do que esta a ser procurado
         yield return new object[]
@@ -275,7 +275,7 @@ public class HolidayPlanRepositoryTest
     }
 
     [Theory]
-    [MemberData(nameof(ValidDatesColaborator))]
+    [MemberData(nameof(ValidDatesCollaborator))]
     public void WhenCollaboratorHasHolidayPeriodWithinDateRange_ThenReturnsCollaborator(
         DateOnly initDate,
         DateOnly endDate,
@@ -284,18 +284,18 @@ public class HolidayPlanRepositoryTest
     )
     {
         // Arrange
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         holidayPeriod.Setup(p => p.GetInitDate()).Returns(initDatePeriod);
         holidayPeriod.Setup(p => p.GetFinalDate()).Returns(endDatePeriod);
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
-        holidayPlan.Setup(hp => hp.GetColaborator()).Returns(colaborator.Object);
+        holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
         // Act
@@ -303,12 +303,12 @@ public class HolidayPlanRepositoryTest
 
         // Assert
         Assert.Single(result);
-        Assert.Contains(colaborator.Object, result);
+        Assert.Contains(collaborator.Object, result);
     }
 
-    public static IEnumerable<object[]> ValidDatesMultipleColaborators()
+    public static IEnumerable<object[]> ValidDatesMultipleCollaborators()
     {
-        // para dois colaboradores, com periodos que têm uma data dentro do periodo procurado
+        // para dois collaboradores, com periodos que têm uma data dentro do periodo procurado
         yield return new object[]
         {
             new DateOnly(2025, 7, 15),
@@ -330,7 +330,7 @@ public class HolidayPlanRepositoryTest
     }
 
     [Theory]
-    [MemberData(nameof(ValidDatesMultipleColaborators))]
+    [MemberData(nameof(ValidDatesMultipleCollaborators))]
     public void WhenMultipleCollaboratorsHaveHolidayPeriodsWithinDateRange_ThenReturnsAllCollaborators(
         DateOnly initDate,
         DateOnly endDate,
@@ -341,8 +341,8 @@ public class HolidayPlanRepositoryTest
     )
     {
         // Arrange
-        var colaborator1 = new Mock<IColaborator>();
-        var colaborator2 = new Mock<IColaborator>();
+        var collaborator1 = new Mock<ICollaborator>();
+        var collaborator2 = new Mock<ICollaborator>();
 
         var holidayPeriod1 = new Mock<IHolidayPeriod>();
         holidayPeriod1.Setup(p => p.GetInitDate()).Returns(initDatePeriod1);
@@ -353,18 +353,18 @@ public class HolidayPlanRepositoryTest
         holidayPeriod2.Setup(p => p.GetFinalDate()).Returns(endDatePeriod2);
 
         var holidayPlan1 = new Mock<IHolidayPlan>();
-        holidayPlan1.Setup(hp => hp.HasColaborator(colaborator1.Object)).Returns(true);
+        holidayPlan1.Setup(hp => hp.HasCollaborator(collaborator1.Object)).Returns(true);
         holidayPlan1
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object });
-        holidayPlan1.Setup(hp => hp.GetColaborator()).Returns(colaborator1.Object);
+        holidayPlan1.Setup(hp => hp.GetCollaborator()).Returns(collaborator1.Object);
 
         var holidayPlan2 = new Mock<IHolidayPlan>();
-        holidayPlan2.Setup(hp => hp.HasColaborator(colaborator2.Object)).Returns(true);
+        holidayPlan2.Setup(hp => hp.HasCollaborator(collaborator2.Object)).Returns(true);
         holidayPlan2
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod2.Object });
-        holidayPlan2.Setup(hp => hp.GetColaborator()).Returns(colaborator2.Object);
+        holidayPlan2.Setup(hp => hp.GetCollaborator()).Returns(collaborator2.Object);
 
         var hpRepo = new HolidayPlanRepository(
             new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object }
@@ -375,13 +375,13 @@ public class HolidayPlanRepositoryTest
 
         // Assert
         Assert.Equal(2, result.Count());
-        Assert.Contains(colaborator1.Object, result);
-        Assert.Contains(colaborator2.Object, result);
+        Assert.Contains(collaborator1.Object, result);
+        Assert.Contains(collaborator2.Object, result);
     }
 
-    public static IEnumerable<object[]> ValidDates_ForOnlyOneColab()
+    public static IEnumerable<object[]> ValidDates_ForOnlyOneCollab()
     {
-        // para um unico colaborador com dois periodos de ferias num unico plano
+        // para um unico collaborador com dois periodos de ferias num unico plano
         // neste teste, apenas um periodo está dentro do procurado, sendo o outro ignorado
         yield return new object[]
         {
@@ -395,8 +395,8 @@ public class HolidayPlanRepositoryTest
     }
 
     [Theory]
-    [MemberData(nameof(ValidDates_ForOnlyOneColab))]
-    public void WhenColaboratorHasPeriodsBothInsideAndOutsideRange_ThenReturnsCollaborator(
+    [MemberData(nameof(ValidDates_ForOnlyOneCollab))]
+    public void WhenCollaboratorHasPeriodsBothInsideAndOutsideRange_ThenReturnsCollaborator(
         DateOnly initDate,
         DateOnly endDate,
         DateOnly initDatePeriod1,
@@ -406,7 +406,7 @@ public class HolidayPlanRepositoryTest
     )
     {
         // Arrange
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
 
         var holidayPeriod1 = new Mock<IHolidayPeriod>();
         holidayPeriod1.Setup(p => p.GetInitDate()).Returns(initDatePeriod1);
@@ -417,11 +417,11 @@ public class HolidayPlanRepositoryTest
         holidayPeriod2.Setup(p => p.GetFinalDate()).Returns(endDatePeriod2);
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object, holidayPeriod2.Object });
-        holidayPlan.Setup(hp => hp.GetColaborator()).Returns(colaborator.Object);
+        holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
         // Act
@@ -429,14 +429,14 @@ public class HolidayPlanRepositoryTest
 
         // Assert
         Assert.Single(result);
-        Assert.Contains(colaborator.Object, result);
+        Assert.Contains(collaborator.Object, result);
     }
 
     [Fact]
     public void WhenNoCollaboratorsHaveHolidayPeriodsInDateRange_ThenReturnsEmptyList()
     {
         // Arrange
-        var colaborator = new Mock<IColaborator>();
+        var collaborator = new Mock<ICollaborator>();
         var initDate = new DateOnly(2025, 7, 15);
         var endDate = new DateOnly(2025, 8, 1);
 
@@ -445,11 +445,11 @@ public class HolidayPlanRepositoryTest
         holidayPeriod.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasColaborator(colaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
-        holidayPlan.Setup(hp => hp.GetColaborator()).Returns(colaborator.Object);
+        holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
         // Act
@@ -478,18 +478,18 @@ public class HolidayPlanRepositoryTest
     public void WhenCalculatingHolidayDaysOfCollaboratorInAProject_ThenReturnCorrectValue()
     {
         //arrange
-        Mock<IAssociationProjectColaborator> associationDouble = new Mock<IAssociationProjectColaborator>();
+        Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
         Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
-        Mock<IColaborator> collaboratorDouble = new Mock<IColaborator>();
+        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
 
         DateOnly initDate = new DateOnly(2025, 6, 1);
         DateOnly finalDate = new DateOnly(2025, 6, 10);
 
-        associationDouble.Setup(a => a.GetColaborator()).Returns(collaboratorDouble.Object);
+        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
         associationDouble.Setup(a => a.GetInitDate()).Returns(initDate);
         associationDouble.Setup(a => a.GetFinalDate()).Returns(finalDate);
 
-        holidayPlanDouble.Setup(hp => hp.GetColaborator()).Returns(collaboratorDouble.Object);
+        holidayPlanDouble.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
         holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(initDate, finalDate)).Returns(5);
 
         IHolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble.Object });
@@ -507,10 +507,10 @@ public class HolidayPlanRepositoryTest
     public void WhenNoHolidayPlanIsFound_ThenReturnsZero()
     {
         //arrange
-        Mock<IAssociationProjectColaborator> associationDouble = new Mock<IAssociationProjectColaborator>();
-        Mock<IColaborator> collaboratorDouble = new Mock<IColaborator>();
+        Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
+        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
 
-        associationDouble.Setup(a => a.GetColaborator()).Returns(collaboratorDouble.Object);
+        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
 
         List<IHolidayPlan> emptyList = new List<IHolidayPlan>();
         IHolidayPlanRepository repository = new HolidayPlanRepository(emptyList);
@@ -541,16 +541,16 @@ public class HolidayPlanRepositoryTest
         //arrange
         int days = 5;
 
-        Mock<IColaborator> colaboratorDouble1 = new Mock<IColaborator>();
-        Mock<IColaborator> colaboratorDouble2 = new Mock<IColaborator>();
+        Mock<ICollaborator> collaboratorDouble1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> collaboratorDouble2 = new Mock<ICollaborator>();
 
         Mock<IHolidayPlan> holidayPlanDouble1 = new Mock<IHolidayPlan>();
         holidayPlanDouble1.Setup(p => p.HasPeriodLongerThan(days)).Returns(true);
-        holidayPlanDouble1.Setup(p => p.GetColaborator()).Returns(colaboratorDouble1.Object);
+        holidayPlanDouble1.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble1.Object);
 
         Mock<IHolidayPlan> holidayPlanDouble2 = new Mock<IHolidayPlan>();
         holidayPlanDouble2.Setup(p => p.HasPeriodLongerThan(days)).Returns(false);
-        holidayPlanDouble2.Setup(p => p.GetColaborator()).Returns(colaboratorDouble2.Object);
+        holidayPlanDouble2.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble2.Object);
 
         IHolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
 
@@ -558,8 +558,8 @@ public class HolidayPlanRepositoryTest
         var result = repository.FindAllCollaboratorsWithHolidayPeriodsLongerThan(days).ToList();
 
         //assert
-        Assert.Contains(colaboratorDouble1.Object, result);
-        Assert.DoesNotContain(colaboratorDouble2.Object, result);
+        Assert.Contains(collaboratorDouble1.Object, result);
+        Assert.DoesNotContain(collaboratorDouble2.Object, result);
     }
 
     [Fact]
@@ -568,21 +568,106 @@ public class HolidayPlanRepositoryTest
         //arrange
         int days = 5;
 
-        Mock<IColaborator> colaboratorDouble1 = new Mock<IColaborator>();
-        Mock<IColaborator> colaboratorDouble2 = new Mock<IColaborator>();
+        Mock<ICollaborator> collaboratorDouble1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> collaboratorDouble2 = new Mock<ICollaborator>();
 
         Mock<IHolidayPlan> holidayPlanDouble1 = new Mock<IHolidayPlan>();
         holidayPlanDouble1.Setup(p => p.HasPeriodLongerThan(days)).Returns(false);
-        holidayPlanDouble1.Setup(p => p.GetColaborator()).Returns(colaboratorDouble1.Object);
+        holidayPlanDouble1.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble1.Object);
 
         Mock<IHolidayPlan> holidayPlanDouble2 = new Mock<IHolidayPlan>();
         holidayPlanDouble2.Setup(p => p.HasPeriodLongerThan(days)).Returns(false);
-        holidayPlanDouble2.Setup(p => p.GetColaborator()).Returns(colaboratorDouble2.Object);
+        holidayPlanDouble2.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble2.Object);
 
         IHolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
 
         //act
         var result = repository.FindAllCollaboratorsWithHolidayPeriodsLongerThan(days).ToList();
+
+        //assert
+        Assert.Empty(result);
+    }
+    [Fact]
+    public void WhenGivenCollaboratorAndGoodDate_ThenReturnPeriod() {
+        //arrange
+        DateOnly date = new DateOnly(2020, 1, 1);
+        var collab = new Mock<ICollaborator>();
+        
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
+        holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns(holidayPeriod.Object);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.GetHolidayPeriodContainingDate(collab.Object, date);
+
+        //assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void WhenGivenCollaboratorAndBadDate_ThenReturnEmpty() {
+        //arrange
+        DateOnly date = new DateOnly(2020, 1, 1);
+        var collab = new Mock<ICollaborator>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
+        holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns((IHolidayPeriod?)null);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.GetHolidayPeriodContainingDate(collab.Object, date);
+
+        //assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void WhenGivenGoodCollaboratorAndDatesAndLength_ThenReturnPeriods() {
+        //arrange
+        DateOnly ini = new DateOnly(2020, 1, 1);
+        DateOnly end = new DateOnly(2020, 3, 1);
+        var collab = new Mock<ICollaborator>();
+
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
+
+        IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>() {holidayPeriod.Object};
+        holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4)).Returns(ret);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(collab.Object, ini, end, 4);
+
+        //assert
+        Assert.Equal(ret, result);
+    }
+
+    [Fact]
+    public void WhenGivenBadCollaboratorAndDatesAndLength_ThenReturnEmptyLists() {
+        //arrange
+        DateOnly ini = new DateOnly(2020, 1, 1);
+        DateOnly end = new DateOnly(2020, 3, 1);
+        var collab = new Mock<ICollaborator>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
+
+        IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>();
+        holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4)).Returns(ret);
+
+        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+
+        //act
+        var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(collab.Object, ini, end, 4);
 
         //assert
         Assert.Empty(result);

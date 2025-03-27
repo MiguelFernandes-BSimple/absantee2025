@@ -1,36 +1,36 @@
 
 namespace Domain;
 
-public class ColaboratorRepository : IColaboratorRepository
+public class CollaboratorRepository : ICollaboratorRepository
 {
-    private List<IColaborator> _colaborators;
+    private List<ICollaborator> _collaborators;
 
-    public ColaboratorRepository(List<IColaborator> colaborators)
+    public CollaboratorRepository(List<ICollaborator> collaborators)
     {
-        _colaborators = new List<IColaborator>(colaborators);
+        _collaborators = new List<ICollaborator>(collaborators);
     }
 
-    public IEnumerable<IColaborator> FindAllColaborators()
+    public IEnumerable<ICollaborator> FindAllCollaborators()
     {
         // Create a new list - to not share the pointer
-        return new List<IColaborator>(_colaborators);
+        return new List<ICollaborator>(_collaborators);
     }
 
-    public IEnumerable<IColaborator> FindAllColaboratorsWithName(string names)
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithName(string names)
     {
         // Where returns an enumerable - whereas FindAll returns a list
-        return _colaborators.Where(c => c.HasNames(names));
+        return _collaborators.Where(c => c.HasNames(names));
     }
 
-    public IEnumerable<IColaborator> FindAllColaboratorsWithSurname(string surnames)
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithSurname(string surnames)
     {
         // Where returns an enumerable - whereas FindAll returns a list
-        return _colaborators.Where(c => c.HasSurnames(surnames));
+        return _collaborators.Where(c => c.HasSurnames(surnames));
     }
 
-    public IEnumerable<IColaborator> FindAllColaboratorsWithNameAndSurname(string names, string surnames)
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string names, string surnames)
     {
         // Where returns an enumerable - whereas FindAll returns a list
-        return _colaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
+        return _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
     }
 }

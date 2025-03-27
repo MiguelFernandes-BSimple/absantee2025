@@ -1,19 +1,19 @@
 namespace Domain;
 
-public class AssociationProjectColaborator : IAssociationProjectColaborator
+public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
     private DateOnly _initDate;
     private DateOnly _finalDate;
-    private IColaborator _colaborator;
+    private ICollaborator _collaborator;
     private IProject _project;
 
-    public AssociationProjectColaborator(DateOnly initDate, DateOnly finalDate, IColaborator colaborator, IProject project)
+    public AssociationProjectCollaborator(DateOnly initDate, DateOnly finalDate, ICollaborator collaborator, IProject project)
     {
-        if (CheckInputValues(initDate, finalDate, colaborator, project))
+        if (CheckInputValues(initDate, finalDate, collaborator, project))
         {
             _initDate = initDate;
             _finalDate = finalDate;
-            _colaborator = colaborator;
+            _collaborator = collaborator;
             _project = project;
         }
         else
@@ -30,7 +30,7 @@ public class AssociationProjectColaborator : IAssociationProjectColaborator
         return _finalDate;
     }
 
-    private bool CheckInputValues(DateOnly initDate, DateOnly finalDate, IColaborator colaborator, IProject project)
+    private bool CheckInputValues(DateOnly initDate, DateOnly finalDate, ICollaborator collaborator, IProject project)
     {
         if (initDate > finalDate)
             return false;
@@ -43,15 +43,15 @@ public class AssociationProjectColaborator : IAssociationProjectColaborator
 
         DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
         DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
-        if (!colaborator.ContractContainsDates(associationInitDate, associationFinalDate))
+        if (!collaborator.ContractContainsDates(associationInitDate, associationFinalDate))
             return false;
 
         return true;
     }
 
-    public IColaborator GetColaborator()
+    public ICollaborator GetCollaborator()
     {
-        return this._colaborator;
+        return this._collaborator;
     }
 
     public bool HasProject(IProject project)
