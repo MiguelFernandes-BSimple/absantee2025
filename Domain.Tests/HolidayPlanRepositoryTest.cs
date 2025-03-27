@@ -598,10 +598,10 @@ public class HolidayPlanRepositoryTest
     public void WhenRetrievingAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends_ThenReturnSucessfully(DateOnly initDate, DateOnly endDate)
     {
         //arrange
-        Mock<IColaborator> colab = new Mock<IColaborator>();
+        Mock<ICollaborator> colab = new Mock<ICollaborator>();
 
         Mock<IHolidayPlan> holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.GetColaborator()).Returns(colab.Object);
+        holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(colab.Object);
         
         Mock<IHolidayPeriod> holidayPeriod = new Mock<IHolidayPeriod>();
         DateOnly startDate = new DateOnly(2023, 04, 04);
