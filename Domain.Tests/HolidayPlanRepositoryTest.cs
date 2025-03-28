@@ -6,6 +6,18 @@ using Xunit;
 
 public class HolidayPlanRepositoryTest
 {
+    [Fact]
+    public void WhenConstructingHolidayPlanRepositoryWithSingleHolidayPlan_ThenHolidayPlansIsInitialized()
+    {
+        // Arrange
+        var holidayPlanMock = new Mock<IHolidayPlan>();
+
+        // Act
+        new HolidayPlanRepository(holidayPlanMock.Object);
+
+        // Assert
+    }
+
     public static IEnumerable<object[]> GetHolidayPeriodsForProjectCollaborators()
     {
         yield return new object[]

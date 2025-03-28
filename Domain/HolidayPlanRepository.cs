@@ -17,8 +17,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public HolidayPlanRepository(IAssociationProjectColaboratorRepository associationRepo)
     {
-        _associationRepo =
-            associationRepo ?? throw new ArgumentNullException(nameof(associationRepo));
+        _associationRepo = associationRepo;
     }
 
     public HolidayPlanRepository(
@@ -27,8 +26,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     )
     {
         _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
-        _associationRepo =
-            associationRepo ?? throw new ArgumentNullException(nameof(associationRepo));
+        _associationRepo = associationRepo;
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
@@ -97,13 +95,17 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         DateOnly endDate
     )
     {
+        if (_associationRepo == null)
+        {
+            throw new Exception();
+        }
+
         var validCollaborators = _associationRepo.FindAllProjectCollaboratorsBetween(
             project,
             initDate,
             endDate
         );
-
-        if (validCollaborators == null)
+        if (validCollaborators == null || initDate > endDate)
         {
             return Enumerable.Empty<IHolidayPeriod>();
         }
@@ -125,6 +127,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         DateOnly endDate
     )
     {
+        if (initDate > endDate)
+        {
+            return 0;
+        }
         if (association.AssociationIntersectDates(initDate, endDate))
         {
             var colaborador = association.GetColaborator();
