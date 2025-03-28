@@ -210,79 +210,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return totalHolidayDays;
     }
 
-    //uc21
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
-        IProject project,
-        DateOnly initDate,
-        DateOnly endDate
-    )
-    {
-        if (_associationRepo == null)
-        {
-            throw new Exception();
-        }
 
-        var validCollaborators = _associationRepo.FindAllProjectCollaboratorsBetween(
-            project,
-            initDate,
-            endDate
-        );
-        if (validCollaborators == null || initDate > endDate)
-        {
-            return Enumerable.Empty<IHolidayPeriod>();
-        }
-        else
-        {
-            return _holidayPlans
-                .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
-                .SelectMany(hp =>
-                    hp.GetHolidayPeriods()
-                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
-                );
-        }
-    }
 
-    //uc22
-    public int GetHolidayDaysForProjectCollaboratorBetweenDates(
-        IAssociationProjectCollaborator association,
-        DateOnly initDate,
-        DateOnly endDate
-    )
-    {
-        if (initDate > endDate)
-        {
-            return 0;
-        }
-        if (association.AssociationIntersectDates(initDate, endDate))
-        {
-            var colaborador = association.GetCollaborator();
-            var project = association.GetProject();
-            var collaboratorHolidayPlan = _holidayPlans.FirstOrDefault(hp =>
-                hp.GetCollaborator().Equals(colaborador)
-            );
-
-            if (collaboratorHolidayPlan == null)
-                return 0;
-
-            int totalHolidayDays = 0;
-
-            foreach (var holidayColabPeriod in collaboratorHolidayPlan.GetHolidayPeriods())
-            {
-                DateOnly holidayStart = holidayColabPeriod.GetInitDate();
-                DateOnly holidayEnd = holidayColabPeriod.GetFinalDate();
-
-                if (association.AssociationIntersectDates(holidayStart, holidayEnd))
-                {
-                    totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(
-                        holidayStart,
-                        holidayEnd
-                    );
-                }
-            }
-
-            return totalHolidayDays;
-        }
-        return 0;
-    }
 
 }
