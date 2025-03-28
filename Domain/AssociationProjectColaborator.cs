@@ -1,4 +1,3 @@
-
 namespace Domain;
 
 public class AssociationProjectCollaborator : IAssociationProjectCollaborator
@@ -8,7 +7,12 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     private ICollaborator _collaborator;
     private IProject _project;
 
-    public AssociationProjectCollaborator(DateOnly initDate, DateOnly finalDate, ICollaborator collaborator, IProject project)
+    public AssociationProjectCollaborator(
+        DateOnly initDate,
+        DateOnly finalDate,
+        ICollaborator collaborator,
+        IProject project
+    )
     {
         if (CheckInputValues(initDate, finalDate, collaborator, project))
         {
@@ -31,7 +35,12 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return _finalDate;
     }
 
-    private bool CheckInputValues(DateOnly initDate, DateOnly finalDate, ICollaborator collaborator, IProject project)
+    private bool CheckInputValues(
+        DateOnly initDate,
+        DateOnly finalDate,
+        ICollaborator collaborator,
+        IProject project
+    )
     {
         if (initDate > finalDate)
             return false;
@@ -50,6 +59,11 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return true;
     }
 
+    public IProject GetProject()
+    {
+        return _project;
+    }
+
     public ICollaborator GetCollaborator()
     {
         return this._collaborator;
@@ -64,5 +78,4 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         return _initDate <= finalDate && initDate <= _finalDate;
     }
-
 }

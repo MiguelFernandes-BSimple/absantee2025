@@ -114,7 +114,11 @@ public class HolidayPlan : IHolidayPlan
         return _holidaysPeriods.Where(a => a.ContainsDate(date)).FirstOrDefault();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(DateOnly ini, DateOnly end, int days)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(
+        DateOnly ini,
+        DateOnly end,
+        int days
+    )
     {
         return _holidaysPeriods.Where(a => a.ContainedBetween(ini, end) && a.GetDuration() > days);
     }
