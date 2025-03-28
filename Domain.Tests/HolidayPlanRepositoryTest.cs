@@ -754,6 +754,18 @@ public class HolidayPlanRepositoryTest
             new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
             new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 10),
         };
+        // holiday period 1 ends when holiday period 2 start
+        yield return new object[] {
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
+            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // holiday period 1 starts when holiday period 2 ends
+        yield return new object[] {
+            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
     }
 
     [Theory]
@@ -831,6 +843,24 @@ public class HolidayPlanRepositoryTest
             new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 04),
             new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 02),
         };
+        // holiday periods don't intercept (2nd after)
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
+            new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 15),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // holiday periods don't intercept lower (1st after)
+        yield return new object[] {
+            new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 15),
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+/*         // holiday periods don't intercept lower (1st after)
+        yield return new object[] {
+            new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 15),
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        }; */
     }
 
     [Theory]
