@@ -103,11 +103,26 @@ public class HolidayPlanRepository : IHolidayPlanRepository
                 .SelectMany(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(initDate, endDate, days));
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(
-        ICollaborator collaborator
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(
+        ICollaborator collaborator,
+        DateOnly searchInitDate,
+        DateOnly searchEndDate
     )
     {
-        throw new NotImplementedException();
+        if (!Utils.ContainsWeekend(searchInitDate, searchEndDate))
+            return Enumerable.Empty<IHolidayPeriod>();
+
+        IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, searchInitDate, searchEndDate);
+
+        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates
+            .Where(holidayPeriod =>
+            {
+                DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetInitDate(), searchInitDate);
+                DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetFinalDate(), searchEndDate);
+                return intersectionStart <= intersectionEnd && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
+            });
+
+        return hp;
     }
 
     public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(
@@ -118,6 +133,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     )
     {
         throw new NotImplementedException();
+
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
