@@ -21,6 +21,16 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             associationRepo ?? throw new ArgumentNullException(nameof(associationRepo));
     }
 
+    public HolidayPlanRepository(
+        IAssociationProjectColaboratorRepository associationRepo,
+        IHolidayPlan holidayPlan
+    )
+    {
+        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
+        _associationRepo =
+            associationRepo ?? throw new ArgumentNullException(nameof(associationRepo));
+    }
+
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
         IColaborator colaborator,
         DateOnly initDate,
@@ -92,12 +102,20 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             initDate,
             endDate
         );
-        return _holidayPlans
-            .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
-            .SelectMany(hp =>
-                hp.GetHolidayPeriods()
-                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
-            );
+
+        if (validCollaborators == null)
+        {
+            return Enumerable.Empty<IHolidayPeriod>();
+        }
+        else
+        {
+            return _holidayPlans
+                .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
+                .SelectMany(hp =>
+                    hp.GetHolidayPeriods()
+                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+                );
+        }
     }
 
     //uc22

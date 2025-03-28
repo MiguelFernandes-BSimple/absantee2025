@@ -46,21 +46,12 @@ public class HolidayPlanRepositoryTest
         List<IHolidayPeriod> expectedPeriods
     )
     {
-        // Arrange
-        var projectMock = new Mock<IProject>();
-
         var collaboratorMock = new Mock<IColaborator>();
 
-        var holidayPlanMock = new Mock<IHolidayPlan>();
-        holidayPlanMock.Setup(hp => hp.GetColaborator()).Returns(collaboratorMock.Object);
-        holidayPlanMock.Setup(hp => hp.GetHolidayPeriods()).Returns(expectedPeriods);
-
-        var holidayPlans = new List<IHolidayPlan> { holidayPlanMock.Object };
-
-        var associationRepoMock = new Mock<IAssociationProjectColaboratorRepository>();
-        associationRepoMock
-            .Setup(repo =>
-                repo.FindAllProjectCollaboratorsBetween(
+        var associationMock = new Mock<IAssociationProjectColaboratorRepository>();
+        associationMock
+            .Setup(am =>
+                am.FindAllProjectCollaboratorsBetween(
                     It.IsAny<IProject>(),
                     It.IsAny<DateOnly>(),
                     It.IsAny<DateOnly>()
@@ -68,16 +59,22 @@ public class HolidayPlanRepositoryTest
             )
             .Returns(new List<IColaborator> { collaboratorMock.Object });
 
-        var holidayRepo = new HolidayPlanRepository(holidayPlans);
+        var holidayPeriodMock = new Mock<IHolidayPeriod>();
+        holidayPeriodMock.Setup(hp => hp.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        holidayPeriodMock.Setup(hp => hp.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
-        // Act
+        var holidayPlanMock = new Mock<IHolidayPlan>();
+        holidayPlanMock.Setup(hp => hp.GetColaborator()).Returns(collaboratorMock.Object);
+        holidayPlanMock.Setup(hp => hp.GetHolidayPeriods()).Returns(expectedPeriods);
+
+        var projectMock = new Mock<IProject>();
+        var holidayRepo = new HolidayPlanRepository(associationMock.Object, holidayPlanMock.Object);
         var result = holidayRepo.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
             projectMock.Object,
             initDate,
             endDate
         );
 
-        // Assert
         Assert.Equal(expectedPeriods.Count, result.Count());
     }
 
