@@ -49,10 +49,21 @@ public class HolidayPeriod : IHolidayPeriod
         return true;
     }
 
-    public bool HolidayPeriodOverlap(IHolidayPeriod holidayPeriod)
+    public bool Contains(IHolidayPeriod holidayPeriod)
     {
         return _initDate <= holidayPeriod.GetInitDate()
             && _finalDate >= holidayPeriod.GetFinalDate();
+    }
+
+    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
+    {
+        DateOnly effectiveStart = _initDate > initDate ? _initDate : initDate;
+        DateOnly effectiveEnd = _finalDate < endDate ? _finalDate : endDate;
+
+        if (effectiveStart > effectiveEnd)
+            return 0;
+
+        return effectiveEnd.DayNumber - effectiveStart.DayNumber + 1;
     }
 
     public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate)
@@ -78,12 +89,14 @@ public class HolidayPeriod : IHolidayPeriod
         return 0;
     }
 
-    public bool ContainsDate(DateOnly date) {
+    public bool ContainsDate(DateOnly date)
+    {
         return _initDate <= date
             && _finalDate >= date;
     }
 
-    public bool ContainedBetween(DateOnly ini, DateOnly end) {
+    public bool ContainedBetween(DateOnly ini, DateOnly end)
+    {
         return _initDate >= ini && _finalDate <= end;
     }
 }
