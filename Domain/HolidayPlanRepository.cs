@@ -82,9 +82,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             initDate,
             endDate
         );
-
-        if (project == null)
-            throw new ArgumentNullException(nameof(project));
         return holidayPlans
             .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
             .SelectMany(hp =>
@@ -95,39 +92,41 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     //uc22
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(
-        IProject project,
-        IColaborator colaborator,
+        IAssociationProjectColaborator association,
         DateOnly initDate,
         DateOnly endDate
     )
     {
-        var validCollaborators = _associationRepo.FindAllProjectCollaboratorsBetween(
-            project,
-            initDate,
-            endDate
-        );
-        if (project == null)
-            throw new ArgumentNullException(nameof(project));
-        if (colaborator == null)
-            throw new ArgumentNullException(nameof(colaborator));
-        var holidayPeriods = holidayPlans
-            .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
-            .SelectMany(hp =>
-                hp.GetHolidayPeriods()
-                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
-            )
-            .ToList();
-        if (!holidayPeriods.Any()) // If no matching holiday periods
+        if (association.AssociationIntersectDates(initDate, endDate))
         {
-            return 0;
-        }
+            var colaborador = association.GetColaborator();
+            var project = association.GetProject();
+            var collaboratorHolidayPlan = holidayPlans.FirstOrDefault(hp =>
+                hp.GetColaborator().Equals(colaborador)
+            );
 
-        return holidayPeriods.Sum(period =>
-        {
-            var periodStart = period.GetInitDate() < initDate ? initDate : period.GetInitDate();
-            var periodEnd = period.GetFinalDate() > endDate ? endDate : period.GetFinalDate();
-            return (periodEnd.DayNumber - periodStart.DayNumber) + 1;
-        });
+            if (collaboratorHolidayPlan == null)
+                return 0;
+
+            int totalHolidayDays = 0;
+
+            foreach (var holidayColabPeriod in collaboratorHolidayPlan.GetHolidayPeriods())
+            {
+                DateOnly holidayStart = holidayColabPeriod.GetInitDate();
+                DateOnly holidayEnd = holidayColabPeriod.GetFinalDate();
+
+                if (association.AssociationIntersectDates(holidayStart, holidayEnd))
+                {
+                    totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(
+                        holidayStart,
+                        holidayEnd
+                    );
+                }
+            }
+
+            return totalHolidayDays;
+        }
+        return 0;
     }
 
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(

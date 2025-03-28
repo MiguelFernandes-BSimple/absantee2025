@@ -48,4 +48,27 @@ public class HolidayPeriod : IHolidayPeriod
 
         return effectiveEndDate.DayNumber - effectiveStartDate.DayNumber;
     }
+
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate)
+    {
+        DateOnly interceptionStart = initDate > _initDate ? initDate : _initDate;
+
+        DateOnly interceptionEnd = finalDate < _finalDate ? finalDate : _finalDate;
+
+        if (interceptionStart <= interceptionEnd)
+        {
+            int weekdayCount = 0;
+
+            for (DateOnly date = interceptionStart; date <= interceptionEnd; date = date.AddDays(1))
+            {
+                if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    weekdayCount++;
+                }
+            }
+            return weekdayCount;
+        }
+
+        return 0;
+    }
 }

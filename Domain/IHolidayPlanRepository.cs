@@ -37,8 +37,7 @@ public interface IHolidayPlanRepository
 
     //DUVIDA ASSOCIAR?
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(
-        IProject project,
-        IColaborator colaborator,
+        IAssociationProjectColaborator association,
         DateOnly initDate,
         DateOnly endDate
     );
