@@ -457,7 +457,7 @@ public class HolidayPlanRepositoryTest
     }
 
     [Fact]
-    public void WhenInitDateBiggerThanFinalDate_ThenThrowsArgumentException()
+    public void WhenInitDateBiggerThanFinalDate_ThenReturnsEmptyList()
     {
         // Arrange
         var holidayPlans = new List<IHolidayPlan>();

@@ -257,7 +257,7 @@ namespace Domain.Tests
         }
 
         [Fact]
-        public void WhenPassingInitDateBiggerThanEndDate_ThenThrowsArgumentException()
+        public void WhenPassingInitDateBiggerThanEndDate_ThenReturnsEmptyList()
         {
             // Arrange
             var holidayPlans = new List<IHolidayPlan>();
