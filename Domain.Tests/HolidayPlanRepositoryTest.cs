@@ -855,12 +855,6 @@ public class HolidayPlanRepositoryTest
             new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
             new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
         };
-/*         // holiday periods don't intercept lower (1st after)
-        yield return new object[] {
-            new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 15),
-            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
-            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-        }; */
     }
 
     [Theory]
