@@ -64,7 +64,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProjectAndPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         //assert
         Assert.Empty(result);
@@ -87,7 +87,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProjectAndPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         //assert
         Assert.Empty(result);
@@ -110,7 +110,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProjectAndPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         //assert
         Assert.Empty(result);
@@ -136,7 +136,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         List<IAssociationProjectCollaborator> expected = associationsProjectCollaborator;
 
         //act
-        var result = assoc.FindAllByProjectAndPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         //assert
         Assert.Equal(expected.Count(), result.Count());

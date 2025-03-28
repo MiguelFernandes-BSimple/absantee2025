@@ -38,7 +38,7 @@ namespace Domain.Tests
             var assoc = new CollaboratorService(assocRepoMock.Object);
 
             //act
-            var result = assoc.FindAllProjectCollaborators(projectMock.Object);
+            var result = assoc.FindAllByProject(projectMock.Object);
 
             //assert
             Assert.Equal(expected.Count(), result.Count());
@@ -61,7 +61,7 @@ namespace Domain.Tests
             var assoc = new CollaboratorService(assocRepoMock.Object);
 
             // Act
-            var result = assoc.FindAllProjectCollaborators(projectMock.Object);
+            var result = assoc.FindAllByProject(projectMock.Object);
 
             // Assert
             Assert.Empty(result);
@@ -99,12 +99,12 @@ namespace Domain.Tests
                 collab2.Object
             };
 
-            assocRepoMock.Setup(a => a.FindAllByProjectAndPeriod(projectMock.Object, initDate, finalDate)).Returns(associations);
+            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate)).Returns(associations);
 
             var service = new CollaboratorService(assocRepoMock.Object);
 
             // Act
-            var result = service.FindAllProjectCollaboratorsBetweenPeriod(projectMock.Object, initDate, finalDate);
+            var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate);
 
             // Assert
             Assert.Equal(expected.Count(), result.Count());
@@ -125,12 +125,12 @@ namespace Domain.Tests
             // No associations for the project in the period
             List<IAssociationProjectCollaborator> emptyAssociations = new List<IAssociationProjectCollaborator>();
 
-            assocRepoMock.Setup(a => a.FindAllByProjectAndPeriod(projectMock.Object, initDate, finalDate)).Returns(emptyAssociations);
+            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate)).Returns(emptyAssociations);
 
             var service = new CollaboratorService(assocRepoMock.Object);
 
             // Act
-            var result = service.FindAllProjectCollaboratorsBetweenPeriod(projectMock.Object, initDate, finalDate);
+            var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate);
 
             // Assert
             Assert.Empty(result);
