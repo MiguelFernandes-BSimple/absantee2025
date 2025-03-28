@@ -39,9 +39,8 @@ namespace Domain.Tests
 
         }
 
-
         [Fact]
-        public void WhenNoHolidayPlanIsFound_ThenReturnsZero()
+        public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectWithoutHolidayPlan_ThenReturnZero()
         {
             //arrange
             Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
