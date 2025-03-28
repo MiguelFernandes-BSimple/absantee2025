@@ -11,7 +11,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
     public HolidayPlanRepository(IHolidayPlan holidayPlan)
     {
-        _holidayPlans = new List<IHolidayPlan>(){ holidayPlan };
+        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
     }
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
@@ -157,5 +157,25 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     public int GetHolidayDaysInProject(IProject project)
     {
         throw new NotImplementedException();
+    }
+    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
+    IEnumerable<ICollaborator> collaborators,
+    DateOnly initDate,
+    DateOnly endDate)
+    {
+        int totalHolidayDays = 0;
+
+        foreach (var collaborator in collaborators)
+        {
+            var holidayPeriods = _holidayPlans
+                .Where(hp => hp.GetCollaborator().Equals(collaborator))
+                .SelectMany(hp => hp.GetHolidayPeriods()
+                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+                );
+
+            totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+        }
+
+        return totalHolidayDays;
     }
 }

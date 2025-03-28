@@ -63,10 +63,78 @@ public class HolidayPeriodTest
         HolidayPeriod pf = new HolidayPeriod(ini, end);
 
         //act
-        bool result = _pf.HolidayPeriodOverlap(pf);
+        bool result = _pf.Contains(pf);
 
         //assert
         Assert.Equal(expected, result);
+    }
+
+    public class HolidayPeriodTests
+    {
+        [Fact]
+        public void GetDurationInDays_FullOverlap_ReturnsFullDuration()
+        {
+            //Arrange
+            var holidayPeriod = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+
+            //Act
+            int duration = holidayPeriod.GetDurationInDays(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+
+            //Assert
+            Assert.Equal(10, duration);
+        }
+
+        [Fact]
+        public void GetDurationInDays_PartialOverlap_StartInside_ReturnsCorrectDays()
+        {
+            //Arrange
+            var holidayPeriod = new HolidayPeriod(new DateOnly(2024, 6, 5), new DateOnly(2024, 6, 15));
+            //Act
+            int duration = holidayPeriod.GetDurationInDays(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+            //Assert
+            Assert.Equal(6, duration); // 5 a 10
+        }
+
+        public static IEnumerable<object[]> ContainedPeriods()
+        {
+            yield return new object[] { new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10)) };
+            yield return new object[] { new HolidayPeriod(new DateOnly(2024, 6, 3), new DateOnly(2024, 6, 6)) };
+        }
+
+        [Theory]
+        [MemberData(nameof(ContainedPeriods))]
+        public void WhenPeriodIsFullyContained_ThenReturnsTrue(IHolidayPeriod containedPeriod)
+        {
+            // Arrange
+            var referencePeriod = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+
+            // Act
+            var result = referencePeriod.Contains(containedPeriod);
+
+            // Assert
+            Assert.True(result); // Expected: True
+        }
+
+        public static IEnumerable<object[]> NotContainedPeriods()
+        {
+            yield return new object[] { new HolidayPeriod(new DateOnly(2024, 5, 1), new DateOnly(2024, 6, 10)) };
+            yield return new object[] { new HolidayPeriod(new DateOnly(2024, 6, 3), new DateOnly(2024, 7, 6)) };
+            yield return new object[] { new HolidayPeriod(new DateOnly(2024, 5, 1), new DateOnly(2024, 7, 6)) };
+        }
+
+        [Theory]
+        [MemberData(nameof(NotContainedPeriods))]
+        public void WhenPeriodIsNotFullyContained_ThenReturnsFalse(IHolidayPeriod nonContainedPeriod)
+        {
+            // Arrange
+            var referencePeriod = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 5));
+
+            // Act
+            var result = referencePeriod.Contains(nonContainedPeriod);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 
     public static IEnumerable<object[]> GetHolidayPeriod_ContainingDate()
@@ -79,7 +147,8 @@ public class HolidayPeriodTest
 
     [Theory]
     [MemberData(nameof(GetHolidayPeriod_ContainingDate))]
-    public void WhenGivenDate_ThenEvaluateIfContains(DateOnly ini, DateOnly end, DateOnly date, bool ret) {
+    public void WhenGivenDate_ThenEvaluateIfContains(DateOnly ini, DateOnly end, DateOnly date, bool ret)
+    {
         //arrange
         var holidayPeriod = new HolidayPeriod(ini, end);
 
@@ -99,13 +168,14 @@ public class HolidayPeriodTest
 
     [Theory]
     [MemberData(nameof(GetHolidayPeriod_ContaininedBetween))]
-    public void WhenGivenDates_ThenEvaluateIfContainedBetween(DateOnly ini, DateOnly end, DateOnly containsIni, DateOnly containsEnd, bool ret) {
+    public void WhenGivenDates_ThenEvaluateIfContainedBetween(DateOnly ini, DateOnly end, DateOnly containsIni, DateOnly containsEnd, bool ret)
+    {
         //arrange
         var holidayPeriod = new HolidayPeriod(ini, end);
 
         //act
         var result = holidayPeriod.ContainedBetween(containsIni, containsEnd);
-        
+
         //assert
         Assert.Equal(ret, result);
     }
@@ -119,17 +189,18 @@ public class HolidayPeriodTest
 
     [Theory]
     [MemberData(nameof(GetHolidayPeriod_OfLength))]
-    public void WhenGivenGoodPeriod_ThenReturnLength(DateOnly ini, DateOnly end, int len) {
+    public void WhenGivenGoodPeriod_ThenReturnLength(DateOnly ini, DateOnly end, int len)
+    {
         //arrange
         var holidayPeriod = new HolidayPeriod(ini, end);
 
         //act
         var result = holidayPeriod.GetDuration();
-        
+
         //assert
         Assert.Equal(len, result);
     }
-    
+
     public static IEnumerable<object[]> GetNumberOfCommonUtilDaysBetweenPeriods()
     {
         yield return new object[] { DateOnly.FromDateTime(new DateTime(2020, 6, 1)), DateOnly.FromDateTime(new DateTime(2020, 7, 1)), 11 };
