@@ -41,9 +41,9 @@ public class HolidayPeriod : IHolidayPeriod
         return false;
     }
 
-    private bool CheckInputValues(DateOnly dataInicio, DateOnly dataFim)
+    private bool CheckInputValues(DateOnly initDate, DateOnly endDate)
     {
-        if (dataInicio > dataFim)
+        if (initDate > endDate)
             return false;
 
         return true;
