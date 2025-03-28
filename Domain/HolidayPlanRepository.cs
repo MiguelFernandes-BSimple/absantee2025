@@ -2,8 +2,18 @@ using Domain;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private List<IHolidayPlan> holidayPlans = new List<IHolidayPlan>();
-    private readonly IAssociationProjectColaboratorRepository _associationRepo;
+    private readonly IAssociationProjectColaboratorRepository? _associationRepo;
+    private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
+
+    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
+    {
+        _holidayPlans = holidayPlans;
+    }
+
+    public HolidayPlanRepository(IHolidayPlan holidayPlan)
+    {
+        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
+    }
 
     public HolidayPlanRepository(IAssociationProjectColaboratorRepository associationRepo)
     {
@@ -82,7 +92,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             initDate,
             endDate
         );
-        return holidayPlans
+        return _holidayPlans
             .Where(hp => validCollaborators.Contains(hp.GetColaborator()))
             .SelectMany(hp =>
                 hp.GetHolidayPeriods()
@@ -101,7 +111,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         {
             var colaborador = association.GetColaborator();
             var project = association.GetProject();
-            var collaboratorHolidayPlan = holidayPlans.FirstOrDefault(hp =>
+            var collaboratorHolidayPlan = _holidayPlans.FirstOrDefault(hp =>
                 hp.GetColaborator().Equals(colaborador)
             );
 
@@ -136,10 +146,5 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     )
     {
         throw new NotImplementedException();
-    }
-
-    public void AddHolidayPlan(IHolidayPlan holidayPlan)
-    {
-        holidayPlans.Add(holidayPlan);
     }
 }
