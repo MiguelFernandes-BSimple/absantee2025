@@ -9,16 +9,15 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
         _associationsProjectCollaborator = associationsProjectCollaborator;
     }
 
-    public IEnumerable<ICollaborator> FindAllProjectCollaborators(IProject project)
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProject(IProject project)
     {
-        return _associationsProjectCollaborator.Where(a => a.HasProject(project)).Select(a => a.GetCollaborator());
+        return _associationsProjectCollaborator.Where(a => a.HasProject(project));
     }
 
-    public IEnumerable<ICollaborator> FindAllProjectCollaboratorsBetween(IProject project, DateOnly InitDate, DateOnly FinalDate)
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, DateOnly InitDate, DateOnly FinalDate)
     {
         return _associationsProjectCollaborator
                 .Where(a => a.HasProject(project)
-                    && a.AssociationIntersectDates(InitDate, FinalDate))
-                .Select(a => a.GetCollaborator());
+                    && a.AssociationIntersectDates(InitDate, FinalDate));
     }
 }

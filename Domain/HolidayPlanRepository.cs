@@ -207,36 +207,36 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     //uc21
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
-        IProject project,
-        DateOnly initDate,
-        DateOnly endDate
-    )
-    {
-        if (_associationRepo == null)
-        {
-            throw new Exception();
-        }
-
-        var validCollaborators = _associationRepo.FindAllProjectCollaboratorsBetween(
-            project,
-            initDate,
-            endDate
-        );
-        if (validCollaborators == null || initDate > endDate)
-        {
-            return Enumerable.Empty<IHolidayPeriod>();
-        }
-        else
-        {
-            return _holidayPlans
-                .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
-                .SelectMany(hp =>
-                    hp.GetHolidayPeriods()
-                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
-                );
-        }
-    }
+    //public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
+    //    IProject project,
+    //    DateOnly initDate,
+    //    DateOnly endDate
+    //)
+    //{
+    //    if (_associationRepo == null)
+    //    {
+    //        throw new Exception();
+    //    }
+    //
+    //    var validCollaborators = _associationRepo.FindAllByProjectAndPeriod(
+    //        project,
+    //        initDate,
+    //        endDate
+    //    );
+    //    if (validCollaborators == null || initDate > endDate)
+    //    {
+    //        return Enumerable.Empty<IHolidayPeriod>();
+    //    }
+    //    else
+    //    {
+    //        return _holidayPlans
+    //            .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
+    //            .SelectMany(hp =>
+    //                hp.GetHolidayPeriods()
+    //                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+    //            );
+    //    }
+    //}
 
     //uc22
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(
