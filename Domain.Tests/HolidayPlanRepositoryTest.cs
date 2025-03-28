@@ -1208,6 +1208,6 @@ public class HolidayPlanRepositoryTest
 
         //assert
         Assert.Empty(result);
-}
+    }
 
 }

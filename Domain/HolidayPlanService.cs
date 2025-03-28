@@ -25,5 +25,43 @@ namespace Domain
             this.associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
             this.holidayPlanRepository = holidayPlanRepository;
         }
+        //uc21
+        public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
+            IProject project,
+            DateOnly initDate,
+            DateOnly endDate
+        )
+        {
+            var emptyList = Enumerable.Empty<IHolidayPeriod>();
+
+            if (associationProjectCollaboratorRepository == null)
+            {
+                throw new Exception();
+            }
+
+            var validCollaborators = associationProjectCollaboratorRepository.FindAllProjectCollaboratorsBetween(
+                project,
+                initDate,
+                endDate
+            );
+            if (validCollaborators == null || initDate > endDate)
+            {
+                return emptyList;
+            }
+            else
+            {
+                if (holidayPlanRepository == null)
+                {
+                    return emptyList;
+                }
+                var _holidayPlans = holidayPlanRepository.FindAll();
+                return _holidayPlans
+                    .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
+                    .SelectMany(hp =>
+                        hp.GetHolidayPeriods()
+                            .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+                    );
+            }
+        }
     }
 }

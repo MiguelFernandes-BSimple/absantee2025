@@ -29,6 +29,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
         _associationRepo = associationRepo;
     }
+    public IEnumerable<IHolidayPlan> FindAll()
+    {
+        return [.. _holidayPlans];
+    }
 
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
@@ -280,4 +284,5 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
         return 0;
     }
+
 }
