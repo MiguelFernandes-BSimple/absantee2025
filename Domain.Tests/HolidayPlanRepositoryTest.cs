@@ -77,7 +77,6 @@ public class HolidayPlanRepositoryTest
             endDate
         );
 
-        // Assert
         Assert.Equal(expectedPeriods.Count, result.Count());
     }
 

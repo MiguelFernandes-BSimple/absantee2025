@@ -102,6 +102,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             initDate,
             endDate
         );
+
         if (validCollaborators == null)
         {
             return Enumerable.Empty<IHolidayPeriod>();
