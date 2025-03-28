@@ -25,5 +25,14 @@ namespace Domain
             this.associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
             this.holidayPlanRepository = holidayPlanRepository;
         }
+
+        public IEnumerable<ICollaborator> FindAllProjectCollaborators(IProject project){
+            return this.associationProjectCollaboratorRepository!.FindAllByProject(project).Select(a => a.GetCollaborator());
+        }
+
+        public IEnumerable<ICollaborator> FindAllProjectCollaboratorsBetweenPeriod(IProject project, DateOnly initDate, DateOnly finalDate){
+            return this.associationProjectCollaboratorRepository!.FindAllByProjectAndPeriod(project, initDate, finalDate).Select(a => a.GetCollaborator());
+        }
+
     }
 }
