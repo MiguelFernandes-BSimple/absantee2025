@@ -159,7 +159,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         //assert
         Assert.Null(result);
@@ -184,7 +184,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         //assert
         Assert.Equal(assocMock1.Object, result);
@@ -208,7 +208,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         // Act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         // Assert
         Assert.Null(result);
@@ -232,7 +232,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         // Act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         // Assert
         Assert.Null(result);
