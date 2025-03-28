@@ -167,4 +167,24 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     {
         throw new NotImplementedException();
     }
+    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
+    IEnumerable<ICollaborator> collaborators,
+    DateOnly initDate,
+    DateOnly endDate)
+    {
+        int totalHolidayDays = 0;
+
+        foreach (var collaborator in collaborators)
+        {
+            var holidayPeriods = _holidayPlans
+                .Where(hp => hp.GetCollaborator().Equals(collaborator))
+                .SelectMany(hp => hp.GetHolidayPeriods()
+                    .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+                );
+
+            totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+        }
+
+        return totalHolidayDays;
+    }
 }

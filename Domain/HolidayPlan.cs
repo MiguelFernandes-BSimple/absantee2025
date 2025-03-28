@@ -74,12 +74,22 @@ public class HolidayPlan : IHolidayPlan
             return false;
         foreach (IHolidayPeriod pf in holidayPeriods)
         {
-            if (holidayPeriod.HolidayPeriodOverlap(pf))
+            if (holidayPeriod.Contains(pf))
             {
                 return false;
             }
         }
         return true;
+    }
+
+    public List<IHolidayPeriod> GetHolidayPeriods()
+    {
+        return [.. _holidaysPeriods];
+    }
+
+    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
+    {
+        return _holidaysPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
     }
 
     // métodos utilizados no holiday plan repository
@@ -88,12 +98,6 @@ public class HolidayPlan : IHolidayPlan
         if (collaborator.Equals(_collaborator))
             return true;
         return false;
-    }
-
-    public IEnumerable<IHolidayPeriod> GetHolidayPeriods()
-    {
-        // Retorna uma cópia da lista para evitar modificações externas
-        return new List<IHolidayPeriod>(_holidaysPeriods);
     }
 
     public ICollaborator GetCollaborator()
