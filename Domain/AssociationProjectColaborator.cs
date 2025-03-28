@@ -1,34 +1,44 @@
 namespace Domain;
 
-public class AssociationProjectColaborator : IAssociationProjectColaborator
+public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
     private DateOnly _initDate;
     private DateOnly _finalDate;
-    private IColaborator _colaborator;
+    private ICollaborator _collaborator;
     private IProject _project;
 
-    public AssociationProjectColaborator(
+    public AssociationProjectCollaborator(
         DateOnly initDate,
         DateOnly finalDate,
-        IColaborator colaborator,
+        ICollaborator collaborator,
         IProject project
     )
     {
-        if (CheckInputValues(initDate, finalDate, colaborator, project))
+        if (CheckInputValues(initDate, finalDate, collaborator, project))
         {
             _initDate = initDate;
             _finalDate = finalDate;
-            _colaborator = colaborator;
+            _collaborator = collaborator;
             _project = project;
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
+    public DateOnly GetInitDate()
+    {
+        return _initDate;
+    }
+
+    public DateOnly GetFinalDate()
+    {
+        return _finalDate;
+    }
+
     private bool CheckInputValues(
         DateOnly initDate,
         DateOnly finalDate,
-        IColaborator colaborator,
+        ICollaborator collaborator,
         IProject project
     )
     {
@@ -43,20 +53,20 @@ public class AssociationProjectColaborator : IAssociationProjectColaborator
 
         DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
         DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
-        if (!colaborator.ContainsDates(associationInitDate, associationFinalDate))
+        if (!collaborator.ContractContainsDates(associationInitDate, associationFinalDate))
             return false;
 
         return true;
     }
 
-    public IColaborator GetColaborator()
-    {
-        return _colaborator;
-    }
-
     public IProject GetProject()
     {
         return _project;
+    }
+
+    public ICollaborator GetCollaborator()
+    {
+        return this._collaborator;
     }
 
     public bool HasProject(IProject project)

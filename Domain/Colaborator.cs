@@ -1,12 +1,12 @@
 namespace Domain;
 
-public class Colaborator : IColaborator
+public class Collaborator : ICollaborator
 {
     private DateTime _initDate;
     private DateTime _finalDate;
     private IUser _user;
 
-    public Colaborator(IUser user, DateTime initDate, DateTime? finalDate)
+    public Collaborator(IUser user, DateTime initDate, DateTime? finalDate)
     {
         finalDate ??= DateTime.MaxValue;
         if (checkInputFields(initDate, (DateTime)finalDate, user))
@@ -32,8 +32,18 @@ public class Colaborator : IColaborator
         return true;
     }
 
-    public bool ContainsDates(DateTime initDate, DateTime finalDate)
+    public bool ContractContainsDates(DateTime initDate, DateTime finalDate)
     {
         return initDate >= this._initDate && finalDate <= this._finalDate;
+    }
+
+    public bool HasNames(string names)
+    {
+        return _user.HasNames(names);
+    }
+
+    public bool HasSurnames(string surnames)
+    {
+        return _user.HasSurnames(surnames);
     }
 }

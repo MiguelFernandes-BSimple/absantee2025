@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Domain;
 
 public class HolidayPeriod : IHolidayPeriod
@@ -26,27 +28,42 @@ public class HolidayPeriod : IHolidayPeriod
         return _finalDate;
     }
 
-    private bool CheckInputValues(DateOnly dataInicio, DateOnly dataFim)
+    public int GetDuration()
     {
-        if (dataInicio > dataFim)
+        return _finalDate.DayNumber - _initDate.DayNumber + 1;
+    }
+
+    public bool IsLongerThan(int days)
+    {
+        if (GetDuration() > days)
+            return true;
+
+        return false;
+    }
+
+    private bool CheckInputValues(DateOnly initDate, DateOnly endDate)
+    {
+        if (initDate > endDate)
             return false;
 
         return true;
     }
 
-    public bool HolidayPeriodOverlap(IHolidayPeriod holidayPeriod)
+    public bool Contains(IHolidayPeriod holidayPeriod)
     {
         return _initDate <= holidayPeriod.GetInitDate()
             && _finalDate >= holidayPeriod.GetFinalDate();
     }
 
-    public int GetDurationInDays(DateOnly start, DateOnly end)
+    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
     {
-        // Calcula a duração do período de férias dentro do intervalo fornecido
-        var effectiveStartDate = _initDate > start ? _initDate : start;
-        var effectiveEndDate = _finalDate < end ? _finalDate : end;
+        DateOnly effectiveStart = _initDate > initDate ? _initDate : initDate;
+        DateOnly effectiveEnd = _finalDate < endDate ? _finalDate : endDate;
 
-        return effectiveEndDate.DayNumber - effectiveStartDate.DayNumber;
+        if (effectiveStart > effectiveEnd)
+            return 0;
+
+        return effectiveEnd.DayNumber - effectiveStart.DayNumber + 1;
     }
 
     public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate)
@@ -70,5 +87,15 @@ public class HolidayPeriod : IHolidayPeriod
         }
 
         return 0;
+    }
+
+    public bool ContainsDate(DateOnly date)
+    {
+        return _initDate <= date && _finalDate >= date;
+    }
+
+    public bool ContainedBetween(DateOnly ini, DateOnly end)
+    {
+        return _initDate >= ini && _finalDate <= end;
     }
 }
