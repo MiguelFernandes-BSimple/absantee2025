@@ -37,7 +37,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IEnumerable<IHolidayPlan> FindAll()
     {
-        return _holidayPlans;
+        return [.. _holidayPlans];
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
