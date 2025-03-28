@@ -123,7 +123,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return holidayPeriodListColab1
             .SelectMany(period1 => holidayPeriodListColab2
                 .Where(period2 => period1.GetInitDate() <= period2.GetFinalDate() && period1.GetFinalDate() >= period2.GetInitDate())
-                .SelectMany(period2 => new List<IHolidayPeriod>{period1, period2}))
+                .SelectMany(period2 => new List<IHolidayPeriod> { period1, period2 }))
                     .Distinct();
     }
 

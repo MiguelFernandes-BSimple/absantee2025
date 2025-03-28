@@ -715,25 +715,62 @@ public class HolidayPlanRepositoryTest
         Assert.Empty(result);
     }
 
-    
+
     public static IEnumerable<object[]> ValidPeriodToSearchOverlapping()
     {
-        yield return new object[] { new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15) };
+        // intersection
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 08),
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // same holiday period
+        yield return new object[] {
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // same start holiday period date, end date after
+        yield return new object[] {
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 14),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // same end holiday period date, start date before
+        yield return new object[] {
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 11),
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // one holiday period inside the other
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
+        // search for a specific day that contains both holiday periods
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 10),
+        };
     }
 
     [Theory]
     [MemberData(nameof(ValidPeriodToSearchOverlapping))]
-    public void WhenGivenCorrectValues_ThenReturnOverlappingHolidayPeriodBetweenTwoCollabsInPeriod(DateOnly searchInitDate, DateOnly searchEndDate)
+    public void WhenGivenCorrectValues_ThenReturnOverlappingHolidayPeriodBetweenTwoCollabsInPeriod(
+        DateOnly holidayPeriodStartDate1, DateOnly holidayPeriodFinalDate1,
+        DateOnly holidayPeriodStartDate2, DateOnly holidayPeriodFinalDate2,
+        DateOnly searchInitDate, DateOnly searchEndDate)
     {
         //arrange
+        //collab1
         Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
 
         Mock<IHolidayPlan> holidayPlan1 = new Mock<IHolidayPlan>();
         holidayPlan1.Setup(hp => hp.GetCollaborator()).Returns(collab1.Object);
 
         Mock<IHolidayPeriod> holidayPeriod1 = new Mock<IHolidayPeriod>();
-        DateOnly holidayPeriodStartDate1 = new DateOnly(2025, 04, 02);
-        DateOnly holidayPeriodFinalDate1 = new DateOnly(2025, 04, 08);
         holidayPeriod1.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate1);
         holidayPeriod1.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate1);
 
@@ -748,8 +785,6 @@ public class HolidayPlanRepositoryTest
         holidayPlan2.Setup(hp => hp.GetCollaborator()).Returns(collab2.Object);
 
         Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
-        DateOnly holidayPeriodStartDate2 = new DateOnly(2025, 04, 05);
-        DateOnly holidayPeriodFinalDate2 = new DateOnly(2025, 04, 12);
         holidayPeriod2.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate2);
         holidayPeriod2.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate2);
 
@@ -757,18 +792,91 @@ public class HolidayPlanRepositoryTest
         holidayPlan2.Setup(hp => hp.HasCollaborator(collab2.Object)).Returns(true);
         holidayPlan2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriodsList2);
 
-        
-        HolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> {holidayPlan1.Object, holidayPlan2.Object});
+
+        HolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object });
 
         //act
         var result = repository.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(collab1.Object, collab2.Object, searchInitDate, searchEndDate);
 
-        DateOnly expectedHolidayPeriodStartDate = new DateOnly(2025, 04, 05);
-        DateOnly expectedHolidayPeriodFinalDate = new DateOnly(2025, 04, 08);
+        //assert
+        Assert.Equal(holidayPeriodStartDate1, result.First().GetInitDate());
+        Assert.Equal(holidayPeriodFinalDate1, result.First().GetFinalDate());
+        Assert.Equal(holidayPeriodStartDate2, result.ToList()[1].GetInitDate());
+        Assert.Equal(holidayPeriodFinalDate2, result.ToList()[1].GetFinalDate());
+    }
+
+    public static IEnumerable<object[]> SearchOverlappingPeriodsOutsideHolidayPeriod()
+    {
+        // intersection
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 08),
+            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 13), new DateOnly(2025, 04, 20),
+        };
+        // search for a specific day that contains only 1 holiday period
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+            new DateOnly(2025, 04, 12), new DateOnly(2025, 04, 12),
+        };
+        // search for a specific day that contains only 1 holiday period
+        yield return new object[] {
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02),
+        };
+        // bad dates, initial date after end date
+        yield return new object[] {
+            new DateOnly(2025, 04, 12), new DateOnly(2025, 04, 02),
+            new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 04),
+            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 02),
+        };
+    }
+
+    [Theory]
+    [MemberData(nameof(SearchOverlappingPeriodsOutsideHolidayPeriod))]
+    public void WhenGivenSearchPeriodOutsideOverlappingHoliadyPeriod_ThenReturnEmpty(
+        DateOnly holidayPeriodStartDate1, DateOnly holidayPeriodFinalDate1,
+        DateOnly holidayPeriodStartDate2, DateOnly holidayPeriodFinalDate2,
+        DateOnly searchInitDate, DateOnly searchEndDate)
+    {
+        //arrange
+        //collab1
+        Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
+
+        Mock<IHolidayPlan> holidayPlan1 = new Mock<IHolidayPlan>();
+        holidayPlan1.Setup(hp => hp.GetCollaborator()).Returns(collab1.Object);
+
+        Mock<IHolidayPeriod> holidayPeriod1 = new Mock<IHolidayPeriod>();
+        holidayPeriod1.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate1);
+        holidayPeriod1.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate1);
+
+        var holidayPeriodsList1 = new List<IHolidayPeriod> { holidayPeriod1.Object };
+        holidayPlan1.Setup(hp => hp.HasCollaborator(collab1.Object)).Returns(true);
+        holidayPlan1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriodsList1);
+
+        //colab2
+        Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
+
+        Mock<IHolidayPlan> holidayPlan2 = new Mock<IHolidayPlan>();
+        holidayPlan2.Setup(hp => hp.GetCollaborator()).Returns(collab2.Object);
+
+        Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
+        holidayPeriod2.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate2);
+        holidayPeriod2.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate2);
+
+        var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
+        holidayPlan2.Setup(hp => hp.HasCollaborator(collab2.Object)).Returns(true);
+        holidayPlan2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriodsList2);
+
+
+        HolidayPlanRepository repository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object });
+
+        //act
+        var result = repository.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(collab1.Object, collab2.Object, searchInitDate, searchEndDate);
 
         //assert
-        Assert.Equal(expectedHolidayPeriodStartDate, result.First().GetInitDate());
-        Assert.Equal(expectedHolidayPeriodFinalDate, result.First().GetFinalDate());
+        Assert.Empty(result);
     }
 }
 
