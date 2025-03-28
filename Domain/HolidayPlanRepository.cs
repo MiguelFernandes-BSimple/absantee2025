@@ -185,20 +185,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
-        IProject project,
-        DateOnly initDate,
-        DateOnly endDate
-    )
-    {
-        throw new NotImplementedException();
-    }
-
-    public int GetHolidayDaysInProject(IProject project)
-    {
-        throw new NotImplementedException();
-    }
-
-    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
         IEnumerable<ICollaborator> collaborators,
         DateOnly initDate,
         DateOnly endDate
@@ -218,13 +204,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
 
         return totalHolidayDays;
-    }
-
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorThatIncludeWeekends(
-        ICollaborator colaborator
-    )
-    {
-        throw new NotImplementedException();
     }
 
     //uc21
