@@ -30,6 +30,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         _associationRepo = associationRepo;
     }
 
+    public IEnumerable<IHolidayPlan> FindAll()
+    {
+        return [.. _holidayPlans];
+    }
+
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
         return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
@@ -52,27 +57,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
                 .Where(h => h.HasCollaborator(collaborator))
                 .SelectMany(h => h.GetHolidayPeriods())
                 .Where(p => IsHolidayPeriodValid(p, initDate, endDate));
-        }
-    }
-
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
-        DateOnly initDate,
-        DateOnly endDate
-    )
-    {
-        // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-        if (initDate > endDate)
-        {
-            return Enumerable.Empty<ICollaborator>();
-        }
-        else
-        {
-            return _holidayPlans
-                .Where(h =>
-                    h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate))
-                )
-                .Select(h => h.GetCollaborator())
-                .Distinct();
         }
     }
 
