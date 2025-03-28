@@ -642,7 +642,7 @@ public class HolidayPlanRepositoryTest
 
     [Theory]
     [MemberData(nameof(ValidHolidayDatesWithoutWeekends))]
-    public void WhenRetrievingAllHolidayPeriodsForCollaboratorBetweenWithDatesThatDontIncludeWeekends_ThenReturnNull(DateOnly searchInitDate, DateOnly searchEndDate)
+    public void WhenRetrievingAllHolidayPeriodsForCollaboratorBetweenWithDatesThatDontIncludeWeekends_ThenReturnEmpty(DateOnly searchInitDate, DateOnly searchEndDate)
     {
 
         //arrange

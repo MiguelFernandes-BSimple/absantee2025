@@ -2,15 +2,16 @@ using Domain;
 
 namespace Domain.Tests;
 
-public class UtilsTest{
+public class UtilsTest
+{
 
     public static IEnumerable<object[]> DatesThatContainWeekend()
     {
-        yield return new object[] { new DateOnly(2025,04,04), new DateOnly(2025,04,11) };
-        yield return new object[] { new DateOnly(2025,04,04), new DateOnly(2025,04,05) };
-        yield return new object[] { new DateOnly(2025,04,04), new DateOnly(2025,04,06) };
-        yield return new object[] { new DateOnly(2025,04,05), new DateOnly(2025,04,06) };
-        yield return new object[] { new DateOnly(2025,04,05), new DateOnly(2025,04,05) };
+        yield return new object[] { new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11) };
+        yield return new object[] { new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 05) };
+        yield return new object[] { new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 06) };
+        yield return new object[] { new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 06) };
+        yield return new object[] { new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 05) };
     }
 
     [Theory]
@@ -28,8 +29,8 @@ public class UtilsTest{
 
     public static IEnumerable<object[]> DatesThatDontContainWeekend()
     {
-        yield return new object[] { new DateOnly(2025,04,01), new DateOnly(2025,04,04) };
-        yield return new object[] { new DateOnly(2025,04,01), new DateOnly(2025,04,01) };
+        yield return new object[] { new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 04) };
+        yield return new object[] { new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 01) };
     }
 
     [Theory]
@@ -47,21 +48,60 @@ public class UtilsTest{
 
     public static IEnumerable<object[]> InvalidDates()
     {
-        yield return new object[] { new DateOnly(2025,04,02), new DateOnly(2025,04,01) };
-        yield return new object[] { new DateOnly(2025,04,10), new DateOnly(2025,04,05) };
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 01) };
+        yield return new object[] { new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 05) };
     }
 
     [Theory]
     [MemberData(nameof(InvalidDates))]
-    public void WhenPassingInvalidDates_ThenThrowException(DateOnly iniDate, DateOnly endDate)
+    public void WhenPassingInvalidDates_ThenReturnFalse(DateOnly iniDate, DateOnly endDate)
     {
         //arrange
 
-        //assert
-        Exception exception = Assert.Throws<Exception>(() =>
-            //act
-            Utils.ContainsWeekend(iniDate, endDate));
+        //act
+        bool result = Utils.ContainsWeekend(iniDate, endDate);
 
-        Assert.Equal("The start date can't be after the end date.", exception.Message);
+        //assert
+        Assert.False(result);
+    }
+
+    public static IEnumerable<object[]> DatesForMaxDate()
+    {
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 02) };
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02) };
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 10) };
+    }
+
+    [Theory]
+    [MemberData(nameof(DatesForMaxDate))]
+    public void WhenPassing2ValidDates_ThenReturnDataMax(DateOnly iniDate, DateOnly endDate, DateOnly expected)
+    {
+        //arrange
+
+        //act
+        DateOnly result = Utils.DataMax(iniDate, endDate);
+
+        //assert
+        Assert.Equal(expected, result);
+    }
+
+    public static IEnumerable<object[]> DatesForMinDate()
+    {
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 01) };
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02) };
+        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 02) };
+    }
+
+    [Theory]
+    [MemberData(nameof(DatesForMinDate))]
+    public void WhenPassing2ValidDates_ThenReturnDataMin(DateOnly iniDate, DateOnly endDate, DateOnly expected)
+    {
+        //arrange
+
+        //act
+        DateOnly result = Utils.DataMin(iniDate, endDate);
+
+        //assert
+        Assert.Equal(expected, result);
     }
 }
