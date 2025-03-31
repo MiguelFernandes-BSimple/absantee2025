@@ -7,18 +7,10 @@ namespace Domain
 {
     public class HolidayPlanService
     {
-        private IAssociationProjectCollaboratorRepository? associationProjectCollaboratorRepository;
-        private IHolidayPlanRepository? holidayPlanRepository;
+        private IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository;
+        private IHolidayPlanRepository holidayPlanRepository;
 
-        public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository)
-        {
-            this.associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
-        }
-
-        public HolidayPlanService(IHolidayPlanRepository holidayPlanRepository)
-        {
-            this.holidayPlanRepository = holidayPlanRepository;
-        }
+        
 
         public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
         {
@@ -28,7 +20,7 @@ namespace Domain
 
        public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
         {
-            if (holidayPlanRepository == null || associationProjectCollaboratorRepository == null || initDate > endDate)
+            if (initDate > endDate)
             {
                 return 0;
             }
