@@ -7,13 +7,8 @@ namespace Domain
 {
     public class HolidayPlanService
     {
-        private IAssociationProjectCollaboratorRepository? _associationProjectCollaboratorRepository;
+        private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
         private IHolidayPlanRepository _holidayPlanRepository;
-
-        public HolidayPlanService(IHolidayPlanRepository holidayPlanRepository)
-        {
-            _holidayPlanRepository = holidayPlanRepository;
-        }
 
         public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
         {
@@ -68,6 +63,92 @@ namespace Domain
                         .Distinct();
 
             return hp;
+        }
+
+        //UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
+        public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
+            IProject project,
+            DateOnly initDate,
+            DateOnly endDate
+        )
+        {
+            var validCollaborators = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
+                project,
+                initDate,
+                endDate
+            ).Select(a => a.GetCollaborator());
+
+            if (initDate > endDate)
+            {
+                return Enumerable.Empty<IHolidayPeriod>();
+            }
+            return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(validCollaborators.ToList(), initDate, endDate);
+
+        }
+        //uc22
+        public int GetHolidayDaysForProjectCollaboratorBetweenDates(
+            IProject project,
+            ICollaborator collaborator,
+            DateOnly initDate,
+            DateOnly endDate
+        )
+        {
+            if (initDate > endDate)
+            {
+                return 0;
+            }
+            var association = _associationProjectCollaboratorRepository.FindByProjectandCollaborator(project, collaborator);
+            if (association == null)
+            {
+                throw new Exception("");
+            }
+
+
+            int totalHolidayDays = 0;
+            var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaborator(collaborator);
+
+            foreach (var holidayColabPeriod in holidayPeriods)
+            {
+                DateOnly holidayStart = holidayColabPeriod.GetInitDate();
+                DateOnly holidayEnd = holidayColabPeriod.GetFinalDate();
+
+                totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(
+                    holidayStart,
+                    holidayEnd
+                );
+            }
+
+            return totalHolidayDays;
+        }
+
+        public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+        {
+            if (initDate > endDate)
+            {
+                return 0;
+            }
+
+            var associations = _associationProjectCollaboratorRepository.FindAllByProject(project);
+
+            int totalHolidayDays = 0;
+
+            foreach (var association in associations)
+            {
+                var holidayPlans = _holidayPlanRepository.GetHolidayPlansByAssociations(association);
+
+                foreach (var holidayPlan in holidayPlans)
+                {
+                    var holidayPeriods = holidayPlan.GetHolidayPeriods()
+                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate);
+
+                    foreach (var period in holidayPeriods)
+                    {
+                        totalHolidayDays += period.GetDurationInDays(initDate, endDate);
+                    }
+                }
+            }
+
+            return totalHolidayDays;
         }
     }
 }

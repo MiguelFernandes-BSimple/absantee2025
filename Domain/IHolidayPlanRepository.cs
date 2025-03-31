@@ -7,9 +7,10 @@ public interface IHolidayPlanRepository
     public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectCollaborator association);
     public IHolidayPeriod? GetHolidayPeriodContainingDate(ICollaborator collaborator, DateOnly date);
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(ICollaborator collaborator, DateOnly initDate, DateOnly endDate, int days);
-    //public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(IProject project, DateOnly initDate, DateOnly endDate);
-    public int GetHolidayDaysForProjectCollaboratorBetweenDates(IAssociationProjectCollaborator association, DateOnly initDate, DateOnly endDate);
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IEnumerable<ICollaborator> collaborators, DateOnly initDate, DateOnly endDate);
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(List<ICollaborator> validCollaborators, DateOnly initDate, DateOnly endDate);
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(ICollaborator collaborator);
     public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(DateOnly initDate, DateOnly endDate);
+    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association);
 
 }
