@@ -68,52 +68,39 @@ namespace Domain
                     holidayEnd
                 );
             }
+
+            return totalHolidayDays;
+        }
+
+       public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+        {
+            if (holidayPlanRepository == null || associationProjectCollaboratorRepository == null || initDate > endDate)
+            {
+                return 0;
+            }
+
+            var associations = associationProjectCollaboratorRepository.FindAllByProject(project);
+
+            int totalHolidayDays = 0;
+
+            foreach (var association in associations)
+            {
+                var holidayPlans = holidayPlanRepository.GetHolidayPlansByAssociations(association);
+
+                foreach (var holidayPlan in holidayPlans)
+                {
+                    var holidayPeriods = holidayPlan.GetHolidayPeriods()
+                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate);
+
+                    foreach (var period in holidayPeriods)
+                    {
+                        totalHolidayDays += period.GetDurationInDays(initDate, endDate);
+                    }
+                }
+            }
+
             return totalHolidayDays;
 
         }
-
-
-    //     public int GetHolidayDaysForProjectAllCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
-    //     {
-    //         if (initDate > endDate || holidayPlanRepository == null || associationProjectCollaboratorRepository == null)
-    //         {
-    //             return 0;
-    //         }
-
-    //         var collaborators = associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
-    //             project,
-    //             initDate,
-    //             endDate
-    //         ).Select(a => a.GetCollaborator());
-
-    //         int totalHolidayDays = 0;
-
-    //         foreach (var collaborator in collaborators)
-    //         {
-    //             var holidayPlans = holidayPlanRepository.GetHolidayPlansByCollaborator(collaborator);
-
-    //             foreach (var holidayPlan in holidayPlans)
-    //             {
-    //                 foreach (var holidayPeriod in holidayPlan.GetHolidayPeriods())
-    //                 {
-    //                     var holidayStart = holidayPeriod.GetInitDate();
-    //                     var holidayEnd = holidayPeriod.GetFinalDate();
-
-    //                     if (holidayEnd < initDate || holidayStart > endDate)
-    //                     {
-    //                         continue;
-    //                     }
-
-    //                     var effectiveStart = holidayStart < initDate ? initDate : holidayStart;
-    //                     var effectiveEnd = holidayEnd > endDate ? endDate : holidayEnd;
-
-    //                     totalHolidayDays += effectiveEnd.DayNumber - effectiveStart.DayNumber + 1;
-    //                 }
-    //             }
-    //         }
-            
-    //         return totalHolidayDays;
-    //     }
-    // }
     }
 }   

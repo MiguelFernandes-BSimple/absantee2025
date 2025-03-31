@@ -229,11 +229,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             hp.GetCollaborator().Equals(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
     }
 
-
-
-    public IEnumerable<IHolidayPlan> GetHolidayPlansByCollaborator(ICollaborator collaborator)
+    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
     {
-        return _holidayPlans.Where(hp => hp.GetCollaborator().Equals(collaborator));
+        var collaborator = association.GetCollaborator();
+
+        return _holidayPlans
+            .Where(hp => hp.GetCollaborator().Equals(collaborator));
     }
 
 }
