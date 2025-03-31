@@ -58,7 +58,7 @@ namespace Domain.Tests
             CollaboratorService service = new CollaboratorService(holidayPlanRepositoryDouble.Object);
 
             //act
-            var result = service.FindAllWithHolidayPeriodsLongerThan(days).ToList();
+            var result = service.FindAllWithHolidayPeriodsLongerThan(days);
 
             //assert
             Assert.Empty(result);

@@ -69,6 +69,11 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return this._collaborator;
     }
 
+    public bool HasCollaborator(ICollaborator collaborator)
+    {
+        return this._collaborator.Equals(collaborator);
+    }
+
     public bool HasProject(IProject project)
     {
         return this._project.Equals(project);

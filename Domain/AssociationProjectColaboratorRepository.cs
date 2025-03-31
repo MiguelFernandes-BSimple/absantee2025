@@ -21,4 +21,10 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
                     && a.AssociationIntersectDates(InitDate, FinalDate))
                 .Select(a => a.GetCollaborator());
     }
+
+    public IAssociationProjectCollaborator? FindByProjectAndCollaborator(IProject project, ICollaborator collaborator)
+    {
+        return _associationsProjectCollaborator.Where(a => a.HasProject(project) && a.HasCollaborator(collaborator)).FirstOrDefault();
+
+    }
 }

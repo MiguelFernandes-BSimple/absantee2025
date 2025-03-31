@@ -259,8 +259,8 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return _holidayPlans.Where(p => p.HasPeriodLongerThan(days));
     }
 
-    public IHolidayPlan? FindHolidayPlanByAssociationProjectCollaborator(IAssociationProjectCollaborator association)
+    public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator)
     {
-        return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == association.GetCollaborator());
+        return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == collaborator);
     }
 }
