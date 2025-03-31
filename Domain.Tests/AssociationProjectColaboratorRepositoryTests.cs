@@ -43,7 +43,6 @@ public class AssociationProjectCollaboratorRepositoryTest
         var result = assoc.FindAllByProject(projectMock.Object);
 
         //assert
-        Assert.Equal(expected.Count(), result.Count());
         Assert.True(expected.SequenceEqual(result));
     }
 
@@ -139,7 +138,6 @@ public class AssociationProjectCollaboratorRepositoryTest
         var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         //assert
-        Assert.Equal(expected.Count(), result.Count());
         Assert.True(expected.SequenceEqual(result));
     }
 }

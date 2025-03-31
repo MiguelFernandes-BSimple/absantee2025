@@ -41,7 +41,6 @@ namespace Domain.Tests
             var result = assoc.FindAllByProject(projectMock.Object);
 
             //assert
-            Assert.Equal(expected.Count(), result.Count());
             Assert.True(expected.SequenceEqual(result));
         }
 
@@ -107,7 +106,6 @@ namespace Domain.Tests
             var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate);
 
             // Assert
-            Assert.Equal(expected.Count(), result.Count());
             Assert.True(expected.SequenceEqual(result));
         }
 
