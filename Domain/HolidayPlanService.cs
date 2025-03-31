@@ -74,7 +74,7 @@ namespace Domain
 
        public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
         {
-            if (holidayPlanRepository == null || associationProjectCollaboratorRepository == null || initDate > endDate)
+            if (initDate > endDate)
             {
                 return 0;
             }
