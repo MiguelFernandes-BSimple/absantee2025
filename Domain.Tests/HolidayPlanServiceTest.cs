@@ -61,7 +61,7 @@ namespace Domain.Tests
                         It.IsAny<DateOnly>()
                     )
                 )
-                .Returns(new List<ICollaborator> { collaboratorMock.Object });
+                .Returns(new List<ICollaborator> { collaboratorMock.Object });// config duplo
 
             var holidayPeriodMock = new Mock<IHolidayPeriod>();
             holidayPeriodMock.Setup(hp => hp.GetInitDate()).Returns(It.IsAny<DateOnly>());

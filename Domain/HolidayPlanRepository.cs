@@ -3,7 +3,7 @@ using Domain;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private readonly IAssociationProjectCollaboratorRepository? _associationRepo;
+    private readonly IAssociationProjectCollaboratorRepository _associationRepo;
     private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
 
     public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
@@ -152,7 +152,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             return intersectionStart <= intersectionEnd
                 && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
         });
-
         return hp;
     }
 
@@ -210,7 +209,24 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return totalHolidayDays;
     }
 
+    //uc21
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAlltCollaboratorsBetweenDates(
+                List<ICollaborator> validCollaborators,
+                DateOnly initDate,
+                DateOnly endDate
+            )
+    {
 
+        {
+            return _holidayPlans
+                .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
+                .SelectMany(hp =>
+                    hp.GetHolidayPeriods()
+                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate)
+                );
+        }
 
+    }
+    //uc22
 
 }
