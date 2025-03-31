@@ -28,14 +28,12 @@ namespace Domain
                 endDate
             ).Select(a => a.GetCollaborator());
 
+            if (initDate > endDate)
             {
-                if (initDate > endDate)
-                {
-                    return Enumerable.Empty<IHolidayPeriod>();
-                }
-                return holidayPlanRepository.FindAllHolidayPeriodsForAlltCollaboratorsBetweenDates(validCollaborators.ToList(), initDate, endDate);
-
+                return Enumerable.Empty<IHolidayPeriod>();
             }
+            return holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(validCollaborators.ToList(), initDate, endDate);
+
         }
         //uc22
         public int GetHolidayDaysForProjectCollaboratorBetweenDates(

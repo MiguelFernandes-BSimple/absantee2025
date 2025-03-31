@@ -3,7 +3,6 @@ using Domain;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private readonly IAssociationProjectCollaboratorRepository _associationRepo;
     private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
 
     public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
@@ -16,23 +15,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
     }
 
-    public HolidayPlanRepository(IAssociationProjectCollaboratorRepository associationRepo)
-    {
-        _associationRepo = associationRepo;
-    }
-
-    public HolidayPlanRepository(
-        IAssociationProjectCollaboratorRepository associationRepo,
-        IHolidayPlan holidayPlan
-    )
-    {
-        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
-        _associationRepo = associationRepo;
-    }
-    public IEnumerable<IHolidayPlan> FindAll()
-    {
-        return [.. _holidayPlans];
-    }
 
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
@@ -210,7 +192,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     //uc21
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAlltCollaboratorsBetweenDates(
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(
                 List<ICollaborator> validCollaborators,
                 DateOnly initDate,
                 DateOnly endDate
