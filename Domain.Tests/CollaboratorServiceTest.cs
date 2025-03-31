@@ -10,6 +10,7 @@ namespace Domain.Tests
             //arrange
             Mock<IProject> projectMock = new Mock<IProject>();
 
+            Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
 
             Mock<IAssociationProjectCollaborator> assoc1 = new Mock<IAssociationProjectCollaborator>();
@@ -35,7 +36,7 @@ namespace Domain.Tests
 
             assocRepoMock.Setup(a => a.FindAllByProject(projectMock.Object)).Returns(associations);
 
-            var assoc = new CollaboratorService(assocRepoMock.Object);
+            var assoc = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
 
             //act
             var result = assoc.FindAllByProject(projectMock.Object);
@@ -50,6 +51,7 @@ namespace Domain.Tests
             // Arrange
             Mock<IProject> projectMock = new Mock<IProject>();
 
+            Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
 
             // No associations for the project
@@ -57,7 +59,7 @@ namespace Domain.Tests
 
             assocRepoMock.Setup(a => a.FindAllByProject(projectMock.Object)).Returns(emptyAssociations);
 
-            var assoc = new CollaboratorService(assocRepoMock.Object);
+            var assoc = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
 
             // Act
             var result = assoc.FindAllByProject(projectMock.Object);
@@ -75,6 +77,7 @@ namespace Domain.Tests
             DateOnly initDate = new DateOnly(2023, 1, 1);
             DateOnly finalDate = new DateOnly(2023, 12, 31);
 
+            Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
 
             Mock<IAssociationProjectCollaborator> assoc1 = new Mock<IAssociationProjectCollaborator>();
@@ -100,7 +103,7 @@ namespace Domain.Tests
 
             assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate)).Returns(associations);
 
-            var service = new CollaboratorService(assocRepoMock.Object);
+            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
 
             // Act
             var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate);
@@ -118,6 +121,7 @@ namespace Domain.Tests
             DateOnly initDate = new DateOnly(2023, 1, 1);
             DateOnly finalDate = new DateOnly(2023, 12, 31);
 
+            Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
 
             // No associations for the project in the period
@@ -125,7 +129,7 @@ namespace Domain.Tests
 
             assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate)).Returns(emptyAssociations);
 
-            var service = new CollaboratorService(assocRepoMock.Object);
+            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
 
             // Act
             var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, initDate, finalDate);
