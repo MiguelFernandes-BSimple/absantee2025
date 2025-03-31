@@ -27,7 +27,7 @@ namespace Domain.Tests
             holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(initDate, finalDate)).Returns(5);
 
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAll()).Returns(new List<IHolidayPlan> { holidayPlanDouble.Object });
+            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByAssociationProjectCollaborator(associationDouble.Object)).Returns(holidayPlanDouble.Object);
 
             HolidayPlanService service = new HolidayPlanService(holidayPlanRepositoryDouble.Object);
 
@@ -48,10 +48,9 @@ namespace Domain.Tests
 
             associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
 
-            List<IHolidayPlan> emptyList = new List<IHolidayPlan>();
-
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAll()).Returns(emptyList);
+            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByAssociationProjectCollaborator(associationDouble.Object)).Returns((IHolidayPlan?)null);
+
 
             HolidayPlanService service = new HolidayPlanService(holidayPlanRepositoryDouble.Object);
 

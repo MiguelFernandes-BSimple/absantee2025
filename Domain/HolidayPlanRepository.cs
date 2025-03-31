@@ -35,11 +35,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
     }
 
-    public IEnumerable<IHolidayPlan> FindAll()
-    {
-        return [.. _holidayPlans];
-    }
-
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
         ICollaborator collaborator,
         DateOnly initDate,
@@ -262,5 +257,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days)
     {
         return _holidayPlans.Where(p => p.HasPeriodLongerThan(days));
+    }
+
+    public IHolidayPlan? FindHolidayPlanByAssociationProjectCollaborator(IAssociationProjectCollaborator association)
+    {
+        return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == association.GetCollaborator());
     }
 }

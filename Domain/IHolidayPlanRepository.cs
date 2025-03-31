@@ -2,7 +2,6 @@ namespace Domain;
 
 public interface IHolidayPlanRepository
 {
-    public IEnumerable<IHolidayPlan> FindAll();
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(ICollaborator collaborator, DateOnly initDate, DateOnly endDate);
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate);
     public IHolidayPeriod? GetHolidayPeriodContainingDate(ICollaborator collaborator, DateOnly date);
@@ -13,4 +12,5 @@ public interface IHolidayPlanRepository
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(IAssociationProjectCollaborator association, DateOnly initDate, DateOnly endDate);
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IEnumerable<ICollaborator> collaborators, DateOnly initDate, DateOnly endDate);
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days);
+    public IHolidayPlan? FindHolidayPlanByAssociationProjectCollaborator(IAssociationProjectCollaborator association);
 }

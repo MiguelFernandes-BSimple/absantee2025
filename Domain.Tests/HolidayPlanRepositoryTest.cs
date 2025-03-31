@@ -1131,4 +1131,50 @@ public class HolidayPlanRepositoryTest
         Assert.DoesNotContain(holidayPlanDouble2.Object, result);
     }
 
+    [Fact]
+    public void WhenFindingHolidayPlanByAssociationProjectCollaborator_ThenReturnsCorrectCollaborator()
+    {
+        //arrange
+        var collaboratorDouble = new Mock<ICollaborator>();
+
+        var associationDouble = new Mock<IAssociationProjectCollaborator>();
+        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
+
+        var holidayPlanDouble1 = new Mock<IHolidayPlan>();
+        holidayPlanDouble1.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
+
+        var holidayPlanDouble2 = new Mock<IHolidayPlan>();
+
+        var repo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+
+        //act
+        var result = repo.FindHolidayPlanByAssociationProjectCollaborator(associationDouble.Object);
+
+        //assert
+        Assert.Equal(holidayPlanDouble1.Object, result);
+    }
+
+    [Fact]
+    public void WhenFindingHolidayPlanByAssociationProjectCollaborator_ThenReturnsNull()
+    {
+        //arrange
+        var collaboratorDouble1 = new Mock<ICollaborator>();
+        var collaboratorDouble2 = new Mock<ICollaborator>();
+
+        var associationDouble = new Mock<IAssociationProjectCollaborator>();
+        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble1.Object);
+
+        var holidayPlanDouble1 = new Mock<IHolidayPlan>();
+        holidayPlanDouble1.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble2.Object);
+
+        var holidayPlanDouble2 = new Mock<IHolidayPlan>();
+
+        var repo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+
+        //act
+        var result = repo.FindHolidayPlanByAssociationProjectCollaborator(associationDouble.Object);
+
+        //assert
+        Assert.Null(result);
+    }
 }
