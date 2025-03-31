@@ -1109,4 +1109,26 @@ public class HolidayPlanRepositoryTest
         Assert.Empty(result);
     }
 
+    [Fact]
+    public void WhenFindingHolidayPlansWithPeriodsLongerThan_ReturnsCorrectList()
+    {
+        //arrange
+        int days = 5;
+
+        Mock<IHolidayPlan> holidayPlanDouble1 = new Mock<IHolidayPlan>();
+        holidayPlanDouble1.Setup(p => p.HasPeriodLongerThan(days)).Returns(true);
+
+        Mock<IHolidayPlan> holidayPlanDouble2 = new Mock<IHolidayPlan>();
+        holidayPlanDouble2.Setup(p => p.HasPeriodLongerThan(days)).Returns(false);
+
+        IHolidayPlanRepository holidayPlanRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+
+        //act
+        var result = holidayPlanRepo.FindAllWithHolidayPeriodsLongerThan(days);
+
+        //assert
+        Assert.Contains(holidayPlanDouble1.Object, result);
+        Assert.DoesNotContain(holidayPlanDouble2.Object, result);
+    }
+
 }

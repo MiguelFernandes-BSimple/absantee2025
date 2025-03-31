@@ -8,8 +8,20 @@ namespace Domain.Tests
 {
     public class CollaboratorServiceTest
     {
+
         [Fact]
-        public void WhenFindingALlCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()
+        public void WhenCreatingWithValidParameters_ThenObjectIsCreated()
+        {
+            //arrange
+            Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+
+            //act & assert
+            new CollaboratorService(holidayPlanRepositoryDouble.Object);
+
+        }
+
+        [Fact]
+        public void WhenFindingAllCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()
         {
             //arrange
             int days = 5;
@@ -21,12 +33,8 @@ namespace Domain.Tests
             holidayPlanDouble1.Setup(p => p.HasPeriodLongerThan(days)).Returns(true);
             holidayPlanDouble1.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble1.Object);
 
-            Mock<IHolidayPlan> holidayPlanDouble2 = new Mock<IHolidayPlan>();
-            holidayPlanDouble2.Setup(p => p.HasPeriodLongerThan(days)).Returns(false);
-            holidayPlanDouble2.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble2.Object);
-
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAll()).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThan(days)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object });
 
             CollaboratorService service = new CollaboratorService(holidayPlanRepositoryDouble.Object);
 

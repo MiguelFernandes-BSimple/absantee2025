@@ -258,4 +258,9 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
         return 0;
     }
+
+    public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days)
+    {
+        return _holidayPlans.Where(p => p.HasPeriodLongerThan(days));
+    }
 }
