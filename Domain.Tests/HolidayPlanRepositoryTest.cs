@@ -456,6 +456,8 @@ public class HolidayPlanRepositoryTest
         Assert.Empty(result);
     }
 
+    // ----
+
     [Fact]
     public void WhenInitDateBiggerThanFinalDate_ThenReturnsEmptyList()
     {

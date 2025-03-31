@@ -90,8 +90,10 @@ namespace Domain.Tests
             holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
             var hpRepoMock = new Mock<IHolidayPlanRepository>();
-            hpRepoMock.Setup(hp => hp.FindAll()).Returns(new List<IHolidayPlan> { holidayPlan.Object });
-            var colabService = new CollaboratorService(hpRepoMock.Object);
+            hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)).Returns(new List<IHolidayPlan> { holidayPlan.Object });
+
+            var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
+            var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
             // Act
             var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate);
 
@@ -161,8 +163,11 @@ namespace Domain.Tests
             holidayPlan2.Setup(hp => hp.GetCollaborator()).Returns(collaborator2.Object);
 
             var hpRepoMock = new Mock<IHolidayPlanRepository>();
-            hpRepoMock.Setup(hp => hp.FindAll()).Returns(new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object });
-            var colabService = new CollaboratorService(hpRepoMock.Object);
+            hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)).Returns(new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object });
+
+            var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
+            var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
+
             // Act
             var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate);
 
@@ -217,8 +222,11 @@ namespace Domain.Tests
             holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
             var hpRepoMock = new Mock<IHolidayPlanRepository>();
-            hpRepoMock.Setup(hp => hp.FindAll()).Returns(new List<IHolidayPlan> { holidayPlan.Object });
-            var colabService = new CollaboratorService(hpRepoMock.Object);
+            hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)).Returns(new List<IHolidayPlan> { holidayPlan.Object });
+
+            var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
+            var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
+
             // Act
             var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate);
 
@@ -247,8 +255,11 @@ namespace Domain.Tests
             holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
             var hpRepoMock = new Mock<IHolidayPlanRepository>();
-            hpRepoMock.Setup(hp => hp.FindAll()).Returns(new List<IHolidayPlan> { holidayPlan.Object });
-            var colabService = new CollaboratorService(hpRepoMock.Object);
+            hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)).Returns(new List<IHolidayPlan>());
+            var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
+
+            var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
+
             // Act
             var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate);
 
@@ -260,19 +271,19 @@ namespace Domain.Tests
         public void WhenPassingInitDateBiggerThanEndDate_ThenReturnsEmptyList()
         {
             // Arrange
-            var holidayPlans = new List<IHolidayPlan>();
-            var hpRepo = new HolidayPlanRepository(holidayPlans);
             var initDate = new DateOnly(2025, 8, 15);
             var endDate = new DateOnly(2025, 7, 1);
 
-            // Act & Assert
             var hpRepoMock = new Mock<IHolidayPlanRepository>();
-            hpRepoMock.Setup(hp => hp.FindAll()).Returns(new List<IHolidayPlan>());
-            var colabService = new CollaboratorService(hpRepoMock.Object);
+            hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)).Returns(new List<IHolidayPlan>());
+            var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
+            var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
             // Act
             var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(initDate, endDate);
 
+            // Assert
             Assert.Empty(result);
         }
+
     }
 }

@@ -30,23 +30,25 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         _associationRepo = associationRepo;
     }
 
-    public IEnumerable<IHolidayPlan> FindAll()
-    {
-        return [.. _holidayPlans];
-    }
-
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
         return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
     }
 
+    public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(DateOnly initDate, DateOnly endDate)
+    {
+        return _holidayPlans.Where(h => h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate)));
+    }
+
+    // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
+    // * todo - colocar in period
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
         ICollaborator collaborator,
         DateOnly initDate,
         DateOnly endDate
     )
     {
-        // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
+        // isto deve ser verificado dentro de uma classe period, que ainda está por criar
         if (initDate > endDate)
         {
             return Enumerable.Empty<IHolidayPeriod>();

@@ -7,18 +7,8 @@ namespace Domain
 {
     public class CollaboratorService
     {
-        private IAssociationProjectCollaboratorRepository? associationProjectCollaboratorRepository;
-        private IHolidayPlanRepository? holidayPlanRepository;
-
-        public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository)
-        {
-            this.associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
-        }
-
-        public CollaboratorService(IHolidayPlanRepository holidayPlanRepository)
-        {
-            this.holidayPlanRepository = holidayPlanRepository;
-        }
+        private IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository;
+        private IHolidayPlanRepository holidayPlanRepository;
 
         public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
         {
@@ -34,21 +24,17 @@ namespace Domain
         // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
         public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate)
         {
+            // estas verificações podem ser feitas dentro de uma classe period
             if (initDate > endDate)
             {
                 return Enumerable.Empty<ICollaborator>();
             }
             else
             {
-                if (holidayPlanRepository == null)
-                {
-                    return Enumerable.Empty<ICollaborator>();
-                }
 
-                var holidayPlans = holidayPlanRepository.FindAll();
-                return holidayPlans.Where(h => h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate)))
-                                .Select(h => h.GetCollaborator())
-                                .Distinct();
+                return holidayPlanRepository.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)
+                                                .Select(h => h.GetCollaborator())
+                                                .Distinct();
 
 
             }
