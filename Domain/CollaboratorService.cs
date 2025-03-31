@@ -16,6 +16,25 @@ namespace Domain
             this.holidayPlanRepository = holidayPlanRepository;
         }
 
+        // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
+        public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate)
+        {
+            // estas verificações podem ser feitas dentro de uma classe period
+            if (initDate > endDate)
+            {
+                return Enumerable.Empty<ICollaborator>();
+            }
+            else
+            {
+
+                return holidayPlanRepository.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)
+                                                .Select(h => h.GetCollaborator())
+                                                .Distinct();
+
+
+            }
+        }
+
         public IEnumerable<ICollaborator> FindAllByProject(IProject project){
             return this.associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaborator());
         }
