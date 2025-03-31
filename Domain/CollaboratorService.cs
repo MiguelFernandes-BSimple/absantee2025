@@ -16,11 +16,6 @@ namespace Domain
             this.holidayPlanRepository = holidayPlanRepository;
         }
 
-        private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
-        {
-            return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
-        }
-
         // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
         public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate)
         {
