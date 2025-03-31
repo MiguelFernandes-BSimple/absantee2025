@@ -12,5 +12,4 @@ public interface IHolidayPlanRepository
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(ICollaborator collaborator);
     public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(DateOnly initDate, DateOnly endDate);
     public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association);
-
 }
