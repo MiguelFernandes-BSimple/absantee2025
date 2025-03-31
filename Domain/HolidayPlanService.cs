@@ -13,29 +13,30 @@ public class HolidayPlanService
 
     //UC16: Como gestor de projeto, quero listar quantos dias de férias um colaborador tem marcado durante um projeto
     public int GetHolidayDaysOfCollaboratorInProject(IProject project, ICollaborator collaborator)
+    {
+
+        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator);
+
+        if (association == null)
+            throw new Exception("A associação com os parâmetros fornecidos não existe.");
+
+        int numberOfHolidayDays = 0;
+
+        var collaboratorHolidayPlan = _holidayPlanRepository.FindHolidayPlanByCollaborator(collaborator);
+
+        if (collaboratorHolidayPlan == null)
         {
-
-            var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator);
-
-            if (association == null)
-                throw new Exception("A associação com os parâmetros fornecidos não existe.");
-
-            int numberOfHolidayDays = 0;
-
-            var collaboratorHolidayPlan = _holidayPlanRepository.FindHolidayPlanByCollaborator(collaborator);
-
-            if (collaboratorHolidayPlan == null)
-            {
-                return numberOfHolidayDays;
-            }
-
-            numberOfHolidayDays = collaboratorHolidayPlan.GetNumberOfHolidayDaysBetween(
-                association.GetInitDate(),
-                association.GetFinalDate()
-            );
-
             return numberOfHolidayDays;
         }
+
+        numberOfHolidayDays = collaboratorHolidayPlan.GetNumberOfHolidayDaysBetween(
+            association.GetInitDate(),
+            association.GetFinalDate()
+        );
+
+        return numberOfHolidayDays;
+    }
+
 
     // UC19 - Given a collaborator and a period to search for, return the holiday periods that contain weekends.
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(
