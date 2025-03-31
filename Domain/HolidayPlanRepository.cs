@@ -228,5 +228,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     }
     //uc22
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(
+            ICollaborator collaborator
+        )
+    {
+        return _holidayPlans.FirstOrDefault(hp =>
+            hp.GetCollaborator().Equals(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
+    }
 
 }

@@ -22,11 +22,11 @@ namespace Domain
             DateOnly endDate
         )
         {
-            var validCollaborators = associationProjectCollaboratorRepository.FindAllProjectCollaboratorsBetween(
+            var validCollaborators = associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
                 project,
                 initDate,
                 endDate
-            );
+            ).Select(a => a.GetCollaborator());
 
             {
                 if (initDate > endDate)
@@ -39,7 +39,8 @@ namespace Domain
         }
         //uc22
         public int GetHolidayDaysForProjectCollaboratorBetweenDates(
-            IAssociationProjectCollaborator association,
+            IProject project,
+            ICollaborator collaborator,
             DateOnly initDate,
             DateOnly endDate
         )
@@ -48,37 +49,28 @@ namespace Domain
             {
                 return 0;
             }
-            if (association.AssociationIntersectDates(initDate, endDate))
+            var association = associationProjectCollaboratorRepository.FindByProjectandCollaborator(project, collaborator);
+            if (association == null)
             {
-                var colaborador = association.GetCollaborator();
-                var project = association.GetProject();
-                var _holidayPlans = holidayPlanRepository?.FindAll() ?? Enumerable.Empty<IHolidayPlan>();
-                var collaboratorHolidayPlan = _holidayPlans.FirstOrDefault(hp =>
-                    hp.GetCollaborator().Equals(colaborador)
-                );
-
-                if (collaboratorHolidayPlan == null)
-                    return 0;
-
-                int totalHolidayDays = 0;
-
-                foreach (var holidayColabPeriod in collaboratorHolidayPlan.GetHolidayPeriods())
-                {
-                    DateOnly holidayStart = holidayColabPeriod.GetInitDate();
-                    DateOnly holidayEnd = holidayColabPeriod.GetFinalDate();
-
-                    if (association.AssociationIntersectDates(holidayStart, holidayEnd))
-                    {
-                        totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(
-                            holidayStart,
-                            holidayEnd
-                        );
-                    }
-                }
-
-                return totalHolidayDays;
+                throw new Exception("");
             }
-            return 0;
+
+
+            int totalHolidayDays = 0;
+            var holidayPeriods = holidayPlanRepository.FindHolidayPeriodsByCollaborator(collaborator);
+
+            foreach (var holidayColabPeriod in holidayPeriods)
+            {
+                DateOnly holidayStart = holidayColabPeriod.GetInitDate();
+                DateOnly holidayEnd = holidayColabPeriod.GetFinalDate();
+
+                totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(
+                    holidayStart,
+                    holidayEnd
+                );
+            }
+
+            return totalHolidayDays;
         }
     }
 }

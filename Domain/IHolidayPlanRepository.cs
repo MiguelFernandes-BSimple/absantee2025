@@ -13,4 +13,7 @@ public interface IHolidayPlanRepository
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(IEnumerable<ICollaborator> collaborators, DateOnly initDate, DateOnly endDate);
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAlltCollaboratorsBetweenDates(List<ICollaborator> validCollaborators, DateOnly initDate, DateOnly endDate);
     public IEnumerable<IHolidayPlan> FindAll();
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(
+            ICollaborator collaborator
+        );
 }
