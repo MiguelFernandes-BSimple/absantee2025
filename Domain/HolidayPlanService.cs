@@ -26,41 +26,33 @@ namespace Domain
             this.holidayPlanRepository = holidayPlanRepository;
         }
 
-
-        public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+       public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
         {
-            if (initDate > endDate || holidayPlanRepository == null || associationProjectCollaboratorRepository == null)
+            if (holidayPlanRepository == null || associationProjectCollaboratorRepository == null || initDate > endDate)
             {
                 return 0;
             }
 
-            var collaborators = associationProjectCollaboratorRepository.FindAllProjectCollaborators(project);
+            var associations = associationProjectCollaboratorRepository.FindAllByProject(project);
+
             int totalHolidayDays = 0;
 
-            foreach (var collaborator in collaborators)
+            foreach (var association in associations)
             {
-                var holidayPlans = holidayPlanRepository.GetHolidayPlansByCollaborator(collaborator);
+                var holidayPlans = holidayPlanRepository.GetHolidayPlansByAssociations(association);
 
                 foreach (var holidayPlan in holidayPlans)
                 {
-                    foreach (var holidayPeriod in holidayPlan.GetHolidayPeriods())
+                    var holidayPeriods = holidayPlan.GetHolidayPeriods()
+                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate);
+
+                    foreach (var period in holidayPeriods)
                     {
-                        var holidayStart = holidayPeriod.GetInitDate();
-                        var holidayEnd = holidayPeriod.GetFinalDate();
-
-                        if (holidayEnd < initDate || holidayStart > endDate)
-                        {
-                            continue;
-                        }
-
-                        var effectiveStart = holidayStart < initDate ? initDate : holidayStart;
-                        var effectiveEnd = holidayEnd > endDate ? endDate : holidayEnd;
-
-                        totalHolidayDays += effectiveEnd.DayNumber - effectiveStart.DayNumber + 1;
+                        totalHolidayDays += period.GetDurationInDays(initDate, endDate);
                     }
                 }
             }
-            
+
             return totalHolidayDays;
         }
     }

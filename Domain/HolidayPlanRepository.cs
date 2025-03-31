@@ -284,8 +284,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return 0;
     }
 
-     public IEnumerable<IHolidayPlan> GetHolidayPlansByCollaborator(ICollaborator collaborator)
+    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
     {
-        return _holidayPlans.Where(hp => hp.GetCollaborator().Equals(collaborator));
+        var collaborator = association.GetCollaborator();
+
+        return _holidayPlans
+            .Where(hp => hp.GetCollaborator().Equals(collaborator));
     }
 }
