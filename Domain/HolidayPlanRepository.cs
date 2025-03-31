@@ -48,6 +48,27 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
+        DateOnly initDate,
+        DateOnly endDate
+    )
+    {
+        // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
+        if (initDate > endDate)
+        {
+            return Enumerable.Empty<ICollaborator>();
+        }
+        else
+        {
+            return _holidayPlans
+                .Where(h =>
+                    h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate))
+                )
+                .Select(h => h.GetCollaborator())
+                .Distinct();
+        }
+    }
+
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
         return _holidayPlans
@@ -195,7 +216,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
 
     }
-    
+
     //uc22
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(
             ICollaborator collaborator
@@ -205,5 +226,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             hp.GetCollaborator().Equals(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
     }
 
+    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
+    {
+        var collaborator = association.GetCollaborator();
+
+        return _holidayPlans
+            .Where(hp => hp.GetCollaborator().Equals(collaborator));
+    }
 }
 

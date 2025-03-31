@@ -15,6 +15,7 @@ namespace Domain
             this.associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
             this.holidayPlanRepository = holidayPlanRepository;
         }
+
         //UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
         public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
             IProject project,
@@ -70,5 +71,35 @@ namespace Domain
 
             return totalHolidayDays;
         }
+
+       public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, DateOnly initDate, DateOnly endDate)
+        {
+            if (initDate > endDate)
+            {
+                return 0;
+            }
+
+            var associations = associationProjectCollaboratorRepository.FindAllByProject(project);
+
+            int totalHolidayDays = 0;
+
+            foreach (var association in associations)
+            {
+                var holidayPlans = holidayPlanRepository.GetHolidayPlansByAssociations(association);
+
+                foreach (var holidayPlan in holidayPlans)
+                {
+                    var holidayPeriods = holidayPlan.GetHolidayPeriods()
+                        .Where(hp => hp.GetInitDate() <= endDate && hp.GetFinalDate() >= initDate);
+
+                    foreach (var period in holidayPeriods)
+                    {
+                        totalHolidayDays += period.GetDurationInDays(initDate, endDate);
+                    }
+                }
+            }
+
+            return totalHolidayDays;
+        }
     }
-}
+}   
