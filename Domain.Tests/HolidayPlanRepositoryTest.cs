@@ -1210,43 +1210,43 @@ public class HolidayPlanRepositoryTest
         Assert.Empty(result);
 }
 
-        [Fact]
-        public void GetHolidayPlansByAssociations_ReturnsCorrectPlans()
+    [Fact]
+    public void WhenHolidayPlansByAssociations_ThenReturnsCorrectPlans()
+    {
+        // Arrange
+        var mockCollaborator = new Mock<ICollaborator>();
+        var mockAssociation = new Mock<IAssociationProjectCollaborator>();
+        mockAssociation.Setup(a => a.GetCollaborator()).Returns(mockCollaborator.Object);
+
+        var mockHolidayPlan1 = new Mock<IHolidayPlan>();
+        var mockHolidayPlan2 = new Mock<IHolidayPlan>();
+
+        // Apenas um plano pode pertencer ao colaborador
+        mockHolidayPlan1.Setup(h => h.GetCollaborator()).Returns(mockCollaborator.Object);
+        
+        mockHolidayPlan2.Setup(h => h.GetCollaborator()).Returns(new Mock<ICollaborator>().Object); 
+
+        var holidayPlans = new List<IHolidayPlan>
         {
-            // Arrange
-            var mockCollaborator = new Mock<ICollaborator>();
-            var mockAssociation = new Mock<IAssociationProjectCollaborator>();
-            mockAssociation.Setup(a => a.GetCollaborator()).Returns(mockCollaborator.Object);
+            mockHolidayPlan1.Object,  
+            mockHolidayPlan2.Object   
+        };
 
-            var mockHolidayPlan1 = new Mock<IHolidayPlan>();
-            var mockHolidayPlan2 = new Mock<IHolidayPlan>();
-            var mockHolidayPlan3 = new Mock<IHolidayPlan>();
+        var repository = new HolidayPlanRepository(holidayPlans);
 
-            mockHolidayPlan1.Setup(h => h.GetCollaborator()).Returns(mockCollaborator.Object);
-            mockHolidayPlan2.Setup(h => h.GetCollaborator()).Returns(mockCollaborator.Object);
-            mockHolidayPlan3.Setup(h => h.GetCollaborator()).Returns(new Mock<ICollaborator>().Object); // Outro colaborador
+        // Act
+        var result = repository.GetHolidayPlansByAssociations(mockAssociation.Object);
 
-            var holidayPlans = new List<IHolidayPlan>
-            {
-                mockHolidayPlan1.Object,
-                mockHolidayPlan2.Object,
-                mockHolidayPlan3.Object
-            };
+        // Assert
+        var expectedPlans = new List<IHolidayPlan> { mockHolidayPlan1.Object }; 
+        Assert.Equal(expectedPlans, result.ToList());
+    }
 
-            var repository = new HolidayPlanRepository(holidayPlans);
 
-            // Act
-            var result = repository.GetHolidayPlansByAssociations(mockAssociation.Object);
 
-            // Assert
-            Assert.Contains(mockHolidayPlan1.Object, result);
-            Assert.Contains(mockHolidayPlan2.Object, result);
-            Assert.DoesNotContain(mockHolidayPlan3.Object, result);
-            Assert.Equal(2, result.Count());
-        }
 
         [Fact]
-        public void GetHolidayPlansByAssociations_WithNoMatchingCollaborator_ReturnsEmpty()
+        public void WhenHolidayPlansByAssociations_WithNoMatchingCollaborator_ThenReturnsEmpty()
         {
             // Arrange
             var mockCollaborator = new Mock<ICollaborator>();
@@ -1267,7 +1267,7 @@ public class HolidayPlanRepositoryTest
         }
 
         [Fact]
-        public void GetHolidayPlansByAssociations_WithNoHolidayPlans_ReturnsEmpty()
+        public void WhenHolidayPlansByAssociations_WithNoHolidayPlans_ThenReturnsEmpty()
         {
             // Arrange
             var mockAssociation = new Mock<IAssociationProjectCollaborator>();
