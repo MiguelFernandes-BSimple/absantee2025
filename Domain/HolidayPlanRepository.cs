@@ -48,9 +48,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
-
-
-
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
         DateOnly initDate,
         DateOnly endDate
@@ -236,6 +233,5 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return _holidayPlans
             .Where(hp => hp.GetCollaborator().Equals(collaborator));
     }
-
 }
 

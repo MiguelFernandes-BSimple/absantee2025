@@ -100,7 +100,6 @@ namespace Domain
             }
 
             return totalHolidayDays;
-
         }
     }
 }   

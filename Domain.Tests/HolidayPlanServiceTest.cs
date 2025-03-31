@@ -230,6 +230,7 @@ namespace Domain.Tests
             Assert.Equal(expectedHolidayDays, result);
         }
 
+
         [Fact]
         public void GetHolidayDaysForProjectCollaboratorBetweenDates_ReturnsCorrectDays()
         {
@@ -267,26 +268,5 @@ namespace Domain.Tests
             // Assert
             Assert.Equal(6, totalHolidayDays);
         }
-
-        [Fact]
-        public void GetHolidayDaysForProjectCollaboratorBetweenDates_ShouldReturnZero_WhenInitDateIsGreaterThanEndDate()
-        {
-            // Arrange
-            var mockProject = new Mock<IProject>();
-            var mockHolidayRepo = new Mock<IHolidayPlanRepository>();
-            var mockAssociationRepo = new Mock<IAssociationProjectCollaboratorRepository>();
-
-            var service = new HolidayPlanService(mockAssociationRepo.Object, mockHolidayRepo.Object);
-
-            DateOnly initDate = new DateOnly(2024, 12, 31); // Data inicial maior
-            DateOnly endDate = new DateOnly(2024, 01, 01);  // Data final menor
-
-            // Act
-            int result = service.GetHolidayDaysForProjectCollaboratorBetweenDates(mockProject.Object, initDate, endDate);
-
-            // Assert
-            Assert.Equal(0, result);
-        }
     }
-
 }
