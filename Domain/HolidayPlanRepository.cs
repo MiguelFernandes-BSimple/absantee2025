@@ -21,13 +21,20 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return period.GetInitDate() <= endDate && period.GetFinalDate() >= initDate;
     }
 
+    public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(DateOnly initDate, DateOnly endDate)
+    {
+        return _holidayPlans.Where(h => h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate)));
+    }
+
+    // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
+    // * todo - colocar in period
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(
         ICollaborator collaborator,
         DateOnly initDate,
         DateOnly endDate
     )
     {
-        // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
+        // isto deve ser verificado dentro de uma classe period, que ainda está por criar
         if (initDate > endDate)
         {
             return Enumerable.Empty<IHolidayPeriod>();
@@ -38,27 +45,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
                 .Where(h => h.HasCollaborator(collaborator))
                 .SelectMany(h => h.GetHolidayPeriods())
                 .Where(p => IsHolidayPeriodValid(p, initDate, endDate));
-        }
-    }
-
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
-        DateOnly initDate,
-        DateOnly endDate
-    )
-    {
-        // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-        if (initDate > endDate)
-        {
-            return Enumerable.Empty<ICollaborator>();
-        }
-        else
-        {
-            return _holidayPlans
-                .Where(h =>
-                    h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate))
-                )
-                .Select(h => h.GetCollaborator())
-                .Distinct();
         }
     }
 
@@ -209,6 +195,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
 
     }
+    
     //uc22
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(
             ICollaborator collaborator
@@ -219,3 +206,4 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
 }
+
