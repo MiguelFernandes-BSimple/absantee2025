@@ -16,7 +16,6 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
     public IAssociationProjectCollaborator? FindByProjectandCollaborator(IProject project, ICollaborator collaborator)
     {
         return _associationsProjectCollaborator.Where(a => a.HasProject(project) && a.HasCollaborator(collaborator)).FirstOrDefault();
-
     }
 
     public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, DateOnly InitDate, DateOnly FinalDate)
