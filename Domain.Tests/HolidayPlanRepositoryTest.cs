@@ -1237,7 +1237,7 @@ public class HolidayPlanRepositoryTest
 
         // Assert
         Assert.Equal(expectedPeriods, result.Count);
-
+    }
     /**
     * Method to add a holiday plan to repo
     * There is an holiday plan for the same collaborator 
