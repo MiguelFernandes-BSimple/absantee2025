@@ -262,50 +262,6 @@ public class AssociationProjectCollaboratorRepositoryTest
 
     }
 
-    [Theory]
-    [InlineData(true, false)]
-    [InlineData(false, true)]
-    [InlineData(false, false)]
-    public void WhenFindingByProjectAndCollaboratorWithNoAssociation_ThenThrowsException(bool first, bool second)
-    {
-        //arrange
-        var projectDouble = new Mock<IProject>();
-        var collaboratorDouble = new Mock<ICollaborator>();
-        var associationDouble = new Mock<IAssociationProjectCollaborator>();
-
-        associationDouble.Setup(a => a.HasProject(projectDouble.Object)).Returns(first);
-        associationDouble.Setup(a => a.HasCollaborator(collaboratorDouble.Object)).Returns(second);
-
-        var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { associationDouble.Object });
-
-        //act
-        var result = repo.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object);
-
-        //assert
-        Assert.Null(result);
-    }
-
-    [Fact]
-    public void WhenFindingByProjectAndCollaboratorWithExistingParameters_ThenReturnsAssociation()
-    {
-
-        //arrange
-        var projectDouble = new Mock<IProject>();
-        var collaboratorDouble = new Mock<ICollaborator>();
-        var associationDouble = new Mock<IAssociationProjectCollaborator>();
-
-        associationDouble.Setup(a => a.HasProject(projectDouble.Object)).Returns(true);
-        associationDouble.Setup(a => a.HasCollaborator(collaboratorDouble.Object)).Returns(true);
-
-        var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { associationDouble.Object });
-
-        //act
-        var result = repo.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object);
-
-        //assert
-        Assert.Equal(associationDouble.Object, result);
-
-    }
 
     [Theory]
     [InlineData(true, false)]

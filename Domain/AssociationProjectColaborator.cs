@@ -78,10 +78,6 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         return this._project.Equals(project);
     }
-    public bool HasCollaborator(ICollaborator collaborator)
-    {
-        return this._collaborator.Equals(collaborator);
-    }
 
     public bool AssociationIntersectDates(DateOnly initDate, DateOnly finalDate)
     {
