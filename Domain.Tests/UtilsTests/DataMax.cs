@@ -1,6 +1,6 @@
 using Domain;
 
-namespace Domain.Tests.UtilsTest;
+namespace Domain.Tests.UtilsTests;
 
 public class DataMax
 {

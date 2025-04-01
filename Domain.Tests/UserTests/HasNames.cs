@@ -1,6 +1,6 @@
 using Domain;
 
-namespace Domain.Tests.UserTest;
+namespace Domain.Tests.UserTests;
 
 public class HasNames
 {
