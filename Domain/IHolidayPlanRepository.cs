@@ -15,4 +15,6 @@ public interface IHolidayPlanRepository
     public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association);
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days);
     public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator);
+    public bool AddHolidayPlan(IHolidayPlan holidayPlan);
+
 }

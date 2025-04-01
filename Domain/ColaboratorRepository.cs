@@ -16,21 +16,21 @@ public class CollaboratorRepository : ICollaboratorRepository
 
         //Validate if collaborator list is valid
         // All collaborators have to be valid
-        for (int collab = 0; collab < collaborators.Count; collab++)
+        for (int collabIndex1 = 0; collabIndex1 < collaborators.Count; collabIndex1++)
         {
             if (!isValid)
                 break;
 
-            ICollaborator currColaborator = collaborators[collab];
-            isValid = CanInsert(currColaborator, collaborators.Skip(collab + 1).ToList());
+            ICollaborator currColaborator = collaborators[collabIndex1];
+            isValid = CanInsert(currColaborator, collaborators.Skip(collabIndex1 + 1).ToList());
         }
 
         // If the list is valid -> insert Collborators in repo
         if (isValid)
         {
-            foreach (ICollaborator collab2 in collaborators)
+            foreach (ICollaborator collabIndex2 in collaborators)
             {
-                AddCollaborator(collab2);
+                AddCollaborator(collabIndex2);
             }
         }
         else
@@ -72,6 +72,9 @@ public class CollaboratorRepository : ICollaboratorRepository
         return !alreadyExists;
     }
 
+    /**
+    * Method to add a single collaborator to the repository
+    */
     public bool AddCollaborator(ICollaborator collaborator)
     {
         bool canInsert = CanInsert(collaborator, _collaborators);

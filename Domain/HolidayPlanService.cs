@@ -122,7 +122,7 @@ public class HolidayPlanService
         var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator);
         if (association == null)
         {
-            throw new Exception("");
+            throw new Exception("No association found for the project and collaborator");
         }
 
 
@@ -171,5 +171,6 @@ public class HolidayPlanService
         }
 
         return totalHolidayDays;
+
     }
 }

@@ -4,16 +4,39 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 {
     private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
 
-    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
+    public HolidayPlanRepository()
     {
-        _holidayPlans = holidayPlans;
+        _holidayPlans = new List<IHolidayPlan>();
     }
 
-    public HolidayPlanRepository(IHolidayPlan holidayPlan)
+    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans) : this()
     {
-        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
-    }
+        bool isValid = true;
 
+        //Validate if holidayPlan list is valid
+        // -> All holidayPlans have to be valid
+        for (int hpIndex1 = 0; hpIndex1 < holidayPlans.Count; hpIndex1++)
+        {
+            if (!isValid)
+                break;
+
+            IHolidayPlan currHolidayPlan = holidayPlans[hpIndex1];
+            isValid = CanInsert(currHolidayPlan, holidayPlans.Skip(hpIndex1 + 1).ToList());
+        }
+
+        // If the list is valid -> insert hlidayPlans in repo
+        if (isValid)
+        {
+            foreach (IHolidayPlan hpIndex2 in holidayPlans)
+            {
+                AddHolidayPlan(hpIndex2);
+            }
+        }
+        else
+        {
+            throw new ArgumentException("Arguments are not valid!");
+        }
+    }
 
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
@@ -47,7 +70,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
-     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
     {
         return _holidayPlans
             .Where(p => p.HasPeriodLongerThan(days))
@@ -210,5 +233,31 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator)
     {
         return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == collaborator);
+    }
+
+    /**
+    * Method to validate whether a holidayPlan can be insert in a given list or not
+    * -> There can't be multiple holidayPlans for a single collaborator
+    * It's one or none
+    */
+    private bool CanInsert(IHolidayPlan holidayPlan, List<IHolidayPlan> holidayPlansList)
+    {
+        bool alreadyExists =
+            holidayPlansList.Any(hp => hp.GetCollaborator().Equals(holidayPlan.GetCollaborator()));
+
+        return !alreadyExists;
+    }
+
+    /**
+    * Method to add a single holidayPlan to the repository
+    */
+    public bool AddHolidayPlan(IHolidayPlan holidayPlan)
+    {
+        bool canInsert = CanInsert(holidayPlan, _holidayPlans);
+
+        if (canInsert)
+            _holidayPlans.Add(holidayPlan);
+
+        return canInsert;
     }
 }
