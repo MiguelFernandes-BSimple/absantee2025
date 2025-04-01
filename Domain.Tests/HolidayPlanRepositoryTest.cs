@@ -846,7 +846,6 @@ public class HolidayPlanRepositoryTest
         1
         };
 
-
         // periodo começa antes e termina dentro
         yield return new object[]
         {
@@ -854,6 +853,14 @@ public class HolidayPlanRepositoryTest
         new DateOnly(2025, 6, 30),
         new DateOnly(2025, 5, 20),
         new DateOnly(2025, 6, 15),
+        1
+        };
+        yield return new object[]
+        {
+        new DateOnly(2025, 6, 1),
+        new DateOnly(2025, 6, 1),
+        new DateOnly(2025, 6, 1),
+        new DateOnly(2025, 6, 1),
         1
         };
 
@@ -923,6 +930,7 @@ public class HolidayPlanRepositoryTest
         new DateOnly(2025, 5, 10),
         2
         };
+
     }
 
     [Theory]
@@ -965,6 +973,4 @@ public class HolidayPlanRepositoryTest
         // Assert
         Assert.Equal(expectedPeriods, result.Count);
     }
-
-
 }
