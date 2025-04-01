@@ -1,4 +1,3 @@
-using System.IO.Compression;
 using Domain;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
@@ -118,64 +117,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             );
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(
-        ICollaborator collaborator,
-        DateOnly searchInitDate,
-        DateOnly searchEndDate
-    )
-    {
-        if (!Utils.ContainsWeekend(searchInitDate, searchEndDate))
-            return Enumerable.Empty<IHolidayPeriod>();
-
-        IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates =
-            FindAllHolidayPeriodsForCollaboratorBetweenDates(
-                collaborator,
-                searchInitDate,
-                searchEndDate
-            );
-
-        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates.Where(holidayPeriod =>
-        {
-            DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetInitDate(), searchInitDate);
-            DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetFinalDate(), searchEndDate);
-            return intersectionStart <= intersectionEnd
-                && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
-        });
-        return hp;
-    }
-
-    public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(
-        ICollaborator collaborator1,
-        ICollaborator collaborator2,
-        DateOnly searchInitDate,
-        DateOnly searchEndDate
-    )
-    {
-        IEnumerable<IHolidayPeriod> holidayPeriodListColab1 =
-            FindAllHolidayPeriodsForCollaboratorBetweenDates(
-                collaborator1,
-                searchInitDate,
-                searchEndDate
-            );
-        IEnumerable<IHolidayPeriod> holidayPeriodListColab2 =
-            FindAllHolidayPeriodsForCollaboratorBetweenDates(
-                collaborator2,
-                searchInitDate,
-                searchEndDate
-            );
-
-        return holidayPeriodListColab1
-            .SelectMany(period1 =>
-                holidayPeriodListColab2
-                    .Where(period2 =>
-                        period1.GetInitDate() <= period2.GetFinalDate()
-                        && period1.GetFinalDate() >= period2.GetInitDate()
-                    )
-                    .SelectMany(period2 => new List<IHolidayPeriod> { period1, period2 })
-            )
-            .Distinct();
-    }
-
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
         IEnumerable<ICollaborator> collaborators,
         DateOnly initDate,
@@ -234,4 +175,3 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(hp => hp.GetCollaborator().Equals(collaborator));
     }
 }
-
