@@ -50,7 +50,7 @@ namespace Domain
             var association = associationProjectCollaboratorRepository.FindByProjectandCollaborator(project, collaborator);
             if (association == null)
             {
-                throw new Exception("");
+                throw new Exception("No association found for the project and collaborator");
             }
 
 
