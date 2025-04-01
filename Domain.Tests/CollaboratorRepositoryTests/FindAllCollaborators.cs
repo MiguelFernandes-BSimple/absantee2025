@@ -3,6 +3,9 @@ namespace Domain.Tests.CollaboratorRepositoryTests;
 using Moq;
 
 public class FindAllCollaborators {
+    /**
+    * Test to return all collaborators in the repository
+    */
     [Fact]
     public void WhenQueriedFindAllCollaborators_ThenReturnCollaboratorList()
     {
@@ -17,6 +20,12 @@ public class FindAllCollaborators {
             doubleCollaborator1.Object,
             doubleCollaborator2.Object,
             doubleCollaborator3.Object };
+
+        // All elements are distinct
+        // Set up GetEmail() for each collaborator
+        doubleCollaborator1.Setup(c1 => c1.GetEmail()).Returns("email1@example.com");
+        doubleCollaborator2.Setup(c2 => c2.GetEmail()).Returns("email2@example.com");
+        doubleCollaborator3.Setup(c3 => c3.GetEmail()).Returns("email3@example.com");
 
         //Instatiate CollaboratorRepository with the list 
         CollaboratorRepository collabRepo = new CollaboratorRepository(expectedList);
