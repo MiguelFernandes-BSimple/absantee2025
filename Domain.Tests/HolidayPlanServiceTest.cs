@@ -351,8 +351,31 @@ public class HolidayPlanServiceTests
 
         //assert
         Assert.Equal(5, result);
-
     }
+
+    [Fact]
+    public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectWithoutHolidayPlan_ThenReturnZero()
+    {
+        //arrange
+        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        Mock<IProject> projectDouble = new Mock<IProject>();
+        Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
+
+        Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorDouble.Object)).Returns((IHolidayPlan?)null);
+
+        Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object)).Returns(associationDouble.Object);
+
+        HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
+
+        //act
+        int result = service.GetHolidayDaysOfCollaboratorInProject(projectDouble.Object, collaboratorDouble.Object);
+
+        //assert
+        Assert.Equal(0, result);
+    }
+
 
     //UC20 Data
     public static IEnumerable<object[]> ValidPeriodToSearchOverlapping()
@@ -369,38 +392,38 @@ public class HolidayPlanServiceTests
             new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
             new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
         };
-            // same start holiday period date, end date after
-            yield return new object[] {
+        // same start holiday period date, end date after
+        yield return new object[] {
                 new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
                 new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 14),
                 new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
         };
-            // same end holiday period date, start date before
-            yield return new object[] {
+        // same end holiday period date, start date before
+        yield return new object[] {
                 new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 11),
                 new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
                 new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
         };
-            // one holiday period inside the other
-            yield return new object[] {
+        // one holiday period inside the other
+        yield return new object[] {
                 new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
                 new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
                 new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
         };
-            // search for a specific day that contains both holiday periods
-            yield return new object[] {
+        // search for a specific day that contains both holiday periods
+        yield return new object[] {
                 new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
                 new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
                 new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 10),
         };
-            // holiday period 1 ends when holiday period 2 start
-            yield return new object[] {
+        // holiday period 1 ends when holiday period 2 start
+        yield return new object[] {
                 new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
                 new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
                 new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
         };
-            // holiday period 1 starts when holiday period 2 ends
-            yield return new object[] {
+        // holiday period 1 starts when holiday period 2 ends
+        yield return new object[] {
                 new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
                 new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
                 new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
