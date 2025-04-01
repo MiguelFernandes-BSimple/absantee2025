@@ -3,7 +3,8 @@ using Domain.Interfaces;
 using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
-public class GetHolidayPeriodContainingDateTests
+
+public class GetHolidayPeriodContainingDate
 {
     [Fact]
     public void WhenGivenCorrectDate_ThenReturnPeriod()

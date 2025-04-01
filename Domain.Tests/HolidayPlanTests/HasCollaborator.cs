@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
 
-public class HasCollaboratorTests
+public class HasCollaborator
 {
     [Fact]
     public void WhenSameCollaborator_ReturnsTrue()

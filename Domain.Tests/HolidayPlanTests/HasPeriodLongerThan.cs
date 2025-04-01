@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
 
-public class HasPeriodLongerThanTests
+public class HasPeriodLongerThan
 {
     [Theory]
     [InlineData(true, true)]

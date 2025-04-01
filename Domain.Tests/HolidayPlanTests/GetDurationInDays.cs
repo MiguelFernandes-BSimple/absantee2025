@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
 
-public class GetDurationInDaysTests
+public class GetDurationInDays
 {
 
     [Fact]

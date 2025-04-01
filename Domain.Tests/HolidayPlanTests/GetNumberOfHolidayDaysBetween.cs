@@ -3,7 +3,8 @@ using Domain.Interfaces;
 using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
-public class GetNumberOfHolidayDaysBetweenTests
+
+public class GetNumberOfHolidayDaysBetween
 {
     public static IEnumerable<object[]> GetHolidayDaysBetweenData()
     {
