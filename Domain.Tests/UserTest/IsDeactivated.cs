@@ -1,6 +1,6 @@
 using Domain;
 
-namespace Domain.Tests;
+namespace Domain.Tests.UserTest;
 
 public class IsDeactivated
 {
