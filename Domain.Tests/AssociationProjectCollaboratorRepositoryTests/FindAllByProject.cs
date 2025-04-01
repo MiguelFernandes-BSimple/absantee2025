@@ -1,0 +1,33 @@
+namespace Domain.Tests.AssociationProjectCollaboratorRepositoryTests;
+
+using Moq;
+
+public class FindAllByProject {
+    [Fact]
+    public void WhenPassingProject_ThenReturnAllAssociationProjectCollaborator()
+    {
+        //arrange
+        Mock<IProject> projectMock = new Mock<IProject>();
+
+        Mock<IAssociationProjectCollaborator> assocMock1 = new Mock<IAssociationProjectCollaborator>();
+        Mock<IAssociationProjectCollaborator> assocMock2 = new Mock<IAssociationProjectCollaborator>();
+        List<IAssociationProjectCollaborator> associationsProjectCollaborator = new List<IAssociationProjectCollaborator> {
+            assocMock1.Object,
+            assocMock2.Object
+        };
+
+        assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
+
+        assocMock2.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
+
+        List<IAssociationProjectCollaborator> expected = new List<IAssociationProjectCollaborator> {assocMock2.Object};
+
+        var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
+
+        //act
+        var result = assoc.FindAllByProject(projectMock.Object);
+
+        //assert
+        Assert.True(expected.SequenceEqual(result));
+    }
+}
