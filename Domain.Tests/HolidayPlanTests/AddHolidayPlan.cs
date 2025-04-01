@@ -1,7 +1,7 @@
 using Domain;
 using Moq;
 
-public class AddHolidayPeriodTests
+public class AddHolidayPlan
 {
     // Validate if a valid Holiday period can be added to a holiday plan
     // If its successfully added, returns true

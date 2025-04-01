@@ -1,7 +1,7 @@
 using Domain;
 using Moq;
 
-public class FindAllHolidayPeriodsBetweenDatesLongerThanTests
+public class FindAllHolidayPeriodsBetweenDatesLongerThan
 {
     [Fact]
     public void WhenGivenValidDatesAndLength_ThenReturnPeriods()

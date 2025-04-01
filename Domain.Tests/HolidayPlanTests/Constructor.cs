@@ -1,7 +1,7 @@
 using Domain;
 using Moq;
 
-public class ConstructorTests
+public class Constructor
 {
     // Happy Path - Testing constructor with Single HolidayPeriod
     // Can Instatiate a HolidayPlan Object successfuly
