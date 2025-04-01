@@ -1,4 +1,5 @@
 using Domain;
+
 using Moq;
 
 public class HolidayPlanServiceTests
@@ -190,7 +191,7 @@ public class HolidayPlanServiceTests
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
         associationRepoMock
-            .Setup(a => a.FindByProjectandCollaborator(projectMock.Object, collaboratorMock.Object))
+            .Setup(a => a.FindByProjectAndCollaborator(projectMock.Object, collaboratorMock.Object))
             .Returns(associationMock.Object);
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
@@ -317,34 +318,64 @@ public class HolidayPlanServiceTests
         yield return new object[] { new DateOnly(2025, 03, 20), new DateOnly(2025, 04, 04) };
     }
 
-    [Theory]
-    [MemberData(nameof(ValidHolidayDatesWithoutWeekends))]
-    public void WhenRetrievingAllHolidayPeriodsForCollaboratorBetweenWithDatesThatDontIncludeWeekends_ThenReturnEmpty(DateOnly searchInitDate, DateOnly searchEndDate)
+    [Fact]
+    public void WhenCalculatingHolidayDaysOfCollaboratorInAProject_ThenReturnCorrectValue()
     {
-
         //arrange
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
+        Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
+        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        Mock<IProject> projectDouble = new Mock<IProject>();
+        Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
 
-        Mock<IHolidayPeriod> holidayPeriod = new Mock<IHolidayPeriod>();
-        DateOnly holidayPeriodStartDate = new DateOnly(2025, 04, 01);
-        DateOnly holidayPeriodFinalDate = new DateOnly(2025, 04, 09);
-        holidayPeriod.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate);
-        holidayPeriod.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate);
-        var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
+        DateOnly initDate = new DateOnly(2025, 6, 1);
+        DateOnly finalDate = new DateOnly(2025, 6, 10);
 
+        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
+        associationDouble.Setup(a => a.GetProject()).Returns(projectDouble.Object);
+        associationDouble.Setup(a => a.GetInitDate()).Returns(initDate);
+        associationDouble.Setup(a => a.GetFinalDate()).Returns(finalDate);
 
-        Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
-        Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab.Object, searchInitDate, searchEndDate)).Returns(holidayPeriodsList);
+        holidayPlanDouble.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
+        holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(initDate, finalDate)).Returns(5);
 
-        HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
+        Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorDouble.Object)).Returns(holidayPlanDouble.Object);
+
+        Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object)).Returns(associationDouble.Object);
+
+        HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
 
         //act
-        var result = service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(collab.Object, searchInitDate, searchEndDate);
+        int result = service.GetHolidayDaysOfCollaboratorInProject(projectDouble.Object, collaboratorDouble.Object);
 
         //assert
-        Assert.Empty(result);
+        Assert.Equal(5, result);
     }
+
+    [Fact]
+    public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectWithoutHolidayPlan_ThenReturnZero()
+    {
+        //arrange
+        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        Mock<IProject> projectDouble = new Mock<IProject>();
+        Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
+
+        Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorDouble.Object)).Returns((IHolidayPlan?)null);
+
+        Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object)).Returns(associationDouble.Object);
+
+        HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
+
+        //act
+        int result = service.GetHolidayDaysOfCollaboratorInProject(projectDouble.Object, collaboratorDouble.Object);
+
+        //assert
+        Assert.Equal(0, result);
+    }
+
 
     //UC20 Data
     public static IEnumerable<object[]> ValidPeriodToSearchOverlapping()
@@ -360,43 +391,43 @@ public class HolidayPlanServiceTests
             new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
             new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
             new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
+        };
         // same start holiday period date, end date after
         yield return new object[] {
-            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
-            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 14),
-            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
+                new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+                new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 14),
+                new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
         // same end holiday period date, start date before
         yield return new object[] {
-            new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 11),
-            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
+                new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 11),
+                new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
         // one holiday period inside the other
         yield return new object[] {
-            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
-            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
+                new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+                new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
         // search for a specific day that contains both holiday periods
         yield return new object[] {
-            new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
-            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 10),
-    };
+                new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+                new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 10),
+        };
         // holiday period 1 ends when holiday period 2 start
         yield return new object[] {
-            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
-            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
-            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
+                new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
+                new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
+                new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
         // holiday period 1 starts when holiday period 2 ends
         yield return new object[] {
-            new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
-            new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
-            new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
+                new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 15),
+                new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 10),
+                new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
+        };
     }
 
     // UC20 

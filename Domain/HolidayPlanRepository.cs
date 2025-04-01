@@ -70,6 +70,14 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
+    {
+        return _holidayPlans
+            .Where(p => p.HasPeriodLongerThan(days))
+            .Select(p => p.GetCollaborator())
+            .Distinct();
+    }
+
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
         DateOnly initDate,
         DateOnly endDate
@@ -89,14 +97,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
                 .Select(h => h.GetCollaborator())
                 .Distinct();
         }
-    }
-
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsLongerThan(int days)
-    {
-        return _holidayPlans
-            .Where(p => p.HasPeriodLongerThan(days))
-            .Select(p => p.GetCollaborator())
-            .Distinct();
     }
 
     public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectCollaborator association)
@@ -138,6 +138,33 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .SelectMany(a =>
                 a.FindAllHolidayPeriodsBetweenDatesLongerThan(initDate, endDate, days)
             );
+    }
+
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends(
+        ICollaborator collaborator,
+        DateOnly searchInitDate,
+        DateOnly searchEndDate
+    )
+    {
+        if (!Utils.ContainsWeekend(searchInitDate, searchEndDate))
+            return Enumerable.Empty<IHolidayPeriod>();
+
+        IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates =
+            FindAllHolidayPeriodsForCollaboratorBetweenDates(
+                collaborator,
+                searchInitDate,
+                searchEndDate
+            );
+
+        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates.Where(holidayPeriod =>
+        {
+            DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetInitDate(), searchInitDate);
+            DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetFinalDate(), searchEndDate);
+            return intersectionStart <= intersectionEnd
+                && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
+        });
+
+        return hp;
     }
 
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
@@ -196,6 +223,16 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
         return _holidayPlans
             .Where(hp => hp.GetCollaborator().Equals(collaborator));
+    }
+
+    public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days)
+    {
+        return _holidayPlans.Where(p => p.HasPeriodLongerThan(days));
+    }
+
+    public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator)
+    {
+        return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == collaborator);
     }
 
     /**

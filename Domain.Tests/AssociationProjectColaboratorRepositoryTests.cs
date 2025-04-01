@@ -1,6 +1,8 @@
 namespace Domain.Tests;
 
+using System.Security.Cryptography;
 using Domain;
+using Microsoft.VisualBasic;
 using Moq;
 
 public class AssociationProjectCollaboratorRepositoryTest
@@ -159,7 +161,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         //assert
         Assert.Null(result);
@@ -184,7 +186,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         //assert
         Assert.Equal(assocMock1.Object, result);
@@ -208,7 +210,7 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         // Act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         // Assert
         Assert.Null(result);
@@ -232,9 +234,55 @@ public class AssociationProjectCollaboratorRepositoryTest
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         // Act
-        var result = assoc.FindByProjectandCollaborator(projectMock.Object, collabMock.Object);
+        var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
 
         // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void WhenFindingByProjectAndCollaboratorWithExistingParameters_ThenReturnsAssociation()
+    {
+
+        //arrange
+        var projectDouble = new Mock<IProject>();
+        var collaboratorDouble = new Mock<ICollaborator>();
+        var associationDouble = new Mock<IAssociationProjectCollaborator>();
+
+        associationDouble.Setup(a => a.HasProject(projectDouble.Object)).Returns(true);
+        associationDouble.Setup(a => a.HasCollaborator(collaboratorDouble.Object)).Returns(true);
+
+        var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { associationDouble.Object });
+
+        //act
+        var result = repo.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object);
+
+        //assert
+        Assert.Equal(associationDouble.Object, result);
+
+    }
+
+
+    [Theory]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(false, false)]
+    public void WhenFindingByProjectAndCollaboratorWithNoAssociation_ThenThrowsException(bool first, bool second)
+    {
+        //arrange
+        var projectDouble = new Mock<IProject>();
+        var collaboratorDouble = new Mock<ICollaborator>();
+        var associationDouble = new Mock<IAssociationProjectCollaborator>();
+
+        associationDouble.Setup(a => a.HasProject(projectDouble.Object)).Returns(first);
+        associationDouble.Setup(a => a.HasCollaborator(collaboratorDouble.Object)).Returns(second);
+
+        var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { associationDouble.Object });
+
+        //act
+        var result = repo.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object);
+
+        //assert
         Assert.Null(result);
     }
 }
