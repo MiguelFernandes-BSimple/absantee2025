@@ -17,4 +17,9 @@ public interface ICollaborator
     * Returns false -> otherwise; or in case its a invalid string (null, whitespaces or empty)
     */
     public bool HasSurnames(string surnames);
+
+    /**
+    * Getter for email parameter
+    */
+    public string GetEmail();
 }

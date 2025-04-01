@@ -104,4 +104,9 @@ public class User : IUser
 
         return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
     }
+
+    public string GetEmail()
+    {
+        return _email;
+    }
 }

@@ -1,20 +1,42 @@
-using System.IO.Compression;
 using Domain;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
     private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
 
-    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans)
+    public HolidayPlanRepository()
     {
-        _holidayPlans = holidayPlans;
+        _holidayPlans = new List<IHolidayPlan>();
     }
 
-    public HolidayPlanRepository(IHolidayPlan holidayPlan)
+    public HolidayPlanRepository(List<IHolidayPlan> holidayPlans) : this()
     {
-        _holidayPlans = new List<IHolidayPlan>() { holidayPlan };
-    }
+        bool isValid = true;
 
+        //Validate if holidayPlan list is valid
+        // -> All holidayPlans have to be valid
+        for (int hpIndex1 = 0; hpIndex1 < holidayPlans.Count; hpIndex1++)
+        {
+            if (!isValid)
+                break;
+
+            IHolidayPlan currHolidayPlan = holidayPlans[hpIndex1];
+            isValid = CanInsert(currHolidayPlan, holidayPlans.Skip(hpIndex1 + 1).ToList());
+        }
+
+        // If the list is valid -> insert hlidayPlans in repo
+        if (isValid)
+        {
+            foreach (IHolidayPlan hpIndex2 in holidayPlans)
+            {
+                AddHolidayPlan(hpIndex2);
+            }
+        }
+        else
+        {
+            throw new ArgumentException("Arguments are not valid!");
+        }
+    }
 
     private bool IsHolidayPeriodValid(IHolidayPeriod period, DateOnly initDate, DateOnly endDate)
     {
@@ -54,6 +76,27 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(p => p.HasPeriodLongerThan(days))
             .Select(p => p.GetCollaborator())
             .Distinct();
+    }
+
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(
+        DateOnly initDate,
+        DateOnly endDate
+    )
+    {
+        // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
+        if (initDate > endDate)
+        {
+            return Enumerable.Empty<ICollaborator>();
+        }
+        else
+        {
+            return _holidayPlans
+                .Where(h =>
+                    h.GetHolidayPeriods().Any(p => IsHolidayPeriodValid(p, initDate, endDate))
+                )
+                .Select(h => h.GetCollaborator())
+                .Distinct();
+        }
     }
 
     public int GetHolidayDaysOfCollaboratorInProject(IAssociationProjectCollaborator association)
@@ -120,39 +163,8 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             return intersectionStart <= intersectionEnd
                 && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
         });
+
         return hp;
-    }
-
-    public IEnumerable<IHolidayPeriod> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(
-        ICollaborator collaborator1,
-        ICollaborator collaborator2,
-        DateOnly searchInitDate,
-        DateOnly searchEndDate
-    )
-    {
-        IEnumerable<IHolidayPeriod> holidayPeriodListColab1 =
-            FindAllHolidayPeriodsForCollaboratorBetweenDates(
-                collaborator1,
-                searchInitDate,
-                searchEndDate
-            );
-        IEnumerable<IHolidayPeriod> holidayPeriodListColab2 =
-            FindAllHolidayPeriodsForCollaboratorBetweenDates(
-                collaborator2,
-                searchInitDate,
-                searchEndDate
-            );
-
-        return holidayPeriodListColab1
-            .SelectMany(period1 =>
-                holidayPeriodListColab2
-                    .Where(period2 =>
-                        period1.GetInitDate() <= period2.GetFinalDate()
-                        && period1.GetFinalDate() >= period2.GetInitDate()
-                    )
-                    .SelectMany(period2 => new List<IHolidayPeriod> { period1, period2 })
-            )
-            .Distinct();
     }
 
     public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
@@ -195,7 +207,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
 
     }
-    
+
     //uc22
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(
             ICollaborator collaborator
@@ -205,5 +217,47 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             hp.GetCollaborator().Equals(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
     }
 
-}
+    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
+    {
+        var collaborator = association.GetCollaborator();
 
+        return _holidayPlans
+            .Where(hp => hp.GetCollaborator().Equals(collaborator));
+    }
+
+    public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days)
+    {
+        return _holidayPlans.Where(p => p.HasPeriodLongerThan(days));
+    }
+
+    public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator)
+    {
+        return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == collaborator);
+    }
+
+    /**
+    * Method to validate whether a holidayPlan can be insert in a given list or not
+    * -> There can't be multiple holidayPlans for a single collaborator
+    * It's one or none
+    */
+    private bool CanInsert(IHolidayPlan holidayPlan, List<IHolidayPlan> holidayPlansList)
+    {
+        bool alreadyExists =
+            holidayPlansList.Any(hp => hp.GetCollaborator().Equals(holidayPlan.GetCollaborator()));
+
+        return !alreadyExists;
+    }
+
+    /**
+    * Method to add a single holidayPlan to the repository
+    */
+    public bool AddHolidayPlan(IHolidayPlan holidayPlan)
+    {
+        bool canInsert = CanInsert(holidayPlan, _holidayPlans);
+
+        if (canInsert)
+            _holidayPlans.Add(holidayPlan);
+
+        return canInsert;
+    }
+}

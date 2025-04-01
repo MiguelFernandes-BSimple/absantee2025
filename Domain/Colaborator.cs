@@ -46,4 +46,9 @@ public class Collaborator : ICollaborator
     {
         return _user.HasSurnames(surnames);
     }
+
+    public string GetEmail()
+    {
+        return _user.GetEmail();
+    }
 }
