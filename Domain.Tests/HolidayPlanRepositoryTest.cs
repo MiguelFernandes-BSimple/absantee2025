@@ -3,18 +3,89 @@ using Moq;
 
 public class HolidayPlanRepositoryTest
 {
+    /**
+    * Test for empty constructor
+    */
     [Fact]
-    public void WhenConstructingHolidayPlanRepositoryWithSingleHolidayPlan_ThenHolidayPlansIsInitialized()
+    public void WhenNotPassingAnyArguments_ThenObjectIsCreated()
     {
-        // Arrange
-        var holidayPlanMock = new Mock<IHolidayPlan>();
+        //Arrange
 
-        // Act
-        new HolidayPlanRepository(holidayPlanMock.Object);
+        //Act
+        new HolidayPlanRepository();
 
-        // Assert
+        //Assert
     }
 
+    /**
+    * Test for constructor that receives a list of HolidaPlans
+    */
+    [Fact]
+    public void WhenPassingCorrectHolidayPlansList_ThenObjectIsCreated()
+    {
+        // Arrange 
+        // HolidayPlan doubles - stubs
+        Mock<IHolidayPlan> doubleHolidayPlan1 = new Mock<IHolidayPlan>();
+        Mock<IHolidayPlan> doubleHolidayPlan2 = new Mock<IHolidayPlan>();
+        Mock<IHolidayPlan> doubleHolidayPlan3 = new Mock<IHolidayPlan>();
+
+        //Collaborator doubles for constructor verification
+        Mock<ICollaborator> doubleColab1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleColab2 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleColab3 = new Mock<ICollaborator>();
+
+        // Create HolidayPlan List
+        List<IHolidayPlan> holidayPlansList =
+            new List<IHolidayPlan> { doubleHolidayPlan1.Object, doubleHolidayPlan2.Object, doubleHolidayPlan3.Object };
+
+        // To be insertable, all holidayPlans must have distinct collaborators
+        // no holidayPlan iss associated with the same collaborator
+        doubleHolidayPlan1.Setup(hp1 => hp1.GetCollaborator()).Returns(doubleColab1.Object);
+        doubleHolidayPlan2.Setup(hp2 => hp2.GetCollaborator()).Returns(doubleColab2.Object);
+        doubleHolidayPlan3.Setup(hp3 => hp3.GetCollaborator()).Returns(doubleColab3.Object);
+
+        // Act
+        new HolidayPlanRepository(holidayPlansList);
+
+        // Assert 
+    }
+
+    /**
+    * Test for constructor that receives a list of holidayPlans that is not valid
+    * -> Should throw exception
+    *
+    * One element being invalid is enough for the whole list to be invalid too 
+    */
+    [Fact]
+    public void WhenPassingIncorrectHolidayPlansList_ThenShouldThrowException()
+    {
+        // Arrange 
+        // HolidayPlan doubles - stubs
+        Mock<IHolidayPlan> doubleHolidayPlan1 = new Mock<IHolidayPlan>();
+        Mock<IHolidayPlan> doubleHolidayPlan2 = new Mock<IHolidayPlan>();
+        Mock<IHolidayPlan> doubleHolidayPlan3 = new Mock<IHolidayPlan>();
+
+        //Collaborator doubles for constructor verification
+        Mock<ICollaborator> doubleColab1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleColab2 = new Mock<ICollaborator>();
+
+        // Create HolidayPlan List
+        List<IHolidayPlan> holidayPlansList =
+            new List<IHolidayPlan> { doubleHolidayPlan1.Object, doubleHolidayPlan2.Object, doubleHolidayPlan3.Object };
+
+        // To be insertable, all holidayPlans must have distinct collaborators
+        // no holidayPlan iss associated with the same collaborator
+        doubleHolidayPlan1.Setup(hp1 => hp1.GetCollaborator()).Returns(doubleColab1.Object);
+        doubleHolidayPlan2.Setup(hp2 => hp2.GetCollaborator()).Returns(doubleColab2.Object);
+        doubleHolidayPlan3.Setup(hp3 => hp3.GetCollaborator()).Returns(doubleColab2.Object);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentException>(() =>
+            // Act
+            new HolidayPlanRepository(holidayPlansList));
+
+        Assert.Equal("Arguments are not valid!", exception.Message);
+    }
 
     [Fact]
     public void GivenProjectWithCollaborators_WhenGetHolidayDaysForAllCollaborators_ThenReturnsCorrectDays()
@@ -51,8 +122,6 @@ public class HolidayPlanRepositoryTest
         // Assert
         Assert.Equal(10, result);
     }
-
-
 
     // US13
 
@@ -317,19 +386,6 @@ public class HolidayPlanRepositoryTest
     }
 
     [Fact]
-    public void WhenPassingCorrectValues_ThenObjectIsCreated()
-    {
-        //arrange
-        Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
-        List<IHolidayPlan> holidayPlans = new List<IHolidayPlan> { holidayPlanDouble.Object };
-
-        //act
-        new HolidayPlanRepository(holidayPlans);
-
-        //assert
-    }
-
-    [Fact]
     public void WhenFindingALlCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()
     {
         //arrange
@@ -395,7 +451,7 @@ public class HolidayPlanRepositoryTest
         holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
         holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns(holidayPeriod.Object);
 
-        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         //act
         var result = hpRepo.GetHolidayPeriodContainingDate(collab.Object, date);
@@ -415,7 +471,7 @@ public class HolidayPlanRepositoryTest
         holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
         holidayPlan.Setup(a => a.GetHolidayPeriodContainingDate(date)).Returns((IHolidayPeriod?)null);
 
-        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         //act
         var result = hpRepo.GetHolidayPeriodContainingDate(collab.Object, date);
@@ -440,7 +496,7 @@ public class HolidayPlanRepositoryTest
         IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>() { holidayPeriod.Object };
         holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4)).Returns(ret);
 
-        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         //act
         var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(collab.Object, ini, end, 4);
@@ -463,7 +519,7 @@ public class HolidayPlanRepositoryTest
         IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>();
         holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(ini, end, 4)).Returns(ret);
 
-        var hpRepo = new HolidayPlanRepository(holidayPlan.Object);
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         //act
         var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(collab.Object, ini, end, 4);
@@ -476,23 +532,22 @@ public class HolidayPlanRepositoryTest
     public void GetHolidayPlansByAssociations_ReturnsCorrectPlans()
     {
         // Arrange
-        var mockCollaborator = new Mock<ICollaborator>();
-        var mockAssociation = new Mock<IAssociationProjectCollaborator>();
-        mockAssociation.Setup(a => a.GetCollaborator()).Returns(mockCollaborator.Object);
+        Mock<ICollaborator> doubleCollaborator1 = new Mock<ICollaborator>();
+        Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
+        Mock<IAssociationProjectCollaborator> mockAssociation = new Mock<IAssociationProjectCollaborator>();
 
-        var mockHolidayPlan1 = new Mock<IHolidayPlan>();
-        var mockHolidayPlan2 = new Mock<IHolidayPlan>();
-        var mockHolidayPlan3 = new Mock<IHolidayPlan>();
+        mockAssociation.Setup(a => a.GetCollaborator()).Returns(doubleCollaborator1.Object);
 
-        mockHolidayPlan1.Setup(h => h.GetCollaborator()).Returns(mockCollaborator.Object);
-        mockHolidayPlan2.Setup(h => h.GetCollaborator()).Returns(mockCollaborator.Object);
-        mockHolidayPlan3.Setup(h => h.GetCollaborator()).Returns(new Mock<ICollaborator>().Object); // Outro colaborador
+        Mock<IHolidayPlan> doubleHolidayPlan1 = new Mock<IHolidayPlan>();
+        Mock<IHolidayPlan> doubleHolidayPlan2 = new Mock<IHolidayPlan>();
+
+        doubleHolidayPlan1.Setup(h => h.GetCollaborator()).Returns(doubleCollaborator1.Object);
+        doubleHolidayPlan2.Setup(h => h.GetCollaborator()).Returns(doubleCollaborator2.Object);
 
         var holidayPlans = new List<IHolidayPlan>
             {
-                mockHolidayPlan1.Object,
-                mockHolidayPlan2.Object,
-                mockHolidayPlan3.Object
+                doubleHolidayPlan1.Object,
+                doubleHolidayPlan2.Object
             };
 
         var repository = new HolidayPlanRepository(holidayPlans);
@@ -501,10 +556,9 @@ public class HolidayPlanRepositoryTest
         var result = repository.GetHolidayPlansByAssociations(mockAssociation.Object);
 
         // Assert
-        Assert.Contains(mockHolidayPlan1.Object, result);
-        Assert.Contains(mockHolidayPlan2.Object, result);
-        Assert.DoesNotContain(mockHolidayPlan3.Object, result);
-        Assert.Equal(2, result.Count());
+        Assert.Contains(doubleHolidayPlan1.Object, result);
+        Assert.DoesNotContain(doubleHolidayPlan2.Object, result);
+        Assert.Single(result);
     }
 
     [Fact]

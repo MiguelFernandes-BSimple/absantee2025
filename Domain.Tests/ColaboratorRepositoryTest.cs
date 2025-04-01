@@ -50,7 +50,7 @@ public class CollaboratorRepositoryTest
 
     /**
     * Test for constructor that receives a list of IColaborator that is not valid
-    * Should throw an exception 
+    * -> Should throw an exception 
     *
     * One element being invalid is enough for the whole list to be invalid too
     */
