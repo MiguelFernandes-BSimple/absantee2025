@@ -69,13 +69,14 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return this._collaborator;
     }
 
-    public bool HasProject(IProject project)
-    {
-        return this._project.Equals(project);
-    }
     public bool HasCollaborator(ICollaborator collaborator)
     {
         return this._collaborator.Equals(collaborator);
+    }
+
+    public bool HasProject(IProject project)
+    {
+        return this._project.Equals(project);
     }
 
     public bool AssociationIntersectDates(DateOnly initDate, DateOnly finalDate)
