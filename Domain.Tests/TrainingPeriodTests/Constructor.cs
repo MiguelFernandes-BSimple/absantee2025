@@ -1,6 +1,6 @@
 using Domain;
-
-public class TrainingPeriodTest
+namespace Domain.Tests.TrainingPeriodTests;
+public class Constructor
 {
     public static IEnumerable<object[]> GetTrainingPeriodData_ValidDates()
     {
