@@ -745,5 +745,128 @@ public class HolidayPlanRepositoryTest
         //assert
         Assert.Empty(result);
     }
+    public static IEnumerable<object[]> GetHolidayPeriodsForAllCollaboratorsBetweenDatesData()
+    {
+        yield return new object[]
+        {
+        new DateOnly(2025, 7, 1),
+        new DateOnly(2025, 7, 31),
+        new DateOnly(2025, 7, 5),
+        new DateOnly(2025, 7, 15),
+        1
+        };
+
+        yield return new object[]
+        {
+        new DateOnly(2025, 6, 1),
+        new DateOnly(2025, 6, 30),
+        new DateOnly(2025, 6, 10),
+        new DateOnly(2025, 6, 20),
+        1
+        };
+
+        yield return new object[]
+        {
+        new DateOnly(2025, 8, 1),
+        new DateOnly(2025, 8, 31),
+        new DateOnly(2025, 7, 15),
+        new DateOnly(2025, 7, 20),
+        0
+        };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetHolidayPeriodsForAllCollaboratorsBetweenDatesData))]
+    public void WhenFindingAllHolidayPeriodsForAllCollaboratorsBetweenDates_ThenReturnsCorrectHolidayPeriods(
+        DateOnly initDate,
+        DateOnly endDate,
+        DateOnly holidayInitDate,
+        DateOnly holidayEndDate,
+        int expectedPeriods
+    )
+    {
+        // Arrange
+        var collaboratorMock = new Mock<ICollaborator>();
+
+        var holidayPeriodMock = new Mock<IHolidayPeriod>();
+        holidayPeriodMock.Setup(hp => hp.GetInitDate()).Returns(holidayInitDate);
+        holidayPeriodMock.Setup(hp => hp.GetFinalDate()).Returns(holidayEndDate);
+
+        var holidayPlanMock = new Mock<IHolidayPlan>();
+        holidayPlanMock.Setup(hp => hp.GetCollaborator()).Returns(collaboratorMock.Object);
+        holidayPlanMock.Setup(hp => hp.GetHolidayPeriods()).Returns(new List<IHolidayPeriod> { holidayPeriodMock.Object });
+
+        var holidayPlanRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanMock.Object });
+
+        // Act
+        var result = holidayPlanRepo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(
+            new List<ICollaborator> { collaboratorMock.Object },
+            initDate,
+            endDate
+        );
+
+        // Assert
+        Assert.Equal(expectedPeriods, result.Count());
+    }
+
+    public static IEnumerable<object[]> GetHolidayPeriodsByCollaboratorData()
+    {
+        yield return new object[]
+        {
+        new DateOnly(2025, 7, 10),
+        new DateOnly(2025, 7, 20),
+        1
+        };
+
+        yield return new object[]
+        {
+        new DateOnly(2025, 6, 5),
+        new DateOnly(2025, 6, 15),
+        1
+        };
+
+        yield return new object[]
+        {
+        DateOnly.MinValue,
+        DateOnly.MinValue,
+        0
+        };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetHolidayPeriodsByCollaboratorData))]
+    public void WhenFindingHolidayPeriodsByCollaborator_ThenReturnsCorrectPeriods(
+     DateOnly holidayInitDate,
+     DateOnly holidayEndDate,
+     int expectedPeriods
+ )
+    {
+        // Arrange
+        var collaboratorMock = new Mock<ICollaborator>();
+
+        var holidayPeriods = new List<IHolidayPeriod>();
+
+        // não tem períodos de férias se for minvalue
+        if (holidayInitDate != DateOnly.MinValue && holidayEndDate != DateOnly.MinValue)
+        {
+            var holidayPeriodMock = new Mock<IHolidayPeriod>();
+            holidayPeriodMock.Setup(hp => hp.GetInitDate()).Returns(holidayInitDate);
+            holidayPeriodMock.Setup(hp => hp.GetFinalDate()).Returns(holidayEndDate);
+            holidayPeriods.Add(holidayPeriodMock.Object);
+        }
+
+        var holidayPlanMock = new Mock<IHolidayPlan>();
+        holidayPlanMock.Setup(hp => hp.GetCollaborator()).Returns(collaboratorMock.Object);
+        holidayPlanMock.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods);
+
+        var holidayPlanRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanMock.Object });
+
+        // Act
+        var result = holidayPlanRepo.FindHolidayPeriodsByCollaborator(collaboratorMock.Object);
+
+        // Assert
+        Assert.Equal(expectedPeriods, result.Count);
+    }
+
 
 }
