@@ -1,5 +1,8 @@
-using Domain;
+using Domain.Interfaces;
+using Infrastructure.Interfaces;
+using Application.Services;
 using Moq;
+namespace Application.Tests.HolidayPlanServiceTests;
 
 public class GetHolidayDaysForProjectCollaboratorBetweenDates
 {

@@ -1,15 +1,13 @@
 namespace Domain.Tests.HolidayPeriodTests;
 
-using Domain;
+using Domain.Models;
 using Xunit;
 using System;
 using System.Collections.Generic;
 
-
-
 public class GetNumberOfCommonUtilDaysBetweenPeriods
 {
-        public static IEnumerable<object[]> GetCommonUtilDaysData()
+    public static IEnumerable<object[]> GetCommonUtilDaysData()
     {
         yield return new object[] { new DateOnly(2020, 6, 1), new DateOnly(2020, 7, 1), 11 };
     }

@@ -1,13 +1,15 @@
 namespace Domain.Tests.AssociationProjectCollaboratorTests;
 
 using Moq;
-
-public class AssociationIntersectDates {
+using Domain.Interfaces;
+using Domain.Models;
+public class AssociationIntersectDates
+{
     public static IEnumerable<object[]> ValidIntersectDates()
     {
-        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020,12,31) };
+        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 12, 31) };
         yield return new object[] { new DateOnly(2019, 1, 1), new DateOnly(2020, 1, 1) };
-        yield return new object[] { new DateOnly(2020,12,31), new DateOnly(2021,12,31) };
+        yield return new object[] { new DateOnly(2020, 12, 31), new DateOnly(2021, 12, 31) };
     }
 
     [Theory]
@@ -16,7 +18,7 @@ public class AssociationIntersectDates {
     {
         //arrange
         DateOnly initDateAssoc = new DateOnly(2020, 1, 1);
-        DateOnly finalDateAssoc = new DateOnly(2020,12,31);
+        DateOnly finalDateAssoc = new DateOnly(2020, 12, 31);
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
         ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
@@ -36,7 +38,7 @@ public class AssociationIntersectDates {
 
     public static IEnumerable<object[]> InvalidIntersectDates()
     {
-        yield return new object[] { new DateOnly(2019, 1, 1), new DateOnly(2019,12,31) };
+        yield return new object[] { new DateOnly(2019, 1, 1), new DateOnly(2019, 12, 31) };
         yield return new object[] { new DateOnly(2021, 1, 1), new DateOnly(2022, 1, 1) };
 
     }
@@ -47,7 +49,7 @@ public class AssociationIntersectDates {
     {
         //arrange
         DateOnly initDateAssoc = new DateOnly(2020, 1, 1);
-        DateOnly finalDateAssoc = new DateOnly(2020,12,31);
+        DateOnly finalDateAssoc = new DateOnly(2020, 12, 31);
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
         ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);

@@ -1,5 +1,4 @@
-using Domain;
-
+using Domain.Models;
 namespace Domain.Tests.UserTests;
 
 public class Constructor

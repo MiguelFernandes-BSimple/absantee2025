@@ -1,5 +1,6 @@
 ﻿using Moq;
-using Domain;
+using Domain.Interfaces;
+using Domain.Models;
 
 namespace Domain.Tests.CollaboratorTests;
 public class HasSurnames

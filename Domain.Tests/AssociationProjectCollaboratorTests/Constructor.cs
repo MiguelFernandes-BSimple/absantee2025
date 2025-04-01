@@ -1,8 +1,11 @@
 namespace Domain.Tests.AssociationProjectCollaboratorTests;
 
 using Moq;
+using Domain.Interfaces;
+using Domain.Models;
 
-public class Constructor {
+public class Constructor
+{
     public static IEnumerable<object[]> ValidDates()
     {
         yield return new object[] { DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now).AddYears(1) };

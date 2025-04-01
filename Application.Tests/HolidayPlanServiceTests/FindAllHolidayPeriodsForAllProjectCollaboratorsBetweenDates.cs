@@ -1,5 +1,10 @@
-using Domain;
+using Domain.Interfaces;
+using Infrastructure.Interfaces;
+using Application.Services;
+using Domain.Models;
 using Moq;
+
+namespace Application.Tests.HolidayPlanServiceTests;
 
 public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 {

@@ -1,11 +1,8 @@
 namespace Domain.Tests.HolidayPeriodTests;
 
-using Domain;
+using Domain.Models;
 using Xunit;
 using System;
-using System.Collections.Generic;
-
-
 
 public class GetDurationInDays
 {
@@ -19,13 +16,13 @@ public class GetDurationInDays
 
 
     [Fact]
-        public void GetDurationInDays_PartialOverlap_StartInside_ReturnsCorrectDays()
-        {
-            //Arrange
-            var holidayPeriod = new HolidayPeriod(new DateOnly(2024, 6, 5), new DateOnly(2024, 6, 15));
-            //Act
-            int duration = holidayPeriod.GetDurationInDays(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
-            //Assert
-            Assert.Equal(6, duration); // 5 a 10
-        }
+    public void GetDurationInDays_PartialOverlap_StartInside_ReturnsCorrectDays()
+    {
+        //Arrange
+        var holidayPeriod = new HolidayPeriod(new DateOnly(2024, 6, 5), new DateOnly(2024, 6, 15));
+        //Act
+        int duration = holidayPeriod.GetDurationInDays(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
+        //Assert
+        Assert.Equal(6, duration); // 5 a 10
+    }
 }

@@ -1,3 +1,5 @@
+namespace Domain.Interfaces;
+
 public interface ICollaborator
 {
     public bool ContractContainsDates(DateTime _initDate, DateTime _finalDate);

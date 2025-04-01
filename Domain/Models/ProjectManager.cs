@@ -1,4 +1,6 @@
-namespace Domain;
+using Domain.Interfaces;
+namespace Domain.Models;
+
 public class ProjectManager : IProjectManager
 {
     private DateTime _initDate;

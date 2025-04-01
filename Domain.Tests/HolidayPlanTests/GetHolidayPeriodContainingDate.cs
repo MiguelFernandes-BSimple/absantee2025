@@ -1,6 +1,8 @@
-using Domain;
+using Domain.Models;
+using Domain.Interfaces;
 using Moq;
 
+namespace Domain.Tests.HolidayPlanTests;
 public class GetHolidayPeriodContainingDateTests
 {
     [Fact]

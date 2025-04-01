@@ -1,6 +1,6 @@
-namespace Domain;
+namespace Domain.Interfaces;
 
 public interface IHRManager
 {
-    
+
 }

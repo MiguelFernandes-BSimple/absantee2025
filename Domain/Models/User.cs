@@ -1,7 +1,8 @@
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using Domain.Interfaces;
 
-namespace Domain;
+namespace Domain.Models;
 public class User : IUser
 {
     private string _names;

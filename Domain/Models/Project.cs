@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
+using Domain.Interfaces;
 
-namespace Domain;
+namespace Domain.Models;
 public class Project : IProject
 {
     private string _title;

@@ -1,3 +1,5 @@
+namespace Domain.Interfaces;
+
 public interface IUser
 {
     public bool IsDeactivated();

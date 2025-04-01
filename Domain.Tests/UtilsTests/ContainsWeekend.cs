@@ -1,5 +1,3 @@
-using Domain;
-
 namespace Domain.Tests.UtilsTests;
 
 public class ContainsWeekend

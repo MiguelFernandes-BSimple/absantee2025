@@ -1,5 +1,7 @@
 ﻿using Moq;
-using Domain;
+using Domain.Interfaces;
+using Infrastructure.Interfaces;
+using Application.Services;
 
 namespace Application.Tests.CollaboratorServiceTests
 {

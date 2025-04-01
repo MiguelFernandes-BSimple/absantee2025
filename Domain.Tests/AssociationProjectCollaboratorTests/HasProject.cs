@@ -1,8 +1,11 @@
 namespace Domain.Tests.AssociationProjectCollaboratorTests;
 
 using Moq;
+using Domain.Interfaces;
+using Domain.Models;
 
-public class HasProject {
+public class HasProject
+{
     [Fact]
     public void WhenHasProjectReceivesSameProject_ReturnTrue()
     {

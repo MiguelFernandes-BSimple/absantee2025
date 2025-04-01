@@ -1,4 +1,5 @@
-namespace Domain;
+using Domain.Interfaces;
+namespace Domain.Models;
 
 public class Collaborator : ICollaborator
 {

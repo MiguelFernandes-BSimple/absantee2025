@@ -1,6 +1,6 @@
 namespace Domain.Tests.HolidayPeriodTests;
 
-using Domain;
+using Domain.Models;
 using Xunit;
 using System;
 using System.Collections.Generic;

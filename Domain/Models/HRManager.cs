@@ -1,4 +1,6 @@
-namespace Domain;
+using Domain.Interfaces;
+namespace Domain.Models;
+
 public class HRManager : IHRManager
 {
     private DateTime _initDate;

@@ -1,6 +1,5 @@
-using System.ComponentModel;
-
-namespace Domain;
+using Domain.Interfaces;
+namespace Domain.Models;
 
 public class HolidayPeriod : IHolidayPeriod
 {
