@@ -166,6 +166,51 @@ public class AssociationProjectCollaboratorTest
         Assert.False(result);
     }
 
+    [Fact]
+    public void WhenHasCollaboratorReceivesSameProject_ReturnTrue()
+    {
+        //arrange
+
+        Mock<IProject> ProjectMock = new Mock<IProject>();
+        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+
+        ProjectMock.Setup(c => c.IsFinished()).Returns(false);
+
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+
+        var assocProjCollab = new AssociationProjectCollaborator(It.IsAny<DateOnly>(), It.IsAny<DateOnly>(), CollaboradorMock.Object, ProjectMock.Object);
+
+        //act
+        bool result = assocProjCollab.HasCollaborator(CollaboradorMock.Object);
+        //assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void WhenHasCollaboratorReceivesDifferentCollaborator_ReturnFalse()
+    {
+        //arrange
+        DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
+        DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
+
+        Mock<IProject> ProjectMock = new Mock<IProject>();
+        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+
+        ProjectMock.Setup(c => c.IsFinished()).Returns(false);
+
+        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+
+        var assocProjCollab = new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
+
+        Mock<ICollaborator> CollaboratorMock2 = new Mock<ICollaborator>();
+        //act
+        bool result = assocProjCollab.HasCollaborator(CollaboratorMock2.Object);
+        //assert
+        Assert.False(result);
+    }
+
     public static IEnumerable<object[]> ValidIntersectDates()
     {
         yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020,12,31) };
