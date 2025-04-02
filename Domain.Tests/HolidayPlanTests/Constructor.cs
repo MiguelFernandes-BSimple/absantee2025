@@ -21,7 +21,7 @@ public class Constructor
         // Holiday period dates must be in the collaborator contract time frame
 
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
             .Returns(true);
 
         // Act
@@ -50,7 +50,7 @@ public class Constructor
         // Holiday period dates must be in the collaborator contract time frame
 
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         // Can't overlap with any other holiday periods
@@ -94,7 +94,7 @@ public class Constructor
         // Holiday period dates must be in the collaborator contract time frame
 
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         // There is overlap with other holiday periods
@@ -134,7 +134,7 @@ public class Constructor
 
         // In order for the exception to be thrown
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(false);
 
         // There no overlap with other holiday periods

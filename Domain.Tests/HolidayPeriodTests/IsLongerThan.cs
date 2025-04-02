@@ -3,25 +3,36 @@ namespace Domain.Tests.HolidayPeriodTests;
 using Domain.Interfaces;
 using Domain.Models;
 using Xunit;
-using System;
+using Moq;
 
 public class IsLongerThan
 {
 
+    /**
+    * Test method to verify if a period's duration in days is superior to inputed days
+    * Case where it's true
+    */
     [Theory]
     [InlineData(0)]
+    [InlineData(2)]
     [InlineData(10)]
     public void WhenPeriodDurationIsGreaterThanLimit_ThenShouldReturnTrue(int days)
     {
-        //arrange
-        DateOnly initDate = new DateOnly(2020, 6, 1);
-        DateOnly finalDate = new DateOnly(2020, 6, 15);
-        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+        // Arrange
+        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
 
-        //act
+        // For test -> duration = 20 day
+        // Inputed days have to be < 20
+        int periodDays = 20;
+        doublePeriodDate.Setup(pd => pd.Duration()).Returns(periodDays);
+
+        // Instatiate HolidayPeriod
+        HolidayPeriod holidayPeriod = new HolidayPeriod(doublePeriodDate.Object);
+
+        // Act
         bool result = holidayPeriod.IsLongerThan(days);
 
-        //assert
+        // Assert
         Assert.True(result);
     }
 
@@ -30,15 +41,21 @@ public class IsLongerThan
     [InlineData(20)]
     public void WhenPeriodDurationIsLessOrEqualThanLimit_ThenShouldReturnFalse(int days)
     {
-        //arrange
-        DateOnly initDate = new DateOnly(2020, 6, 1);
-        DateOnly finalDate = new DateOnly(2020, 6, 15);
-        IHolidayPeriod holidayPeriod = new HolidayPeriod(initDate, finalDate);
+        // Arrange
+        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
 
-        //act
+        // For test -> duration = 10 day
+        // Inputed days have to be > 10
+        int periodDays = 10;
+        doublePeriodDate.Setup(pd => pd.Duration()).Returns(periodDays);
+
+        // Instatiate HolidayPeriod
+        HolidayPeriod holidayPeriod = new HolidayPeriod(doublePeriodDate.Object);
+
+        // Act
         bool result = holidayPeriod.IsLongerThan(days);
 
-        //assert
+        // Assert
         Assert.False(result);
     }
 }

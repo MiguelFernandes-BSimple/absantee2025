@@ -3,45 +3,73 @@ namespace Domain.Tests.HolidayPeriodTests;
 using Domain.Interfaces;
 using Domain.Models;
 using Xunit;
-using System;
-using System.Collections.Generic;
+using Moq;
 
 public class Contains
 {
-    public static IEnumerable<object[]> ContainedPeriods()
+    /**
+    * Test method to verify if Holiday Period is contained in another Holiday Period
+    * Happy Path
+    */
+    [Fact]
+    public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
-        yield return new object[] { new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10)) };
-        yield return new object[] { new HolidayPeriod(new DateOnly(2024, 6, 3), new DateOnly(2024, 6, 6)) };
-    }
+        // Arrange
 
-    [Theory]
-    [MemberData(nameof(ContainedPeriods))]
-    public void WhenPeriodIsFullyContained_ThenReturnsTrue(IHolidayPeriod containedPeriod)
-    {
-        var referencePeriod = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 10));
-        var result = referencePeriod.Contains(containedPeriod);
+        // doubles for IPeriodDate - stubs
+        Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
+        Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
+
+        // Establish that the other IPeriodDate must be contained in it
+        // Reference period CONTAINS period to Verify
+        doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(true);
+
+        // Instatiate both Holiday Periods
+        // Reference Holiday Period
+        HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
+
+        // To verify Holiday Period
+        HolidayPeriod toVerifyHPeriod = new HolidayPeriod(doublePeriodDateToVerify.Object);
+
+        // Act
+
+        bool result = referenceHPeriod.Contains(toVerifyHPeriod);
+
+        // Assert
+
         Assert.True(result);
     }
 
-
-    public static IEnumerable<object[]> NotContainedPeriods()
-    {
-        yield return new object[] { new HolidayPeriod(new DateOnly(2024, 5, 1), new DateOnly(2024, 6, 10)) };
-        yield return new object[] { new HolidayPeriod(new DateOnly(2024, 6, 3), new DateOnly(2024, 7, 6)) };
-        yield return new object[] { new HolidayPeriod(new DateOnly(2024, 5, 1), new DateOnly(2024, 7, 6)) };
-    }
-
-    [Theory]
-    [MemberData(nameof(NotContainedPeriods))]
-    public void WhenPeriodIsNotFullyContained_ThenReturnsFalse(IHolidayPeriod nonContainedPeriod)
+    /**
+    * Test method to verify if Holiday Period is contained in another Holiday Period
+    * It's not contained
+    */
+    [Fact]
+    public void WhenPeriodIsNotFullyContained_ThenReturnsFalse()
     {
         // Arrange
-        var referencePeriod = new HolidayPeriod(new DateOnly(2024, 6, 1), new DateOnly(2024, 6, 5));
+
+        // doubles for IPeriodDate - stubs
+        Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
+        Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
+
+        // Establish that the other IPeriodDate ISN'T contained in it
+        // Reference period DOESN'T contain period to Verify
+        doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(false);
+
+        // Instatiate both Holiday Periods
+        // Reference Holiday Period
+        HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
+
+        // To verify Holiday Period
+        HolidayPeriod toVerifyHPeriod = new HolidayPeriod(doublePeriodDateToVerify.Object);
 
         // Act
-        var result = referencePeriod.Contains(nonContainedPeriod);
+
+        bool result = referenceHPeriod.Contains(toVerifyHPeriod);
 
         // Assert
+
         Assert.False(result);
     }
 }

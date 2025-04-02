@@ -30,7 +30,7 @@ public class HasPeriodLongerThan
 
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
@@ -64,7 +64,7 @@ public class HasPeriodLongerThan
 
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(

@@ -11,24 +11,22 @@ public class User : IUser
     private string _email;
     private IPeriodDateTime _periodDateTime;
 
-    public User(string names, string surnames, string email, IPeriodDateTime periodDateTime)
+    public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
-        if (periodDateTime.IsFinalDateUndefined())
-            periodDateTime.SetFinalDate(DateTime.MaxValue);
+        deactivationDate ??= DateTime.MaxValue;
 
-        if (CheckInputValues(names, surnames, email, periodDateTime.GetFinalDate()))
+        if (CheckInputValues(names, surnames, email, deactivationDate))
         {
             _names = names;
             _surnames = surnames;
             _email = email;
-            periodDateTime.SetInitDate(DateTime.Now);
-            _periodDateTime = periodDateTime;
+            _periodDateTime = new PeriodDateTime(DateTime.Now, (DateTime)deactivationDate);
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool CheckInputValues(string names, string surnames, string email, DateTime deactivationDate)
+    private bool CheckInputValues(string names, string surnames, string email, DateTime? deactivationDate)
     {
         Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
 

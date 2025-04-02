@@ -93,20 +93,14 @@ public class HolidayPlanService
     //UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
         IProject project,
-        DateOnly initDate,
-        DateOnly endDate
+        IPeriodDate period
     )
     {
         var validCollaborators = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
             project,
-            initDate,
-            endDate
+            period
         ).Select(a => a.GetCollaborator());
 
-        if (initDate > endDate)
-        {
-            return Enumerable.Empty<IHolidayPeriod>();
-        }
         return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(validCollaborators.ToList(), initDate, endDate);
 
     }
