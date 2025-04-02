@@ -55,7 +55,9 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 
         DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
         DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
-        if (!collaborator.ContractContainsDates(associationInitDate, associationFinalDate))
+        PeriodDateTime periodDateTime = new PeriodDateTime(associationInitDate, associationFinalDate);
+
+        if (!collaborator.ContractContainsDates(periodDateTime))
             return false;
 
         return true;

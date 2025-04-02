@@ -23,7 +23,9 @@ public class Constructor
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
+
+        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
         //act
         new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
@@ -64,7 +66,9 @@ public class Constructor
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
+
+        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -87,7 +91,9 @@ public class Constructor
         ProjectMock.Setup(c => c.IsFinished()).Returns(true);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
+
+        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -110,7 +116,9 @@ public class Constructor
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(false);
+        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
+
+        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(false);
 
 
         //assert

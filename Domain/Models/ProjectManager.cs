@@ -1,36 +1,29 @@
 using Domain.Interfaces;
+
 namespace Domain.Models;
 
 public class ProjectManager : IProjectManager
 {
-    private DateTime _initDate;
-    private DateTime _finalDate;
     private IUser _user;
+    private IPeriodDateTime _periodDateTime;
 
-    public ProjectManager(IUser _user, DateTime _initDate, DateTime? _finalDate)
+    public ProjectManager(IUser user, IPeriodDateTime periodDateTime)
     {
-        _finalDate ??= DateTime.MaxValue;
+        if (periodDateTime.IsFinalDateUndefined())
+            periodDateTime.SetFinalDate(DateTime.MaxValue);
 
-        if (checkInputFields(_initDate, (DateTime)_finalDate, _user))
+        if (CheckInputFields(user, periodDateTime))
         {
-
-            this._initDate = _initDate;
-            this._finalDate = (DateTime)_finalDate;
-            this._user = _user;
-
+            this._periodDateTime = periodDateTime;
+            this._user = user;
         }
         else
-        {
-            throw new ArgumentException("Invalid arguments.");
-        }
+            throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool checkInputFields(DateTime initDate, DateTime finalDate, IUser user)
+    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
     {
-        if (initDate > finalDate)
-            return false;
-
-        if (user.DeactivationDateIsBefore(finalDate))
+        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
             return false;
 
         if (user.IsDeactivated())

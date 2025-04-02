@@ -71,14 +71,15 @@ public class HolidayPlan : IHolidayPlan
         DateTime holidayPeriodFinalDate = holidayPeriod
             .GetFinalDate()
             .ToDateTime(TimeOnly.MinValue);
-        if (!collaborator.ContractContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
+        PeriodDateTime periodDateTime = new PeriodDateTime(holidayPeriodInitDate, holidayPeriodFinalDate);
+
+        if (!collaborator.ContractContainsDates(periodDateTime))
             return false;
+
         foreach (IHolidayPeriod pf in holidayPeriods)
         {
             if (holidayPeriod.Contains(pf))
-            {
                 return false;
-            }
         }
         return true;
     }
