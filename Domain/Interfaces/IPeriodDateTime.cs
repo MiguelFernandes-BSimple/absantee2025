@@ -9,6 +9,7 @@ namespace Domain.Interfaces
         public void SetInitDate(DateTime initDate);
         public void SetFinalDate(DateTime endDate);
         public bool IsFinalDateUndefined();
+        public bool Contains(IPeriodDateTime periodDateTime);
 
     }
 }
