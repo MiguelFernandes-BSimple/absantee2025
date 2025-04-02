@@ -47,9 +47,9 @@ public class CollaboratorService
         return this._associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaborator());
     }
 
-    public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(IProject project, DateOnly initDate, DateOnly finalDate)
+    public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
     {
-        return this._associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, initDate, finalDate).Select(a => a.GetCollaborator());
+        return this._associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, periodDate).Select(a => a.GetCollaborator());
     }
 
 }
