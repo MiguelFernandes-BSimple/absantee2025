@@ -9,37 +9,52 @@ namespace Application.Tests.HolidayPlanServiceTests;
 public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 {
     public static IEnumerable<object[]> GetHolidayPeriodsForProjectCollaborators()
+{
+    var period1 = new Mock<IPeriodDate>();
+    period1.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
+    period1.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 5));
+    
+    var period2 = new Mock<IPeriodDate>();
+    period2.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 6));
+    period2.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
+
+    yield return new object[]
     {
-        yield return new object[]
+        new DateOnly(2025, 6, 1),
+        new DateOnly(2025, 6, 10),
+        new List<IHolidayPeriod>
         {
-            new DateOnly(2025, 6, 1),
-            new DateOnly(2025, 6, 10),
-            new List<IHolidayPeriod>
-            {
-                new HolidayPeriod(new DateOnly(2025, 6, 1), new DateOnly(2025, 6, 5)),
-                new HolidayPeriod(new DateOnly(2025, 6, 6), new DateOnly(2025, 6, 10)),
-            },
-        };
+            new HolidayPeriod(period1.Object),
+            new HolidayPeriod(period2.Object),
+        },
+    };
 
-        yield return new object[]
+    var period3 = new Mock<IPeriodDate>();
+    period3.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
+    period3.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 5));
+    
+    var period4 = new Mock<IPeriodDate>();
+    period4.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 6));
+    period4.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
+
+    yield return new object[]
+    {
+        new DateOnly(2025, 6, 3),
+        new DateOnly(2025, 6, 8),
+        new List<IHolidayPeriod>
         {
-            new DateOnly(2025, 6, 3),
-            new DateOnly(2025, 6, 8),
-            new List<IHolidayPeriod>
-            {
-                new HolidayPeriod(new DateOnly(2025, 6, 1), new DateOnly(2025, 6, 5)),
-                new HolidayPeriod(new DateOnly(2025, 6, 6), new DateOnly(2025, 6, 10)),
-            },
-        };
+            new HolidayPeriod(period3.Object),
+            new HolidayPeriod(period4.Object),
+        },
+    };
 
-        yield return new object[]
-        {
-            new DateOnly(2025, 6, 10),
-            new DateOnly(2025, 6, 20),
-            new List<IHolidayPeriod>(),
-        };
-    }
-
+    yield return new object[]
+    {
+        new DateOnly(2025, 6, 10),
+        new DateOnly(2025, 6, 20),
+        new List<IHolidayPeriod>(),
+    };
+}
     [Theory]
     [MemberData(nameof(GetHolidayPeriodsForProjectCollaborators))]
     public void WhenFindingHolidayPeriodsForProjectCollaborators_ThenReturnCorrectPeriods(
@@ -55,6 +70,10 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
             };
 
         var periodDouble = new Mock<IPeriodDate>();
+
+        periodDouble.Setup(pd => pd.GetInitDate()).Returns(initDate);
+        periodDouble.Setup(pd => pd.GetFinalDate()).Returns(endDate);
+
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
         var associationsList = new List<IAssociationProjectCollaborator> {
@@ -71,19 +90,18 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 
         associationMock.Setup(a => a.GetCollaborator()).Returns(collaboratorMock.Object);
 
-        var holidayPeriodMock = new Mock<IHolidayPeriod>();
-
         var projectMock = new Mock<IProject>();
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
-        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaboratorList, initDate, endDate))
+        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaboratorList, periodDouble.Object ))
                                     .Returns(expectedPeriods);
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
         // Act
         var result = holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
             projectMock.Object,
-            initDate,
-            endDate
+            periodDouble.Object
         );
+
+
 
         Assert.Equal(expectedPeriods.Count, result.Count());
     }
