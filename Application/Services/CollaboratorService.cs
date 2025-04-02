@@ -1,5 +1,6 @@
 using Infrastructure.Interfaces;
 using Domain.Interfaces;
+using Domain.Models;
 
 namespace Application.Services;
 
@@ -24,22 +25,11 @@ public class CollaboratorService
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(DateOnly initDate, DateOnly endDate)
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
     {
-        // estas verificações podem ser feitas dentro de uma classe period
-        if (initDate > endDate)
-        {
-            return Enumerable.Empty<ICollaborator>();
-        }
-        else
-        {
-
-            return _holidayPlanRepository.GetHolidayPlansWithHolidayPeriodValid(initDate, endDate)
-                                            .Select(h => h.GetCollaborator())
-                                            .Distinct();
-
-
-        }
+        return _holidayPlanRepository.GetHolidayPlansWithHolidayPeriodValid(periodDate)
+                                        .Select(h => h.GetCollaborator())
+                                        .Distinct();
     }
 
     public IEnumerable<ICollaborator> FindAllByProject(IProject project)
