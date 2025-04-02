@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Infrastructure.Interfaces;
 using Application.Services;
 using Moq;
+using System.IO.Compression;
 namespace Application.Tests.HolidayPlanServiceTests;
 
 public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
@@ -71,34 +72,44 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
         //collab1
         Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
 
+        var periodDateDouble1 = new Mock<IPeriodDate>();
+        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(holidayPeriodStartDate1);
+        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(holidayPeriodFinalDate1);
+
+        var periodDateDouble2 = new Mock<IPeriodDate>();
+        periodDateDouble2.Setup(pd => pd.GetInitDate()).Returns(holidayPeriodStartDate2);
+        periodDateDouble2.Setup(pd => pd.GetFinalDate()).Returns(holidayPeriodFinalDate2);
+
         Mock<IHolidayPeriod> holidayPeriod1 = new Mock<IHolidayPeriod>();
-        holidayPeriod1.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate1);
-        holidayPeriod1.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate1);
+        holidayPeriod1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
         var holidayPeriodsList1 = new List<IHolidayPeriod> { holidayPeriod1.Object };
+
+        var searchPeriodDateDouble = new Mock<IPeriodDate>();
+        searchPeriodDateDouble.Setup(spd => spd.GetInitDate()).Returns(searchInitDate);
+        searchPeriodDateDouble.Setup(spd => spd.GetFinalDate()).Returns(searchEndDate);
 
         //colab2
         Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
 
         Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
-        holidayPeriod2.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate2);
-        holidayPeriod2.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate2);
+        holidayPeriod2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
         var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab1.Object, searchInitDate, searchEndDate)).Returns(holidayPeriodsList1);
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab2.Object, searchInitDate, searchEndDate)).Returns(holidayPeriodsList2);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab1.Object, searchPeriodDateDouble.Object)).Returns(holidayPeriodsList1);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab2.Object, searchPeriodDateDouble.Object)).Returns(holidayPeriodsList2);
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         //act
-        var result = service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(collab1.Object, collab2.Object, searchInitDate, searchEndDate);
+        var result = service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(collab1.Object, collab2.Object, searchPeriodDateDouble.Object);
 
         //assert
-        Assert.Equal(holidayPeriodStartDate1, result.First().GetInitDate());
-        Assert.Equal(holidayPeriodFinalDate1, result.First().GetFinalDate());
-        Assert.Equal(holidayPeriodStartDate2, result.ToList()[1].GetInitDate());
-        Assert.Equal(holidayPeriodFinalDate2, result.ToList()[1].GetFinalDate());
+        Assert.Equal(holidayPeriodStartDate1, result.First().GetPeriodDate().GetInitDate());
+        Assert.Equal(holidayPeriodFinalDate1, result.First().GetPeriodDate().GetFinalDate());
+        Assert.Equal(holidayPeriodStartDate2, result.ToList()[1].GetPeriodDate().GetInitDate());
+        Assert.Equal(holidayPeriodFinalDate2, result.ToList()[1].GetPeriodDate().GetFinalDate());
     }
 
     public static IEnumerable<object[]> SearchOverlappingPeriodsOutsideHolidayPeriod()
@@ -155,31 +166,42 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
         DateOnly searchInitDate, DateOnly searchEndDate)
     {
         //arrange
+
+        var searchPeriodDateDouble = new Mock<IPeriodDate>();
+        searchPeriodDateDouble.Setup(spd => spd.GetInitDate()).Returns(searchInitDate);
+        searchPeriodDateDouble.Setup(spd => spd.GetFinalDate()).Returns(searchEndDate);
+
         //collab1
         Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
 
+        var periodDateDouble = new Mock<IPeriodDate>();
+        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(holidayPeriodStartDate1);
+        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(holidayPeriodFinalDate1);
+
         Mock<IHolidayPeriod> holidayPeriod1 = new Mock<IHolidayPeriod>();
-        holidayPeriod1.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate1);
-        holidayPeriod1.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate1);
+        holidayPeriod1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
         var holidayPeriodsList1 = new List<IHolidayPeriod> { holidayPeriod1.Object };
 
         //colab2
         Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
 
+        var periodDateDouble2 = new Mock<IPeriodDate>();
+        periodDateDouble2.Setup(pd => pd.GetInitDate()).Returns(holidayPeriodStartDate2);
+        periodDateDouble2.Setup(pd => pd.GetFinalDate()).Returns(holidayPeriodFinalDate2);
+
         Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
-        holidayPeriod2.Setup(hp => hp.GetInitDate()).Returns(holidayPeriodStartDate2);
-        holidayPeriod2.Setup(hp => hp.GetFinalDate()).Returns(holidayPeriodFinalDate2);
+        holidayPeriod2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
         var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab1.Object, searchInitDate, searchEndDate)).Returns(holidayPeriodsList1);
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab2.Object, searchInitDate, searchEndDate)).Returns(holidayPeriodsList2);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab1.Object, searchPeriodDateDouble.Object)).Returns(holidayPeriodsList1);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDates(collab2.Object, searchPeriodDateDouble.Object)).Returns(holidayPeriodsList2);
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         //act
-        var result = service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(collab1.Object, collab2.Object, searchInitDate, searchEndDate);
+        var result = service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates(collab1.Object, collab2.Object, searchPeriodDateDouble.Object);
 
         //assert
         Assert.Empty(result);
