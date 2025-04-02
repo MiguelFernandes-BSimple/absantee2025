@@ -15,16 +15,11 @@ public class GetHolidayDaysOfCollaboratorInProject
         Mock<IProject> projectDouble = new Mock<IProject>();
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
 
-        DateOnly initDate = new DateOnly(2025, 6, 1);
-        DateOnly finalDate = new DateOnly(2025, 6, 10);
-
         associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
         associationDouble.Setup(a => a.GetProject()).Returns(projectDouble.Object);
-        associationDouble.Setup(a => a.GetInitDate()).Returns(initDate);
-        associationDouble.Setup(a => a.GetFinalDate()).Returns(finalDate);
 
         holidayPlanDouble.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
-        holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(initDate, finalDate)).Returns(5);
+        holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(It.IsAny<IPeriodDate>())).Returns(5);
 
         Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
         holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorDouble.Object)).Returns(holidayPlanDouble.Object);
