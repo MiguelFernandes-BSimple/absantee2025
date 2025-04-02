@@ -9,17 +9,17 @@ namespace Application.Tests.HolidayPlanServiceTests;
 public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 {
     public static IEnumerable<object[]> GetHolidayPeriodsForProjectCollaborators()
-{
-    var period1 = new Mock<IPeriodDate>();
-    period1.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
-    period1.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 5));
-    
-    var period2 = new Mock<IPeriodDate>();
-    period2.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 6));
-    period2.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
-
-    yield return new object[]
     {
+        var period1 = new Mock<IPeriodDate>();
+        period1.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
+        period1.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 5));
+
+        var period2 = new Mock<IPeriodDate>();
+        period2.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 6));
+        period2.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
+
+        yield return new object[]
+        {
         new DateOnly(2025, 6, 1),
         new DateOnly(2025, 6, 10),
         new List<IHolidayPeriod>
@@ -27,18 +27,18 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
             new HolidayPeriod(period1.Object),
             new HolidayPeriod(period2.Object),
         },
-    };
+        };
 
-    var period3 = new Mock<IPeriodDate>();
-    period3.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
-    period3.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 5));
-    
-    var period4 = new Mock<IPeriodDate>();
-    period4.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 6));
-    period4.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
+        var period3 = new Mock<IPeriodDate>();
+        period3.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
+        period3.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 5));
 
-    yield return new object[]
-    {
+        var period4 = new Mock<IPeriodDate>();
+        period4.Setup(p => p.GetInitDate()).Returns(new DateOnly(2025, 6, 6));
+        period4.Setup(p => p.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
+
+        yield return new object[]
+        {
         new DateOnly(2025, 6, 3),
         new DateOnly(2025, 6, 8),
         new List<IHolidayPeriod>
@@ -46,15 +46,15 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
             new HolidayPeriod(period3.Object),
             new HolidayPeriod(period4.Object),
         },
-    };
+        };
 
-    yield return new object[]
-    {
+        yield return new object[]
+        {
         new DateOnly(2025, 6, 10),
         new DateOnly(2025, 6, 20),
         new List<IHolidayPeriod>(),
-    };
-}
+        };
+    }
     [Theory]
     [MemberData(nameof(GetHolidayPeriodsForProjectCollaborators))]
     public void WhenFindingHolidayPeriodsForProjectCollaborators_ThenReturnCorrectPeriods(
@@ -92,7 +92,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 
         var projectMock = new Mock<IProject>();
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
-        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaboratorList, periodDouble.Object ))
+        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaboratorList, periodDouble.Object))
                                     .Returns(expectedPeriods);
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
         // Act
@@ -131,16 +131,17 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 
         var expected = new List<IHolidayPeriod>();
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
-        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(It.IsAny<List<ICollaborator>>(), It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
+        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(It.IsAny<List<ICollaborator>>(), It.IsAny<IPeriodDate>()))
                         .Returns(expected);
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
+
+        periodDouble.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
+        periodDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
 
 
         // Act
         var result = holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
-            projectMock.Object,
-            new DateOnly(2025, 6, 1),
-            new DateOnly(2025, 6, 10)
+            projectMock.Object, periodDouble.Object
         );
 
         // Assert
@@ -169,16 +170,19 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
             .Returns(associationsList);
 
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
-        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(It.IsAny<List<ICollaborator>>(), It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
+        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(It.IsAny<List<ICollaborator>>(), It.IsAny<IPeriodDate>()))
                         .Returns(new List<IHolidayPeriod>());
 
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
 
+        var periodDouble = new Mock<IPeriodDate>();
+        periodDouble.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2025, 6, 1));
+        periodDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 6, 10));
+
         // Act
         var result = holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
             new Mock<IProject>().Object,
-            initDate,
-            endDate
+            periodDouble.Object
         );
 
         // Assert
