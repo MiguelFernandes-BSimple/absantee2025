@@ -2,13 +2,11 @@ namespace Domain.Interfaces;
 
 public interface IHolidayPeriod
 {
-    public DateOnly GetInitDate();
-    public DateOnly GetFinalDate();
+    public IPeriodDate GetPeriodDate();
     public bool Contains(IHolidayPeriod periodoFerias); //overlap
-    public int GetDurationInDays(DateOnly initDate, DateOnly endDate);
+    public int GetInterceptionDurationInDays(IPeriodDate periodDate);
     public int GetDuration();
     public bool ContainsDate(DateOnly date);
-    public bool ContainedBetween(DateOnly ini, DateOnly end);
-    public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate);
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(IPeriodDate periodDate);
     public bool IsLongerThan(int days);
 }

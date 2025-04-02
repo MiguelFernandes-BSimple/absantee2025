@@ -6,27 +6,22 @@ public class Project : IProject
 {
     private string _title;
     private string _acronym;
-    private DateOnly _initDate;
-    private DateOnly _finalDate;
+    private IPeriodDate _periodDate;
 
-    public Project(string title, string acronym, DateOnly initDate, DateOnly finalDate)
+    public Project(string title, string acronym, IPeriodDate periodDate)
     {
-        if (CheckInputValues(title, acronym, initDate, finalDate))
+        if (CheckInputValues(title, acronym))
         {
             this._title = title;
             this._acronym = acronym;
-            this._initDate = initDate;
-            this._finalDate = finalDate;
+            this._periodDate = periodDate;
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool CheckInputValues(string title, string acronym, DateOnly initDate, DateOnly finalDate)
+    private bool CheckInputValues(string title, string acronym)
     {
-        if (initDate > finalDate)
-            return false;
-
         Regex tituloRegex = new Regex(@"^.{1,50}$");
         Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
 
@@ -38,13 +33,13 @@ public class Project : IProject
         return true;
     }
 
-    public bool ContainsDates(DateOnly dataInicio, DateOnly dataFim)
+    public bool ContainsDates(IPeriodDate periodDate)
     {
-        return dataInicio >= this._initDate && dataFim <= this._finalDate;
+        return _periodDate.Contains(periodDate);
     }
 
     public bool IsFinished()
     {
-        return DateOnly.FromDateTime(DateTime.Today) > this._finalDate;
+        return DateOnly.FromDateTime(DateTime.Today) > _periodDate.GetFinalDate();
     }
 }

@@ -4,22 +4,19 @@ namespace Domain.Models;
 
 public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
-    private DateOnly _initDate;
-    private DateOnly _finalDate;
+    private IPeriodDate _periodDate;    
     private ICollaborator _collaborator;
     private IProject _project;
 
     public AssociationProjectCollaborator(
-        DateOnly initDate,
-        DateOnly finalDate,
+        IPeriodDate periodDate,
         ICollaborator collaborator,
         IProject project
     )
     {
-        if (CheckInputValues(initDate, finalDate, collaborator, project))
+        if (CheckInputValues(periodDate, collaborator, project))
         {
-            _initDate = initDate;
-            _finalDate = finalDate;
+            _periodDate = periodDate;
             _collaborator = collaborator;
             _project = project;
         }
@@ -27,38 +24,29 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public DateOnly GetInitDate()
-    {
-        return _initDate;
-    }
-
-    public DateOnly GetFinalDate()
-    {
-        return _finalDate;
-    }
-
     private bool CheckInputValues(
-        DateOnly initDate,
-        DateOnly finalDate,
+        IPeriodDate periodDate,
         ICollaborator collaborator,
         IProject project
     )
     {
-        if (initDate > finalDate)
-            return false;
-
-        if (!project.ContainsDates(initDate, finalDate))
+        if (!project.ContainsDates(periodDate))
             return false;
 
         if (project.IsFinished())
             return false;
 
-        DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
-        DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
-        if (!collaborator.ContractContainsDates(associationInitDate, associationFinalDate))
-            return false;
+        //DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
+        //DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
+        //if (!collaborator.ContractContainsDates(associationInitDate, associationFinalDate))
+        //    return false;
 
         return true;
+    }
+
+    public IPeriodDate GetPeriodDate()
+    {
+        return _periodDate;
     }
 
     public IProject GetProject()
@@ -81,8 +69,8 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return this._project.Equals(project);
     }
 
-    public bool AssociationIntersectDates(DateOnly initDate, DateOnly finalDate)
+    public bool AssociationIntersectPeriod(IPeriodDate periodDate)
     {
-        return _initDate <= finalDate && initDate <= _finalDate;
+        return _periodDate.Intersects(periodDate);
     }
 }

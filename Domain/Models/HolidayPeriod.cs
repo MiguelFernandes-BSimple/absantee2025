@@ -3,33 +3,21 @@ namespace Domain.Models;
 
 public class HolidayPeriod : IHolidayPeriod
 {
-    private DateOnly _initDate;
-    private DateOnly _finalDate;
+    private IPeriodDate _periodDate;
 
-    public HolidayPeriod(DateOnly initDate, DateOnly finalDate)
+    public HolidayPeriod(IPeriodDate periodDate)
     {
-        if (CheckInputValues(initDate, finalDate))
-        {
-            _initDate = initDate;
-            _finalDate = finalDate;
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
+        _periodDate = periodDate;
     }
 
-    public DateOnly GetInitDate()
+    public IPeriodDate GetPeriodDate() 
     {
-        return _initDate;
-    }
-
-    public DateOnly GetFinalDate()
-    {
-        return _finalDate;
+        return _periodDate;
     }
 
     public int GetDuration()
     {
-        return _finalDate.DayNumber - _initDate.DayNumber + 1;
+        return _periodDate.Duration();
     }
 
     public bool IsLongerThan(int days)
@@ -40,42 +28,30 @@ public class HolidayPeriod : IHolidayPeriod
         return false;
     }
 
-    private bool CheckInputValues(DateOnly initDate, DateOnly endDate)
-    {
-        if (initDate > endDate)
-            return false;
-
-        return true;
-    }
-
     public bool Contains(IHolidayPeriod holidayPeriod)
     {
-        return _initDate <= holidayPeriod.GetInitDate()
-            && _finalDate >= holidayPeriod.GetFinalDate();
+        return _periodDate.Contains(holidayPeriod.GetPeriodDate());
     }
 
-    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
+    public int GetInterceptionDurationInDays(IPeriodDate periodDate)
     {
-        DateOnly effectiveStart = _initDate > initDate ? _initDate : initDate;
-        DateOnly effectiveEnd = _finalDate < endDate ? _finalDate : endDate;
+        IPeriodDate? interceptionPeriod = _periodDate.GetIntersection(periodDate);
 
-        if (effectiveStart > effectiveEnd)
+        if (interceptionPeriod == null)
             return 0;
 
-        return effectiveEnd.DayNumber - effectiveStart.DayNumber + 1;
+        return interceptionPeriod.Duration();
     }
 
-    public int GetNumberOfCommonUtilDaysBetweenPeriods(DateOnly initDate, DateOnly finalDate)
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(IPeriodDate periodDate)
     {
-        DateOnly interceptionStart = initDate > _initDate ? initDate : _initDate;
+        IPeriodDate? interceptionPeriod = _periodDate.GetIntersection(periodDate);
 
-        DateOnly interceptionEnd = finalDate < _finalDate ? finalDate : _finalDate;
-
-        if (interceptionStart <= interceptionEnd)
+        if (interceptionPeriod != null)
         {
             int weekdayCount = 0;
 
-            for (DateOnly date = interceptionStart; date <= interceptionEnd; date = date.AddDays(1))
+            for (DateOnly date = interceptionPeriod.GetInitDate(); date <= interceptionPeriod.GetFinalDate(); date = date.AddDays(1))
             {
                 if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
                 {
@@ -90,11 +66,6 @@ public class HolidayPeriod : IHolidayPeriod
 
     public bool ContainsDate(DateOnly date)
     {
-        return _initDate <= date && _finalDate >= date;
-    }
-
-    public bool ContainedBetween(DateOnly ini, DateOnly end)
-    {
-        return _initDate >= ini && _finalDate <= end;
+        return _periodDate.ContainsDate(date);
     }
 }

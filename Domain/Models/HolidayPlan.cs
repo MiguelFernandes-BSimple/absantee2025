@@ -31,10 +31,10 @@ public class HolidayPlan : IHolidayPlan
             return false;
     }
 
-    public int GetNumberOfHolidayDaysBetween(DateOnly initDate, DateOnly endDate)
+    public int GetNumberOfHolidayDaysBetween(IPeriodDate periodDate)
     {
         return _holidaysPeriods.Sum(period =>
-            period.GetNumberOfCommonUtilDaysBetweenPeriods(initDate, endDate)
+            period.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate)
         );
     }
 
@@ -67,8 +67,9 @@ public class HolidayPlan : IHolidayPlan
         ICollaborator collaborator
     )
     {
-        DateTime holidayPeriodInitDate = holidayPeriod.GetInitDate().ToDateTime(TimeOnly.MinValue);
-        DateTime holidayPeriodFinalDate = holidayPeriod
+        IPeriodDate period = holidayPeriod.GetPeriodDate();
+        DateTime holidayPeriodInitDate = period.GetInitDate().ToDateTime(TimeOnly.MinValue);
+        DateTime holidayPeriodFinalDate = period
             .GetFinalDate()
             .ToDateTime(TimeOnly.MinValue);
         if (!collaborator.ContractContainsDates(holidayPeriodInitDate, holidayPeriodFinalDate))
@@ -88,9 +89,9 @@ public class HolidayPlan : IHolidayPlan
         return [.. _holidaysPeriods];
     }
 
-    public int GetDurationInDays(DateOnly initDate, DateOnly endDate)
+    public int GetDurationInDays(IPeriodDate periodDate)
     {
-        return _holidaysPeriods.Sum(hp => hp.GetDurationInDays(initDate, endDate));
+        return _holidaysPeriods.Sum(hp => hp.GetInterceptionDurationInDays(periodDate));
     }
 
     // métodos utilizados no holiday plan repository
@@ -116,11 +117,10 @@ public class HolidayPlan : IHolidayPlan
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(
-        DateOnly ini,
-        DateOnly end,
+        IPeriodDate period,
         int days
     )
     {
-        return _holidaysPeriods.Where(a => a.ContainedBetween(ini, end) && a.GetDuration() > days);
+        return _holidaysPeriods.Where(a => a.GetPeriodDate().Contains(period) && a.GetDuration() > days);
     }
 }

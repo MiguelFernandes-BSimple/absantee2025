@@ -3,26 +3,22 @@ namespace Domain.Models;
 
 public class TrainingPeriod : ITrainingPeriod
 {
-    private DateOnly _initDate;
-    private DateOnly _finalDate;
+    private IPeriodDate _periodDate;
 
-    public TrainingPeriod(DateOnly initDate, DateOnly finalDate)
+    public TrainingPeriod(IPeriodDate periodDate)
     {
-        if (CheckInputValues(initDate, finalDate))
+        if (CheckInputValues(periodDate))
         {
-            _initDate = initDate;
-            _finalDate = finalDate;
+            _periodDate = periodDate;
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool CheckInputValues(DateOnly initDate, DateOnly finalDate)
+    private bool CheckInputValues(IPeriodDate periodDate)
     {
-        if (initDate > finalDate)
-            return false;
 
-        if (initDate < DateOnly.FromDateTime(DateTime.Now))
+        if (periodDate.GetInitDate() < DateOnly.FromDateTime(DateTime.Now))
             return false;
 
         return true;
