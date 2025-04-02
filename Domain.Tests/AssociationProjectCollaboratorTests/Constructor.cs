@@ -18,7 +18,13 @@ public class Constructor
     {
         //arrange
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
+        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
+
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
+        ProjectMock.Setup(p => p.ContainsDates(secondPeriodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -28,7 +34,7 @@ public class Constructor
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
         //act
-        new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
+        new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
         //assert
     }
@@ -43,11 +49,11 @@ public class Constructor
         Mock<IProject> ProjectMock = new Mock<IProject>();
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -61,7 +67,9 @@ public class Constructor
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(false);
+
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(false);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -69,11 +77,11 @@ public class Constructor
         Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
-
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -86,7 +94,8 @@ public class Constructor
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(true);
 
@@ -94,11 +103,12 @@ public class Constructor
         Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -111,7 +121,9 @@ public class Constructor
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -120,11 +132,10 @@ public class Constructor
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(false);
 
-
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             //act
-            new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object));
+            new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }

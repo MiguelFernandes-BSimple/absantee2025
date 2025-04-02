@@ -14,7 +14,9 @@ public class HasProject
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -23,7 +25,11 @@ public class HasProject
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
-        var assocProjCollab = new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(finalDate);
+
+        var assocProjCollab = new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
         bool result = assocProjCollab.HasProject(ProjectMock.Object);
@@ -39,7 +45,9 @@ public class HasProject
         DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -48,7 +56,11 @@ public class HasProject
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
-        var assocProjCollab = new AssociationProjectCollaborator(initDate, finalDate, CollaboradorMock.Object, ProjectMock.Object);
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(finalDate);
+
+        var assocProjCollab = new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
         Mock<IProject> ProjectMock2 = new Mock<IProject>();
         //act
