@@ -9,6 +9,7 @@ public class GetDuration
     /**
     * Method to test the duration process
     */
+    [Fact]
     public void WhenQueried_ThenReturnLength()
     {
         // Arrange

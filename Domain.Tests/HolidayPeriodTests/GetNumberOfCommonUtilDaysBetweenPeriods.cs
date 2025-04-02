@@ -49,7 +49,8 @@ public class GetNumberOfCommonUtilDaysBetweenPeriods
     * Test method to get the number of weekdays in the intersecton between two period Dates
     * They don't intersect
     */
-    public void WhenPassingNotIntersectingPeriod_ThenNumberOfWeekdaysIsReturned()
+    [Fact]
+    public void WhenPassingNotIntersectingPeriod_ThenReturnZero()
     {
         // Arrange
         // doubles for IPeriodDates - stubs
