@@ -16,8 +16,6 @@ public class ContainsDate
     public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-
-        // double for IPeriodDate - stub
         Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
 
         // Random date that should be contained in the Period
@@ -32,11 +30,9 @@ public class ContainsDate
         HolidayPeriod hPeriod = new HolidayPeriod(doublePeriodDate.Object);
 
         // Act
-
         bool result = hPeriod.ContainsDate(dateToVerify);
 
         // Assert
-
         Assert.True(result);
     }
 
@@ -48,8 +44,6 @@ public class ContainsDate
     public void WhenPeriodIsNotContained_ThenReturnsFalse()
     {
         // Arrange
-
-        // double for IPeriodDate - stub
         Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
 
         // Random date that should not be contained in the Period
@@ -64,11 +58,9 @@ public class ContainsDate
         HolidayPeriod hPeriod = new HolidayPeriod(doublePeriodDate.Object);
 
         // Act
-
         bool result = hPeriod.ContainsDate(dateToVerify);
 
         // Assert
-
         Assert.False(result);
     }
 }

@@ -14,7 +14,6 @@ public class Constructor
     public void WhenConstructorIsCalled_ThenObjectIsInstantiated()
     {
         // Arrange 
-        // double for IPeriodDate - Stub
         Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
 
         // Act

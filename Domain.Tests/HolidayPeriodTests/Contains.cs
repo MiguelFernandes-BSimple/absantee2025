@@ -15,8 +15,6 @@ public class Contains
     public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-
-        // doubles for IPeriodDate - stubs
         Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
 
@@ -25,18 +23,13 @@ public class Contains
         doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(true);
 
         // Instatiate both Holiday Periods
-        // Reference Holiday Period
         HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
-
-        // To verify Holiday Period
         HolidayPeriod toVerifyHPeriod = new HolidayPeriod(doublePeriodDateToVerify.Object);
 
         // Act
-
         bool result = referenceHPeriod.Contains(toVerifyHPeriod);
 
         // Assert
-
         Assert.True(result);
     }
 
@@ -48,8 +41,6 @@ public class Contains
     public void WhenPeriodIsNotFullyContained_ThenReturnsFalse()
     {
         // Arrange
-
-        // doubles for IPeriodDate - stubs
         Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
 
@@ -58,18 +49,13 @@ public class Contains
         doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(false);
 
         // Instatiate both Holiday Periods
-        // Reference Holiday Period
         HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
-
-        // To verify Holiday Period
         HolidayPeriod toVerifyHPeriod = new HolidayPeriod(doublePeriodDateToVerify.Object);
 
         // Act
-
         bool result = referenceHPeriod.Contains(toVerifyHPeriod);
 
         // Assert
-
         Assert.False(result);
     }
 }
