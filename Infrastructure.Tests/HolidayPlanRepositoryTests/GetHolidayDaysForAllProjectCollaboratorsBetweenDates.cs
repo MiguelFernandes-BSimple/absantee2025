@@ -10,36 +10,46 @@ public class GetHolidayDaysForAllProjectCollaboratorsBetweenDates
     public void GivenProjectWithCollaborators_WhenGetHolidayDaysForAllCollaborators_ThenReturnsCorrectDays()
     {
         // Arrange
-        var mockColaborator = new Mock<ICollaborator>();
-        var mockHolidayPlan = new Mock<IHolidayPlan>();
-        var mockPeriodDateTime = new Mock<IPeriodDateTime>();
+        var collaborator1 = new Mock<ICollaborator>();
+        var collaborator2 = new Mock<ICollaborator>();
+        var collaboratorList = new List<ICollaborator>() { 
+            collaborator1.Object,
+            collaborator2.Object
+        };
+
+        var holidayPeriod1 = new Mock<IHolidayPeriod>();
+
+        var holidayPlan1 = new Mock<IHolidayPlan>();
+        holidayPlan1.Setup(hp => hp.HasCollaborator(collaborator1.Object)).Returns(true);
+        holidayPlan1
+            .Setup(hp => hp.GetHolidayPeriods())
+            .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object });
+
+        holidayPeriod1.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
+        holidayPeriod1.Setup(hperiod => hperiod.GetDuration()).Returns(10);
+
+        var holidayPeriod2 = new Mock<IHolidayPeriod>();
+
+        var holidayPlan2 = new Mock<IHolidayPlan>();
+        holidayPlan2.Setup(hp => hp.HasCollaborator(collaborator1.Object)).Returns(true);
+        holidayPlan2
+            .Setup(hp => hp.GetHolidayPeriods())
+            .Returns(new List<IHolidayPeriod> { holidayPeriod2.Object });
+
+        holidayPeriod2.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
+        holidayPeriod2.Setup(hperiod => hperiod.GetDuration()).Returns(5);
 
 
-        mockColaborator.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
-
-
-        var mockHolidayPeriod = new Mock<IHolidayPeriod>();
-        mockHolidayPeriod.Setup(h => h.GetInitDate()).Returns(new DateOnly(2024, 6, 1));
-        mockHolidayPeriod.Setup(h => h.GetFinalDate()).Returns(new DateOnly(2024, 6, 10));
-        mockHolidayPeriod.Setup(h => h.GetDurationInDays(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(10);
-
-
-        var holidayPlan = new HolidayPlan(mockHolidayPeriod.Object, mockColaborator.Object);
-
-
-        var collaboratorsList = new List<ICollaborator>() { mockColaborator.Object };
-
-
-        var holidayPlanRepository = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan });
+        // Adicionar o plano de férias ao repositório
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan1.Object });
 
         // Act
-        int result = holidayPlanRepository.GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
-            collaboratorsList,
-            new DateOnly(2024, 6, 1),
-            new DateOnly(2024, 6, 10)
+        var result = hpRepo.GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
+            collaboratorList,
+            It.IsAny<IPeriodDate>()
         );
 
         // Assert
-        Assert.Equal(10, result);
+        Assert.Equal(15, result);
     }
 }

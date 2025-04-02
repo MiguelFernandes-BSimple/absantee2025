@@ -68,4 +68,9 @@ public class HolidayPeriod : IHolidayPeriod
     {
         return _periodDate.ContainsDate(date);
     }
+
+    public bool Intersects(IPeriodDate periodDate)
+    {
+        return _periodDate.Intersects(periodDate);
+    }
 }
