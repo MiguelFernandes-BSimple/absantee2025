@@ -3,22 +3,72 @@ namespace Domain.Tests.HolidayPeriodTests;
 using Domain.Models;
 using Xunit;
 using System;
-using System.Collections.Generic;
-
+using Moq;
+using Domain.Interfaces;
 
 public class ContainsDate
 {
-    public static IEnumerable<object[]> GetHolidayPeriod_ContainingDate()
+    /**
+    * Test to verify if date is contained in the holiday period
+    * Its contained - true
+    */
+    [Fact]
+    public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
-        yield return new object[] { new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 5), new DateOnly(2020, 1, 3), true };
+        // Arrange
+
+        // double for IPeriodDate - stub
+        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+
+        // Random date that should be contained in the Period
+        // for the context of the test -> value not important
+        DateOnly dateToVerify = DateOnly.FromDateTime(DateTime.Now);
+
+        // Establish that the date must be contained in it
+        // Reference period CONTAINS date to Verify
+        doublePeriodDate.Setup(pd => pd.ContainsDate(dateToVerify)).Returns(true);
+
+        // Instatiate Holiday Period
+        HolidayPeriod hPeriod = new HolidayPeriod(doublePeriodDate.Object);
+
+        // Act
+
+        bool result = hPeriod.ContainsDate(dateToVerify);
+
+        // Assert
+
+        Assert.True(result);
     }
 
-    [Theory]
-    [MemberData(nameof(GetHolidayPeriod_ContainingDate))]
-    public void WhenGivenDate_ThenEvaluateIfContains(DateOnly ini, DateOnly end, DateOnly date, bool ret)
+    /**
+    * Test to verify if date is contained in the holiday period
+    * It's not contained - False
+    */
+    [Fact]
+    public void WhenPeriodIsNotContained_ThenReturnsFalse()
     {
-        var holidayPeriod = new HolidayPeriod(ini, end);
-        var result = holidayPeriod.ContainsDate(date);
-        Assert.Equal(ret, result);
+        // Arrange
+
+        // double for IPeriodDate - stub
+        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+
+        // Random date that should not be contained in the Period
+        // for the context of the test -> value not important
+        DateOnly dateToVerify = DateOnly.FromDateTime(DateTime.Now);
+
+        // Establish that the date must be contained in it
+        // Reference period DOESN'T contain date to Verify
+        doublePeriodDate.Setup(pd => pd.ContainsDate(dateToVerify)).Returns(false);
+
+        // Instatiate Holiday Period
+        HolidayPeriod hPeriod = new HolidayPeriod(doublePeriodDate.Object);
+
+        // Act
+
+        bool result = hPeriod.ContainsDate(dateToVerify);
+
+        // Assert
+
+        Assert.False(result);
     }
 }
