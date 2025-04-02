@@ -1,4 +1,6 @@
+using Domain.Interfaces;
 using Domain.Models;
+using Moq;
 namespace Domain.Tests.TrainingPeriodTests;
 public class Constructor
 {
@@ -29,9 +31,11 @@ public class Constructor
     )
     {
         //arrange
-
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
+        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
         //act
-        new TrainingPeriod(initDate, finalDate);
+        new TrainingPeriod(periodDateMock.Object);
 
         //assert
     }
@@ -58,12 +62,14 @@ public class Constructor
     )
     {
         //arrange
-
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
+        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new TrainingPeriod(initDate, finalDate)
+                new TrainingPeriod(periodDateMock.Object)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);
@@ -91,12 +97,14 @@ public class Constructor
     )
     {
         //arrange
-
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
+        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new TrainingPeriod(initDate, finalDate)
+                new TrainingPeriod(periodDateMock.Object)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);

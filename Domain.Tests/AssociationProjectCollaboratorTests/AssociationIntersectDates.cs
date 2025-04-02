@@ -21,7 +21,9 @@ public class AssociationIntersectDates
         DateOnly finalDateAssoc = new DateOnly(2020, 12, 31);
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -29,11 +31,18 @@ public class AssociationIntersectDates
         Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(initDateAssoc);
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(finalDateAssoc);
 
-        var assocProjCollab = new AssociationProjectCollaborator(initDateAssoc, finalDateAssoc, CollaboradorMock.Object, ProjectMock.Object);
+        Mock<IPeriodDate> thirdPeriodDateMock = new Mock<IPeriodDate>();
+        thirdPeriodDateMock.Setup(p => p.GetInitDate()).Returns(InitDate);
+        thirdPeriodDateMock.Setup(p => p.GetInitDate()).Returns(FinalDate);
+
+        var assocProjCollab = new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
-        bool result = assocProjCollab.AssociationIntersectDates(InitDate, FinalDate);
+        bool result = assocProjCollab.AssociationIntersectPeriod(thirdPeriodDateMock.Object);
         //assert
         Assert.True(result);
     }
@@ -54,7 +63,9 @@ public class AssociationIntersectDates
         DateOnly finalDateAssoc = new DateOnly(2020, 12, 31);
 
         Mock<IProject> ProjectMock = new Mock<IProject>();
-        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+
+        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
@@ -63,10 +74,18 @@ public class AssociationIntersectDates
 
         CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
-        var assocProjCollab = new AssociationProjectCollaborator(initDateAssoc, finalDateAssoc, CollaboradorMock.Object, ProjectMock.Object);
+        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(initDateAssoc);
+        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(finalDateAssoc);
+
+        Mock<IPeriodDate> thirdPeriodDateMock = new Mock<IPeriodDate>();
+        thirdPeriodDateMock.Setup(p => p.GetInitDate()).Returns(InitDate);
+        thirdPeriodDateMock.Setup(p => p.GetInitDate()).Returns(FinalDate);
+
+        var assocProjCollab = new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
-        bool result = assocProjCollab.AssociationIntersectDates(InitDate, FinalDate);
+        bool result = assocProjCollab.AssociationIntersectPeriod(thirdPeriodDateMock.Object);
         //assert
         Assert.False(result);
     }
