@@ -14,6 +14,8 @@ namespace Domain.Models
 
         public PeriodDate(DateOnly initDate, DateOnly finalDate)
         {
+            if (initDate > finalDate)
+                throw new ArgumentException("Invalid Arguments");
             _initDate = initDate;
             _finalDate = finalDate;
         }
