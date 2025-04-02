@@ -3,7 +3,7 @@ using Domain.Interfaces;
 using Moq;
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
+public class FindAllHolidayPeriodsForCollaboratorBetweenDates
 {
 
 
