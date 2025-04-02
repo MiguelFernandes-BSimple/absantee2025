@@ -16,5 +16,6 @@ public interface IHolidayPlanRepository
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days);
     public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator);
     public bool AddHolidayPlan(IHolidayPlan holidayPlan);
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate period);
 
 }

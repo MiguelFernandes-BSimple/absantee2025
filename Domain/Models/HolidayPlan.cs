@@ -124,4 +124,9 @@ public class HolidayPlan : IHolidayPlan
     {
         return _holidaysPeriods.Where(a => a.GetPeriodDate().Contains(period) && a.GetDuration() > days);
     }
+
+    public IEnumerable<IHolidayPeriod> GetHolidayPeriodsBetweenPeriod(IPeriodDate period)
+    {
+        return _holidaysPeriods.Where(hperiod => hperiod.Intersects(period));
+    }
 }

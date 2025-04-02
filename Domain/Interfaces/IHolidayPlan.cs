@@ -11,4 +11,5 @@ public interface IHolidayPlan
     public ICollaborator GetCollaborator();
     int GetNumberOfHolidayDaysBetween(IPeriodDate periodDate);
     bool HasPeriodLongerThan(int days);
+    public IEnumerable<IHolidayPeriod> GetHolidayPeriodsBetweenPeriod(IPeriodDate period);
 }

@@ -106,14 +106,9 @@ public class HolidayPlanService
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(
         IProject project,
         ICollaborator collaborator,
-        DateOnly initDate,
-        DateOnly endDate
+        IPeriodDate periodDate
     )
     {
-        if (initDate > endDate)
-        {
-            return 0;
-        }
         var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator);
         if (association == null)
         {
@@ -122,7 +117,7 @@ public class HolidayPlanService
 
 
         int totalHolidayDays = 0;
-        var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaborator(collaborator);
+        var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDates(collaborator, periodDate);
 
         foreach (var holidayColabPeriod in holidayPeriods)
         {
@@ -134,7 +129,7 @@ public class HolidayPlanService
         return totalHolidayDays;
     }
 
-    public int GetHolidayDaysForProjectCollaboratorBetweenDates(IProject project, IPeriodDate searchPeriod)
+    public int GetHolidayDaysForProjectAllCollaboratorBetweenDates(IProject project, IPeriodDate searchPeriod)
     {
 
         var associations = _associationProjectCollaboratorRepository.FindAllByProject(project);
@@ -147,9 +142,7 @@ public class HolidayPlanService
 
             foreach (var holidayPlan in holidayPlans)
             {
-                var holidayPeriods = holidayPlan.GetHolidayPeriods()
-                    .Where(hp => hp.GetPeriodDate().GetInitDate() <= searchPeriod.GetFinalDate() && hp.GetPeriodDate().GetFinalDate() >= searchPeriod.GetInitDate());
-
+                var holidayPeriods = holidayPlan.GetHolidayPeriods().Where(hp => hp.Intersects(searchPeriod));
                 foreach (var period in holidayPeriods)
                 {
                     totalHolidayDays += period.GetDuration();

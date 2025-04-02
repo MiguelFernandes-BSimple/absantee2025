@@ -53,8 +53,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     {
         return _holidayPlans
             .Where(h => h.HasCollaborator(collaborator))
-            .SelectMany(h => h.GetHolidayPeriods())
-            .Where(p => p.Intersects(periodDate));
+            .SelectMany(hp => hp.GetHolidayPeriodsBetweenPeriod(periodDate));
     }
 
     public IEnumerable<IHolidayPlan> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
@@ -114,8 +113,8 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             return _holidayPlans
                 .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
                 .SelectMany(hp =>
-                    hp.GetHolidayPeriods()
-                        .Where(hp => hp.Intersects(periodDate))
+                    hp.GetHolidayPeriodsBetweenPeriod(periodDate)
+
                 );
         }
 
@@ -128,6 +127,13 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     {
         return _holidayPlans.FirstOrDefault(hp =>
             hp.HasCollaborator(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
+    }
+
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDates(
+            ICollaborator collaborator, IPeriodDate period
+        )
+    {
+        return _holidayPlans.FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
     }
 
     public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
