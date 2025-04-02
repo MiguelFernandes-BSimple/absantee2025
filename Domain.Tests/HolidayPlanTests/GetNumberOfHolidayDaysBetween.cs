@@ -40,8 +40,7 @@ public class GetNumberOfHolidayDaysBetween
             holidayPeriodDouble
                 .Setup(p =>
                     p.GetNumberOfCommonUtilDaysBetweenPeriods(
-                        It.IsAny<DateOnly>(),
-                        It.IsAny<DateOnly>()
+                        It.IsAny<IPeriodDate>()
                     )
                 )
                 .Returns(days);
@@ -50,16 +49,21 @@ public class GetNumberOfHolidayDaysBetween
 
         var collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         var holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
 
+        var periodDateDouble = new Mock<IPeriodDate>();
+
         var startDate = new DateOnly(2025, 01, 01);
         var finalDate = new DateOnly(2025, 01, 10);
 
+        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(startDate);
+        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(finalDate);
+
         // Act
-        var result = holidayPlan.GetNumberOfHolidayDaysBetween(startDate, finalDate);
+        var result = holidayPlan.GetNumberOfHolidayDaysBetween(periodDateDouble.Object);
 
         // Assert
         Assert.Equal(expectedTotal, result);

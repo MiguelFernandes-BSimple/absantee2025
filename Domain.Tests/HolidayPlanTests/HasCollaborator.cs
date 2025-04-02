@@ -11,16 +11,17 @@ public class HasCollaborator
     {
         var collaborator = new Mock<ICollaborator>();
         var holidayPeriod = new Mock<IHolidayPeriod>();
+        var periodDateDouble = new Mock<IPeriodDate>();
 
-        collaborator
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-            .Returns(true);
+        collaborator.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
         holidayPeriod
             .Setup(hp => hp.Contains(It.IsAny<IHolidayPeriod>()))
             .Returns(false);
-        holidayPeriod.Setup(hp => hp.GetInitDate()).Returns(new DateOnly(2025, 1, 1));
-        holidayPeriod.Setup(hp => hp.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
+
+        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2025, 1, 1));
+        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
+        holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
 
         var holidayPlan = new HolidayPlan(holidayPeriod.Object, collaborator.Object);
 
@@ -38,16 +39,20 @@ public class HasCollaborator
         var collaborator1 = new Mock<ICollaborator>();
         var collaborator2 = new Mock<ICollaborator>();
         var holidayPeriod = new Mock<IHolidayPeriod>();
+        var periodDateDouble = new Mock<IPeriodDate>();
 
-        collaborator1
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-            .Returns(true);
+        collaborator1.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+
 
         holidayPeriod
             .Setup(hp => hp.Contains(It.IsAny<IHolidayPeriod>()))
             .Returns(false);
-        holidayPeriod.Setup(hp => hp.GetInitDate()).Returns(new DateOnly(2025, 1, 1));
-        holidayPeriod.Setup(hp => hp.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
+
+        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2025, 1, 1));
+        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
+
+        holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
+
 
         var holidayPlan = new HolidayPlan(holidayPeriod.Object, collaborator1.Object);
 

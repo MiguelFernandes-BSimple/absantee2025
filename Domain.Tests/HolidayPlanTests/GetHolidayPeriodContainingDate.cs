@@ -11,7 +11,7 @@ public class GetHolidayPeriodContainingDate
     {
         //arrange
         var collab = new Mock<ICollaborator>();
-        collab.Setup(a => a.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        collab.Setup(a => a.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         DateOnly date = new DateOnly(2020, 1, 1);
@@ -31,7 +31,7 @@ public class GetHolidayPeriodContainingDate
     {
         //arrange
         var collab = new Mock<ICollaborator>();
-        collab.Setup(a => a.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        collab.Setup(a => a.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         DateOnly date = new DateOnly(2020, 1, 1);

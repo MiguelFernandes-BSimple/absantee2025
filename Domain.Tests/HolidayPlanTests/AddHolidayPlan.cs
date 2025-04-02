@@ -21,7 +21,7 @@ public class AddHolidayPlan
         // Holiday period dates must be in the collaborator contract time frame
 
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         // Can't overlap with any other holiday periods
@@ -66,7 +66,7 @@ public class AddHolidayPlan
         // Holiday period dates must be in the collaborator contract time frame
 
         collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true);
 
         // Create Holiday Periods list (wth only one period)
@@ -109,7 +109,7 @@ public class AddHolidayPlan
         // Therefore it will be added
         // The second one shall not be, to verify if it returns false
         collaboratorDouble
-            .SetupSequence(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            .SetupSequence(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
             .Returns(true)
             .Returns(false);
 
