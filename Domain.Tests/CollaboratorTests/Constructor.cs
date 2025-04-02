@@ -16,15 +16,20 @@ public class Constructor
     [MemberData(nameof(CollaboratorData_ValidFields))]
     public void WhenCreatingCollaboratorWIthValidData_ThenCollaboratorIsCreatedCorrectly(
         DateTime _initDate,
-        DateTime? _finalDate
+        DateTime _finalDate
     )
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
         //act
-        new Collaborator(user.Object, _initDate, _finalDate);
+        new Collaborator(user.Object, periodDateTime.Object);
         //assert
     }
 
@@ -46,11 +51,16 @@ public class Constructor
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new Collaborator(user.Object, _initDate, _finalDate)
+                new Collaborator(user.Object, periodDateTime.Object)
         );
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -66,11 +76,16 @@ public class Constructor
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new Collaborator(user.Object, _initDate, _finalDate)
+                new Collaborator(user.Object, periodDateTime.Object)
         );
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -86,11 +101,16 @@ public class Constructor
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new Collaborator(user.Object, _initDate, _finalDate)
+                new Collaborator(user.Object, periodDateTime.Object)
         );
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -106,11 +126,16 @@ public class Constructor
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(_finalDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(true);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new Collaborator(user.Object, _initDate, _finalDate)
+                new Collaborator(user.Object, periodDateTime.Object)
         );
         Assert.Equal("Invalid Arguments", exception.Message);
     }

@@ -26,7 +26,9 @@ public class AssociationIntersectDates
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
+
+        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
         var assocProjCollab = new AssociationProjectCollaborator(initDateAssoc, finalDateAssoc, CollaboradorMock.Object, ProjectMock.Object);
 
@@ -57,7 +59,9 @@ public class AssociationIntersectDates
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
+
+        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
         var assocProjCollab = new AssociationProjectCollaborator(initDateAssoc, finalDateAssoc, CollaboradorMock.Object, ProjectMock.Object);
 

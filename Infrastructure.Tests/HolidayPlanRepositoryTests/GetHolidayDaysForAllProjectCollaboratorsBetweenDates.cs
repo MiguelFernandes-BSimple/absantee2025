@@ -12,9 +12,10 @@ public class GetHolidayDaysForAllProjectCollaboratorsBetweenDates
         // Arrange
         var mockColaborator = new Mock<ICollaborator>();
         var mockHolidayPlan = new Mock<IHolidayPlan>();
+        var mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
 
-        mockColaborator.Setup(c => c.ContractContainsDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(true);
+        mockColaborator.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
 
 
         var mockHolidayPeriod = new Mock<IHolidayPeriod>();

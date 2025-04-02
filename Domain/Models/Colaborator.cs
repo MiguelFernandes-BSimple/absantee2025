@@ -1,41 +1,40 @@
 using Domain.Interfaces;
+
 namespace Domain.Models;
 
 public class Collaborator : ICollaborator
 {
-    private DateTime _initDate;
-    private DateTime _finalDate;
     private IUser _user;
+    private IPeriodDateTime _periodDateTime;
 
-    public Collaborator(IUser user, DateTime initDate, DateTime? finalDate)
+    public Collaborator(IUser user, IPeriodDateTime periodDateTime)
     {
-        finalDate ??= DateTime.MaxValue;
-        if (checkInputFields(initDate, (DateTime)finalDate, user))
+        if (periodDateTime.IsFinalDateUndefined())
+            periodDateTime.SetFinalDate(DateTime.MaxValue);
+
+        if (CheckInputFields(user, periodDateTime))
         {
-            this._initDate = initDate;
-            this._finalDate = (DateTime)finalDate;
+            this._periodDateTime = periodDateTime;
             this._user = user;
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool checkInputFields(DateTime initDate, DateTime finalDate, IUser user)
+    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
     {
-        if (initDate > finalDate)
-            return false;
-
-        if (user.DeactivationDateIsBefore(finalDate))
+        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
             return false;
 
         if (user.IsDeactivated())
             return false;
+
         return true;
     }
 
-    public bool ContractContainsDates(DateTime initDate, DateTime finalDate)
+    public bool ContractContainsDates(IPeriodDateTime periodDateTime)
     {
-        return initDate >= this._initDate && finalDate <= this._finalDate;
+        return periodDateTime.GetInitDate() >= this._periodDateTime.GetInitDate() && periodDateTime.GetFinalDate() <= this._periodDateTime.GetFinalDate();
     }
 
     public bool HasNames(string names)

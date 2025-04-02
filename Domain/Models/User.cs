@@ -3,32 +3,29 @@ using System.Text.RegularExpressions;
 using Domain.Interfaces;
 
 namespace Domain.Models;
+
 public class User : IUser
 {
     private string _names;
     private string _surnames;
     private string _email;
+    private IPeriodDateTime _periodDateTime;
 
-    private DateTime _creationDate;
-    private DateTime? _deactivationDate;
-
-    public User(string names, string surnames, string email, DateTime? deactivationDate)
+    public User(string names, string surnames, string email, IPeriodDateTime periodDateTime)
     {
-        deactivationDate ??= DateTime.MaxValue;
+        if (periodDateTime.IsFinalDateUndefined())
+            periodDateTime.SetFinalDate(DateTime.MaxValue);
 
-        if (CheckInputValues(names, surnames, email, (DateTime)deactivationDate))
+        if (CheckInputValues(names, surnames, email, periodDateTime.GetFinalDate()))
         {
             _names = names;
             _surnames = surnames;
             _email = email;
-            _creationDate = DateTime.Now;
-            _deactivationDate = (DateTime)deactivationDate;
-
+            periodDateTime.SetInitDate(DateTime.Now);
+            _periodDateTime = periodDateTime;
         }
         else
-        {
             throw new ArgumentException("Invalid Arguments");
-        }
     }
 
     private bool CheckInputValues(string names, string surnames, string email, DateTime deactivationDate)
@@ -36,9 +33,7 @@ public class User : IUser
         Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
 
         if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
-        {
             return false;
-        }
 
         try
         {
@@ -51,16 +46,14 @@ public class User : IUser
 
         // Date validation
         if (DateTime.Now >= deactivationDate)
-        {
             return false;
-        }
 
         return true;
     }
 
     public bool IsDeactivated()
     {
-        if (DateTime.Now >= _deactivationDate)
+        if (DateTime.Now >= _periodDateTime.GetFinalDate())
             return true;
         else
             return false;
@@ -68,17 +61,15 @@ public class User : IUser
 
     public bool DeactivationDateIsBefore(DateTime date)
     {
-        return date > _deactivationDate;
+        return date > _periodDateTime.GetFinalDate();
     }
 
     public bool DeactivateUser()
     {
-        if (this.IsDeactivated())
-        {
+        if (IsDeactivated())
             return false;
-        }
 
-        this._deactivationDate = DateTime.Now;
+        _periodDateTime.SetFinalDate(DateTime.Now);
 
         return true;
     }
@@ -88,9 +79,7 @@ public class User : IUser
     {
         // Return false if 'names' is null, empty, or contains only whitespace
         if (string.IsNullOrWhiteSpace(names))
-        {
             return false;
-        }
 
         return _names.Contains(names, StringComparison.OrdinalIgnoreCase);
     }
@@ -99,9 +88,7 @@ public class User : IUser
     {
         // Return false if 'names' is null, empty, or contains only whitespace
         if (string.IsNullOrWhiteSpace(surnames))
-        {
             return false;
-        }
 
         return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
     }

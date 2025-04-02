@@ -36,10 +36,12 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         if (project.IsFinished())
             return false;
 
-        //DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
-        //DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
-        //if (!collaborator.ContractContainsDates(associationInitDate, associationFinalDate))
-        //    return false;
+        DateTime associationInitDate = initDate.ToDateTime(TimeOnly.MinValue);
+        DateTime associationFinalDate = finalDate.ToDateTime(TimeOnly.MinValue);
+        PeriodDateTime periodDateTime = new PeriodDateTime(associationInitDate, associationFinalDate);
+
+        if (!collaborator.ContractContainsDates(periodDateTime))
+            return false;
 
         return true;
     }

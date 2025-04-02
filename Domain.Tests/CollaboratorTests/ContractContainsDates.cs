@@ -23,7 +23,13 @@ public class ContractContainsDates
         Mock<IUser> user = new Mock<IUser>();
         DateTime collaboratorInitDate = new DateTime(2020, 1, 1);
         DateTime collaboratorFinalDate = new DateTime(2021, 1, 1);
-        Collaborator collaborator = new Collaborator(user.Object, collaboratorInitDate, collaboratorFinalDate);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
+        Collaborator collaborator = new Collaborator(user.Object, periodDateTime.Object);
+
         // Act
         bool result = collaborator.ContractContainsDates(_initDate, _finalDate);
         // Assert
@@ -47,7 +53,12 @@ public class ContractContainsDates
         Mock<IUser> user = new Mock<IUser>();
         DateTime collaboratorInitDate = new DateTime(2020, 1, 1);
         DateTime collaboratorFinalDate = new DateTime(2021, 1, 1);
-        Collaborator collaborator = new Collaborator(user.Object, collaboratorInitDate, collaboratorFinalDate);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+
+        Collaborator collaborator = new Collaborator(user.Object, periodDateTime.Object);
         // Act
         bool result = collaborator.ContractContainsDates(_initDate, _finalDate);
         // Assert

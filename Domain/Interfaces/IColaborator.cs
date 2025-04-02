@@ -1,8 +1,10 @@
+using Domain.Models;
+
 namespace Domain.Interfaces;
 
 public interface ICollaborator
 {
-    public bool ContractContainsDates(DateTime _initDate, DateTime _finalDate);
+    public bool ContractContainsDates(IPeriodDateTime periodDateTime);
 
     /**
     * Method to verify if a given string is found inside the names of an User

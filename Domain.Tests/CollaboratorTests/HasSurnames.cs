@@ -20,7 +20,11 @@ public class HasSurnames
         DateTime collaboratorInitDate = new DateTime(2020, 1, 1);
         DateTime collaboratorFinalDate = new DateTime(2021, 1, 1);
 
-        Collaborator collaborator = new Collaborator(doubleUser.Object, collaboratorInitDate, collaboratorFinalDate);
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(collaboratorInitDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(collaboratorFinalDate);
+
+        Collaborator collaborator = new Collaborator(doubleUser.Object, periodDateTime.Object);
 
         // Assert 
         Assert.True(
@@ -44,7 +48,11 @@ public class HasSurnames
         DateTime collaboratorInitDate = new DateTime(2020, 1, 1);
         DateTime collaboratorFinalDate = new DateTime(2021, 1, 1);
 
-        Collaborator collaborator = new Collaborator(doubleUser.Object, collaboratorInitDate, collaboratorFinalDate);
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(collaboratorInitDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(collaboratorFinalDate);
+
+        Collaborator collaborator = new Collaborator(doubleUser.Object, periodDateTime.Object);
 
         // Assert 
         Assert.False(
