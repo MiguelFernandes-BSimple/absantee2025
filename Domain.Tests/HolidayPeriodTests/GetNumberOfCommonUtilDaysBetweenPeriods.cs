@@ -22,7 +22,6 @@ public class GetNumberOfCommonUtilDaysBetweenPeriods
     public void WhenPassingIntersectingPeriod_ThenNumberOfWeekdaysIsReturned(DateOnly intersectionInitDate, DateOnly intersectionEndDate, int expectedWeekdays)
     {
         // Arrange
-        // doubles for IPeriodDates - stubs
         Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodDateInput = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodDateIntersection = new Mock<IPeriodDate>();
@@ -53,7 +52,6 @@ public class GetNumberOfCommonUtilDaysBetweenPeriods
     public void WhenPassingNotIntersectingPeriod_ThenReturnZero()
     {
         // Arrange
-        // doubles for IPeriodDates - stubs
         Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodDateInput = new Mock<IPeriodDate>();
 

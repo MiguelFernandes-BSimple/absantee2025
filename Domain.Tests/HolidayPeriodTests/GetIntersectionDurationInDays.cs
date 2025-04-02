@@ -16,7 +16,6 @@ public class GetIntersectionDurationInDays
     public void WhenPassingIntersectingPeriod_ReturnIntersectionDuration()
     {
         // Arrange
-        // doubles for PeriodDates - stubs
         Mock<IPeriodDate> doublePeriodReference = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodInputed = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodIntersectionResult = new Mock<IPeriodDate>();
@@ -49,7 +48,6 @@ public class GetIntersectionDurationInDays
     public void WhenPassingNotIntersectingPeriod_ReturnZero()
     {
         // Arrange
-        // doubles for PeriodDates - stubs
         Mock<IPeriodDate> doublePeriodReference = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodInputed = new Mock<IPeriodDate>();
         Mock<IPeriodDate> doublePeriodIntersectionResult = new Mock<IPeriodDate>();
