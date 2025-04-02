@@ -56,7 +56,7 @@ public class HolidayPlanService
         IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates.Where(holidayPeriod =>
         {
             DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetPeriodDate().GetInitDate(), searchPeriod.GetInitDate());
-            DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetPeriodDate().GetInitDate(), searchPeriod.GetFinalDate());
+            DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetPeriodDate().GetFinalDate(), searchPeriod.GetFinalDate());
             return intersectionStart <= intersectionEnd
                 && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
         });
