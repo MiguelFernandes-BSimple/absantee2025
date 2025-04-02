@@ -18,12 +18,12 @@ public class FindAllByProjectAndBetweenPeriod
         };
 
         assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
-        assocMock1.Setup(a => a.AssociationIntersectDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        assocMock1.Setup(a => a.AssociationIntersectPeriod(It.IsAny<IPeriodDate>())).Returns(true);
 
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<IPeriodDate>());
 
         //assert
         Assert.Empty(result);
@@ -41,12 +41,12 @@ public class FindAllByProjectAndBetweenPeriod
         };
 
         assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
-        assocMock1.Setup(a => a.AssociationIntersectDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(false);
+        assocMock1.Setup(a => a.AssociationIntersectPeriod(It.IsAny<IPeriodDate>())).Returns(false);
 
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<IPeriodDate>());
 
         //assert
         Assert.Empty(result);
@@ -64,12 +64,12 @@ public class FindAllByProjectAndBetweenPeriod
         };
 
         assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
-        assocMock1.Setup(a => a.AssociationIntersectDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(false);
+        assocMock1.Setup(a => a.AssociationIntersectPeriod(It.IsAny<IPeriodDate>())).Returns(false);
 
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<IPeriodDate>());
 
         //assert
         Assert.Empty(result);
@@ -88,14 +88,14 @@ public class FindAllByProjectAndBetweenPeriod
         };
 
         assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
-        assocMock1.Setup(a => a.AssociationIntersectDates(It.IsAny<DateOnly>(), It.IsAny<DateOnly>())).Returns(true);
+        assocMock1.Setup(a => a.AssociationIntersectPeriod(It.IsAny<IPeriodDate>())).Returns(true);
 
         var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         List<IAssociationProjectCollaborator> expected = associationsProjectCollaborator;
 
         //act
-        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var result = assoc.FindAllByProjectAndBetweenPeriod(projectMock.Object, It.IsAny<IPeriodDate>());
 
         //assert
         Assert.True(expected.SequenceEqual(result));

@@ -21,10 +21,10 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
         return _associationsProjectCollaborator.Where(a => a.HasProject(project) && a.HasCollaborator(collaborator)).FirstOrDefault();
     }
 
-    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, DateOnly InitDate, DateOnly FinalDate)
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
     {
         return _associationsProjectCollaborator
                 .Where(a => a.HasProject(project)
-                    && a.AssociationIntersectDates(InitDate, FinalDate));
+                    && a.AssociationIntersectPeriod(periodDate));
     }
 }
