@@ -31,7 +31,7 @@ public class ContractContainsDates
         Collaborator collaborator = new Collaborator(user.Object, periodDateTime.Object);
 
         // Act
-        bool result = collaborator.ContractContainsDates(_initDate, _finalDate);
+        bool result = collaborator.ContractContainsDates(periodDateTime.Object);
         // Assert
         Assert.True(result);
     }
@@ -60,7 +60,7 @@ public class ContractContainsDates
 
         Collaborator collaborator = new Collaborator(user.Object, periodDateTime.Object);
         // Act
-        bool result = collaborator.ContractContainsDates(_initDate, _finalDate);
+        bool result = collaborator.ContractContainsDates(periodDateTime.Object);
         // Assert
         Assert.False(result);
     }

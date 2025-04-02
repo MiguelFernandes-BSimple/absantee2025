@@ -1,4 +1,6 @@
+using Domain.Interfaces;
 using Domain.Models;
+using Moq;
 namespace Domain.Tests.ProjectTests;
 
 public class IsFinished
@@ -9,7 +11,11 @@ public class IsFinished
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
-        Project project = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
+
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        periodDateMock.Setup(p => p.GetInitDate()).Returns(ProjectInitDate);
+        periodDateMock.Setup(p => p.GetFinalDate()).Returns(ProjectFinalDate);
+        Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
 
         //act
         bool result = project.IsFinished();
@@ -28,7 +34,10 @@ public class IsFinished
     {
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
-        Project project = new Project("Titulo 1", "T1", ProjectInitDate, ProjectFinalDate);
+        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        periodDateMock.Setup(p => p.GetInitDate()).Returns(ProjectInitDate);
+        periodDateMock.Setup(p => p.GetFinalDate()).Returns(ProjectFinalDate);
+        Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
 
         //act
         bool result = project.IsFinished();
