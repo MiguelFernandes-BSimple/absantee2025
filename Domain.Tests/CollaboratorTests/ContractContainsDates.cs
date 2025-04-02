@@ -15,8 +15,8 @@ public class ContractContainsDates
     [Theory]
     [MemberData(nameof(ContainsDates_ValidDates))]
     public void WhenPassingValidDatesToContainsDates_ThenResultIsTrue(
-        DateTime _initDate,
-        DateTime _finalDate
+        DateTime searchInitDate,
+        DateTime searchEndDate
     )
     {
         // Arrange
@@ -25,13 +25,17 @@ public class ContractContainsDates
         DateTime collaboratorFinalDate = new DateTime(2021, 1, 1);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
-        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(collaboratorInitDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(collaboratorFinalDate);
 
         Collaborator collaborator = new Collaborator(user.Object, periodDateTime.Object);
 
+        Mock<IPeriodDateTime> searchPeriodDateTime = new Mock<IPeriodDateTime>();
+        searchPeriodDateTime.Setup(p => p.GetInitDate()).Returns(searchInitDate);
+        searchPeriodDateTime.Setup(p => p.GetFinalDate()).Returns(searchEndDate);
+
         // Act
-        bool result = collaborator.ContractContainsDates(periodDateTime.Object);
+        bool result = collaborator.ContractContainsDates(searchPeriodDateTime.Object);
         // Assert
         Assert.True(result);
     }
@@ -45,8 +49,8 @@ public class ContractContainsDates
     [Theory]
     [MemberData(nameof(ContainsDates_InvalidDates))]
     public void WhenPassingInvalidDatesToContainsDates_ThenResultIsFalse(
-        DateTime _initDate,
-        DateTime _finalDate
+        DateTime searchInitDate,
+        DateTime searchEndDate
     )
     {
         // Arrange
@@ -55,12 +59,16 @@ public class ContractContainsDates
         DateTime collaboratorFinalDate = new DateTime(2021, 1, 1);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-        periodDateTime.Setup(p => p.GetInitDate()).Returns(_initDate);
-        periodDateTime.Setup(p => p.GetFinalDate()).Returns(_finalDate);
+        periodDateTime.Setup(p => p.GetInitDate()).Returns(collaboratorInitDate);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(collaboratorFinalDate);
 
         Collaborator collaborator = new Collaborator(user.Object, periodDateTime.Object);
+
+        Mock<IPeriodDateTime> searchPeriodDateTime = new Mock<IPeriodDateTime>();
+        searchPeriodDateTime.Setup(p => p.GetInitDate()).Returns(searchInitDate);
+        searchPeriodDateTime.Setup(p => p.GetFinalDate()).Returns(searchEndDate);
         // Act
-        bool result = collaborator.ContractContainsDates(periodDateTime.Object);
+        bool result = collaborator.ContractContainsDates(searchPeriodDateTime.Object);
         // Assert
         Assert.False(result);
     }

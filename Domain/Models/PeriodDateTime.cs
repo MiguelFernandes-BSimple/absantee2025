@@ -18,6 +18,12 @@ public class PeriodDateTime : IPeriodDateTime
             throw new ArgumentException("Invalid Arguments");
     }
 
+    public PeriodDateTime(IPeriodDate periodDate) : this(
+        periodDate.GetInitDate().ToDateTime(TimeOnly.MinValue),
+        periodDate.GetFinalDate().ToDateTime(TimeOnly.MinValue))
+    {
+    }
+
     private bool CheckInputFields(DateTime initDate, DateTime endDate)
     {
         if (initDate > endDate)
