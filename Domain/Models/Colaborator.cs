@@ -34,7 +34,7 @@ public class Collaborator : ICollaborator
 
     public bool ContractContainsDates(IPeriodDateTime periodDateTime)
     {
-        return periodDateTime.GetInitDate() >= this._periodDateTime.GetInitDate() && periodDateTime.GetFinalDate() <= this._periodDateTime.GetFinalDate();
+        return _periodDateTime.Contains(periodDateTime);
     }
 
     public bool HasNames(string names)

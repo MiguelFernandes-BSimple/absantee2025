@@ -50,21 +50,10 @@ public class PeriodDateTime : IPeriodDateTime
         return _endDate == DateTime.MaxValue;
     }
 
-    /*     public PeriodDateTime ConvertToPeriodDateTime(PeriodDate periodDate)
-        {
-            DateTime initDate = periodDate.GetInitDate().ToDateTime(TimeOnly.MinValue);
-            DateTime endDate = periodDate.GetFinalDate().ToDateTime(TimeOnly.MinValue);
-
-            return new PeriodDateTime(initDate, endDate);
-        }
-
-        public PeriodDateTime ConvertToPeriodDateTime(DateOnly initDate, DateOnly endDate)
-        {
-            DateTime initDateTime = initDate.ToDateTime(TimeOnly.MinValue);
-            DateTime endDateTime = endDate.ToDateTime(TimeOnly.MinValue);
-
-            return new PeriodDateTime(initDateTime, endDateTime);
-        } */
-
+    public bool Contains(IPeriodDateTime periodDateTime)
+    {
+        return _initDate <= periodDateTime.GetInitDate()
+            && _endDate >= periodDateTime.GetFinalDate();
+    }
 }
 
