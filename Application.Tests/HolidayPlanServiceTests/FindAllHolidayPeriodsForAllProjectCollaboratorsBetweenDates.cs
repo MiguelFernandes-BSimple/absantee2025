@@ -54,6 +54,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
                 collaboratorMock.Object
             };
 
+        var periodDouble = new Mock<IPeriodDate>();
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
         var associationsList = new List<IAssociationProjectCollaborator> {
@@ -63,8 +64,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
             .Setup(a =>
                 a.FindAllByProjectAndBetweenPeriod(
                     It.IsAny<IProject>(),
-                    It.IsAny<DateOnly>(),
-                    It.IsAny<DateOnly>()
+                    periodDouble.Object
                 )
             )
             .Returns(associationsList);
@@ -96,6 +96,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         var collaboratorMock = new Mock<ICollaborator>();
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
+        var periodDouble = new Mock<IPeriodDate>();
         var associationsList = new List<IAssociationProjectCollaborator> {
                 associationMock.Object
             };
@@ -103,8 +104,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
             .Setup(a =>
                 a.FindAllByProjectAndBetweenPeriod(
                     It.IsAny<IProject>(),
-                    It.IsAny<DateOnly>(),
-                    It.IsAny<DateOnly>()
+                    periodDouble.Object
                 )
             )
             .Returns(associationsList);
@@ -141,12 +141,13 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         // Arrange
         var collaboratorMock = new Mock<ICollaborator>();
         var collaboratorList = new List<ICollaborator>() { collaboratorMock.Object };
+        var perioddouble = new Mock<IPeriodDate>();
 
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
         var associationsList = new List<IAssociationProjectCollaborator> { associationMock.Object };
         associationRepoMock
-            .Setup(a => a.FindAllByProjectAndBetweenPeriod(It.IsAny<IProject>(), It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
+            .Setup(a => a.FindAllByProjectAndBetweenPeriod(It.IsAny<IProject>(), perioddouble.Object))
             .Returns(associationsList);
 
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
