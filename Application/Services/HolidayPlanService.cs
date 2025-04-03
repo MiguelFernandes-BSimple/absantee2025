@@ -1,6 +1,6 @@
 using Infrastructure.Interfaces;
 using Domain.Interfaces;
-using Domain;
+
 using Domain.Models;
 
 namespace Application.Services;
@@ -19,10 +19,7 @@ public class HolidayPlanService
     public int GetHolidayDaysOfCollaboratorInProject(IProject project, ICollaborator collaborator)
     {
 
-        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator);
-
-        if (association == null)
-            throw new Exception("A associação com os parâmetros fornecidos não existe.");
+        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator) ?? throw new Exception("A associação com os parâmetros fornecidos não existe.");
 
         int numberOfHolidayDays = 0;
 
@@ -47,19 +44,14 @@ public class HolidayPlanService
         IPeriodDate searchPeriod
     )
     {
-        if (!Utils.ContainsWeekend(searchPeriod.GetInitDate(), searchPeriod.GetFinalDate()))
+        if (!searchPeriod.ContainsWeekend())
             return Enumerable.Empty<IHolidayPeriod>();
 
         IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates =
             _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, searchPeriod);
 
-        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates.Where(holidayPeriod =>
-        {
-            DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetPeriodDate().GetInitDate(), searchPeriod.GetInitDate());
-            DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetPeriodDate().GetFinalDate(), searchPeriod.GetFinalDate());
-            return intersectionStart <= intersectionEnd
-                && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
-        });
+        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates
+            .Where(hp => hp.ContainsWeekend());
 
         return hp;
     }
