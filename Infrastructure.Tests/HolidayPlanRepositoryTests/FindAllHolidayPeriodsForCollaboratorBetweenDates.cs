@@ -47,7 +47,7 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDates
         var holidayPeriod = new Mock<IHolidayPeriod>();
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(false);
         holidayPlan
             .Setup(hp => hp.GetHolidayPeriods())
             .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
