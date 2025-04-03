@@ -90,7 +90,7 @@ public class GetHolidayDaysForProjectCollaboratorBetweenDates
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
         holidayRepoMock.Setup(hr => hr.FindHolidayPeriodsByCollaboratorBetweenDates(collaboratorMock.Object, periodDouble.Object)).Returns(holidayPeriodList);
 
-        holidayPeriodMock.Setup(hp => hp.GetNumberOfCommonUtilDaysBetweenPeriods(It.IsAny<IPeriodDate>())).Returns(expectedHolidayDays);
+        holidayPeriodMock.Setup(hp => hp.GetNumberOfCommonUtilDays()).Returns(expectedHolidayDays);
 
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
 

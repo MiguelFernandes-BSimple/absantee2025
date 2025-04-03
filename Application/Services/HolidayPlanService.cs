@@ -121,9 +121,8 @@ public class HolidayPlanService
 
         foreach (var holidayColabPeriod in holidayPeriods)
         {
-            IPeriodDate period = new PeriodDate(holidayColabPeriod.GetPeriodDate().GetInitDate(), holidayColabPeriod.GetPeriodDate().GetFinalDate());
 
-            totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(period);
+            totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDays();
         }
 
         return totalHolidayDays;
