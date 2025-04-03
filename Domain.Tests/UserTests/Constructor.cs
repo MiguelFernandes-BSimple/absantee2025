@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Domain.Models;
 namespace Domain.Tests.UserTests;
 
@@ -94,4 +95,22 @@ public class Constructor
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
+
+    [Theory]
+    [InlineData("john")]
+    [InlineData("@email.com")]
+    [InlineData("john@.com")]
+    [InlineData("john@email,com")]
+    [InlineData("john@doe@email.com")]
+    [InlineData("john@.email.com")]
+    public void WhenCreatingUserWithInvalidEmail_ThenThrowsArgumentException(string email)
+    {
+        // Assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+            // Act
+            new User("John", "Doe", email, null));
+
+        Assert.Equal("Invalid Arguments", exception.Message);
+    }
+
 }
