@@ -75,8 +75,11 @@ public class Constructor
         // To be insertable, all holidayPlans must have distinct collaborators
         // no holidayPlan iss associated with the same collaborator
         doubleHolidayPlan1.Setup(hp1 => hp1.GetCollaborator()).Returns(doubleColab1.Object);
+        doubleHolidayPlan1.Setup(hp => hp.HasCollaborator(It.IsAny<ICollaborator>())).Returns(true);
         doubleHolidayPlan2.Setup(hp2 => hp2.GetCollaborator()).Returns(doubleColab2.Object);
+        doubleHolidayPlan2.Setup(hp => hp.HasCollaborator(It.IsAny<ICollaborator>())).Returns(true);
         doubleHolidayPlan3.Setup(hp3 => hp3.GetCollaborator()).Returns(doubleColab2.Object);
+        doubleHolidayPlan3.Setup(hp => hp.HasCollaborator(It.IsAny<ICollaborator>())).Returns(true);
 
         // Assert
         var exception = Assert.Throws<ArgumentException>(() =>

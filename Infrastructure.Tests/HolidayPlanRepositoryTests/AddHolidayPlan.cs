@@ -46,7 +46,9 @@ public class AddHolidayPlan
 
         // Collab has the holidayPlan
         doubleHolidayPlan.Setup(hp => hp.GetCollaborator()).Returns(doubleCollab.Object);
+        doubleHolidayPlan.Setup(hp => hp.HasCollaborator(It.IsAny<ICollaborator>())).Returns(true);
         doubleHolidayPlanToAdd.Setup(hp => hp.GetCollaborator()).Returns(doubleCollab.Object);
+        doubleHolidayPlanToAdd.Setup(hp => hp.HasCollaborator(It.IsAny<ICollaborator>())).Returns(true);
 
         // Instatiate repository
         HolidayPlanRepository repo = new HolidayPlanRepository(new List<IHolidayPlan> { doubleHolidayPlan.Object });
