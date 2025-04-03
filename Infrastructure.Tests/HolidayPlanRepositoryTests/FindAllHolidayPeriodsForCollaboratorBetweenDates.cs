@@ -67,4 +67,31 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDates
         // Assert
         Assert.Empty(result);
     }
+
+    [Fact]
+    public void WhenCollaboratorHasNoHolidayPlans_ThenReturnsEmptyList()
+    {
+        // Arrange
+        var collaborator = new Mock<ICollaborator>();
+
+        var holidayPeriod = new Mock<IHolidayPeriod>();
+
+        var holidayPlan = new Mock<IHolidayPlan>();
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(false);
+
+        holidayPeriod.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
+
+
+        // Adicionar o plano de férias ao repositório
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
+
+        // Act
+        var result = hpRepo.FindAllHolidayPeriodsForCollaboratorBetweenDates(
+            collaborator.Object,
+            It.IsAny<IPeriodDate>()
+        );
+
+        // Assert
+        Assert.Empty(result);
+    }
 }
