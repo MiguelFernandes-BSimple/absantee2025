@@ -49,5 +49,66 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryTests
             //assert
             Assert.Equal(expected, result);
         }
+
+
+        [Fact]
+        public void WhenNoAssociationMatchesProject_ThenReturnsNull()
+        {
+            // Arrange
+            var projectMock = new Mock<IProject>();
+            var assocMock = new Mock<IAssociationProjectCollaborator>();
+            var collabMock = new Mock<ICollaborator>();
+
+            assocMock.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
+            assocMock.Setup(a => a.HasCollaborator(collabMock.Object)).Returns(true);
+
+            var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { assocMock.Object });
+
+            // Act
+            var result = repo.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void WhenNoAssociationMatchesCollaborator_ThenReturnsNull()
+        {
+            // Arrange
+            var projectMock = new Mock<IProject>();
+            var assocMock = new Mock<IAssociationProjectCollaborator>();
+            var collabMock = new Mock<ICollaborator>();
+
+            assocMock.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
+            assocMock.Setup(a => a.HasCollaborator(collabMock.Object)).Returns(false);
+
+            var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { assocMock.Object });
+
+            // Act
+            var result = repo.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void WhenNoAssociationMatchesCollaboratorAndProject_ThenReturnsNull()
+        {
+            // Arrange
+            var projectMock = new Mock<IProject>();
+            var assocMock = new Mock<IAssociationProjectCollaborator>();
+            var collabMock = new Mock<ICollaborator>();
+
+            assocMock.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
+            assocMock.Setup(a => a.HasCollaborator(collabMock.Object)).Returns(false);
+
+            var repo = new AssociationProjectCollaboratorRepository(new List<IAssociationProjectCollaborator> { assocMock.Object });
+
+            // Act
+            var result = repo.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
+
+            // Assert
+            Assert.Null(result);
+        }
     }
 }
