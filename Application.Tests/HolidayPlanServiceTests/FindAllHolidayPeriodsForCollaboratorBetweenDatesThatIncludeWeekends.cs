@@ -72,6 +72,7 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends
         yield return new object[] { new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 11) };
         yield return new object[] { new DateOnly(2025, 04, 07), new DateOnly(2025, 04, 14) };
         yield return new object[] { new DateOnly(2025, 03, 20), new DateOnly(2025, 04, 04) };
+        yield return new object[] { DateOnly.MinValue, DateOnly.MinValue };
     }
 
     [Theory]

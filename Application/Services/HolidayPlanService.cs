@@ -53,6 +53,9 @@ public class HolidayPlanService
         IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates =
             _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, searchPeriod);
 
+        if (!holidayPeriodsBetweenDates.ToList().Any())
+            return Enumerable.Empty<IHolidayPeriod>();
+
         IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates.Where(holidayPeriod =>
         {
             DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetPeriodDate().GetInitDate(), searchPeriod.GetInitDate());
@@ -74,8 +77,14 @@ public class HolidayPlanService
         IEnumerable<IHolidayPeriod> holidayPeriodListColab1 =
             _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator1, searchPeriod);
 
+        if (!holidayPeriodListColab1.ToList().Any())
+            return Enumerable.Empty<IHolidayPeriod>();
+
         IEnumerable<IHolidayPeriod> holidayPeriodListColab2 =
             _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator2, searchPeriod);
+
+        if (!holidayPeriodListColab2.ToList().Any())
+            return Enumerable.Empty<IHolidayPeriod>();
 
         IEnumerable<IHolidayPeriod> hp = holidayPeriodListColab1
             .SelectMany(period1 => holidayPeriodListColab2
