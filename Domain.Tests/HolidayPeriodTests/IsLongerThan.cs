@@ -39,6 +39,7 @@ public class IsLongerThan
     [Theory]
     [InlineData(15)]
     [InlineData(20)]
+    [InlineData(10)]
     public void WhenPeriodDurationIsLessOrEqualThanLimit_ThenShouldReturnFalse(int days)
     {
         // Arrange

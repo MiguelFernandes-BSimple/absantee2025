@@ -6,7 +6,7 @@ using Domain.Models;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
+    private List<IHolidayPlan> _holidayPlans;
 
     public HolidayPlanRepository()
     {
@@ -42,35 +42,21 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
-    public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(IPeriodDate periodDate)
-    {
-        return _holidayPlans.Where(h => h.GetHolidayPeriods().Any(p => p.Intersects(periodDate)));
-    }
-
     // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
     // * todo - colocar in period
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate periodDate)
     {
-        return _holidayPlans
-            .Where(h => h.HasCollaborator(collaborator))
-            .SelectMany(hp => hp.GetHolidayPeriodsBetweenPeriod(periodDate));
+        var holidayPlan = _holidayPlans.FirstOrDefault(h => h.HasCollaborator(collaborator));
+        return holidayPlan?.GetHolidayPeriodsBetweenPeriod(periodDate) ?? Enumerable.Empty<IHolidayPeriod>();
     }
+
 
     public IEnumerable<IHolidayPlan> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
     {
         // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
         return _holidayPlans
             .Where(h =>
-                h.GetHolidayPeriods().Any(p => p.Intersects(periodDate))
-            );
-    }
-
-    public IHolidayPeriod? GetHolidayPeriodContainingDate(ICollaborator collaborator, DateOnly date)
-    {
-        return _holidayPlans
-            .Where(a => a.HasCollaborator(collaborator))
-            .Select(a => a.GetHolidayPeriodContainingDate(date))
-            .FirstOrDefault();
+                h.HasIntersectingHolidayPeriod(periodDate));
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(
@@ -86,35 +72,18 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             );
     }
 
-    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
-        IEnumerable<ICollaborator> collaborators,
-        IPeriodDate periodDate
-    )
-    {
-        int totalHolidayDays = 0;
-        foreach (var collaborator in collaborators)
-        {
-            var holidayPeriods = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, periodDate);
-
-            totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDuration());
-        }
-
-        return totalHolidayDays;
-    }
-
     //uc21
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(
-                List<ICollaborator> validCollaborators,
+                List<ICollaborator> collaborators,
                 IPeriodDate periodDate
             )
     {
 
         {
             return _holidayPlans
-                .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
+                .Where(hp => collaborators.Contains(hp.GetCollaborator()))
                 .SelectMany(hp =>
                     hp.GetHolidayPeriodsBetweenPeriod(periodDate)
-
                 );
         }
 
@@ -133,16 +102,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             ICollaborator collaborator, IPeriodDate period
         )
     {
-        return _holidayPlans.FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
-    }
-
-    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
-    {
-        var collaborator = association.GetCollaborator();
-
         return _holidayPlans
-            .Where(hp => hp.GetCollaborator().Equals(collaborator));
+            .FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
     }
+
 
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days)
     {

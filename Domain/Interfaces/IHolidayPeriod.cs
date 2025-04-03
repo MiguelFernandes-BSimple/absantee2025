@@ -9,6 +9,7 @@ public interface IHolidayPeriod
     public bool ContainsDate(DateOnly date);
     public bool Intersects(IPeriodDate periodDate);
     public int GetNumberOfCommonUtilDaysBetweenPeriods(IPeriodDate periodDate);
+    public int GetNumberOfCommonUtilDays();
     public bool IsLongerThan(int days);
     public IPeriodDate? GetIntersectionPeriod(IHolidayPeriod holidayPeriod);
     public IPeriodDate? GetIntersectionPeriod(IPeriodDate periodDate);

@@ -63,6 +63,19 @@ public class HolidayPeriod : IHolidayPeriod
 
         return 0;
     }
+    public int GetNumberOfCommonUtilDays()
+    {
+
+        int weekdayCount = 0;
+        for (DateOnly date = _periodDate.GetInitDate(); date <= _periodDate.GetFinalDate(); date = date.AddDays(1))
+        {
+            if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+            {
+                weekdayCount++;
+            }
+        }
+        return weekdayCount;
+    }
 
     public bool ContainsDate(DateOnly date)
     {

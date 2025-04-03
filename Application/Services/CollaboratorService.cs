@@ -11,35 +11,30 @@ public class CollaboratorService
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
     {
-        this._associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
-        this._holidayPlanRepository = holidayPlanRepository;
+        _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
+        _holidayPlanRepository = holidayPlanRepository;
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public IEnumerable<ICollaborator> FindAllWithHolidayPeriodsLongerThan(int days)
     {
-        return _holidayPlanRepository
-            .FindAllWithHolidayPeriodsLongerThan(days)
-            .Select(p => p.GetCollaborator())
-            .Distinct();
+        return _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThan(days).Select(p => p.GetCollaborator()).Distinct();
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
     {
-        return _holidayPlanRepository.GetHolidayPlansWithHolidayPeriodValid(periodDate)
-                                        .Select(h => h.GetCollaborator())
-                                        .Distinct();
+        return _holidayPlanRepository.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate).Select(h => h.GetCollaborator()).Distinct();
     }
 
     public IEnumerable<ICollaborator> FindAllByProject(IProject project)
     {
-        return this._associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaborator());
+        return _associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaborator());
     }
 
     public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
     {
-        return this._associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, periodDate).Select(a => a.GetCollaborator());
+        return _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, periodDate).Select(a => a.GetCollaborator());
     }
 
 }

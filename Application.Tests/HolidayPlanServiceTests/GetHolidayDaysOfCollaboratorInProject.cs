@@ -58,4 +58,26 @@ public class GetHolidayDaysOfCollaboratorInProject
         //assert
         Assert.Equal(0, result);
     }
+
+    [Fact]
+    public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectAndAssocitionsAreNull_ThenThrowExcepection()
+    {
+
+        //arrange
+        Mock<IProject> projectMock = new Mock <IProject>();
+        Mock<ICollaborator> collaboratorMock = new Mock<ICollaborator>();
+        Mock<IAssociationProjectCollaboratorRepository> association = new Mock<IAssociationProjectCollaboratorRepository>();
+        Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>(); 
+
+        association.Setup(hpr => hpr.FindByProjectAndCollaborator(projectMock.Object, collaboratorMock.Object)).Returns((IAssociationProjectCollaborator?)null);
+
+        HolidayPlanService service = new HolidayPlanService(association.Object, holidayPlanRepositoryDouble.Object);
+
+        // Act & Assert
+        var exception = Assert.Throws<Exception>(() => 
+            service.GetHolidayDaysOfCollaboratorInProject(projectMock.Object, collaboratorMock.Object));
+
+        Assert.Equal("A associação com os parâmetros fornecidos não existe.", exception.Message);
+    
+    }
 }
