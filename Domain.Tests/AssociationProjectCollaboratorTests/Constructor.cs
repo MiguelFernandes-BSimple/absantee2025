@@ -6,32 +6,22 @@ using Domain.Models;
 
 public class Constructor
 {
-    public static IEnumerable<object[]> ValidDates()
-    {
-        yield return new object[] { DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now).AddYears(1) };
-        yield return new object[] { DateOnly.FromDateTime(DateTime.Today), DateOnly.FromDateTime(DateTime.Today) };
-    }
-
-    [Theory]
-    [MemberData(nameof(ValidDates))]
-    public void WhenPassingValidData_ThenAssociationProjectCollaboratorIsCreated(DateOnly initDate, DateOnly finalDate)
+    [Fact]
+    public void WhenPassingValidData_ThenAssociationProjectCollaboratorIsCreated()
     {
         //arrange
         Mock<IProject> ProjectMock = new Mock<IProject>();
 
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
 
-        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
-        ProjectMock.Setup(p => p.ContainsDates(secondPeriodDateMock.Object)).Returns(true);
+        ProjectMock.Setup(p => p.ContainsDates(It.IsAny<IPeriodDate>())).Returns(true);
 
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
         Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
-        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
         //act
         new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);

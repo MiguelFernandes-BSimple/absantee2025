@@ -10,9 +10,6 @@ public class HasProject
     public void WhenHasProjectReceivesSameProject_ReturnTrue()
     {
         //arrange
-        DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
-
         Mock<IProject> ProjectMock = new Mock<IProject>();
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
 
@@ -21,15 +18,10 @@ public class HasProject
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
-        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
-        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
-        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
-        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(finalDate);
-
-        var assocProjCollab = new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
+        var assocProjCollab = new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
         //act
         bool result = assocProjCollab.HasProject(ProjectMock.Object);
@@ -41,10 +33,8 @@ public class HasProject
     public void WhenHasProjectReceivesDifferentProject_ReturnFalse()
     {
         //arrange
-        DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1));
-
         Mock<IProject> ProjectMock = new Mock<IProject>();
+        Mock<IProject> ProjectMock2 = new Mock<IProject>();
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
 
         ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
@@ -52,17 +42,11 @@ public class HasProject
         ProjectMock.Setup(c => c.IsFinished()).Returns(false);
 
         Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
-        Mock<IPeriodDateTime> mockPeriodDateTime = new Mock<IPeriodDateTime>();
 
-        CollaboradorMock.Setup(c => c.ContractContainsDates(mockPeriodDateTime.Object)).Returns(true);
+        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
-        Mock<IPeriodDate> secondPeriodDateMock = new Mock<IPeriodDate>();
-        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
-        secondPeriodDateMock.Setup(p => p.GetInitDate()).Returns(finalDate);
+        var assocProjCollab = new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
 
-        var assocProjCollab = new AssociationProjectCollaborator(secondPeriodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
-
-        Mock<IProject> ProjectMock2 = new Mock<IProject>();
         //act
         bool result = assocProjCollab.HasProject(ProjectMock2.Object);
         //assert
