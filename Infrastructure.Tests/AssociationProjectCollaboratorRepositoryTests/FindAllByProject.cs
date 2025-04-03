@@ -25,10 +25,10 @@ public class FindAllByProject
 
         List<IAssociationProjectCollaborator> expected = new List<IAssociationProjectCollaborator> { assocMock2.Object };
 
-        var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
+        var assocRepo = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
         //act
-        var result = assoc.FindAllByProject(projectMock.Object);
+        var result = assocRepo.FindAllByProject(projectMock.Object);
 
         //assert
         Assert.True(expected.SequenceEqual(result));

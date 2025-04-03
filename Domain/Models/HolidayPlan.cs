@@ -68,11 +68,7 @@ public class HolidayPlan : IHolidayPlan
     )
     {
         IPeriodDate period = holidayPeriod.GetPeriodDate();
-        DateTime holidayPeriodInitDate = period.GetInitDate().ToDateTime(TimeOnly.MinValue);
-        DateTime holidayPeriodFinalDate = period
-            .GetFinalDate()
-            .ToDateTime(TimeOnly.MinValue);
-        PeriodDateTime periodDateTime = new PeriodDateTime(holidayPeriodInitDate, holidayPeriodFinalDate);
+        PeriodDateTime periodDateTime = new PeriodDateTime(period);
 
         if (!collaborator.ContractContainsDates(periodDateTime))
             return false;

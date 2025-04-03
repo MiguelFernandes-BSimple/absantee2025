@@ -14,6 +14,11 @@ public class AddHolidayPlan
         // Arrange
         // Test double for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
+
+        holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
+        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         // Test double for Collaborator
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -41,6 +46,7 @@ public class AddHolidayPlan
 
         // It doesn't overlap with any other period
         holidayPeriodDoubleToAdd.Setup(hp2 => hp2.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
+        holidayPeriodDoubleToAdd.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
         // Act
         // Add a seconda holiday period
@@ -59,6 +65,10 @@ public class AddHolidayPlan
         // Arrange
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
+        holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
+        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         // Test double for Collaborator
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -80,6 +90,7 @@ public class AddHolidayPlan
 
         // Test double for holiday period to be added to plan
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
+        holidayPeriodDoubleToAdd.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
         // Holiday period to be added intersects - Therefore it's not added
         holidayPeriodDoubleToAdd.Setup(hp => hp.Contains(It.IsAny<IHolidayPeriod>())).Returns(true);
@@ -101,6 +112,11 @@ public class AddHolidayPlan
         // Arrange
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
+
+        holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
+        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         // Test double for Collaborator
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -127,6 +143,7 @@ public class AddHolidayPlan
 
         // holiday period to be added can't overlap with any other holiday periods
         holidayPeriodDoubleToAdd.Setup(hp => hp.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
+        holidayPeriodDoubleToAdd.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
         // Act
         // Add a seconda holiday period
