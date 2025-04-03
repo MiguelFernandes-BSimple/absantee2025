@@ -13,9 +13,9 @@ namespace Domain.Tests.PeriodDateTests
     {
         public static IEnumerable<object[]> ContainingDate()
         {
-            yield return new object[] { new DateOnly(1, 1, 2020) };
-            yield return new object[] { new DateOnly(1, 1, 2021) };
-            yield return new object[] { new DateOnly(2, 1, 2020) };
+            yield return new object[] { new DateOnly(2020, 1, 1) };
+            yield return new object[] { new DateOnly(2021, 1, 1) };
+            yield return new object[] { new DateOnly(2020, 1, 2) };
         }
 
 
@@ -24,8 +24,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenPassingContainingDate_ThenReturnTrue(DateOnly containedDate)
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
@@ -38,8 +38,8 @@ namespace Domain.Tests.PeriodDateTests
 
         public static IEnumerable<object[]> NonContainingDate()
         {
-            yield return new object[] { new DateOnly(1, 1, 2019) };
-            yield return new object[] { new DateOnly(1, 1, 2022) };
+            yield return new object[] { new DateOnly(2019, 1, 1) };
+            yield return new object[] { new DateOnly(2022, 1, 1) };
         }
 
 
@@ -48,8 +48,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenPassingNonContainingDate_ThenReturnFalse(DateOnly nonContainedDate)
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 

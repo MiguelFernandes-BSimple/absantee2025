@@ -12,9 +12,9 @@ namespace Domain.Tests.PeriodDateTests
     {
         public static IEnumerable<object[]> IntersectionDates()
         {
-            yield return new object[] { new PeriodDate(new DateOnly(1, 1, 2021), new DateOnly(1, 1, 2022)) };
-            yield return new object[] { new PeriodDate(new DateOnly(1, 1, 2019), new DateOnly(1, 1, 2020)) };
-            yield return new object[] { new PeriodDate(new DateOnly(2, 1, 2020), new DateOnly(3, 1, 2020)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2022, 1, 1)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2019, 1, 1), new DateOnly(2020, 1, 1)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2020, 1, 3), new DateOnly(2020, 1, 3)) };
         }
 
 
@@ -23,8 +23,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenPassingIntersectionPeriods_ThenReturnTrue(IPeriodDate intersectPeriod)
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
             
@@ -37,8 +37,8 @@ namespace Domain.Tests.PeriodDateTests
 
         public static IEnumerable<object[]> NonIntersectionDates()
         {
-            yield return new object[] { new PeriodDate(new DateOnly(1, 1, 2018), new DateOnly(1, 1, 2019)) };
-            yield return new object[] { new PeriodDate(new DateOnly(1, 1, 202), new DateOnly(1, 1, 2023)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2018, 1, 1), new DateOnly(2019, 1, 1)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2022, 1, 1), new DateOnly(2023, 1, 1)) };
         }
 
 
@@ -47,8 +47,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenPassingNonIntersectionPeriods_ThenReturnFalse(IPeriodDate intersectPeriod)
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 

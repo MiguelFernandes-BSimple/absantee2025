@@ -15,8 +15,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenCreatingWithValidDates_ThenPeriodDateIsCreated()
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020,1,1);
+            DateOnly finalDate = new DateOnly(2021,1,1);
 
             //act
             new PeriodDate(initDate, finalDate);
@@ -25,8 +25,7 @@ namespace Domain.Tests.PeriodDateTests
 
         public static IEnumerable<object[]> PeriodDateData_InvalidFields()
         {
-            yield return new object[] { new DateOnly(1, 1, 2021), new DateOnly(1, 1, 2021) };
-            yield return new object[] { new DateOnly(1, 1, 2021), new DateOnly(1, 1, 2020) };
+            yield return new object[] { new DateOnly(2021, 1, 1), new DateOnly(2020, 1, 1) };
         }
 
 

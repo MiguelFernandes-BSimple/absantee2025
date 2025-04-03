@@ -13,12 +13,12 @@ namespace Domain.Tests.PeriodDateTests
         public static IEnumerable<object[]> PeriodsThatIntersect()
         {
             yield return new object[] { 
-                new PeriodDate(new DateOnly(1, 1, 2021), new DateOnly(1, 1, 2022)), 
-                new PeriodDate(new DateOnly(1, 1, 2021), new DateOnly(1, 1, 2021)) 
+                new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2022, 1, 1)), 
+                new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 1)) 
             };
             yield return new object[] {
-                new PeriodDate(new DateOnly(1, 1, 2019), new DateOnly(1, 1, 2020)),
-                new PeriodDate(new DateOnly(1, 1, 2020), new DateOnly(1, 1, 2020))
+                new PeriodDate(new DateOnly(2019, 1, 1), new DateOnly(2020, 1, 1)),
+                new PeriodDate(new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 1))
             };
         }
 
@@ -28,8 +28,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenPassingPeriod_ThenReturnIntersection(IPeriodDate periodDate2, IPeriodDate intersectionPeriod)
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
@@ -37,20 +37,21 @@ namespace Domain.Tests.PeriodDateTests
             var result = periodDate.GetIntersection(periodDate2);
 
             //assert
-            Assert.Equal(intersectionPeriod, result);
+            Assert.Equal(intersectionPeriod.GetInitDate(), result.GetInitDate());
+            Assert.Equal(intersectionPeriod.GetFinalDate(), result.GetFinalDate());
         }
 
         [Fact]
         public void WhenPeriodsDontIntersect_ThenReturnNull()
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(1, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
-            DateOnly initDate2 = new DateOnly(1, 1, 2018);
-            DateOnly finalDate2 = new DateOnly(1, 1, 2019);
+            DateOnly initDate2 = new DateOnly(2018, 1, 1);
+            DateOnly finalDate2 = new DateOnly(2019, 1, 1);
 
             IPeriodDate periodDate2 = new PeriodDate(initDate2, finalDate2);
 

@@ -14,8 +14,8 @@ namespace Domain.Tests.PeriodDateTests
         public void WhenDurationIsCalled_ThenReturnExpectedDurationInDays()
         {
             //arrange
-            DateOnly initDate = new DateOnly(1, 1, 2020);
-            DateOnly finalDate = new DateOnly(10, 1, 2021);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2020, 1, 10);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
