@@ -1,67 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 
-namespace Domain.Models
+namespace Domain.Models;
+public class PeriodDate : IPeriodDate
 {
-    public class PeriodDate : IPeriodDate
+    private DateOnly _initDate;
+    private DateOnly _finalDate;
+
+    public PeriodDate(DateOnly initDate, DateOnly finalDate)
     {
-        private DateOnly _initDate;
-        private DateOnly _finalDate;
+        if (initDate > finalDate)
+            throw new ArgumentException("Invalid Arguments");
+        _initDate = initDate;
+        _finalDate = finalDate;
+    }
 
-        public PeriodDate(DateOnly initDate, DateOnly finalDate)
+    public DateOnly GetInitDate()
+    {
+        return _initDate;
+    }
+
+    public DateOnly GetFinalDate()
+    {
+        return _finalDate;
+    }
+
+    public bool Intersects(IPeriodDate periodDate)
+    {
+        return _initDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= _finalDate;
+    }
+
+    public IPeriodDate? GetIntersection(IPeriodDate periodDate)
+    {
+        DateOnly effectiveStart = _initDate > periodDate.GetInitDate() ? _initDate : periodDate.GetInitDate();
+        DateOnly effectiveEnd = _finalDate < periodDate.GetFinalDate() ? _finalDate : periodDate.GetFinalDate();
+
+        if (effectiveStart > effectiveEnd)
         {
-            if (initDate > finalDate)
-                throw new ArgumentException("Invalid Arguments");
-            _initDate = initDate;
-            _finalDate = finalDate;
+            return null; // No valid intersection
         }
 
-        public DateOnly GetInitDate()
-        {
-            return _initDate;
-        }
+        return new PeriodDate(effectiveStart, effectiveEnd);
+    }
 
-        public DateOnly GetFinalDate()
-        {
-            return _finalDate; 
-        }
+    public int Duration()
+    {
+        return _finalDate.DayNumber - _initDate.DayNumber + 1;
+    }
 
-        public bool Intersects(IPeriodDate periodDate)
-        {
-            return _initDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= _finalDate;
-        }
+    public bool Contains(IPeriodDate periodDate)
+    {
+        return _initDate <= periodDate.GetInitDate()
+        && _finalDate >= periodDate.GetFinalDate();
+    }
 
-        public IPeriodDate? GetIntersection(IPeriodDate periodDate)
-        {
-            DateOnly effectiveStart = _initDate > periodDate.GetInitDate() ? _initDate : periodDate.GetInitDate();
-            DateOnly effectiveEnd = _finalDate < periodDate.GetFinalDate() ? _finalDate : periodDate.GetFinalDate();
+    public bool ContainsDate(DateOnly date)
+    {
+        return _initDate <= date && _finalDate >= date;
+    }
 
-            if (effectiveStart > effectiveEnd)
+    public bool ContainsWeekend()
+    {
+
+        for (var date = _initDate; date <= _finalDate; date = date.AddDays(1))
+        {
+            if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
             {
-                return null; // No valid intersection
+                return true;
             }
-
-            return new PeriodDate(effectiveStart, effectiveEnd);
         }
-
-        public int Duration()
-        {
-            return _finalDate.DayNumber - _initDate.DayNumber + 1;
-        }
-
-        public bool Contains(IPeriodDate periodDate)
-        {
-            return _initDate <= periodDate.GetInitDate()
-            && _finalDate >= periodDate.GetFinalDate();
-        }
-
-        public bool ContainsDate(DateOnly date)
-        {
-            return _initDate <= date && _finalDate >= date;
-        }
+        return false;
     }
 }
+

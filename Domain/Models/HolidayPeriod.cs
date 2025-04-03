@@ -86,4 +86,19 @@ public class HolidayPeriod : IHolidayPeriod
     {
         return _periodDate.Intersects(periodDate);
     }
+
+    public IPeriodDate? GetIntersectionPeriod(IHolidayPeriod holidayPeriod)
+    {
+        return holidayPeriod.GetPeriodDate().GetIntersection(_periodDate);
+    }
+
+    public IPeriodDate? GetIntersectionPeriod(IPeriodDate periodDate)
+    {
+        return periodDate.GetIntersection(_periodDate);
+    }
+
+    public bool ContainsWeekend()
+    {
+        return _periodDate.ContainsWeekend();
+    }
 }
