@@ -80,14 +80,14 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     //uc21
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(
-                List<ICollaborator> validCollaborators,
+                List<ICollaborator> collaborators,
                 IPeriodDate periodDate
             )
     {
 
         {
             return _holidayPlans
-                .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
+                .Where(hp => collaborators.Contains(hp.GetCollaborator()))
                 .SelectMany(hp =>
                     hp.GetHolidayPeriodsBetweenPeriod(periodDate)
                 );
