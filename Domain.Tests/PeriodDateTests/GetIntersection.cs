@@ -12,9 +12,9 @@ namespace Domain.Tests.PeriodDateTests
     {
         public static IEnumerable<object[]> PeriodsThatIntersect()
         {
-            yield return new object[] { 
-                new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2022, 1, 1)), 
-                new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 1)) 
+            yield return new object[] {
+                new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2022, 1, 1)),
+                new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 1))
             };
             yield return new object[] {
                 new PeriodDate(new DateOnly(2019, 1, 1), new DateOnly(2020, 1, 1)),
@@ -37,6 +37,7 @@ namespace Domain.Tests.PeriodDateTests
             var result = periodDate.GetIntersection(periodDate2);
 
             //assert
+            Assert.NotNull(result);
             Assert.Equal(intersectionPeriod.GetInitDate(), result.GetInitDate());
             Assert.Equal(intersectionPeriod.GetFinalDate(), result.GetFinalDate());
         }
