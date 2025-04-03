@@ -130,22 +130,18 @@ public class HolidayPlanService
 
     public int GetHolidayDaysForProjectAllCollaboratorBetweenDates(IProject project, IPeriodDate searchPeriod)
     {
-
         var associations = _associationProjectCollaboratorRepository.FindAllByProject(project);
 
         int totalHolidayDays = 0;
 
-        foreach (var association in associations)
-        {
-            var holidayPeriods = _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(association.GetCollaborator(), searchPeriod);
+        var collabList = associations.Select(a => a.GetCollaborator());
+        var holidayPeriods = _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collabList.ToList(), searchPeriod);
 
-            foreach (var period in holidayPeriods)
-            {
-                totalHolidayDays += period.GetDuration();
-            }
+        foreach (var period in holidayPeriods)
+        {
+            totalHolidayDays += period.GetDuration();
         }
 
         return totalHolidayDays;
-
     }
 }
