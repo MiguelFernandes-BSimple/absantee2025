@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Infrastructure.Repositories;
 using Moq;
 
@@ -48,6 +43,30 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryTests
 
             //assert
             Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void WhenPassingProjectAndCollaboratorNotAssociated_ThenReturnNull()
+        {
+            //arrange
+            Mock<IProject> projectMock = new Mock<IProject>();
+
+            Mock<IAssociationProjectCollaborator> assocMock = new Mock<IAssociationProjectCollaborator>();
+            List<IAssociationProjectCollaborator> associationsProjectCollaborator = new List<IAssociationProjectCollaborator> { assocMock.Object };
+
+            assocMock.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
+
+            Mock<ICollaborator> collabMock = new Mock<ICollaborator>();
+            List<ICollaborator> collabs = new List<ICollaborator> { collabMock.Object, };
+
+            assocMock.Setup(a => a.HasCollaborator(collabMock.Object)).Returns(false);
+
+            var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
+            //act
+            var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock.Object);
+
+            //assert
+            Assert.Null(result);
         }
     }
 }
