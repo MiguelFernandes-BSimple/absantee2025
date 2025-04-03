@@ -162,7 +162,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     private bool CanInsert(IHolidayPlan holidayPlan, List<IHolidayPlan> holidayPlansList)
     {
         bool alreadyExists =
-            holidayPlansList.Any(hp => hp.GetCollaborator().Equals(holidayPlan.GetCollaborator()));
+            holidayPlansList.Any(hp => hp.HasCollaborator(holidayPlan.GetCollaborator()));
 
         return !alreadyExists;
     }
