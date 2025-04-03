@@ -128,7 +128,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             hp.HasCollaborator(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
     }
 
-    // this
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDates(
             ICollaborator collaborator, IPeriodDate period
         )
