@@ -115,44 +115,12 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
 
     public static IEnumerable<object[]> SearchOverlappingPeriodsOutsideHolidayPeriod()
     {
-        /* // dates intersect, but search date is outside
-        yield return new object[] {
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 08),
-                    new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
-                    new DateOnly(2025, 04, 13), new DateOnly(2025, 04, 20),
-            };
-        // dates intersect, but search only contains 1 holiday period (1st date higher range)
-        yield return new object[] {
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
-                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-                    new DateOnly(2025, 04, 12), new DateOnly(2025, 04, 12),
-            };
-        // dates intersect, but search only contains 1 holiday period (1st date lower range)
-        yield return new object[] {
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
-                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02),
-            };
-        // dates intersect, but search only contains 1 holiday period (2nd date higher range)
-        yield return new object[] {
-                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
-                    new DateOnly(2025, 04, 12), new DateOnly(2025, 04, 12),
-            };
-        // dates intersect, but search only contains 1 holiday period (2nd date lower range)
-        yield return new object[] {
-                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
-                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02),
-            }; */
-        // holiday periods don't intercept (2nd date after)
-        yield return new object[] {
+        yield return new object[] { // holiday periods don't intercept (2nd date after), both inside search period
             new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
             new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 15),
             new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
-    };
-        // holiday periods don't intercept  (1st date after)
-        yield return new object[] {
+        };
+        yield return new object[] { // holiday periods don't intercept  (1st date after) , both inside search period
             new DateOnly(2025, 04, 11), new DateOnly(2025, 04, 15),
             new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 10),
             new DateOnly(2025, 04, 01), new DateOnly(2025, 04, 15),
@@ -193,6 +161,7 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
         Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
         holidayPeriod2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
         var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
+        holidayPeriod1.Setup(hp => hp.Intersects(holidayPeriod2.Object)).Returns(false);
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
@@ -207,4 +176,37 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
         //assert
         Assert.Empty(result);
     }
+
+    /*     public static IEnumerable<object[]> DatesPartiallyIntersect()
+        {
+            yield return new object[] { // dates intersect, but search only contains 1 holiday period (1st date higher range)
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                    new DateOnly(2025, 04, 12), new DateOnly(2025, 04, 12),
+                };
+            yield return new object[] { // dates intersect, but search only contains 1 holiday period (1st date lower range)
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02),
+                };
+            yield return new object[] { // dates intersect, but search only contains 1 holiday period (2nd date higher range)
+                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+                    new DateOnly(2025, 04, 12), new DateOnly(2025, 04, 12),
+                };
+            yield return new object[] { // dates intersect, but search only contains 1 holiday period (2nd date lower range)
+                    new DateOnly(2025, 04, 04), new DateOnly(2025, 04, 11),
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 12),
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 02),
+            };
+        }
+
+        public static IEnumerable<object[]> IntersectedDatesOutsideSearch()
+        {
+            yield return new object[] { // dates intersect, but search date is outside
+                    new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 08),
+                    new DateOnly(2025, 04, 05), new DateOnly(2025, 04, 12),
+                    new DateOnly(2025, 04, 13), new DateOnly(2025, 04, 20),
+                };
+        } */
 }
