@@ -128,11 +128,13 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             hp.HasCollaborator(collaborator))?.GetHolidayPeriods() ?? new List<IHolidayPeriod>();
     }
 
+    // this
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDates(
             ICollaborator collaborator, IPeriodDate period
         )
     {
-        return _holidayPlans.FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
+        return _holidayPlans
+            .FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
     }
 
     public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
