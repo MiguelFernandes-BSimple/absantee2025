@@ -18,7 +18,7 @@ public class ProjectManager : IProjectManager
             this._user = user;
         }
         else
-            throw new ArgumentException("Invalid Arguments");
+            throw new ArgumentException("Invalid Arguments.");
     }
 
     private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
