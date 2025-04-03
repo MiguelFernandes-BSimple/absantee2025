@@ -30,7 +30,7 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryTests
 
             Mock<ICollaborator> collabMock1 = new Mock<ICollaborator>();
             Mock<ICollaborator> collabMock2 = new Mock<ICollaborator>();
-            List<ICollaborator> collabs= new List<ICollaborator> {
+            List<ICollaborator> collabs = new List<ICollaborator> {
                 collabMock1.Object,
                 collabMock2.Object
             };
@@ -44,7 +44,7 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryTests
             var assoc = new AssociationProjectCollaboratorRepository(associationsProjectCollaborator);
 
             //act
-            var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock1.Object);
+            var result = assoc.FindByProjectAndCollaborator(projectMock.Object, collabMock2.Object);
 
             //assert
             Assert.Equal(expected, result);
