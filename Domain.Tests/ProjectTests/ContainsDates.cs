@@ -13,11 +13,11 @@ public class ContainsDates
 
     [Theory]
     [MemberData(nameof(ContainsDates_ValidCompareData))]
-    public void WhenPassingValidData_ThenContainsDatesReturnTrue(DateOnly InitDate, DateOnly FinalDate)
+    public void WhenPassingValidData_ThenContainsDatesReturnTrue(DateOnly initDate, DateOnly finalDate)
     {
         //arrange
-        DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
+        DateOnly ProjectInitDate = initDate;
+        DateOnly ProjectFinalDate = finalDate;
 
         Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
 
@@ -25,7 +25,7 @@ public class ContainsDates
         periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(true);
         Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
 
-        
+
 
         //act
         bool result = project.ContainsDates(searchPeriodDateMock.Object);
