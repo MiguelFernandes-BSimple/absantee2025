@@ -136,13 +136,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
     }
 
-    public IEnumerable<IHolidayPlan> GetHolidayPlansByAssociations(IAssociationProjectCollaborator association)
-    {
-        var collaborator = association.GetCollaborator();
-
-        return _holidayPlans
-            .Where(hp => hp.GetCollaborator().Equals(collaborator));
-    }
 
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days)
     {

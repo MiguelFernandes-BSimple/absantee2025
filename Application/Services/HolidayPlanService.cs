@@ -137,15 +137,11 @@ public class HolidayPlanService
 
         foreach (var association in associations)
         {
-            var holidayPlans = _holidayPlanRepository.GetHolidayPlansByAssociations(association);
+            var holidayPeriods = _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(association.GetCollaborator(), searchPeriod);
 
-            foreach (var holidayPlan in holidayPlans)
+            foreach (var period in holidayPeriods)
             {
-                var holidayPeriods = holidayPlan.GetHolidayPeriods().Where(hp => hp.Intersects(searchPeriod));
-                foreach (var period in holidayPeriods)
-                {
-                    totalHolidayDays += period.GetDuration();
-                }
+                totalHolidayDays += period.GetDuration();
             }
         }
 
