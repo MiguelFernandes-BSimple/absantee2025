@@ -19,10 +19,7 @@ public class HolidayPlanService
     public int GetHolidayDaysOfCollaboratorInProject(IProject project, ICollaborator collaborator)
     {
 
-        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator);
-
-        if (association == null)
-            throw new Exception("A associação com os parâmetros fornecidos não existe.");
+        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator) ?? throw new Exception("A associação com os parâmetros fornecidos não existe.");
 
         int numberOfHolidayDays = 0;
 
