@@ -119,9 +119,14 @@ public class HolidayPlanService
         int totalHolidayDays = 0;
         var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDates(collaborator, periodDate);
 
+        if (holidayPeriods.Count == 0)
+        {
+            return totalHolidayDays;
+        }
+
         foreach (var holidayColabPeriod in holidayPeriods)
         {
-            PeriodDate period = new PeriodDate(holidayColabPeriod.GetPeriodDate().GetInitDate(), holidayColabPeriod.GetPeriodDate().GetFinalDate());
+            IPeriodDate period = new PeriodDate(holidayColabPeriod.GetPeriodDate().GetInitDate(), holidayColabPeriod.GetPeriodDate().GetFinalDate());
 
             totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(period);
         }
