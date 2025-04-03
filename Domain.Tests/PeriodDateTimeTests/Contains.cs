@@ -4,10 +4,6 @@ namespace Domain.Tests.PeriodDateTimeTests;
 
 public class Contains
 {
-    /**
-    * Test method to verify if a PeriodDateTime is inside another
-    * Case where it's true -> fully contained
-    */
     public static IEnumerable<object[]> GetPeriodDates_ValidFields()
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddYears(1) };
@@ -17,18 +13,14 @@ public class Contains
 
     [Theory]
     [MemberData(nameof(GetPeriodDates_ValidFields))]
-    public void WhenPassingContainedPeriodDateTime_ThenReturnTrue(DateTime initDate, DateTime endDate)
+    public void WhenPassingGoodPeriodDateTime_ThenReturnTrue(DateTime initDate, DateTime endDate)
     {
         // Arrange
-        // Reference PeriodDateTime to compare 
-        // All dates must be contained in this periods dates
         DateTime referenceInitDate = DateTime.Now.AddYears(-1);
         DateTime referenceEndDate = DateTime.Now.AddYears(3);
 
-        // Instatiate Reference PeriodDateTime
         PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceEndDate);
 
-        // Instatiate Input PeriodDateTime
         PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, endDate);
 
         // Act
@@ -38,10 +30,32 @@ public class Contains
         Assert.True(result);
     }
 
-    /**
-    * Test method to verify if a PeriodDateTime is inside another
-    * case where it's false -> not fully contained or not eve intersected
-    */
+    public static IEnumerable<object[]> GetPeriodDates_CommonValidFields()
+    {
+        yield return new object[] { new DateTime(2025, 4, 3), new DateTime(2025, 4, 7) };
+        yield return new object[] { new DateTime(2025, 4, 6), new DateTime(2025, 4, 10) };
+        yield return new object[] { new DateTime(2025, 4, 3), new DateTime(2025, 4, 10) };
+
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPeriodDates_CommonValidFields))]
+    public void WhenPassingGoodPeriodDateTimeWithSameInitOrEndDates_ThenReturnTrue(DateTime initDate, DateTime endDate)
+    {
+        // Arrange
+        DateTime referenceInitDate = new DateTime(2025, 4, 3);
+        DateTime referenceEndDate = new DateTime(2025, 4, 10);
+
+        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceEndDate);
+        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, endDate);
+
+        // Act
+        bool result = referencePeriodDateTime.Contains(inputPeriodDate);
+
+        // Assert
+        Assert.True(result);
+    }
+
     public static IEnumerable<object[]> GetPeriodDates_InvalidFields()
     {
         yield return new object[] { DateTime.Now, DateTime.Now.AddYears(1) };
