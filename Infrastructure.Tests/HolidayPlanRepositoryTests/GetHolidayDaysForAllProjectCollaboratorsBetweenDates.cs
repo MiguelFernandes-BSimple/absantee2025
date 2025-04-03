@@ -21,10 +21,7 @@ public class GetHolidayDaysForAllProjectCollaboratorsBetweenDates
 
         var holidayPlan1 = new Mock<IHolidayPlan>();
         holidayPlan1.Setup(hp => hp.HasCollaborator(collaborator1.Object)).Returns(true);
-        holidayPlan1
-            .Setup(hp => hp.GetHolidayPeriods())
-            .Returns(new List<IHolidayPeriod> { holidayPeriod1.Object });
-
+        holidayPlan1.Setup(hp => hp.GetHolidayPeriodsBetweenPeriod(It.IsAny<IPeriodDate>())).Returns(new List<IHolidayPeriod> { holidayPeriod1.Object });
         holidayPeriod1.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
         holidayPeriod1.Setup(hperiod => hperiod.GetDuration()).Returns(10);
 
@@ -33,7 +30,7 @@ public class GetHolidayDaysForAllProjectCollaboratorsBetweenDates
         var holidayPlan2 = new Mock<IHolidayPlan>();
         holidayPlan2.Setup(hp => hp.HasCollaborator(collaborator1.Object)).Returns(true);
         holidayPlan2
-            .Setup(hp => hp.GetHolidayPeriods())
+            .Setup(hp => hp.GetHolidayPeriodsBetweenPeriod(It.IsAny<IPeriodDate>()))
             .Returns(new List<IHolidayPeriod> { holidayPeriod2.Object });
 
         holidayPeriod2.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
@@ -41,7 +38,7 @@ public class GetHolidayDaysForAllProjectCollaboratorsBetweenDates
 
 
         // Adicionar o plano de férias ao repositório
-        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan1.Object });
+        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan1.Object,holidayPlan2.Object });
 
         // Act
         var result = hpRepo.GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
