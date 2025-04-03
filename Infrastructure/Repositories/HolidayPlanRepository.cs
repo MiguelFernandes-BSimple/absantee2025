@@ -114,7 +114,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
                 .Where(hp => validCollaborators.Contains(hp.GetCollaborator()))
                 .SelectMany(hp =>
                     hp.GetHolidayPeriodsBetweenPeriod(periodDate)
-
                 );
         }
 
