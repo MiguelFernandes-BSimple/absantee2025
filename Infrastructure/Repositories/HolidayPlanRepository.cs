@@ -51,10 +51,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     // * todo - colocar in period
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate periodDate)
     {
-        return _holidayPlans
-            .Where(h => h.HasCollaborator(collaborator))
-            .SelectMany(hp => hp.GetHolidayPeriodsBetweenPeriod(periodDate));
+        var holidayPlan = _holidayPlans.FirstOrDefault(h => h.HasCollaborator(collaborator));
+        return holidayPlan?.GetHolidayPeriodsBetweenPeriod(periodDate) ?? Enumerable.Empty<IHolidayPeriod>();
     }
+
 
     public IEnumerable<IHolidayPlan> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
     {
@@ -63,14 +63,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(h =>
                 h.GetHolidayPeriods().Any(p => p.Intersects(periodDate))
             );
-    }
-
-    public IHolidayPeriod? GetHolidayPeriodContainingDate(ICollaborator collaborator, DateOnly date)
-    {
-        return _holidayPlans
-            .Where(a => a.HasCollaborator(collaborator))
-            .Select(a => a.GetHolidayPeriodContainingDate(date))
-            .FirstOrDefault();
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(
@@ -84,22 +76,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .SelectMany(a =>
                 a.FindAllHolidayPeriodsBetweenDatesLongerThan(periodDate, days)
             );
-    }
-
-    public int GetHolidayDaysForAllProjectCollaboratorsBetweenDates(
-        IEnumerable<ICollaborator> collaborators,
-        IPeriodDate periodDate
-    )
-    {
-        int totalHolidayDays = 0;
-        foreach (var collaborator in collaborators)
-        {
-            var holidayPeriods = FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, periodDate);
-
-            totalHolidayDays += holidayPeriods.Sum(hp => hp.GetDuration());
-        }
-
-        return totalHolidayDays;
     }
 
     //uc21
