@@ -9,7 +9,6 @@ public interface IHolidayPlanRepository
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate periodDate, int days);
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(List<ICollaborator> validCollaborators, IPeriodDate periodDate);
     public List<IHolidayPeriod> FindHolidayPeriodsByCollaborator(ICollaborator collaborator);
-    public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(IPeriodDate periodDate);
     public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThan(int days);
     public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator);
     public bool AddHolidayPlan(IHolidayPlan holidayPlan);

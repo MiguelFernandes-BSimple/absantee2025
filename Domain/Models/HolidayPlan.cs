@@ -125,4 +125,9 @@ public class HolidayPlan : IHolidayPlan
     {
         return _holidaysPeriods.Where(hperiod => hperiod.Intersects(period));
     }
+
+    public bool HasIntersectingHolidayPeriod(IPeriodDate period)
+    {
+        return _holidaysPeriods.Any(hperiod => hperiod.Intersects(period));
+    }
 }

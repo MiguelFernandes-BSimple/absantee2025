@@ -24,7 +24,7 @@ public class CollaboratorService
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
     {
-        return _holidayPlanRepository.GetHolidayPlansWithHolidayPeriodValid(periodDate).Select(h => h.GetCollaborator()).Distinct();
+        return _holidayPlanRepository.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate).Select(h => h.GetCollaborator()).Distinct();
     }
 
     public IEnumerable<ICollaborator> FindAllByProject(IProject project)

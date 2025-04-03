@@ -42,11 +42,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         }
     }
 
-    public IEnumerable<IHolidayPlan> GetHolidayPlansWithHolidayPeriodValid(IPeriodDate periodDate)
-    {
-        return _holidayPlans.Where(h => h.GetHolidayPeriods().Any(p => p.Intersects(periodDate)));
-    }
-
     // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
     // * todo - colocar in period
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate periodDate)
@@ -61,8 +56,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
         return _holidayPlans
             .Where(h =>
-                h.GetHolidayPeriods().Any(p => p.Intersects(periodDate))
-            );
+                h.HasIntersectingHolidayPeriod(periodDate));
     }
 
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(

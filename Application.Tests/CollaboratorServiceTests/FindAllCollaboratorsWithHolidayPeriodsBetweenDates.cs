@@ -19,7 +19,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepoMock = new Mock<IHolidayPlanRepository>();
-        hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(periodDate.Object)).Returns(new List<IHolidayPlan> { holidayPlan.Object });
+        hpRepoMock.Setup(hp => hp.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object)).Returns(new List<IHolidayPlan> { holidayPlan.Object });
 
         var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
@@ -48,7 +48,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlan2.Setup(hp => hp.GetCollaborator()).Returns(collaborator2.Object);
 
         var hpRepoMock = new Mock<IHolidayPlanRepository>();
-        hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(periodDate.Object)).Returns(new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object });
+        hpRepoMock.Setup(hp => hp.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object)).Returns(new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object });
 
         var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
@@ -74,7 +74,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepoMock = new Mock<IHolidayPlanRepository>();
-        hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(periodDate.Object)).Returns(new List<IHolidayPlan> { holidayPlan.Object });
+        hpRepoMock.Setup(hp => hp.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object)).Returns(new List<IHolidayPlan> { holidayPlan.Object });
 
         var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
@@ -107,7 +107,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepoMock = new Mock<IHolidayPlanRepository>();
-        hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(periodDate.Object)).Returns(new List<IHolidayPlan>());
+        hpRepoMock.Setup(hp => hp.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object)).Returns(new List<IHolidayPlan>());
         var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
@@ -126,7 +126,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         var periodDate = new Mock<IPeriodDate>();
 
         var hpRepoMock = new Mock<IHolidayPlanRepository>();
-        hpRepoMock.Setup(hp => hp.GetHolidayPlansWithHolidayPeriodValid(periodDate.Object)).Returns(new List<IHolidayPlan>());
+        hpRepoMock.Setup(hp => hp.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object)).Returns(new List<IHolidayPlan>());
         var APCRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object);
         // Act
