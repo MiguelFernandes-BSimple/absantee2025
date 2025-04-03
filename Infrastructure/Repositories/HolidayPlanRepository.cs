@@ -6,7 +6,7 @@ using Domain.Models;
 
 public class HolidayPlanRepository : IHolidayPlanRepository
 {
-    private List<IHolidayPlan> _holidayPlans = new List<IHolidayPlan>();
+    private List<IHolidayPlan> _holidayPlans;
 
     public HolidayPlanRepository()
     {
