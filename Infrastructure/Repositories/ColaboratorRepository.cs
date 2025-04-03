@@ -14,38 +14,16 @@ public class CollaboratorRepository : ICollaboratorRepository
 
     public CollaboratorRepository(List<ICollaborator> collaborators) : this()
     {
-        bool isValid = true;
+        bool isAdded = Add(collaborators);
 
-        //Validate if collaborator list is valid
-        // All collaborators have to be valid
-        for (int collabIndex1 = 0; collabIndex1 < collaborators.Count; collabIndex1++)
-        {
-            if (!isValid)
-                break;
-
-            ICollaborator currColaborator = collaborators[collabIndex1];
-            isValid = CanInsert(currColaborator, collaborators.Skip(collabIndex1 + 1).ToList());
-        }
-
-        // If the list is valid -> insert Collborators in repo
-        if (isValid)
-        {
-            foreach (ICollaborator collabIndex2 in collaborators)
-            {
-                AddCollaborator(collabIndex2);
-            }
-        }
-        else
-        {
+        if (!isAdded)
             throw new ArgumentException("Arguments are not valid!");
-        }
-
     }
 
     public IEnumerable<ICollaborator> FindAllCollaborators()
     {
         // Create a new list - to not share the pointer
-        return new List<ICollaborator>(_collaborators);
+        return [.. _collaborators];
     }
 
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithName(string names)
@@ -66,23 +44,45 @@ public class CollaboratorRepository : ICollaboratorRepository
     /**
     * Method to validate whether a collaborator can be insert in a given list or not
     */
-    private bool CanInsert(ICollaborator collaborator, List<ICollaborator> collabList)
+    private bool IsRepeated(ICollaborator collaborator, List<ICollaborator> collabList)
     {
-        bool alreadyExists =
-            collabList.Any(c => c.GetEmail().Equals(collaborator.GetEmail()));
+        bool isRepeated =
+            collabList.Any(c => c.Equals(collaborator));
 
-        return !alreadyExists;
+        return isRepeated;
     }
 
     /**
     * Method to add a single collaborator to the repository
+    * Not in use right now!
     */
-    public bool AddCollaborator(ICollaborator collaborator)
+    private bool Add(ICollaborator collaborator)
     {
-        bool canInsert = CanInsert(collaborator, _collaborators);
-        if (canInsert)
+        bool isRepeated = IsRepeated(collaborator, _collaborators);
+        if (!isRepeated)
             _collaborators.Add(collaborator);
 
-        return canInsert;
+        return !isRepeated;
+    }
+
+    private bool Add(List<ICollaborator> collaborators)
+    {
+        // Validate if all collaborators are valid
+        for (int collabIndex1 = 0; collabIndex1 < collaborators.Count; collabIndex1++)
+        {
+            ICollaborator currColaborator = collaborators[collabIndex1];
+            var isRepeated = IsRepeated(currColaborator, collaborators.Skip(collabIndex1 + 1).ToList());
+
+            if (isRepeated)
+                return false;
+        }
+
+        // If the list is valid -> insert Collborators in repo
+        foreach (ICollaborator collabIndex2 in collaborators)
+        {
+            _collaborators.Add(collabIndex2);
+        }
+
+        return true;
     }
 }

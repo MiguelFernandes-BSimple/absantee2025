@@ -72,7 +72,6 @@ public class User : IUser
         return true;
     }
 
-
     public bool HasNames(string names)
     {
         // Return false if 'names' is null, empty, or contains only whitespace
@@ -91,8 +90,21 @@ public class User : IUser
         return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
     }
 
-    public string GetEmail()
+    /**
+    * As of now, two users are the same if the email is the same
+    */
+    override public bool Equals(Object? obj)
     {
-        return _email;
+        if (obj == null) return false;
+
+        if (obj.GetType() == typeof(User))
+        {
+            User other = (User)obj;
+
+            if (this._email.Equals(other._email))
+                return true;
+        }
+
+        return false;
     }
 }
