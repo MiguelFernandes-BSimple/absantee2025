@@ -119,6 +119,10 @@ public class HolidayPlanService
         int totalHolidayDays = 0;
         var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDates(collaborator, periodDate);
 
+        if(holidayPeriods.Count == 0) {
+            throw new Exception("No holiday periods found for the collaborator");
+        }
+
         foreach (var holidayColabPeriod in holidayPeriods)
         {
             PeriodDate period = new PeriodDate(holidayColabPeriod.GetPeriodDate().GetInitDate(), holidayColabPeriod.GetPeriodDate().GetFinalDate());
