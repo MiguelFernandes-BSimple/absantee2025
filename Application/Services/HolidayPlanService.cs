@@ -74,9 +74,7 @@ public class HolidayPlanService
 
         IEnumerable<IHolidayPeriod> hp = holidayPeriodListColab1
             .SelectMany(period1 => holidayPeriodListColab2
-                    .Where(period2 =>
-                        period1.GetPeriodDate().GetInitDate() <= period2.GetPeriodDate().GetFinalDate()
-                        && period1.GetPeriodDate().GetFinalDate() >= period2.GetPeriodDate().GetInitDate())
+                    .Where(period2 => period1.Intersects(period2))
                     .SelectMany(period2 => new List<IHolidayPeriod> { period1, period2 }))
                     .Distinct();
 

@@ -94,6 +94,7 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
         Mock<IHolidayPeriod> holidayPeriod2 = new Mock<IHolidayPeriod>();
         holidayPeriod2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
         var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
+        holidayPeriod1.Setup(hp => hp.Intersects(holidayPeriod2.Object)).Returns(true);
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
