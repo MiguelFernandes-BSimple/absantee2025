@@ -17,6 +17,12 @@ public class GetHolidayPeriodContainingDate
         DateOnly date = new DateOnly(2020, 1, 1);
         holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(true);
 
+        var periodDate1 = new Mock<IPeriodDate>();
+        periodDate1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
+
+
         var holidayPlan = new HolidayPlan(holidayPeriod.Object, collab.Object);
 
         //act
@@ -36,6 +42,11 @@ public class GetHolidayPeriodContainingDate
         var holidayPeriod = new Mock<IHolidayPeriod>();
         DateOnly date = new DateOnly(2020, 1, 1);
         holidayPeriod.Setup(a => a.ContainsDate(date)).Returns(false);
+
+        var periodDate1 = new Mock<IPeriodDate>();
+        periodDate1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
 
         var holidayPlan = new HolidayPlan(holidayPeriod.Object, collab.Object);
 
