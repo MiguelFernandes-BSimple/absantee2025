@@ -34,9 +34,15 @@ public class GetNumberOfHolidayDaysBetween
     {
         // Arrange
         var holidayPeriods = new List<IHolidayPeriod>();
+
+        var periodDate1 = new Mock<IPeriodDate>();
+        periodDate1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
         foreach (var days in daysByPeriod)
         {
             var holidayPeriodDouble = new Mock<IHolidayPeriod>();
+            holidayPeriodDouble.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
+
             holidayPeriodDouble
                 .Setup(p =>
                     p.GetNumberOfCommonUtilDaysBetweenPeriods(
