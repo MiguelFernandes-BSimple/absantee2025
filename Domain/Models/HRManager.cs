@@ -12,7 +12,7 @@ public class HRManager : IHRManager
         if (periodDateTime.IsFinalDateUndefined())
             periodDateTime.SetFinalDate(DateTime.MaxValue);
 
-        if (CheckInputFields(user, periodDateTime))
+        else if (CheckInputFields(user, periodDateTime))
         {
             this._periodDateTime = periodDateTime;
             this._user = user;
