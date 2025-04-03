@@ -108,7 +108,8 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             ICollaborator collaborator, IPeriodDate period
         )
     {
-        return _holidayPlans.FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
+        return _holidayPlans
+            .FirstOrDefault(hp => hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(period).ToList() ?? new List<IHolidayPeriod>();
     }
 
 
