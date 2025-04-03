@@ -40,6 +40,7 @@ public class AddHolidayPlan
 
         // Instatiate Holiday plan class object
         HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
+        int periodsCount = holidayPlan.GetNumberOfHolidayPeriods();
 
         // Test double for Holiday Period to be added
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
@@ -53,6 +54,7 @@ public class AddHolidayPlan
         bool result = holidayPlan.AddHolidayPeriod(holidayPeriodDoubleToAdd.Object);
 
         // Assert
+        Assert.True(holidayPlan.GetNumberOfHolidayPeriods() == periodsCount + 1);
         Assert.True(result);
     }
 

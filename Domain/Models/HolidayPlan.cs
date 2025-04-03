@@ -130,4 +130,9 @@ public class HolidayPlan : IHolidayPlan
     {
         return _holidaysPeriods.Any(hperiod => hperiod.Intersects(period));
     }
+
+    public int GetNumberOfHolidayPeriods()
+    {
+        return _holidaysPeriods.Count;
+    }
 }
