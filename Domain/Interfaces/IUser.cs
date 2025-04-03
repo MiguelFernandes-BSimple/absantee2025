@@ -21,8 +21,5 @@ public interface IUser
     */
     public bool HasSurnames(string surnames);
 
-    /**
-    * Method to return user email
-    */
-    public string GetEmail();
+    public bool Equals(Object? obj);
 }

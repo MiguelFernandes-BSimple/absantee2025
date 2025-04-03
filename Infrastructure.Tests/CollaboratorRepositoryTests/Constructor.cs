@@ -32,16 +32,14 @@ public class Constructor
         Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
         Mock<ICollaborator> doubleCollaborator3 = new Mock<ICollaborator>();
 
-        // Create Collaborator List
-        List<ICollaborator> collabList =
-            new List<ICollaborator> { doubleCollaborator1.Object, doubleCollaborator2.Object, doubleCollaborator3.Object };
-
         // To be correct, all collaborators must be distinct - Distinct
         // Email is different from the others
-        // Set up GetEmail() for each collaborator
-        doubleCollaborator1.Setup(c1 => c1.GetEmail()).Returns("email1@example.com");
-        doubleCollaborator2.Setup(c2 => c2.GetEmail()).Returns("email2@example.com");
-        doubleCollaborator3.Setup(c3 => c3.GetEmail()).Returns("email3@example.com");
+        doubleCollaborator1.Setup(c1 => c1.Equals(doubleCollaborator2.Object)).Returns(false);
+        doubleCollaborator2.Setup(c2 => c2.Equals(doubleCollaborator1.Object)).Returns(false);
+
+        // Create Collaborator List
+        List<ICollaborator> collabList =
+            new List<ICollaborator> { doubleCollaborator1.Object, doubleCollaborator2.Object };
 
         // Act
         new CollaboratorRepository(collabList);
@@ -62,16 +60,14 @@ public class Constructor
         // Collaborator doubles - stubs
         Mock<ICollaborator> doubleCollaborator1 = new Mock<ICollaborator>();
         Mock<ICollaborator> doubleCollaborator2 = new Mock<ICollaborator>();
-        Mock<ICollaborator> doubleCollaborator3 = new Mock<ICollaborator>();
+
+        // Set up two collaborators with the same email
+        doubleCollaborator1.Setup(c1 => c1.Equals(doubleCollaborator2.Object)).Returns(true);
+        doubleCollaborator2.Setup(c2 => c2.Equals(doubleCollaborator1.Object)).Returns(true);
 
         // Create Collaborator List
         List<ICollaborator> collabList =
-            new List<ICollaborator> { doubleCollaborator1.Object, doubleCollaborator2.Object, doubleCollaborator3.Object };
-
-        // Set up two collaborators with the same email
-        doubleCollaborator1.Setup(c1 => c1.GetEmail()).Returns("email1@example.com");
-        doubleCollaborator2.Setup(c2 => c2.GetEmail()).Returns("email1@example.com");
-        doubleCollaborator3.Setup(c3 => c3.GetEmail()).Returns("email3@example.com");
+            new List<ICollaborator> { doubleCollaborator1.Object, doubleCollaborator2.Object };
 
         // Assert
         var exception = Assert.Throws<ArgumentException>(() =>

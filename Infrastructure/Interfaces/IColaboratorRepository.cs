@@ -34,5 +34,4 @@ public interface ICollaboratorRepository
     */
     IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string name, string surname);
 
-    public bool AddCollaborator(ICollaborator collaborator);
 }

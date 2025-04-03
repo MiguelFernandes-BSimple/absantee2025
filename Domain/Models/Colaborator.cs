@@ -47,8 +47,8 @@ public class Collaborator : ICollaborator
         return _user.HasSurnames(surnames);
     }
 
-    public string GetEmail()
+    override public bool Equals(Object? obj)
     {
-        return _user.GetEmail();
+        return _user.Equals(obj);
     }
 }

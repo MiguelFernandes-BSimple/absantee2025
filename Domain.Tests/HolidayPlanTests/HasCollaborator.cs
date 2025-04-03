@@ -23,6 +23,8 @@ public class HasCollaborator
         periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
         holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
 
+        collaborator.Setup(c => c.Equals(collaborator.Object)).Returns(true);
+
         var holidayPlan = new HolidayPlan(holidayPeriod.Object, collaborator.Object);
 
         // Act

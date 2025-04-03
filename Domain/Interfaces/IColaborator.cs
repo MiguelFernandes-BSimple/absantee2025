@@ -22,8 +22,6 @@ public interface ICollaborator
     */
     public bool HasSurnames(string surnames);
 
-    /**
-    * Getter for email parameter
-    */
-    public string GetEmail();
+    public bool Equals(Object? obj);
+
 }

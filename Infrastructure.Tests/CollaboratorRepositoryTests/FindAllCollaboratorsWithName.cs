@@ -21,9 +21,9 @@ public class FindAllCollaboratorsWithName
 
         // All elements are distinct
         // Set up GetEmail() for each collaborator
-        doubleCollaborator1.Setup(c1 => c1.GetEmail()).Returns("email1@example.com");
-        doubleCollaborator2.Setup(c2 => c2.GetEmail()).Returns("email2@example.com");
-        doubleCollaborator3.Setup(c3 => c3.GetEmail()).Returns("email3@example.com");
+        doubleCollaborator1.Setup(c1 => c1.Equals(It.IsAny<ICollaborator>())).Returns(false);
+        doubleCollaborator2.Setup(c2 => c2.Equals(It.IsAny<ICollaborator>())).Returns(false);
+        doubleCollaborator3.Setup(c3 => c3.Equals(It.IsAny<ICollaborator>())).Returns(false);
 
         string names = "First names";
 
@@ -72,9 +72,9 @@ public class FindAllCollaboratorsWithName
 
         // All elements are distinct
         // Set up GetEmail() for each collaborator
-        doubleCollaborator1.Setup(c1 => c1.GetEmail()).Returns("email1@example.com");
-        doubleCollaborator2.Setup(c2 => c2.GetEmail()).Returns("email2@example.com");
-        doubleCollaborator3.Setup(c3 => c3.GetEmail()).Returns("email3@example.com");
+        doubleCollaborator1.Setup(c1 => c1.Equals(It.IsAny<ICollaborator>())).Returns(false);
+        doubleCollaborator2.Setup(c2 => c2.Equals(It.IsAny<ICollaborator>())).Returns(false);
+        doubleCollaborator3.Setup(c3 => c3.Equals(It.IsAny<ICollaborator>())).Returns(false);
 
         string names = "First names";
 
