@@ -10,7 +10,7 @@ public class HolidayPeriod : IHolidayPeriod
         _periodDate = periodDate;
     }
 
-    public IPeriodDate GetPeriodDate() 
+    public IPeriodDate GetPeriodDate()
     {
         return _periodDate;
     }
@@ -72,5 +72,20 @@ public class HolidayPeriod : IHolidayPeriod
     public bool Intersects(IPeriodDate periodDate)
     {
         return _periodDate.Intersects(periodDate);
+    }
+
+    public IPeriodDate? GetIntersectionPeriod(IHolidayPeriod holidayPeriod)
+    {
+        return holidayPeriod.GetPeriodDate().GetIntersection(_periodDate);
+    }
+
+    public IPeriodDate? GetIntersectionPeriod(IPeriodDate periodDate)
+    {
+        return periodDate.GetIntersection(_periodDate);
+    }
+
+    public bool ContainsWeekend()
+    {
+        return _periodDate.ContainsWeekend();
     }
 }

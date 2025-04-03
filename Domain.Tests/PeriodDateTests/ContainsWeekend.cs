@@ -1,4 +1,6 @@
-namespace Domain.Tests.UtilsTests;
+using Domain.Models;
+
+namespace Domain.Tests.PeriodDateTests;
 
 public class ContainsWeekend
 {
@@ -16,9 +18,9 @@ public class ContainsWeekend
     public void WhenPassingPeriodThatContainsWeekend_ThenReturnTrue(DateOnly iniDate, DateOnly endDate)
     {
         //arrange
-
+        PeriodDate hp = new PeriodDate(iniDate, endDate);
         //act
-        bool result = Utils.ContainsWeekend(iniDate, endDate);
+        bool result = hp.ContainsWeekend();
 
         //assert
         Assert.True(result);
@@ -35,28 +37,10 @@ public class ContainsWeekend
     public void WhenPassingPeriodThatDontContainWeekend_ThenReturnFalse(DateOnly iniDate, DateOnly endDate)
     {
         //arrange
+        PeriodDate hp = new PeriodDate(iniDate, endDate);
 
         //act
-        bool result = Utils.ContainsWeekend(iniDate, endDate);
-
-        //assert
-        Assert.False(result);
-    }
-
-    public static IEnumerable<object[]> InvalidDates()
-    {
-        yield return new object[] { new DateOnly(2025, 04, 02), new DateOnly(2025, 04, 01) };
-        yield return new object[] { new DateOnly(2025, 04, 10), new DateOnly(2025, 04, 05) };
-    }
-
-    [Theory]
-    [MemberData(nameof(InvalidDates))]
-    public void WhenPassingInvalidDates_ThenReturnFalse(DateOnly iniDate, DateOnly endDate)
-    {
-        //arrange
-
-        //act
-        bool result = Utils.ContainsWeekend(iniDate, endDate);
+        bool result = hp.ContainsWeekend();
 
         //assert
         Assert.False(result);

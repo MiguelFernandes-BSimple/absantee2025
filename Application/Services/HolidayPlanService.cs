@@ -1,6 +1,6 @@
 using Infrastructure.Interfaces;
 using Domain.Interfaces;
-using Domain;
+
 using Domain.Models;
 
 namespace Application.Services;
@@ -47,19 +47,14 @@ public class HolidayPlanService
         IPeriodDate searchPeriod
     )
     {
-        if (!Utils.ContainsWeekend(searchPeriod.GetInitDate(), searchPeriod.GetFinalDate()))
+        if (!searchPeriod.ContainsWeekend())
             return Enumerable.Empty<IHolidayPeriod>();
 
         IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates =
             _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDates(collaborator, searchPeriod);
 
-        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates.Where(holidayPeriod =>
-        {
-            DateOnly intersectionStart = Utils.DataMax(holidayPeriod.GetPeriodDate().GetInitDate(), searchPeriod.GetInitDate());
-            DateOnly intersectionEnd = Utils.DataMin(holidayPeriod.GetPeriodDate().GetFinalDate(), searchPeriod.GetFinalDate());
-            return intersectionStart <= intersectionEnd
-                && Utils.ContainsWeekend(intersectionStart, intersectionEnd);
-        });
+        IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates
+            .Where(hp => hp.ContainsWeekend());
 
         return hp;
     }
