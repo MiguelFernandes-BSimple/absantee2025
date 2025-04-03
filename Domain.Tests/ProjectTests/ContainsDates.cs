@@ -19,14 +19,13 @@ public class ContainsDates
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now).AddYears(1);
 
+        Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
+
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(ProjectInitDate);
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(ProjectFinalDate);
+        periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(true);
         Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
 
-        Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
-        searchPeriodDateMock.Setup(p => p.GetInitDate()).Returns(InitDate);
-        searchPeriodDateMock.Setup(p => p.GetFinalDate()).Returns(FinalDate);
+        
 
         //act
         bool result = project.ContainsDates(searchPeriodDateMock.Object);
@@ -34,25 +33,18 @@ public class ContainsDates
         //assert
         Assert.True(result);
     }
-    public static IEnumerable<object[]> ContainsDates_InvalidCompareData()
-    {
-        yield return new object[] { DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), DateOnly.FromDateTime(DateTime.Now.AddDays(10)) };
-        yield return new object[] { DateOnly.FromDateTime(DateTime.Now.AddDays(1)), DateOnly.FromDateTime(DateTime.Now.AddYears(2)) };
-    }
 
-    [Theory]
-    [MemberData(nameof(ContainsDates_InvalidCompareData))]
-    public void WhenPassingInvalidData_ThenContainsDatesReturnFalse(DateOnly InitDate, DateOnly FinalDate)
+    [Fact]
+    public void WhenPassingInvalidData_ThenContainsDatesReturnFalse()
     {
         //arrange
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(InitDate);
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(FinalDate);
         Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
 
         Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
-        searchPeriodDateMock.Setup(p => p.GetInitDate()).Returns(InitDate);
-        searchPeriodDateMock.Setup(p => p.GetFinalDate()).Returns(FinalDate);
+
+        periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(false);
+
         //act
         bool result = project.ContainsDates(searchPeriodDateMock.Object);
 
