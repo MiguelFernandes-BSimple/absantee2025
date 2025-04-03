@@ -44,11 +44,8 @@ public class Constructor
     public void WhenGivenProjectManagerFinalDateAfterUserDeactivationDate_ThenExceptionIsThrown()
     {
         //arrange
-        DateTime initDate = DateTime.Now;
-        DateTime endDate = DateTime.Now.AddDays(5);
-
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBefore(endDate)).Returns(true);
+        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
@@ -66,11 +63,8 @@ public class Constructor
     public void WhenGivenInactiveUser_ThenExceptionIsThrown()
     {
         //arrange
-        DateTime initDate = DateTime.Now;
-        DateTime endDate = DateTime.Now.AddDays(5);
-
         Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBefore(endDate)).Returns(false);
+        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
