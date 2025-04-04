@@ -59,7 +59,7 @@ public class User : IUser
 
     public bool DeactivationDateIsBefore(DateTime date)
     {
-        return date > _periodDateTime.GetFinalDate();
+        return _periodDateTime.IsFinalDateSmallerThan(date);
     }
 
     public bool DeactivateUser()
@@ -74,7 +74,6 @@ public class User : IUser
 
     public bool HasNames(string names)
     {
-        // Return false if 'names' is null, empty, or contains only whitespace
         if (string.IsNullOrWhiteSpace(names))
             return false;
 
@@ -83,7 +82,6 @@ public class User : IUser
 
     public bool HasSurnames(string surnames)
     {
-        // Return false if 'names' is null, empty, or contains only whitespace
         if (string.IsNullOrWhiteSpace(surnames))
             return false;
 

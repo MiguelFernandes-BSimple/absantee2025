@@ -5,14 +5,14 @@ namespace Domain.Models;
 public class PeriodDateTime : IPeriodDateTime
 {
     private DateTime _initDate;
-    private DateTime _endDate;
+    private DateTime _finalDate;
 
-    public PeriodDateTime(DateTime initDate, DateTime endDate)
+    public PeriodDateTime(DateTime initDate, DateTime finalDate)
     {
-        if (CheckInputFields(initDate, endDate))
+        if (CheckInputFields(initDate, finalDate))
         {
             _initDate = initDate;
-            _endDate = endDate;
+            _finalDate = finalDate;
         }
         else
             throw new ArgumentException("Invalid Arguments");
@@ -24,9 +24,9 @@ public class PeriodDateTime : IPeriodDateTime
     {
     }
 
-    private bool CheckInputFields(DateTime initDate, DateTime endDate)
+    private bool CheckInputFields(DateTime initDate, DateTime finalDate)
     {
-        if (initDate > endDate)
+        if (initDate > finalDate)
             return false;
 
         return true;
@@ -39,27 +39,32 @@ public class PeriodDateTime : IPeriodDateTime
 
     public DateTime GetFinalDate()
     {
-        return _endDate;
+        return _finalDate;
     }
-    public void SetFinalDate(DateTime endDate)
+    public void SetFinalDate(DateTime finalDate)
     {
-        this._endDate = endDate;
+        this._finalDate = finalDate;
     }
 
     public bool IsFinalDateUndefined()
     {
-        return _endDate == DateTime.MaxValue;
+        return _finalDate == DateTime.MaxValue;
+    }
+
+    public bool IsFinalDateSmallerThan(DateTime date)
+    {
+        return date > _finalDate;
     }
 
     public bool Contains(IPeriodDateTime periodDateTime)
     {
         return _initDate <= periodDateTime.GetInitDate()
-            && _endDate >= periodDateTime.GetFinalDate();
+            && _finalDate >= periodDateTime.GetFinalDate();
     }
 
     public bool Intersects(IPeriodDateTime periodDateTime)
     {
-        return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _endDate;
+        return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _finalDate;
     }
 }
 
