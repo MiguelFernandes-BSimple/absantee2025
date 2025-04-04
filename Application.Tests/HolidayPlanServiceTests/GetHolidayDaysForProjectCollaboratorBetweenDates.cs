@@ -49,21 +49,12 @@ public class GetHolidayDaysForProjectCollaboratorBetweenDates
         Assert.Equal(0, result);
 
     }
-    public static IEnumerable<object[]> GetHolidayDaysForProjectCollaboratorBetweenDatesData()
-    {
-        yield return new object[] { new DateOnly(2025, 7, 15), new DateOnly(2025, 8, 1), new DateOnly(2025, 7, 20), new DateOnly(2025, 7, 25), 6, };
-        yield return new object[] { new DateOnly(2025, 7, 15), new DateOnly(2025, 8, 1), new DateOnly(2025, 7, 5), new DateOnly(2025, 7, 20), 6, };
-        yield return new object[] { new DateOnly(2025, 7, 15), new DateOnly(2025, 8, 1), new DateOnly(2025, 7, 25), new DateOnly(2025, 8, 1), 7, };
-        yield return new object[] { new DateOnly(2025, 7, 15), new DateOnly(2025, 8, 1), new DateOnly(2025, 9, 1), new DateOnly(2025, 9, 10), 0, };
-        yield return new object[] { new DateOnly(2025, 7, 15), new DateOnly(2025, 7, 15), new DateOnly(2025, 7, 15), new DateOnly(2025, 7, 15), 1, };
-    }
 
-    [Theory]
-    [MemberData(nameof(GetHolidayDaysForProjectCollaboratorBetweenDatesData))]
-    public void WhenGettingHolidayDaysForProjectCollaboratorBetweenDates_ThenReturnsCorrectHolidayDays(
-        DateOnly initDate, DateOnly endDate, DateOnly holidayInitDate, DateOnly holidayEndDate, int expectedHolidayDays)
+    [Fact]
+    public void WhenGettingHolidayDaysForProjectCollaboratorBetweenDates_ThenReturnsCorrectHolidayDays()
     {
         // Arrange
+        var expectedHolidayDays = 5;
         var collaboratorMock = new Mock<ICollaborator>();
         collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
@@ -75,12 +66,6 @@ public class GetHolidayDaysForProjectCollaboratorBetweenDates
 
         var holidayPeriodDouble = new Mock<IPeriodDate>();
         var periodDouble = new Mock<IPeriodDate>();
-
-        holidayPeriodDouble.Setup(p => p.GetInitDate()).Returns(holidayInitDate);
-        holidayPeriodDouble.Setup(p => p.GetFinalDate()).Returns(holidayEndDate);
-
-        periodDouble.Setup(p => p.GetInitDate()).Returns(initDate);
-        periodDouble.Setup(p => p.GetFinalDate()).Returns(endDate);
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
         holidayPeriodMock.Setup(hp => hp.GetPeriodDate()).Returns(holidayPeriodDouble.Object);

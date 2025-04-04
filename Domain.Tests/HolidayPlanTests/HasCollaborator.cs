@@ -19,8 +19,6 @@ public class HasCollaborator
             .Setup(hp => hp.Contains(It.IsAny<IHolidayPeriod>()))
             .Returns(false);
 
-        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2025, 1, 1));
-        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
         holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
 
         collaborator.Setup(c => c.Equals(collaborator.Object)).Returns(true);
@@ -50,11 +48,7 @@ public class HasCollaborator
             .Setup(hp => hp.Contains(It.IsAny<IHolidayPeriod>()))
             .Returns(false);
 
-        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2025, 1, 1));
-        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2025, 1, 10));
-
         holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
-
 
         var holidayPlan = new HolidayPlan(holidayPeriod.Object, collaborator1.Object);
 

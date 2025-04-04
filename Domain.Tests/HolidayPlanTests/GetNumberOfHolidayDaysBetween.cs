@@ -36,8 +36,6 @@ public class GetNumberOfHolidayDaysBetween
         var holidayPeriods = new List<IHolidayPeriod>();
 
         var periodDate1 = new Mock<IPeriodDate>();
-        periodDate1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
         foreach (var days in daysByPeriod)
         {
             var holidayPeriodDouble = new Mock<IHolidayPeriod>();
@@ -61,12 +59,6 @@ public class GetNumberOfHolidayDaysBetween
         var holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
 
         var periodDateDouble = new Mock<IPeriodDate>();
-
-        var startDate = new DateOnly(2025, 01, 01);
-        var finalDate = new DateOnly(2025, 01, 10);
-
-        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(startDate);
-        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(finalDate);
 
         // Act
         var result = holidayPlan.GetNumberOfHolidayDaysBetween(periodDateDouble.Object);

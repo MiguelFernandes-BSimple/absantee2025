@@ -13,11 +13,7 @@ namespace Application.Tests.CollaboratorServiceTests
         {
             // Arrange
             Mock<IProject> projectMock = new Mock<IProject>();
-            DateOnly initDate = new DateOnly(2023, 1, 1);
-            DateOnly finalDate = new DateOnly(2023, 12, 31);
             var periodDouble = new Mock<IPeriodDate>();
-            periodDouble.Setup(pd => pd.GetInitDate()).Returns(initDate);
-            periodDouble.Setup(pd => pd.GetFinalDate()).Returns(finalDate);
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
@@ -60,11 +56,7 @@ namespace Application.Tests.CollaboratorServiceTests
         {
             // Arrange
             Mock<IProject> projectMock = new Mock<IProject>();
-            DateOnly initDate = new DateOnly(2023, 1, 1);
-            DateOnly finalDate = new DateOnly(2023, 12, 31);
             var periodDouble = new Mock<IPeriodDate>();
-            periodDouble.Setup(pd => pd.GetInitDate()).Returns(initDate);
-            periodDouble.Setup(pd => pd.GetFinalDate()).Returns(finalDate);
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();

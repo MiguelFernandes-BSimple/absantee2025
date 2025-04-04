@@ -17,8 +17,6 @@ public class HasPeriodLongerThan
         //arrange
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
         var periodDate1 = new Mock<IPeriodDate>();
-        periodDate1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
 
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
@@ -57,8 +55,6 @@ public class HasPeriodLongerThan
         //arrange
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
         var periodDate1 = new Mock<IPeriodDate>();
-        periodDate1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
 
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();

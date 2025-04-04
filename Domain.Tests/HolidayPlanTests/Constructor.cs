@@ -17,8 +17,6 @@ public class Constructor
         Mock<IPeriodDate> periodDateDouble = new Mock<IPeriodDate>();
 
         holidayPeriodDouble.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
-        periodDateDouble.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         // Test double for Collaborator
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -52,18 +50,12 @@ public class Constructor
         Mock<IPeriodDate> periodDateDouble3 = new Mock<IPeriodDate>();
 
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
-        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
         holidayPeriodDouble2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
-        periodDateDouble2.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble2.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         Mock<IHolidayPeriod> holidayPeriodDouble3 = new Mock<IHolidayPeriod>();
         holidayPeriodDouble3.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
-        periodDateDouble3.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble3.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         // Test double for Collaborator
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -110,8 +102,6 @@ public class Constructor
         Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
 
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
-        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
         holidayPeriodDouble2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
@@ -156,13 +146,9 @@ public class Constructor
         Mock<IPeriodDate> periodDateDouble2 = new Mock<IPeriodDate>();
 
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
-        periodDateDouble1.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble1.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
-        periodDateDouble2.Setup(pd => pd.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateDouble2.Setup(pd => pd.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
         // Test double for Collaborator
         Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();

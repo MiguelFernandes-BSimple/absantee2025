@@ -13,21 +13,11 @@ public class FindAllHolidayPeriodsBetweenDatesLongerThan
         var collab = new Mock<ICollaborator>();
         collab.Setup(a => a.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
-        DateOnly ini = new DateOnly(2020, 1, 1);
-        DateOnly end = ini.AddDays(5);
         var periodDate1 = new Mock<IPeriodDate>();
-        periodDate1.Setup(pd => pd.GetInitDate()).Returns(ini);
-        periodDate1.Setup(pd => pd.GetFinalDate()).Returns(end);
 
-        DateOnly ini2 = ini.AddMonths(1);
-        DateOnly end2 = end.AddMonths(1);
         var periodDate2 = new Mock<IPeriodDate>();
-        periodDate2.Setup(pd => pd.GetInitDate()).Returns(ini2);
-        periodDate2.Setup(pd => pd.GetFinalDate()).Returns(end2);
 
         var periodDate3 = new Mock<IPeriodDate>();
-        periodDate3.Setup(pd => pd.GetInitDate()).Returns(ini);
-        periodDate3.Setup(pd => pd.GetFinalDate()).Returns(ini);
 
         var holidayPeriod1 = new Mock<IHolidayPeriod>();
         holidayPeriod1.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);

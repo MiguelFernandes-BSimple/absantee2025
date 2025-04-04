@@ -17,12 +17,7 @@ public class Constructor
     public void WhenPassingValidData_ThenProjectIsCreated(string Title, string Acronym)
     {
         //arrange
-        DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
-
 
         //act
         new Project(Title, Acronym, periodDateMock.Object);
@@ -38,11 +33,7 @@ public class Constructor
     public void WhenPassingInvalidTitle_ThenThrowException(string Title, string Acronym)
     {
         //arrange
-        DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -65,11 +56,7 @@ public class Constructor
     public void WhenPassingInvalidAcronym_ThenThrowException(string Title, string Acronym)
     {
         //arrange
-        DateOnly initDate = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly finalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(initDate);
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(finalDate);
 
         //assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
