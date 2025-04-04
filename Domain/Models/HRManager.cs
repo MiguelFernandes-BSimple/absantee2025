@@ -18,17 +18,9 @@ public class HRManager : IHRManager
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public HRManager(IUser user, DateTime initDate)
+    public HRManager(IUser user, DateTime initDate) :
+        this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
     {
-        var periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
-
-        if (CheckInputFields(user, periodDateTime))
-        {
-            this._periodDateTime = periodDateTime;
-            this._user = user;
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
     }
 
     private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)

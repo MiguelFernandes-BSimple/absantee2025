@@ -6,10 +6,8 @@ namespace Domain.Tests.HRManagerTests;
 
 public class Constructor
 {
-    // tests for constructor with user and period
-
     [Fact]
-    public void WhenCreatingHRManagerWithValidData_ThenShouldBeInstantiated()
+    public void WhenCreatingHRManagerWithValidPeriod_ThenHRManagerIsCreatedCorrectly()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -17,83 +15,51 @@ public class Constructor
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
         new HRManager(user.Object, periodDateTime.Object);
-
         //assert
     }
 
     [Fact]
-    public void WhenCreatingHRManagerWithEndDateAfterDeactivationDate_ThenThrowsException()
-    {
-        //arrange
-        Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
-        user.Setup(u => u.IsDeactivated()).Returns(false);
-
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new HRManager(user.Object, periodDateTime.Object));
-
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
-    [Fact]
-    public void WhenCreatingHRManagerWithInactiveUser_ThenThrowsException()
-    {
-        //arrange
-        Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
-        user.Setup(u => u.IsDeactivated()).Returns(true);
-
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new HRManager(user.Object, periodDateTime.Object));
-
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
-
-    // tests for constructor with user and datetime
-    [Fact]
-    public void WhenPassingValidArguments_ThenCreatesNewHRManager()
+    public void WhenCreatingHRManagerWithValidInitDate_ThenHRManagerIsCreatedCorrectly()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
+
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
         new HRManager(user.Object, It.IsAny<DateTime>());
-
         //assert
     }
 
     [Fact]
-    public void WhenEndDateAfterDeactivationDate_ThenThrowsException()
+    public void WhenCreatingHRManagerWhereFinalDateIsAfterDeactivationDate_ThenShouldThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
-        //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new HRManager(user.Object, It.IsAny<DateTime>()));
+        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
+        //assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new HRManager(user.Object, periodDateTime.Object)
+        );
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
     [Fact]
-    public void WhenInactiveUser_ThenThrowsException()
+    public void WhenCreatingHRManagerWhereUserIsDeactivated_ThenShowThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -101,12 +67,14 @@ public class Constructor
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new HRManager(user.Object, It.IsAny<DateTime>()));
-
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new HRManager(user.Object, periodDateTime.Object)
+        );
         Assert.Equal("Invalid Arguments", exception.Message);
     }
 
