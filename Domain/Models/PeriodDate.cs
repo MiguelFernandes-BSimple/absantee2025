@@ -29,6 +29,11 @@ public class PeriodDate : IPeriodDate
         return date > _finalDate;
     }
 
+    public bool IsInitDateSmallerThan(DateOnly date)
+    {
+        return date > _initDate;
+    }
+
     public bool Intersects(IPeriodDate periodDate)
     {
         return _initDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= _finalDate;
