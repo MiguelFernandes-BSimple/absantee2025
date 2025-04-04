@@ -18,7 +18,7 @@ public class TrainingPeriod : ITrainingPeriod
     private bool CheckInputValues(IPeriodDate periodDate)
     {
 
-        if (periodDate.GetInitDate() < DateOnly.FromDateTime(DateTime.Now))
+        if (periodDate.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now)))
             return false;
 
         return true;
