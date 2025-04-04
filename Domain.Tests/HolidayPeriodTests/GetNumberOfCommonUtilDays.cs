@@ -1,58 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.Interfaces;
+namespace Domain.Tests.HolidayPeriodTests;
+
 using Domain.Models;
+using Xunit;
 using Moq;
+using Domain.Interfaces;
 
-namespace Domain.Tests.HolidayPeriodTests
+public class GetNumberOfCommonUtilDays
 {
-    public class GetNumberOfCommonUtilDays
+
+    [Fact]
+    public void WhenPassingPeriod_ThenNumberOfWeekdaysIsReturned()
     {
-        [Fact]
-        public void WhenPassingValidData_ThenRetunsNumberOfCommonUtilDays()
-        {
-            // arrange
-            var expectedDays = 3;
+        // Arrange
+        var mockPeriod = new Mock<IPeriodDate>();
 
-            var initDate = new DateOnly(2025, 4, 14);
-            var finalDate = new DateOnly(2025, 4, 16);
+        mockPeriod.Setup(p => p.GetNumberOfCommonUtilDays()).Returns(5);
 
-            var periodDouble = new Mock<IPeriodDate>();
-            periodDouble.Setup(pd => pd.GetInitDate()).Returns(initDate);
-            periodDouble.Setup(pd => pd.GetFinalDate()).Returns(finalDate);
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(mockPeriod.Object);
 
-            var holidayPeriod = new HolidayPeriod(periodDouble.Object);
+        // Act
+        int result = holidayPeriod.GetNumberOfCommonUtilDays();
 
-            // act
-            var result = holidayPeriod.GetNumberOfCommonUtilDays();
-
-            // assert
-            Assert.Equal(result, expectedDays);
-        }
-
-        [Fact]
-        public void WhenPassingValidDataWithWeekEnd_ThenRetunsNumberOfCommonUtilDays()
-        {
-            // arrange
-            var expectedDays = 11;
-
-            var initDate = new DateOnly(2025, 4, 1);
-            var finalDate = new DateOnly(2025, 4, 15);
-
-            var periodDouble = new Mock<IPeriodDate>();
-            periodDouble.Setup(pd => pd.GetInitDate()).Returns(initDate);
-            periodDouble.Setup(pd => pd.GetFinalDate()).Returns(finalDate);
-
-            var holidayPeriod = new HolidayPeriod(periodDouble.Object);
-
-            // act
-            var result = holidayPeriod.GetNumberOfCommonUtilDays();
-
-            // assert
-            Assert.Equal(result, expectedDays);
-        }
-
+        // Assert
+        Assert.Equal(5, result);
     }
 }

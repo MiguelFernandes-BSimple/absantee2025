@@ -49,11 +49,6 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return _periodDate;
     }
 
-    public IProject GetProject()
-    {
-        return _project;
-    }
-
     public ICollaborator GetCollaborator()
     {
         return this._collaborator;

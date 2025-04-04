@@ -16,7 +16,6 @@ public class GetHolidayDaysOfCollaboratorInProject
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
 
         associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
-        associationDouble.Setup(a => a.GetProject()).Returns(projectDouble.Object);
 
         holidayPlanDouble.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
         holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(It.IsAny<IPeriodDate>())).Returns(5);

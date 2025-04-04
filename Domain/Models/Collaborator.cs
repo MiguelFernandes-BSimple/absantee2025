@@ -51,6 +51,16 @@ public class Collaborator : ICollaborator
 
     override public bool Equals(Object? obj)
     {
-        return _user.Equals(obj);
+        if (obj == null) return false;
+
+        if (obj.GetType() == typeof(Collaborator))
+        {
+            Collaborator other = (Collaborator)obj;
+            if (_user.Equals(other._user) 
+                && _periodDateTime.Intersects(other._periodDateTime))
+                return true;
+        }
+
+        return false;
     }
 }

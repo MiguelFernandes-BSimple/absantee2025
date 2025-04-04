@@ -118,7 +118,7 @@ public class HolidayPlan : IHolidayPlan
         int days
     )
     {
-        return _holidaysPeriods.Where(a => a.GetPeriodDate().Contains(period) && a.GetDuration() > days);
+        return _holidaysPeriods.Where(a => a.Contains(period) && a.GetDuration() > days);
     }
 
     public IEnumerable<IHolidayPeriod> GetHolidayPeriodsBetweenPeriod(IPeriodDate period)

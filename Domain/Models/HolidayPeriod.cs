@@ -33,6 +33,11 @@ public class HolidayPeriod : IHolidayPeriod
         return _periodDate.Contains(holidayPeriod.GetPeriodDate());
     }
 
+    public bool Contains(IPeriodDate periodDate)
+    {
+        return _periodDate.Contains(periodDate);
+    }
+
     public int GetInterceptionDurationInDays(IPeriodDate periodDate)
     {
         IPeriodDate? interceptionPeriod = _periodDate.GetIntersection(periodDate);
@@ -45,36 +50,11 @@ public class HolidayPeriod : IHolidayPeriod
 
     public int GetNumberOfCommonUtilDaysBetweenPeriods(IPeriodDate periodDate)
     {
-        IPeriodDate? interceptionPeriod = _periodDate.GetIntersection(periodDate);
-
-        if (interceptionPeriod != null)
-        {
-            int weekdayCount = 0;
-
-            for (DateOnly date = interceptionPeriod.GetInitDate(); date <= interceptionPeriod.GetFinalDate(); date = date.AddDays(1))
-            {
-                if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    weekdayCount++;
-                }
-            }
-            return weekdayCount;
-        }
-
-        return 0;
+        return _periodDate.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate);
     }
     public int GetNumberOfCommonUtilDays()
     {
-
-        int weekdayCount = 0;
-        for (DateOnly date = _periodDate.GetInitDate(); date <= _periodDate.GetFinalDate(); date = date.AddDays(1))
-        {
-            if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
-            {
-                weekdayCount++;
-            }
-        }
-        return weekdayCount;
+        return _periodDate.GetNumberOfCommonUtilDays();
     }
 
     public bool ContainsDate(DateOnly date)

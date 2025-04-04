@@ -61,5 +61,10 @@ public class PeriodDateTime : IPeriodDateTime
         return _initDate <= periodDateTime.GetInitDate()
             && _endDate >= periodDateTime.GetFinalDate();
     }
+
+    public bool Intersects(IPeriodDateTime periodDateTime)
+    {
+        return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _endDate;
+    }
 }
 

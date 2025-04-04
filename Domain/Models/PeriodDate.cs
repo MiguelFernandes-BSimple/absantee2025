@@ -24,6 +24,11 @@ public class PeriodDate : IPeriodDate
         return _finalDate;
     }
 
+    public bool IsFinalDateSmallerThan(DateOnly date)
+    {
+        return date > _finalDate;
+    }
+
     public bool Intersects(IPeriodDate periodDate)
     {
         return _initDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= _finalDate;
@@ -69,6 +74,31 @@ public class PeriodDate : IPeriodDate
             }
         }
         return false;
+    }
+
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(IPeriodDate periodDate)
+    {
+        IPeriodDate? interceptionPeriod = GetIntersection(periodDate);
+
+        if (interceptionPeriod != null)
+        {
+            return interceptionPeriod.GetNumberOfCommonUtilDays();
+        }
+
+        return 0;
+    }
+
+    public int GetNumberOfCommonUtilDays()
+    {
+        int weekdayCount = 0;
+        for (DateOnly date = _initDate; date <= _finalDate; date = date.AddDays(1))
+        {
+            if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+            {
+                weekdayCount++;
+            }
+        }
+        return weekdayCount;
     }
 }
 
