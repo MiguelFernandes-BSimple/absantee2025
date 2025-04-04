@@ -31,31 +31,32 @@ public class FindAllHolidayPeriodsBetweenDatesLongerThan
 
         var holidayPeriod1 = new Mock<IHolidayPeriod>();
         holidayPeriod1.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
-        periodDate1.Setup(pd => pd.Contains(It.IsAny<IPeriodDate>())).Returns(true);
+        holidayPeriod1.Setup(hp => hp.Contains(periodDate1.Object)).Returns(true);
         holidayPeriod1.Setup(hp => hp.GetDuration()).Returns(5);
 
         var holidayPeriod2 = new Mock<IHolidayPeriod>();
         holidayPeriod2.Setup(hp => hp.GetPeriodDate()).Returns(periodDate2.Object);
-        periodDate2.Setup(pd => pd.Contains(It.IsAny<IPeriodDate>())).Returns(false);
+        holidayPeriod2.Setup(hp => hp.Contains(periodDate1.Object)).Returns(false);
         holidayPeriod2.Setup(a => a.GetDuration()).Returns(5);
 
         var holidayPeriod3 = new Mock<IHolidayPeriod>();
-        holidayPeriod3.Setup(hp => hp.GetPeriodDate()).Returns(periodDate3.Object);
-        periodDate3.Setup(hp => hp.Contains(It.IsAny<IPeriodDate>())).Returns(true);
+        holidayPeriod3.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
+        holidayPeriod3.Setup(hp => hp.Contains(periodDate1.Object)).Returns(true);
         holidayPeriod3.Setup(a => a.GetDuration()).Returns(4);
 
         var holidayPeriod4 = new Mock<IHolidayPeriod>();
-        holidayPeriod4.Setup(hp => hp.GetPeriodDate()).Returns(periodDate3.Object);
-        periodDate3.Setup(hp => hp.Contains(It.IsAny<IPeriodDate>())).Returns(true);
+        holidayPeriod4.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
+        holidayPeriod4.Setup(hp => hp.Contains(periodDate1.Object)).Returns(true);
         holidayPeriod4.Setup(a => a.GetDuration()).Returns(3);
 
         var holidayPeriods = new List<IHolidayPeriod> { holidayPeriod1.Object, holidayPeriod2.Object, holidayPeriod3.Object, holidayPeriod4.Object };
         HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, collab.Object);
 
+        var expected = new List<IHolidayPeriod>() { holidayPeriod1.Object };
         //act
         var result = holidayPlan.FindAllHolidayPeriodsBetweenDatesLongerThan(periodDate1.Object, 4);
 
         //assert
-        Assert.Single(result);
+        Assert.True(expected.SequenceEqual(result));
     }
 }

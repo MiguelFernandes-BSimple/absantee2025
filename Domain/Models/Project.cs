@@ -40,6 +40,7 @@ public class Project : IProject
 
     public bool IsFinished()
     {
-        return DateOnly.FromDateTime(DateTime.Today) > _periodDate.GetFinalDate();
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        return _periodDate.IsFinalDateSmallerThan(today);
     }
 }

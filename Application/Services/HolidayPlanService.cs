@@ -19,7 +19,8 @@ public class HolidayPlanService
     public int GetHolidayDaysOfCollaboratorInProject(IProject project, ICollaborator collaborator)
     {
 
-        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator) ?? throw new Exception("A associação com os parâmetros fornecidos não existe.");
+        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator) 
+            ?? throw new Exception("A associação com os parâmetros fornecidos não existe.");
 
         int numberOfHolidayDays = 0;
 
@@ -84,12 +85,12 @@ public class HolidayPlanService
         IPeriodDate period
     )
     {
-        var validCollaborators = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
+        var collaborators = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
             project,
             period
         ).Select(a => a.GetCollaborator());
 
-        return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(validCollaborators.ToList(), period);
+        return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaborators.ToList(), period);
 
     }
     //uc22

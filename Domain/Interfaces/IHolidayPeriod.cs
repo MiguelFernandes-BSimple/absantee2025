@@ -3,7 +3,8 @@ namespace Domain.Interfaces;
 public interface IHolidayPeriod
 {
     public IPeriodDate GetPeriodDate();
-    public bool Contains(IHolidayPeriod holidayPeriod); //overlap
+    public bool Contains(IHolidayPeriod holidayPeriod);
+    public bool Contains(IPeriodDate periodDate);
     public int GetInterceptionDurationInDays(IPeriodDate periodDate);
     public int GetDuration();
     public bool ContainsDate(DateOnly date);
