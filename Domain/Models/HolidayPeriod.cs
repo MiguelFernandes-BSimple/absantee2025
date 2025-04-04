@@ -81,8 +81,6 @@ public class HolidayPeriod : IHolidayPeriod
     {
         return holidayPeriod.GetPeriodDate().GetIntersection(_periodDate);
     }
-
-
     public bool ContainsWeekend()
     {
         return _periodDate.ContainsWeekend();

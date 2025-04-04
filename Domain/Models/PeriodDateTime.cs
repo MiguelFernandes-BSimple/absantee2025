@@ -41,11 +41,6 @@ public class PeriodDateTime : IPeriodDateTime
     {
         return _endDate;
     }
-    public void SetInitDate(DateTime initDate)
-    {
-        this._initDate = initDate;
-    }
-
     public void SetFinalDate(DateTime endDate)
     {
         this._endDate = endDate;

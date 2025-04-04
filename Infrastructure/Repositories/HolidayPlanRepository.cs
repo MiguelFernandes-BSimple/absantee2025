@@ -135,7 +135,7 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
     public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator)
     {
-        return _holidayPlans.SingleOrDefault(p => p.GetCollaborator() == collaborator);
+        return _holidayPlans.SingleOrDefault(p => p.HasCollaborator(collaborator));
     }
 
     public async Task<IHolidayPlan?> FindHolidayPlanByCollaboratorAsync(ICollaborator collaborator)
