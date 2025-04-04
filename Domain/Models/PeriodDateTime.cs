@@ -51,6 +51,11 @@ public class PeriodDateTime : IPeriodDateTime
         return _finalDate == DateTime.MaxValue;
     }
 
+    public bool IsFinalDateSmallerThan(DateTime date)
+    {
+        return date > _finalDate;
+    }
+
     public bool Contains(IPeriodDateTime periodDateTime)
     {
         return _initDate <= periodDateTime.GetInitDate()
