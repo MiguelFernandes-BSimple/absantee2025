@@ -70,8 +70,8 @@ public class CollaboratorRepository : ICollaboratorRepository
         // Validate if all collaborators are valid
         for (int collabIndex1 = 0; collabIndex1 < collaborators.Count; collabIndex1++)
         {
-            ICollaborator currColaborator = collaborators[collabIndex1];
-            var isRepeated = IsRepeated(currColaborator, collaborators.Skip(collabIndex1 + 1).ToList());
+            ICollaborator currCollaborator = collaborators[collabIndex1];
+            var isRepeated = IsRepeated(currCollaborator, collaborators.Skip(collabIndex1 + 1).ToList());
 
             if (isRepeated)
                 return false;

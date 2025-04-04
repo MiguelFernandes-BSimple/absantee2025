@@ -18,7 +18,7 @@ public class HasCollaborator
 
         var collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
-        // perguntar se isto tem de ser assim feito ou se temos de mudar o equals na classe AssociationProjectColaborator
+        // perguntar se isto tem de ser assim feito ou se temos de mudar o equals na classe AssociationProjectCollaborator
         collaboratorDouble.Setup(c => c.Equals(collaboratorDouble.Object)).Returns(true);
 
         var assocProjCollab = new AssociationProjectCollaborator(periodDateDouble.Object, collaboratorDouble.Object, projectDouble.Object);
