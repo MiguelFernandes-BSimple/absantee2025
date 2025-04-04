@@ -9,9 +9,6 @@ public class Collaborator : ICollaborator
 
     public Collaborator(IUser user, IPeriodDateTime periodDateTime)
     {
-        if (periodDateTime.IsFinalDateUndefined())
-            periodDateTime.SetFinalDate(DateTime.MaxValue);
-
         if (CheckInputFields(user, periodDateTime))
         {
             this._periodDateTime = periodDateTime;
@@ -19,6 +16,11 @@ public class Collaborator : ICollaborator
         }
         else
             throw new ArgumentException("Invalid Arguments");
+    }
+
+    public Collaborator(IUser user, DateTime initDate) : 
+        this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
+    {
     }
 
     private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
