@@ -38,7 +38,7 @@ public class CollaboratorRepository : ICollaboratorRepository
 
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string names, string surnames)
     {
-        return _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
+        return  _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
     }
 
     /**
@@ -84,5 +84,25 @@ public class CollaboratorRepository : ICollaboratorRepository
         }
 
         return true;
+    }
+
+    public IEnumerable<ICollaborator> FindAllCollaboratorsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAsync(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithSurnameAsync(string surname)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurnameAsync(string name, string surname)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -9,6 +9,7 @@ public interface ICollaboratorRepository
     * Returns: IEnumerable<ICollaborator>
     */
     IEnumerable<ICollaborator> FindAllCollaborators();
+    IEnumerable<ICollaborator> FindAllCollaboratorsAsync();
 
     /**
     * Method that returns all the collaborators that have a name
@@ -17,6 +18,7 @@ public interface ICollaboratorRepository
     * Returns: IEnumerable<ICollaborator>
     */
     IEnumerable<ICollaborator> FindAllCollaboratorsWithName(string name);
+    IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAsync(string name);
 
     /**
     * Method that returns all the collaborators that have a surname
@@ -25,6 +27,7 @@ public interface ICollaboratorRepository
     * Returns: IEnumerable<ICollaborator>
     */
     IEnumerable<ICollaborator> FindAllCollaboratorsWithSurname(string surname);
+    IEnumerable<ICollaborator> FindAllCollaboratorsWithSurnameAsync(string surname);
 
     /**
     * Method that returns all the collaborators that have a name and surname
@@ -33,5 +36,6 @@ public interface ICollaboratorRepository
     * Returns: IEnumerable<ICollaborator>
     */
     IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string name, string surname);
+    IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurnameAsync(string name, string surname);
 
 }

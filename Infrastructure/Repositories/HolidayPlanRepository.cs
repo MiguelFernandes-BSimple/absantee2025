@@ -142,4 +142,49 @@ public class HolidayPlanRepository : IHolidayPlanRepository
 
         return canInsert;
     }
+
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(ICollaborator collaborator, IPeriodDate periodDate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IHolidayPlan> FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(IPeriodDate periodDate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(ICollaborator collaborator, IPeriodDate periodDate, int days)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(List<ICollaborator> validCollaborators, IPeriodDate periodDate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaboratorAsync(ICollaborator collaborator)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IHolidayPlan> FindAllWithHolidayPeriodsLongerThanAsync(int days)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IHolidayPlan? FindHolidayPlanByCollaboratorAsync(ICollaborator collaborator)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool AddHolidayPlanAsync(IHolidayPlan holidayPlan)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(ICollaborator collaborator, IPeriodDate period)
+    {
+        throw new NotImplementedException();
+    }
 }

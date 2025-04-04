@@ -68,4 +68,19 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
     {
         return associationsProjectCollaborator.Any(a => a.Equals(newAssociation));
     }
+
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAsync(IProject project)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IAssociationProjectCollaborator? FindByProjectAndCollaboratorAsync(IProject project, ICollaborator collaborator)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriodAsync(IProject project, IPeriodDate periodDate)
+    {
+        throw new NotImplementedException();
+    }
 }
