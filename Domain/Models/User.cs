@@ -51,10 +51,7 @@ public class User : IUser
 
     public bool IsDeactivated()
     {
-        if (DateTime.Now >= _periodDateTime.GetFinalDate())
-            return true;
-        else
-            return false;
+        return _periodDateTime.IsFinalDateSmallerThan(DateTime.Now);
     }
 
     public bool DeactivationDateIsBefore(DateTime date)
