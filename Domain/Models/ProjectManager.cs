@@ -9,16 +9,18 @@ public class ProjectManager : IProjectManager
 
     public ProjectManager(IUser user, IPeriodDateTime periodDateTime)
     {
-        if (periodDateTime.IsFinalDateUndefined())
-            periodDateTime.SetFinalDate(DateTime.MaxValue);
-
         if (CheckInputFields(user, periodDateTime))
         {
             this._periodDateTime = periodDateTime;
             this._user = user;
         }
         else
-            throw new ArgumentException("Invalid Arguments.");
+            throw new ArgumentException("Invalid Arguments");
+    }
+
+    public ProjectManager(IUser user, DateTime initDate) :
+        this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
+    {
     }
 
     private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)

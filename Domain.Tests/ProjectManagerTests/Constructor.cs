@@ -7,7 +7,7 @@ namespace Domain.Tests.ProjectManagerTests;
 public class Constructor
 {
     [Fact]
-    public void WhenGivenValidFields_ThenProjectManagerIsInstantiated()
+    public void WhenCreatingProjectManagerWithValidPeriod_ThenProjectManagerIsCreatedCorrectly()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -15,16 +15,15 @@ public class Constructor
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-        periodDateTime.Setup(p => p.IsFinalDateUndefined()).Returns(false);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
         new ProjectManager(user.Object, periodDateTime.Object);
-
         //assert
     }
 
     [Fact]
-    public void WhenDeactivationDateIsNull_ThenProjectManagerIsInstantiated()
+    public void WhenCreatingProjectManagerWithValidInitDate_ThenProjectManagerIsCreatedCorrectly()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -32,16 +31,15 @@ public class Constructor
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-        periodDateTime.Setup(p => p.IsFinalDateUndefined()).Returns(true);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
-        new ProjectManager(user.Object, periodDateTime.Object);
-
+        new ProjectManager(user.Object, It.IsAny<DateTime>());
         //assert
     }
 
     [Fact]
-    public void WhenGivenProjectManagerFinalDateAfterUserDeactivationDate_ThenExceptionIsThrown()
+    public void WhenCreatingProjectManagerWhereFinalDateIsAfterDeactivationDate_ThenShouldThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -49,18 +47,19 @@ public class Constructor
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-        periodDateTime.Setup(p => p.IsFinalDateUndefined()).Returns(false);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new ProjectManager(user.Object, periodDateTime.Object));
-
-        Assert.Equal("Invalid Arguments.", exception.Message);
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new ProjectManager(user.Object, periodDateTime.Object)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
     }
 
     [Fact]
-    public void WhenGivenInactiveUser_ThenExceptionIsThrown()
+    public void WhenCreatingProjectManagerWhereUserIsDeactivated_ThenShowThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -68,13 +67,14 @@ public class Constructor
         user.Setup(u => u.IsDeactivated()).Returns(true);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-        periodDateTime.Setup(p => p.IsFinalDateUndefined()).Returns(false);
+        periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-            //act
-            new ProjectManager(user.Object, periodDateTime.Object));
-
-        Assert.Equal("Invalid Arguments.", exception.Message);
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () =>
+                //act
+                new ProjectManager(user.Object, periodDateTime.Object)
+        );
+        Assert.Equal("Invalid Arguments", exception.Message);
     }
 }

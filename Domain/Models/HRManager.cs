@@ -9,9 +9,6 @@ public class HRManager : IHRManager
 
     public HRManager(IUser user, IPeriodDateTime periodDateTime)
     {
-        if (periodDateTime.IsFinalDateUndefined())
-            periodDateTime.SetFinalDate(DateTime.MaxValue);
-
         if (CheckInputFields(user, periodDateTime))
         {
             this._periodDateTime = periodDateTime;
@@ -19,6 +16,11 @@ public class HRManager : IHRManager
         }
         else
             throw new ArgumentException("Invalid Arguments");
+    }
+
+    public HRManager(IUser user, DateTime initDate) :
+        this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
+    {
     }
 
     private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
