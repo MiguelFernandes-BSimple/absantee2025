@@ -88,24 +88,25 @@ public class CollaboratorRepository : ICollaboratorRepository
 
     public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsAsync()
     {
-        return await Task.FromResult(_collaborators);
+        var result = FindAllCollaborators();
+        return await Task.FromResult(result);
     }
 
     public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithNameAsync(string name)
     {
-        var result = _collaborators.Where(c => c.HasNames(name));
+        var result = FindAllCollaboratorsWithName(name);
         return await Task.FromResult(result);
     }
 
     public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithSurnameAsync(string surname)
     {
-        var result = _collaborators.Where(c => c.HasSurnames(surname));
+        var result = FindAllCollaboratorsWithSurname(surname);
         return await Task.FromResult(result);
     }
 
     public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithNameAndSurnameAsync(string name, string surname)
     {
-        var result = _collaborators.Where(c => c.HasNames(name) && c.HasSurnames(surname));
+        var result = FindAllCollaboratorsWithNameAndSurname(name, surname);
         return await Task.FromResult(result);
     }
 
