@@ -19,6 +19,8 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryTests
                 assocMock2.Object
             };
 
+            assocMock2.Setup(a => a.Equals(assocMock1.Object)).Returns(false);
+
             assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
 
             assocMock2.Setup(a => a.HasProject(projectMock.Object)).Returns(true);

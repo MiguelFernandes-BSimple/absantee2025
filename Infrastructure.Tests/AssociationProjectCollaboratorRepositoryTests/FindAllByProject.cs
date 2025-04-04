@@ -19,6 +19,8 @@ public class FindAllByProject
             assocMock2.Object
         };
 
+        assocMock2.Setup(a => a.Equals(assocMock1.Object)).Returns(false);
+
         assocMock1.Setup(a => a.HasProject(projectMock.Object)).Returns(false);
 
         assocMock2.Setup(a => a.HasProject(projectMock.Object)).Returns(true);
