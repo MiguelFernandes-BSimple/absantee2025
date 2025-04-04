@@ -47,13 +47,10 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDates
         var holidayPeriod = new Mock<IHolidayPeriod>();
 
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(false);
+        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
         holidayPlan
-            .Setup(hp => hp.GetHolidayPeriods())
-            .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
-
-        holidayPeriod.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(false);
-
+            .Setup(hp => hp.GetHolidayPeriodsBetweenPeriod(It.IsAny<IPeriodDate>()))
+            .Returns(new List<IHolidayPeriod>());
 
         // Adicionar o plano de férias ao repositório
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
@@ -78,8 +75,6 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDates
 
         var holidayPlan = new Mock<IHolidayPlan>();
         holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(false);
-
-        holidayPeriod.Setup(hperiod => hperiod.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
 
 
         // Adicionar o plano de férias ao repositório

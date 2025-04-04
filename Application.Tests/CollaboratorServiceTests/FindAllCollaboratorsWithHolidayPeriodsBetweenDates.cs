@@ -92,18 +92,10 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
     {
         // Arrange
         var collaborator = new Mock<ICollaborator>();
-        var initDate = new DateOnly(2025, 7, 15);
-        var endDate = new DateOnly(2025, 8, 1);
         
         var periodDate = new Mock<IPeriodDate>();
 
-        var holidayPeriod = new Mock<IHolidayPeriod>();
-
         var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(hp => hp.HasCollaborator(collaborator.Object)).Returns(true);
-        holidayPlan
-            .Setup(hp => hp.GetHolidayPeriods())
-            .Returns(new List<IHolidayPeriod> { holidayPeriod.Object });
         holidayPlan.Setup(hp => hp.GetCollaborator()).Returns(collaborator.Object);
 
         var hpRepoMock = new Mock<IHolidayPlanRepository>();
