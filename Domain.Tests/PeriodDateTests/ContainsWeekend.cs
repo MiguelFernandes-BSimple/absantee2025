@@ -15,10 +15,10 @@ public class ContainsWeekend
 
     [Theory]
     [MemberData(nameof(DatesThatContainWeekend))]
-    public void WhenPassingPeriodThatContainsWeekend_ThenReturnTrue(DateOnly iniDate, DateOnly endDate)
+    public void WhenPassingPeriodThatContainsWeekend_ThenReturnTrue(DateOnly iniDate, DateOnly finalDate)
     {
         //arrange
-        PeriodDate hp = new PeriodDate(iniDate, endDate);
+        PeriodDate hp = new PeriodDate(iniDate, finalDate);
         //act
         bool result = hp.ContainsWeekend();
 
@@ -34,10 +34,10 @@ public class ContainsWeekend
 
     [Theory]
     [MemberData(nameof(DatesThatDontContainWeekend))]
-    public void WhenPassingPeriodThatDontContainWeekend_ThenReturnFalse(DateOnly iniDate, DateOnly endDate)
+    public void WhenPassingPeriodThatDontContainWeekend_ThenReturnFalse(DateOnly iniDate, DateOnly finalDate)
     {
         //arrange
-        PeriodDate hp = new PeriodDate(iniDate, endDate);
+        PeriodDate hp = new PeriodDate(iniDate, finalDate);
 
         //act
         bool result = hp.ContainsWeekend();

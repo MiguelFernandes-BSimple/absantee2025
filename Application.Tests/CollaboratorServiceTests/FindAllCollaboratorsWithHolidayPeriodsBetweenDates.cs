@@ -38,7 +38,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         // Arrange
         var collaborator1 = new Mock<ICollaborator>();
         var collaborator2 = new Mock<ICollaborator>();
-        
+
         var periodDate = new Mock<IPeriodDate>();
 
         var holidayPlan1 = new Mock<IHolidayPlan>();
@@ -92,7 +92,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
     {
         // Arrange
         var collaborator = new Mock<ICollaborator>();
-        
+
         var periodDate = new Mock<IPeriodDate>();
 
         var holidayPlan = new Mock<IHolidayPlan>();
@@ -112,7 +112,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
     }
 
     [Fact]
-    public void WhenPassingInitDateBiggerThanEndDate_ThenReturnsEmptyList()
+    public void WhenPassingInitDateBiggerThanFinalDate_ThenReturnsEmptyList()
     {
         // Arrange
         var periodDate = new Mock<IPeriodDate>();

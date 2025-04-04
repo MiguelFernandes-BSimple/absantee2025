@@ -20,12 +20,12 @@ public class Constructor
 
     [Theory]
     [MemberData(nameof(GetPeriodDates_ValidFields))]
-    public void WhenPassingValidDates_ThenObjectIsInstatiated(DateTime initDate, DateTime endDate)
+    public void WhenPassingValidDates_ThenObjectIsInstatiated(DateTime initDate, DateTime finalDate)
     {
         // Arrange
 
         // Act
-        new PeriodDateTime(initDate, endDate);
+        new PeriodDateTime(initDate, finalDate);
 
         // Assert
     }
@@ -44,14 +44,14 @@ public class Constructor
 
     [Theory]
     [MemberData(nameof(GetPeriodDates_InvalidFields))]
-    public void WhenPassingInvalidDates_ThenThrowException(DateTime initDate, DateTime endDate)
+    public void WhenPassingInvalidDates_ThenThrowException(DateTime initDate, DateTime finalDate)
     {
         // Arrange
 
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             // Act
-            new PeriodDateTime(initDate, endDate)
+            new PeriodDateTime(initDate, finalDate)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);

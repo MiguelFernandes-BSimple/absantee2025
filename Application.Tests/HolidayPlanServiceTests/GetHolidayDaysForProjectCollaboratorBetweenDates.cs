@@ -87,7 +87,7 @@ public class GetHolidayDaysForProjectCollaboratorBetweenDates
     }
 
     [Fact]
-    public void WhenInitDateIsGreaterThanEndDate_ThenReturnsZero()
+    public void WhenInitDateIsGreaterThanFinalDate_ThenReturnsZero()
     {
         // Arrange
         var collaboratorMock = new Mock<ICollaborator>();

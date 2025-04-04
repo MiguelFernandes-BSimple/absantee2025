@@ -13,15 +13,15 @@ public class Contains
 
     [Theory]
     [MemberData(nameof(GetPeriodDates_ValidFields))]
-    public void WhenPassingGoodPeriodDateTime_ThenReturnTrue(DateTime initDate, DateTime endDate)
+    public void WhenPassingGoodPeriodDateTime_ThenReturnTrue(DateTime initDate, DateTime finalDate)
     {
         // Arrange
         DateTime referenceInitDate = DateTime.Now.AddYears(-1);
-        DateTime referenceEndDate = DateTime.Now.AddYears(3);
+        DateTime referenceFinalDate = DateTime.Now.AddYears(3);
 
-        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceEndDate);
+        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceFinalDate);
 
-        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, endDate);
+        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, finalDate);
 
         // Act
         bool result = referencePeriodDateTime.Contains(inputPeriodDate);
@@ -40,14 +40,14 @@ public class Contains
 
     [Theory]
     [MemberData(nameof(GetPeriodDates_CommonValidFields))]
-    public void WhenPassingGoodPeriodDateTimeWithSameInitOrEndDates_ThenReturnTrue(DateTime initDate, DateTime endDate)
+    public void WhenPassingGoodPeriodDateTimeWithSameInitOrFinalDates_ThenReturnTrue(DateTime initDate, DateTime finalDate)
     {
         // Arrange
         DateTime referenceInitDate = new DateTime(2025, 4, 3);
-        DateTime referenceEndDate = new DateTime(2025, 4, 10);
+        DateTime referenceFinalDate = new DateTime(2025, 4, 10);
 
-        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceEndDate);
-        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, endDate);
+        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceFinalDate);
+        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, finalDate);
 
         // Act
         bool result = referencePeriodDateTime.Contains(inputPeriodDate);
@@ -65,19 +65,19 @@ public class Contains
 
     [Theory]
     [MemberData(nameof(GetPeriodDates_InvalidFields))]
-    public void WhenPassingNotContainedPeriodDateTime_ThenReturnFalse(DateTime initDate, DateTime endDate)
+    public void WhenPassingNotContainedPeriodDateTime_ThenReturnFalse(DateTime initDate, DateTime finalDate)
     {
         // Arrange
         // Reference PeriodDateTime to compare 
         // All dates can't be contained in this period's dates
         DateTime referenceInitDate = DateTime.Now.AddMonths(-1);
-        DateTime referenceEndDate = DateTime.Now.AddDays(20);
+        DateTime referenceFinalDate = DateTime.Now.AddDays(20);
 
         // Instatiate Reference PeriodDateTime
-        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceEndDate);
+        PeriodDateTime referencePeriodDateTime = new PeriodDateTime(referenceInitDate, referenceFinalDate);
 
         // Instatiate Input PeriodDateTime
-        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, endDate);
+        PeriodDateTime inputPeriodDate = new PeriodDateTime(initDate, finalDate);
 
         // Act
         bool result = referencePeriodDateTime.Contains(inputPeriodDate);

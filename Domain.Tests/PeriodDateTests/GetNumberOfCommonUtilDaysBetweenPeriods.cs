@@ -19,10 +19,10 @@ public class GetNumberOfCommonUtilDaysBetweenPeriods
 
     [Theory]
     [MemberData(nameof(GetDatesAndWeekdays))]
-    public void WhenPassingIntersectingPeriod_ThenNumberOfWeekdaysIsReturned(DateOnly dateInit, DateOnly endDate, int expectedWeekdays)
+    public void WhenPassingIntersectingPeriod_ThenNumberOfWeekdaysIsReturned(DateOnly dateInit, DateOnly finalDate, int expectedWeekdays)
     {
         // Arrange
-        IPeriodDate periodDate= new PeriodDate(dateInit, endDate);
+        IPeriodDate periodDate = new PeriodDate(dateInit, finalDate);
 
         // Act
         int result = periodDate.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate);

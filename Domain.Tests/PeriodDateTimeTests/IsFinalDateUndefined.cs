@@ -15,10 +15,10 @@ public class IsFinalDateUndefined
         // Init date is irrelevant for date context
         DateTime initDate = DateTime.Now;
         // End date must be MaxValue -> is undefined
-        DateTime endDate = DateTime.MaxValue;
+        DateTime finalDate = DateTime.MaxValue;
 
         // Instatiate periodDateTime object
-        PeriodDateTime periodDateTime = new PeriodDateTime(initDate, endDate);
+        PeriodDateTime periodDateTime = new PeriodDateTime(initDate, finalDate);
 
         // Act
         bool result = periodDateTime.IsFinalDateUndefined();
@@ -38,10 +38,10 @@ public class IsFinalDateUndefined
         // Init date is irrelevant for date context
         DateTime initDate = DateTime.Now;
         // End has to be anything but the MaxValue - 1year after init date for testing purposes
-        DateTime endDate = initDate.AddYears(1);
+        DateTime finalDate = initDate.AddYears(1);
 
         // Instatiate periodDateTime object
-        PeriodDateTime periodDateTime = new PeriodDateTime(initDate, endDate);
+        PeriodDateTime periodDateTime = new PeriodDateTime(initDate, finalDate);
 
         // Act
         bool result = periodDateTime.IsFinalDateUndefined();
