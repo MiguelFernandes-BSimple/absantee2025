@@ -38,7 +38,7 @@ public class CollaboratorRepository : ICollaboratorRepository
 
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string names, string surnames)
     {
-        return  _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
+        return _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
     }
 
     /**
@@ -86,23 +86,27 @@ public class CollaboratorRepository : ICollaboratorRepository
         return true;
     }
 
-    public IEnumerable<ICollaborator> FindAllCollaboratorsAsync()
+    public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsAsync()
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(_collaborators);
     }
 
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAsync(string name)
+    public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithNameAsync(string name)
     {
-        throw new NotImplementedException();
+        var result = _collaborators.Where(c => c.HasNames(name));
+        return await Task.FromResult(result);
     }
 
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithSurnameAsync(string surname)
+    public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithSurnameAsync(string surname)
     {
-        throw new NotImplementedException();
+        var result = _collaborators.Where(c => c.HasSurnames(surname));
+        return await Task.FromResult(result);
     }
 
-    public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurnameAsync(string name, string surname)
+    public async Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithNameAndSurnameAsync(string name, string surname)
     {
-        throw new NotImplementedException();
+        var result = _collaborators.Where(c => c.HasNames(name) && c.HasSurnames(surname));
+        return await Task.FromResult(result);
     }
+
 }
