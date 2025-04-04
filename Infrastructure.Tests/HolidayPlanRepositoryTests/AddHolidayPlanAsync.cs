@@ -4,10 +4,10 @@ using Infrastructure.Repositories;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class AddHolidayPlan
+public class AddHolidayPlanAsync
 {
     [Fact]
-    public void WhenAddingCorrectHolidayPlanToRepository_ThenReturnTrue()
+    public async Task WhenAddingCorrectHolidayPlanToRepositoryAsync_ThenReturnTrue()
     {
         // Arrange 
         // Double for holidayPlan
@@ -24,14 +24,14 @@ public class AddHolidayPlan
 
         // Act
         // add holiday plan to repository
-        bool result = repo.AddHolidayPlan(doubleHolidayPlan.Object);
+        bool result = await repo.AddHolidayPlanAsync(doubleHolidayPlan.Object);
 
         // Assert
         Assert.True(result);
     }
 
     [Fact]
-    public void WhenAddingHolidayPlanWithRepeatedCollaboratorToRepository_ThenReturnFalse()
+    public async Task WhenAddingHolidayPlanWithRepeatedCollaboratorToRepositoryAsync_ThenReturnFalse()
     {
         // Arrange 
         // Double for holidayPlan
@@ -52,7 +52,7 @@ public class AddHolidayPlan
 
         // Act
         // add holiday plan to repository
-        bool result = repo.AddHolidayPlan(doubleHolidayPlanToAdd.Object);
+        bool result = await repo.AddHolidayPlanAsync(doubleHolidayPlanToAdd.Object);
 
         // Assert
         Assert.False(result);

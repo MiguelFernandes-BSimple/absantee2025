@@ -5,10 +5,10 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindAllWithHolidayPeriodsLongerThan
+public class FindAllWithHolidayPeriodsLongerThanAsync
 {
     [Fact]
-    public void WhenFindingHolidayPlansWithPeriodsLongerThan_ReturnsCorrectList()
+    public async Task WhenFindingHolidayPlansWithPeriodsLongerThanAsync_ReturnsCorrectList()
     {
         //arrange
         int days = 5;
@@ -27,7 +27,7 @@ public class FindAllWithHolidayPeriodsLongerThan
         IHolidayPlanRepository holidayPlanRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
 
         //act
-        var result = holidayPlanRepo.FindAllWithHolidayPeriodsLongerThan(days);
+        var result = await holidayPlanRepo.FindAllWithHolidayPeriodsLongerThanAsync(days);
 
         //assert
         Assert.Contains(holidayPlanDouble1.Object, result);

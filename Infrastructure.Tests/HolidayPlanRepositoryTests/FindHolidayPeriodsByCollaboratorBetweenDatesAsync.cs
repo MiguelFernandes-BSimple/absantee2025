@@ -1,13 +1,14 @@
+using System.Threading.Tasks;
 using Domain.Interfaces;
 using Infrastructure.Repositories;
 using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindHolidayPeriodsByCollaboratorBetweenDates
+public class FindHolidayPeriodsByCollaboratorBetweenDatesAsync
 {
     [Fact]
-    public void WhenPassingCorrectData_ThenReturnsPeriodsByCollaboratorBetweenDates()
+    public async Task WhenPassingCorrectDataAsync_ThenReturnsPeriodsByCollaboratorBetweenDates()
     {
         // arrange
         var collabDouble = new Mock<ICollaborator>();
@@ -26,14 +27,14 @@ public class FindHolidayPeriodsByCollaboratorBetweenDates
         var hprepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble.Object });
 
         // act
-        var result = hprepo.FindHolidayPeriodsByCollaboratorBetweenDates(collabDouble.Object, It.IsAny<IPeriodDate>());
+        var result = await hprepo.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collabDouble.Object, It.IsAny<IPeriodDate>());
 
         // assert
         Assert.Equal(result, expectedPeriod);
     }
 
     [Fact]
-    public void WhenPassingCorrectData_ThenReturnsEmptyList()
+    public async Task WhenPassingCorrectDataAsync_ThenReturnsEmptyList()
     {
         // arrange
         var collabDouble = new Mock<ICollaborator>();
@@ -50,7 +51,7 @@ public class FindHolidayPeriodsByCollaboratorBetweenDates
         var hprepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble.Object });
 
         // act
-        var result = hprepo.FindHolidayPeriodsByCollaboratorBetweenDates(collabDouble.Object, It.IsAny<IPeriodDate>());
+        var result = await hprepo.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collabDouble.Object, It.IsAny<IPeriodDate>());
 
         // assert
         Assert.Equal(result, expectedPeriod);

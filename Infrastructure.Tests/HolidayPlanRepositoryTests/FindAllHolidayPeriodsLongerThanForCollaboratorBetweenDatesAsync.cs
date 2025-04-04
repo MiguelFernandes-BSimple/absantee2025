@@ -4,10 +4,10 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates
+public class FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync
 {
     [Fact]
-    public void WhenGivenBadCollaboratorAndDatesAndLength_ThenReturnEmptyLists()
+    public async Task WhenGivenBadCollaboratorAndDatesAndLengthAsync_ThenReturnEmptyLists()
     {
         //arrange
         var collab = new Mock<ICollaborator>();
@@ -21,14 +21,14 @@ public class FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         //act
-        var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(collab.Object, It.IsAny<IPeriodDate>(), 4);
+        var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(collab.Object, It.IsAny<IPeriodDate>(), 4);
 
         //assert
         Assert.Empty(result);
     }
 
     [Fact]
-    public void WhenGivenGoodCollaboratorAndDatesAndLength_ThenReturnPeriods()
+    public async Task WhenGivenGoodCollaboratorAndDatesAndLengthAsync_ThenReturnPeriods()
     {
         //arrange
         var collab = new Mock<ICollaborator>();
@@ -44,7 +44,7 @@ public class FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         //act
-        var result = hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDates(collab.Object, It.IsAny<IPeriodDate>(), 4);
+        var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(collab.Object, It.IsAny<IPeriodDate>(), 4);
 
         //assert
         Assert.Equal(ret, result);

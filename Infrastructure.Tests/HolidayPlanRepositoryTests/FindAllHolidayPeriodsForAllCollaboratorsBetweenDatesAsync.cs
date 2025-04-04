@@ -4,10 +4,10 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindAllHolidayPeriodsForAllCollaboratorsBetweenDates
+public class FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync
 {
     [Fact]
-    public void WhenPassingValidData_ThenReturnsAllHolidayPeriodsForAllCollaboratorsBetweenDates()
+    public async Task WhenPassingValidData_ThenReturnsAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync()
     {
         // arrange
         var collabDouble = new Mock<ICollaborator>();
@@ -23,7 +23,7 @@ public class FindAllHolidayPeriodsForAllCollaboratorsBetweenDates
         var hprepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble.Object });
 
         // act
-        var result = hprepo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collabList, It.IsAny<IPeriodDate>());
+        var result = await hprepo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collabList, It.IsAny<IPeriodDate>());
 
         // assert
         Assert.Equal(result, expectedPeriods);

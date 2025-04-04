@@ -4,10 +4,10 @@ using Domain.Interfaces;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindHolidayPeriodsByCollaborator
+public class FindHolidayPeriodsByCollaboratorAsync
 {
     [Fact]
-    public void WhenFindingHolidayPeriodsByCollaborator_ThenReturnsCorrectPeriods()
+    public async Task WhenFindingHolidayPeriodsByCollaboratorAsync_ThenReturnsCorrectPeriods()
     {
         // Arrange
         var collaboratorMock = new Mock<ICollaborator>();
@@ -26,14 +26,14 @@ public class FindHolidayPeriodsByCollaborator
         var holidayPlanRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanMock.Object });
 
         // Act
-        var result = holidayPlanRepo.FindHolidayPeriodsByCollaborator(collaboratorMock.Object);
+        var result = await holidayPlanRepo.FindHolidayPeriodsByCollaboratorAsync(collaboratorMock.Object);
 
         // Assert
         Assert.True(result.SequenceEqual(holidayPeriods));
     }
 
     [Fact]
-    public void WhenNotFindingHolidayPeriodsByCollaborator_ThenReturnsEmptyList()
+    public async Task WhenNotFindingHolidayPeriodsByCollaboratorAsync_ThenReturnsEmptyList()
     {
         // Arrange
         var collaboratorMock = new Mock<ICollaborator>();
@@ -45,7 +45,7 @@ public class FindHolidayPeriodsByCollaborator
         var holidayPlanRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanMock.Object });
 
         // Act
-        var result = holidayPlanRepo.FindHolidayPeriodsByCollaborator(collaboratorMock.Object);
+        var result = await holidayPlanRepo.FindHolidayPeriodsByCollaboratorAsync(collaboratorMock.Object);
 
         // Assert
         Assert.Empty(result);

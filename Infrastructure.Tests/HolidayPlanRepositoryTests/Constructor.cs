@@ -1,11 +1,11 @@
 using Infrastructure.Repositories;
 using Domain.Interfaces;
 using Moq;
+
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
 public class Constructor
 {
-
     [Fact]
     public void WhenNotPassingAnyArguments_ThenObjectIsCreated()
     {
