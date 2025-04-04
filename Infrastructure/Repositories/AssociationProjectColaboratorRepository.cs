@@ -2,6 +2,7 @@ using Infrastructure.Interfaces;
 using Domain.Interfaces;
 using Domain.Models;
 
+
 namespace Infrastructure.Repositories;
 
 public class AssociationProjectCollaboratorRepository : IAssociationProjectCollaboratorRepository
@@ -10,7 +11,7 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
 
     public AssociationProjectCollaboratorRepository(List<IAssociationProjectCollaborator> associationsProjectCollaborator)
     {
-        if(CheckInputValue(associationsProjectCollaborator))
+        if (CheckInputValue(associationsProjectCollaborator))
             _associationsProjectCollaborator = associationsProjectCollaborator;
         else
             throw new ArgumentException("Invalid Arguments");
@@ -69,18 +70,21 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
         return associationsProjectCollaborator.Any(a => a.Equals(newAssociation));
     }
 
-    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAsync(IProject project)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(IProject project)
     {
-        throw new NotImplementedException();
+        var result = FindAllByProject(project);
+        return await Task.FromResult(result);
     }
 
-    public IAssociationProjectCollaborator? FindByProjectAndCollaboratorAsync(IProject project, ICollaborator collaborator)
+    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(IProject project, ICollaborator collaborator)
     {
-        throw new NotImplementedException();
+        var result = FindByProjectAndCollaborator(project, collaborator);
+        return await Task.FromResult(result);
     }
 
-    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriodAsync(IProject project, IPeriodDate periodDate)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(IProject project, IPeriodDate periodDate)
     {
-        throw new NotImplementedException();
+        var result = FindAllByProjectAndBetweenPeriod(project, periodDate);
+        return await Task.FromResult(result);
     }
 }
