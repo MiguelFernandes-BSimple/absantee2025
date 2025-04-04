@@ -4,15 +4,11 @@ namespace Domain.Models;
 
 public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
-    private IPeriodDate _periodDate;    
+    private IPeriodDate _periodDate;
     private ICollaborator _collaborator;
     private IProject _project;
 
-    public AssociationProjectCollaborator(
-        IPeriodDate periodDate,
-        ICollaborator collaborator,
-        IProject project
-    )
+    public AssociationProjectCollaborator(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
     {
         if (CheckInputValues(periodDate, collaborator, project))
         {
@@ -24,11 +20,7 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
             throw new ArgumentException("Invalid Arguments");
     }
 
-    private bool CheckInputValues(
-        IPeriodDate periodDate,
-        ICollaborator collaborator,
-        IProject project
-    )
+    private bool CheckInputValues(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
     {
         if (!project.ContainsDates(periodDate))
             return false;
@@ -71,14 +63,14 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 
     public override bool Equals(object? obj)
     {
-        if (obj == null) return false;
+        if (obj == null)
+            return false;
 
         if (obj.GetType() == typeof(AssociationProjectCollaborator))
         {
             AssociationProjectCollaborator other = (AssociationProjectCollaborator)obj;
 
-            if (HasCollaborator(other._collaborator)
-                && HasProject(other._project)
+            if (HasCollaborator(other._collaborator) && HasProject(other._project)
                 && _periodDate.Intersects(other._periodDate))
                 return true;
         }
