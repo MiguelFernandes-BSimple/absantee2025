@@ -1,7 +1,8 @@
-using Infrastructure.Interfaces;
+using Domain.IRepository;
 using Domain.Interfaces;
 
 using Domain.Models;
+using Domain.IRepository;
 
 namespace Application.Services;
 public class HolidayPlanService

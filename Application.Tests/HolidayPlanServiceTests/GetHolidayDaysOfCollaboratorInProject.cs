@@ -1,7 +1,8 @@
 using Domain.Interfaces;
-using Infrastructure.Interfaces;
+using Domain.IRepository;
 using Application.Services;
 using Moq;
+using Domain.IRepository;
 namespace Application.Tests.HolidayPlanServiceTests;
 
 public class GetHolidayDaysOfCollaboratorInProject

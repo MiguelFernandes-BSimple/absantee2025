@@ -1,7 +1,8 @@
 ﻿using Moq;
 using Domain.Interfaces;
-using Infrastructure.Interfaces;
+using Domain.IRepository;
 using Application.Services;
+using Domain.IRepository;
 
 namespace Application.Tests.CollaboratorServiceTests;
 

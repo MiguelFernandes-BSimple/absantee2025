@@ -8,8 +8,8 @@ namespace Infrastructure.DataModel
 {
     public class PeriodDateTimeDataModel
     {
-        public DateOnly _initDate { get; set; }
-        public DateOnly _finalDate { get; set; }
+        public DateTime _initDate { get; set; }
+        public DateTime _finalDate { get; set; }
 
 
         public PeriodDateTimeDataModel( )

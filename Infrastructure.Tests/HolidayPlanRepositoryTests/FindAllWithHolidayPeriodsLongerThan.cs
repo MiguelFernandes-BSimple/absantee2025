@@ -1,7 +1,8 @@
 using Infrastructure.Repositories;
 using Domain.Interfaces;
-using Infrastructure.Interfaces;
+using Domain.IRepository;
 using Moq;
+using Domain.IRepository;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 

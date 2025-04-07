@@ -1,8 +1,9 @@
 using Domain.Interfaces;
-using Infrastructure.Interfaces;
+using Domain.IRepository;
 using Application.Services;
 using Domain.Models;
 using Moq;
+using Domain.IRepository;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 

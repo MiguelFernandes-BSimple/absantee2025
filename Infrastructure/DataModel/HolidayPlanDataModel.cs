@@ -2,9 +2,9 @@ namespace Infrastructure.DataModel;
 
 public class HolidayPlanDataModel
 {
-    public long collaboratorId { get; set; }
-
-    public List<HolidayPerioDataModel> holidayPeriod { get; set; }
+    public long Id { get; set; }
+    public long CollaboratorId { get; set; }
+    public List<HolidayPeriodDataModel> holidayPeriod { get; set; }
 
     public HolidayPlanDataModel()
     {

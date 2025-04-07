@@ -6,10 +6,11 @@ using Domain.Models;
 namespace Infrastructure.DataModel;
 public class CollaboratorDataModel
 {
-    public UserDataModel user { get; set; }
-    public PeriodDateTimeDataModel periodDateTime { get; set; }
+    public long Id { get; set; }
+    public UserDataModel User { get; set; }
+    public PeriodDateTimeDataModel PeriodDateTime { get; set; }
 
-    public class CollaboratorDataModel()
+    public CollaboratorDataModel()
     {
     }
 }

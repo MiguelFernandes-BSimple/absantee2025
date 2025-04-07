@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AbsanteeContext>(opt =>
-    opt.UseNpgsql("postgresql://localhost/absantee")
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

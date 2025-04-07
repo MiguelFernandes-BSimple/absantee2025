@@ -1,6 +1,6 @@
 using Domain.Interfaces;
 
-namespace Infrastructure.Interfaces;
+namespace Domain.IRepository;
 
 public interface ICollaboratorRepository
 {

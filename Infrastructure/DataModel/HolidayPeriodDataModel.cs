@@ -1,10 +1,11 @@
 namespace Infrastructure.DataModel;
 
-public class HolidayPerioDataModel
+public class HolidayPeriodDataModel
 {
+    public long Id { get; set; }
     public PeriodDateDataModel PeriodDate { get; set; }
 
-    public HolidayPerioDataModel()
+    public HolidayPeriodDataModel()
     {
     }
 }
