@@ -1,13 +1,11 @@
 using Domain.Interfaces;
+
 namespace Domain.Models;
 
 public class HolidayPlan : IHolidayPlan
 {
-    private List<IHolidayPeriod> _holidaysPeriods;
-    private ICollaborator _collaborator;
-
-    public HolidayPlan(IHolidayPeriod holidayPeriod, ICollaborator collaborator)
-        : this(new List<IHolidayPeriod>() { holidayPeriod }, collaborator) { }
+    public ICollaborator _collaborator { get; set; }
+    public List<IHolidayPeriod> _holidaysPeriods { get; set; }
 
     public HolidayPlan(List<IHolidayPeriod> holidaysPeriods, ICollaborator collaborator)
     {
@@ -18,6 +16,12 @@ public class HolidayPlan : IHolidayPlan
         }
         else
             throw new ArgumentException("Invalid Arguments");
+    }
+
+    public HolidayPlan(IHolidayPeriod holidayPeriod, ICollaborator collaborator)
+    {
+        this._holidaysPeriods = new List<IHolidayPeriod>() { holidayPeriod };
+        this._collaborator = collaborator;
     }
 
     public bool AddHolidayPeriod(IHolidayPeriod holidayPeriod)
@@ -47,25 +51,14 @@ public class HolidayPlan : IHolidayPlan
     {
         for (int i = 0; i < periodoFerias.Count; i++)
         {
-            if (
-                !CanInsertHolidayPeriod(
-                    periodoFerias[i],
-                    periodoFerias.Skip(i + 1).ToList(),
-                    collaborador
-                )
-            )
-            {
+            if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), collaborador))
                 return false;
-            }
         }
+
         return true;
     }
 
-    private bool CanInsertHolidayPeriod(
-        IHolidayPeriod holidayPeriod,
-        List<IHolidayPeriod> holidayPeriods,
-        ICollaborator collaborator
-    )
+    private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, ICollaborator collaborator)
     {
         IPeriodDate period = holidayPeriod.GetPeriodDate();
         PeriodDateTime periodDateTime = new PeriodDateTime(period);
@@ -78,12 +71,13 @@ public class HolidayPlan : IHolidayPlan
             if (holidayPeriod.Contains(pf))
                 return false;
         }
+
         return true;
     }
 
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
-        return [.. _holidaysPeriods];
+        return new List<IHolidayPeriod>(_holidaysPeriods);
     }
 
     public int GetDurationInDays(IPeriodDate periodDate)
@@ -96,6 +90,7 @@ public class HolidayPlan : IHolidayPlan
     {
         if (collaborator.Equals(_collaborator))
             return true;
+
         return false;
     }
 
@@ -113,10 +108,7 @@ public class HolidayPlan : IHolidayPlan
         return _holidaysPeriods.Where(a => a.ContainsDate(date)).FirstOrDefault();
     }
 
-    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(
-        IPeriodDate period,
-        int days
-    )
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(IPeriodDate period, int days)
     {
         return _holidaysPeriods.Where(a => a.Contains(period) && a.GetDuration() > days);
     }

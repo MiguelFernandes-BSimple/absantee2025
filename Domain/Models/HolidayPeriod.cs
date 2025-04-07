@@ -1,9 +1,10 @@
 using Domain.Interfaces;
+
 namespace Domain.Models;
 
 public class HolidayPeriod : IHolidayPeriod
 {
-    private IPeriodDate _periodDate;
+    public IPeriodDate _periodDate { get; set; }
 
     public HolidayPeriod(IPeriodDate periodDate)
     {
@@ -38,6 +39,16 @@ public class HolidayPeriod : IHolidayPeriod
         return _periodDate.Contains(periodDate);
     }
 
+    public bool ContainsDate(DateOnly date)
+    {
+        return _periodDate.ContainsDate(date);
+    }
+
+    public bool ContainsWeekend()
+    {
+        return _periodDate.ContainsWeekend();
+    }
+
     public int GetInterceptionDurationInDays(IPeriodDate periodDate)
     {
         IPeriodDate? interceptionPeriod = _periodDate.GetIntersection(periodDate);
@@ -55,11 +66,6 @@ public class HolidayPeriod : IHolidayPeriod
     public int GetNumberOfCommonUtilDays()
     {
         return _periodDate.GetNumberOfCommonUtilDays();
-    }
-
-    public bool ContainsDate(DateOnly date)
-    {
-        return _periodDate.ContainsDate(date);
     }
 
     public bool Intersects(IPeriodDate periodDate)
@@ -80,9 +86,5 @@ public class HolidayPeriod : IHolidayPeriod
     public IPeriodDate? GetIntersectionPeriod(IHolidayPeriod holidayPeriod)
     {
         return holidayPeriod.GetPeriodDate().GetIntersection(_periodDate);
-    }
-    public bool ContainsWeekend()
-    {
-        return _periodDate.ContainsWeekend();
     }
 }
