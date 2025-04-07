@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.DateModel
+namespace Infrastructure.DataModel
 {
-    class ProjectDataModel
+    public class ProjectDataModel
     {
     }
 }
