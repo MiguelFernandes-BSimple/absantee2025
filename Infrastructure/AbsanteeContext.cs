@@ -29,8 +29,8 @@ namespace Infrastructure
             modelBuilder.Entity<AssociationProjectCollaboratorDataModel>()
                 .OwnsOne(a => a.Period);
 
-            modelBuilder.Entity<TrainingPeriodDataModel>()
-                .OwnsOne(a => a.PeriodDate);
+            //modelBuilder.Entity<TrainingPeriodDataModel>()
+            //    .OwnsOne(a => a.PeriodDate);
 
             modelBuilder.Entity<CollaboratorDataModel>()
                 .OwnsOne(a => a.PeriodDateTime);

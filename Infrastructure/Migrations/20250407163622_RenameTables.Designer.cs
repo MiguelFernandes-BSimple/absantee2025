@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AbsanteeContext))]
-    partial class AbsanteeContextModelSnapshot : ModelSnapshot
+    [Migration("20250407163622_RenameTables")]
+    partial class RenameTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,6 +115,19 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Infrastructure.DataModel.TrainingPeriodDataModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TrainingPeriodDataModel");
                 });
 
             modelBuilder.Entity("Infrastructure.DataModel.UserDataModel", b =>
@@ -241,6 +257,31 @@ namespace Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("ProjectDataModelId");
+                        });
+
+                    b.Navigation("PeriodDate")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Infrastructure.DataModel.TrainingPeriodDataModel", b =>
+                {
+                    b.OwnsOne("Infrastructure.DataModel.PeriodDateDataModel", "PeriodDate", b1 =>
+                        {
+                            b1.Property<long>("TrainingPeriodDataModelId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<DateOnly>("_finalDate")
+                                .HasColumnType("date");
+
+                            b1.Property<DateOnly>("_initDate")
+                                .HasColumnType("date");
+
+                            b1.HasKey("TrainingPeriodDataModelId");
+
+                            b1.ToTable("TrainingPeriodDataModel");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TrainingPeriodDataModelId");
                         });
 
                     b.Navigation("PeriodDate")
