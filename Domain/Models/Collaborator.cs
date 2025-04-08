@@ -4,6 +4,7 @@ namespace Domain.Models;
 
 public class Collaborator : ICollaborator
 {
+    private long _id;
     private IUser _user;
     private IPeriodDateTime _periodDateTime;
 
@@ -21,6 +22,11 @@ public class Collaborator : ICollaborator
     public Collaborator(IUser user, DateTime initDate) : 
         this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
     {
+    }
+
+    public long GetId()
+    {
+        return _id;
     }
 
     private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)

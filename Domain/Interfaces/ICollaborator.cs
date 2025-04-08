@@ -4,6 +4,7 @@ namespace Domain.Interfaces;
 
 public interface ICollaborator
 {
+    public long GetId();
     public bool ContractContainsDates(IPeriodDateTime periodDateTime);
 
     /**

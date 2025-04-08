@@ -4,6 +4,9 @@ namespace Domain.Models;
 
 public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
+    private long _id;
+    private long _collaboratorId;
+    public long _projectId;
     private IPeriodDate _periodDate;
     private ICollaborator _collaborator;
     private IProject _project;
@@ -20,6 +23,28 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
             throw new ArgumentException("Invalid Arguments");
     }
 
+    public AssociationProjectCollaborator(long id, long collaboratorId, long projectId, IPeriodDate periodDate, ICollaborator collaborator, IProject project)
+        :this(periodDate, collaborator, project)
+    {
+        _id = id;
+        _collaboratorId = collaboratorId;
+        _projectId = projectId;
+    }
+
+    public long GetId()
+    {
+        return _id;
+    }
+
+    public long GetCollaboratorId()
+    {
+        return _collaboratorId;
+    }
+
+    public long GetProjectId()
+    {
+        return _projectId;
+    }
     private bool CheckInputValues(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
     {
         if (!project.ContainsDates(periodDate))

@@ -9,6 +9,7 @@ public class CollaboratorService
 {
     private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
     private IHolidayPlanRepository _holidayPlanRepository;
+    private ICollaboratorRepository _collaboratorRepository;
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
     {
@@ -30,7 +31,8 @@ public class CollaboratorService
 
     public IEnumerable<ICollaborator> FindAllByProject(IProject project)
     {
-        return _associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaborator());
+        var collabsIds = _associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaboratorId());
+        return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
     public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)

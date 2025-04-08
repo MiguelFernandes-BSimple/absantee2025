@@ -1,8 +1,9 @@
 using Domain.Interfaces;
+using Domain.Models;
 
 namespace Domain.IRepository;
 
-public interface ICollaboratorRepository
+public interface ICollaboratorRepository : IGenericRepository<Collaborator>
 {
     /**
     * Method that returns all the collaborators within the repository

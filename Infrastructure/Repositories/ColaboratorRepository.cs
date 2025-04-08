@@ -1,9 +1,11 @@
 using Domain.IRepository;
 using Domain.Interfaces;
+using Domain.Models;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepository : ICollaboratorRepository
+public class CollaboratorRepository : ICollaboratorRepository, IGenericRepository<Collaborator>
 {
     private List<ICollaborator> _collaborators;
 
@@ -12,10 +14,10 @@ public class CollaboratorRepository : ICollaboratorRepository
         _collaborators = new List<ICollaborator>();
     }
 
-    public CollaboratorRepository(List<ICollaborator> collaborators) : this()
+    public CollaboratorRepository(List<ICollaborator> collaborators)
     {
         bool isAdded = Add(collaborators);
-
+    
         if (!isAdded)
             throw new ArgumentException("Arguments are not valid!");
     }
@@ -110,4 +112,43 @@ public class CollaboratorRepository : ICollaboratorRepository
         return await Task.FromResult(result);
     }
 
+    public Collaborator? GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Collaborator? GetById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Collaborator> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Collaborator> Find(Expression<Func<Collaborator, bool>> expression)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Add(Collaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddRange(IEnumerable<Collaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(Collaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveRange(IEnumerable<Collaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
 }
