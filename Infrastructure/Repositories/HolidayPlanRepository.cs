@@ -75,7 +75,6 @@ public class HolidayPlanRepository : IHolidayPlanRepository
     }
 
     // US13 - Como gestor de RH, quero listar os períodos de férias dum collaborador num período
-    // * todo - colocar in period
     public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate periodDate)
     {
         var holidayPlan = _holidayPlans.FirstOrDefault(h => h.HasCollaborator(collaborator));
