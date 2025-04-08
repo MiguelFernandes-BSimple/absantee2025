@@ -4,11 +4,10 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync
+public class FindAllWithHolidayPeriodsBetweenDates
 {
-    // US14
     [Fact]
-    public async Task WhenCollaboratorHasHolidayPeriodWithinDateRangeAsync_ThenReturnsHolidayPlan()
+    public void WhenHasHolidayPeriodWithinDateRange_ThenReturnsHolidayPlan()
     {
         // Arrange
         var collaborator = new Mock<ICollaborator>();
@@ -26,14 +25,14 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync
 
         var expected = new List<IHolidayPlan>() { holidayPlan.Object };
         // Act
-        var result = await hpRepo.FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(It.IsAny<IPeriodDate>());
+        var result = hpRepo.FindHolidayPlansWithinPeriod(It.IsAny<IPeriodDate>());
 
         // Assert
         Assert.True(result.SequenceEqual(expected));
     }
 
     [Fact]
-    public async Task WhenNoCollaboratorsHaveHolidayPeriodsInDateRangeAsync_ThenReturnsEmptyList()
+    public void WhenDontHaveHolidayPeriodsInDateRange_ThenReturnsEmptyList()
     {
         // Arrange
         var collaborator = new Mock<ICollaborator>();
@@ -47,10 +46,9 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync
         var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
 
         // Act
-        var result = await hpRepo.FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(It.IsAny<IPeriodDate>());
+        var result = hpRepo.FindHolidayPlansWithinPeriod(It.IsAny<IPeriodDate>());
 
         // Assert
         Assert.Empty(result);
     }
 }
-

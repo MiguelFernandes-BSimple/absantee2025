@@ -22,7 +22,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
 
         var holidayPlanRepoDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepoDouble.Setup(hprd => hprd.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDateDouble.Object)).Returns(new List<IHolidayPlan> { holidayPlanDouble.Object });
+        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriod(periodDateDouble.Object)).Returns(new List<IHolidayPlan> { holidayPlanDouble.Object });
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
@@ -61,7 +61,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlanDouble2.Setup(hpd => hpd.GetCollaboratorId()).Returns(2);
 
         var holidayPlanRepoDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepoDouble.Setup(hprd => hprd.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDateDouble.Object)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriod(periodDateDouble.Object)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
@@ -92,7 +92,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
 
         var holidayPlanRepoDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepoDouble.Setup(hprd => hprd.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDateDouble.Object)).Returns(new List<IHolidayPlan>());
+        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriod(periodDateDouble.Object)).Returns(new List<IHolidayPlan>());
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
