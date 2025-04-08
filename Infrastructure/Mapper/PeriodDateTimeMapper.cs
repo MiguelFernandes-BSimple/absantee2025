@@ -12,8 +12,6 @@ namespace Infrastructure.Mapper
         public PeriodDateTime ToDomain(PeriodDateTimeDataModel periodDateTimeDM)
         {
             PeriodDateTime periodDateTime = new PeriodDateTime(periodDateTimeDM._initDate, periodDateTimeDM._finalDate);
-            
-            periodDateTime.SetId(periodDateTimeDM.Id);
 
             return periodDateTime;
         }

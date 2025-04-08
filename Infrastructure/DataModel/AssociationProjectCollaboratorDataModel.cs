@@ -18,7 +18,7 @@ namespace Infrastructure.DataModel
             Id = apc.GetId();
             CollaboratorId = apc.GetCollaboratorId();
             ProjectId = apc.GetProjectId();
-            Period = new PeriodDateDataModel((PeriodDate)apc.GetPeriodDate());
+            Period = new PeriodDateDataModel(apc.GetPeriodDate());
             Collaborator = (Collaborator)apc.GetCollaborator();
             Project = (Project)apc.GetProject();
         }

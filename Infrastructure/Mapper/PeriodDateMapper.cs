@@ -12,8 +12,7 @@ namespace Infrastructure.Mapper
         public PeriodDate ToDomain(PeriodDateDataModel periodDateDM)
         {
             PeriodDate periodDate = new PeriodDate(periodDateDM._initDate, periodDateDM._finalDate);
-            periodDate.SetId(periodDateDM.Id);
-            
+
             return periodDate;
         }
 
