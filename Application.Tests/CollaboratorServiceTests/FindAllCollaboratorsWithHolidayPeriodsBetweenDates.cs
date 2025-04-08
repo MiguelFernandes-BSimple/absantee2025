@@ -2,7 +2,6 @@
 using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
-using Domain.IRepository;
 using System.Linq.Expressions;
 
 namespace Application.Tests.CollaboratorServiceTests;

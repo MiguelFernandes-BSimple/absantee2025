@@ -2,9 +2,6 @@
 using Domain.IRepository;
 using Application.Services;
 using Moq;
-using System.IO.Compression;
-using Domain.IRepository;
-using Domain.Models;
 using System.Linq.Expressions;
 
 namespace Application.Tests.CollaboratorServiceTests

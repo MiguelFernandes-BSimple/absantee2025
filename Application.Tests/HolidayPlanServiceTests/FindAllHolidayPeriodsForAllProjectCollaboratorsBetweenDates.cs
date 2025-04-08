@@ -1,9 +1,7 @@
 using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
-using Domain.Models;
 using Moq;
-using Domain.IRepository;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 
