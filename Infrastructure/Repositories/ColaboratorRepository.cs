@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepository : ICollaboratorRepository, IGenericRepository<Collaborator>
+public class CollaboratorRepository : ICollaboratorRepository, IGenericRepository<ICollaborator>
 {
     private List<ICollaborator> _collaborators;
 
@@ -14,7 +14,7 @@ public class CollaboratorRepository : ICollaboratorRepository, IGenericRepositor
         _collaborators = new List<ICollaborator>();
     }
 
-    public CollaboratorRepository(List<ICollaborator> collaborators)
+    public CollaboratorRepository(List<ICollaborator> collaborators) : this()
     {
         bool isAdded = Add(collaborators);
     
@@ -112,42 +112,42 @@ public class CollaboratorRepository : ICollaboratorRepository, IGenericRepositor
         return await Task.FromResult(result);
     }
 
-    public Collaborator? GetById(int id)
+    public ICollaborator? GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Collaborator? GetById(Guid id)
+    public ICollaborator? GetById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Collaborator> GetAll()
+    public IEnumerable<ICollaborator> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Collaborator> Find(Expression<Func<Collaborator, bool>> expression)
+    public IEnumerable<ICollaborator> Find(Expression<Func<ICollaborator, bool>> expression)
     {
         throw new NotImplementedException();
     }
 
-    public void Add(Collaborator entity)
+    void IGenericRepository<ICollaborator>.Add(ICollaborator entity)
     {
         throw new NotImplementedException();
     }
 
-    public void AddRange(IEnumerable<Collaborator> entities)
+    public void AddRange(IEnumerable<ICollaborator> entities)
     {
         throw new NotImplementedException();
     }
 
-    public void Remove(Collaborator entity)
+    public void Remove(ICollaborator entity)
     {
         throw new NotImplementedException();
     }
 
-    public void RemoveRange(IEnumerable<Collaborator> entities)
+    public void RemoveRange(IEnumerable<ICollaborator> entities)
     {
         throw new NotImplementedException();
     }

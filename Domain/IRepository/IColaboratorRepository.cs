@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Domain.IRepository;
 
-public interface ICollaboratorRepository : IGenericRepository<Collaborator>
+public interface ICollaboratorRepository : IGenericRepository<ICollaborator>
 {
     /**
     * Method that returns all the collaborators within the repository

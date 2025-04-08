@@ -3,6 +3,8 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Domain.IRepository;
+using Domain.Models;
+using System.Linq.Expressions;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
@@ -18,9 +20,7 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
             Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
 
-            
-
-            List<ICollaborator> expected = new List<ICollaborator>()
+            IEnumerable<ICollaborator> expected = new List<ICollaborator>()
             {
                 collab1.Object,
                 collab2.Object
@@ -29,8 +29,8 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IAssociationProjectCollaborator> assoc1 = new Mock<IAssociationProjectCollaborator>();
             Mock<IAssociationProjectCollaborator> assoc2 = new Mock<IAssociationProjectCollaborator>();
 
-            assoc1.Setup(a => a.GetCollaborator()).Returns(collab1.Object);
-            assoc2.Setup(a => a.GetCollaborator()).Returns(collab2.Object);
+            assoc1.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<long>());
+            assoc2.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<long>());
 
             List<IAssociationProjectCollaborator> associations = new List<IAssociationProjectCollaborator>()
             {
@@ -42,8 +42,11 @@ namespace Application.Tests.CollaboratorServiceTests
             assocRepoMock.Setup(a => a.FindAllByProject(projectMock.Object)).Returns(associations);
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
 
-            var collabService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
+            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(expected);
+
+            var collabService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object);
 
             //act
             var result = collabService.FindAllByProject(projectMock.Object);
@@ -59,6 +62,7 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IProject> projectMock = new Mock<IProject>();
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
 
             // No associations for the project
             List<IAssociationProjectCollaborator> emptyAssociations = new List<IAssociationProjectCollaborator>();
@@ -66,7 +70,7 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             assocRepoMock.Setup(a => a.FindAllByProject(projectMock.Object)).Returns(emptyAssociations);
 
-            var collabService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
+            var collabService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object);
 
             // Act
             var result = collabService.FindAllByProject(projectMock.Object);

@@ -13,9 +13,10 @@ namespace Application.Tests.CollaboratorServiceTests
             //arrange
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
 
             //act & assert
-            new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object);
+            new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object);
 
         }
     }
