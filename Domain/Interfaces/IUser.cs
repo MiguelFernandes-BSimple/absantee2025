@@ -1,3 +1,5 @@
+using Domain.Models;
+
 namespace Domain.Interfaces;
 
 public interface IUser
@@ -22,4 +24,10 @@ public interface IUser
     public bool HasSurnames(string surnames);
 
     public bool Equals(Object? obj);
+
+    public long GetId();
+    public string GetNames();
+    public string GetSurnames();
+    public string GetEmail();
+    public IPeriodDateTime GetPeriodDateTime();
 }
