@@ -13,6 +13,8 @@ namespace Infrastructure.Mapper
         {
             PeriodDateTime periodDateTime = new PeriodDateTime(periodDateTimeDM._initDate, periodDateTimeDM._finalDate);
             
+            periodDateTime.SetId(periodDateTimeDM.Id);
+
             return periodDateTime;
         }
 
@@ -21,12 +23,12 @@ namespace Infrastructure.Mapper
             return periodDateTimeDM.Select(ToDomain);
         }
 
-        public PeriodDateTimeDataModel ToDataModel(IPeriodDateTime periodDate)
+        public PeriodDateTimeDataModel ToDataModel(PeriodDateTime periodDate)
         {
             return new PeriodDateTimeDataModel(periodDate);
         }
 
-        public IEnumerable<PeriodDateTimeDataModel> ToDataModel(IEnumerable<IPeriodDateTime> periodDate)
+        public IEnumerable<PeriodDateTimeDataModel> ToDataModel(IEnumerable<PeriodDateTime> periodDate)
         {
             return periodDate.Select(ToDataModel);
         }
