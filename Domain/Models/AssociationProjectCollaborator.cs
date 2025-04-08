@@ -23,12 +23,16 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public AssociationProjectCollaborator(long id, long collaboratorId, long projectId, IPeriodDate periodDate, ICollaborator collaborator, IProject project)
-        :this(periodDate, collaborator, project)
+    public AssociationProjectCollaborator(long collaboratorId, long projectId, IPeriodDate periodDate, ICollaborator collaborator, IProject project)
+        : this(periodDate, collaborator, project)
     {
-        _id = id;
         _collaboratorId = collaboratorId;
         _projectId = projectId;
+    }
+
+    public void SetId(long id)
+    {
+        _id = id;
     }
 
     public long GetId()
@@ -45,6 +49,23 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         return _projectId;
     }
+
+    public IPeriodDate GetPeriodDate()
+    {
+        return _periodDate;
+    }
+
+    public ICollaborator GetCollaborator()
+    {
+        return _collaborator;
+    }
+
+    public IProject GetProject()
+    {
+        return _project;
+    }
+
+
     private bool CheckInputValues(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
     {
         if (!project.ContainsDates(periodDate))
@@ -61,15 +82,7 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return true;
     }
 
-    public IPeriodDate GetPeriodDate()
-    {
-        return _periodDate;
-    }
 
-    public ICollaborator GetCollaborator()
-    {
-        return this._collaborator;
-    }
 
     public bool HasCollaborator(ICollaborator collaborator)
     {
