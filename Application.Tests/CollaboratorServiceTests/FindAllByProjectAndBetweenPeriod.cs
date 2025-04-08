@@ -4,6 +4,8 @@ using Application.Services;
 using Moq;
 using System.IO.Compression;
 using Domain.IRepository;
+using Domain.Models;
+using System.Linq.Expressions;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
@@ -31,8 +33,8 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
             Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
 
-            assoc1.Setup(a => a.GetCollaborator()).Returns(collab1.Object);
-            assoc2.Setup(a => a.GetCollaborator()).Returns(collab2.Object);
+            assoc1.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<long>());
+            assoc2.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<long>());
 
             List<ICollaborator> expected = new List<ICollaborator>()
             {
@@ -42,7 +44,10 @@ namespace Application.Tests.CollaboratorServiceTests
 
             assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriod(projectMock.Object, periodDouble.Object)).Returns(associations);
 
-            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
+            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(expected);
+
+            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object);
 
             // Act
             var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, periodDouble.Object);
@@ -67,7 +72,9 @@ namespace Application.Tests.CollaboratorServiceTests
 
             assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriod(projectMock.Object, periodDouble.Object)).Returns(emptyAssociations);
 
-            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object);
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
+
+            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object);
 
             // Act
             var result = service.FindAllByProjectAndBetweenPeriod(projectMock.Object, periodDouble.Object);

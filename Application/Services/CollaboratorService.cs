@@ -2,6 +2,7 @@ using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.IRepository;
+using System.Linq;
 
 namespace Application.Services;
 
@@ -11,10 +12,11 @@ public class CollaboratorService
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
+        _collaboratorRepository = collaboratorRepository;
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
@@ -37,7 +39,8 @@ public class CollaboratorService
 
     public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
     {
-        return _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, periodDate).Select(a => a.GetCollaborator());
+        var collabsIds = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, periodDate).Select(a => a.GetCollaboratorId());
+        return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
 }

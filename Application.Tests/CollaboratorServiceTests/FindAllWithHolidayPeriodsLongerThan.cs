@@ -25,7 +25,9 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
             holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThan(days)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object });
 
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object);
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
+
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object);
 
             //act
             var result = collaboratorService.FindAllWithHolidayPeriodsLongerThan(days).ToList();
@@ -45,7 +47,9 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
             holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThan(days)).Returns(new List<IHolidayPlan> { });
 
-            CollaboratorService service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object);
+            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
+
+            CollaboratorService service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object);
 
             //act
             var result = service.FindAllWithHolidayPeriodsLongerThan(days);
