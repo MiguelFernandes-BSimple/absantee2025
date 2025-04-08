@@ -6,6 +6,7 @@ namespace Domain.Models;
 
 public class User : IUser
 {
+    private long _id;
     private string _names;
     private string _surnames;
     private string _email;
@@ -24,6 +25,36 @@ public class User : IUser
         }
         else
             throw new ArgumentException("Invalid Arguments");
+    }
+
+    public long GetId()
+    {
+        return _id;
+    }
+
+    public void SetId(long id)
+    {
+        _id = id;
+    }
+
+    public string GetNames()
+    {
+        return _names;
+    }
+
+    public string GetSurnames()
+    {
+        return _surnames;
+    }
+
+    public string GetEmail()
+    {
+        return _email;
+    }
+
+    public IPeriodDateTime GetPeriodDateTime()
+    {
+        return _periodDateTime;
     }
 
     private bool CheckInputValues(string names, string surnames, string email, DateTime? deactivationDate)
