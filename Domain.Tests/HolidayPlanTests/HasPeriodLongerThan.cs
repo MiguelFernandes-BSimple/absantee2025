@@ -38,8 +38,8 @@ public class HasPeriodLongerThan
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object },
-            collaboratorDouble.Object
+            collaboratorDouble.Object,
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object }
         );
 
         //act
@@ -76,8 +76,8 @@ public class HasPeriodLongerThan
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object },
-            collaboratorDouble.Object
+            collaboratorDouble.Object,
+            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object }
         );
 
         //act

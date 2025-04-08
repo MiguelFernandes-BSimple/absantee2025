@@ -21,7 +21,7 @@ public class GetHolidayPeriodContainingDate
         holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
 
 
-        var holidayPlan = new HolidayPlan(holidayPeriod.Object, collab.Object);
+        var holidayPlan = new HolidayPlan(collab.Object, holidayPeriod.Object);
 
         //act
         var result = holidayPlan.GetHolidayPeriodContainingDate(date);
@@ -44,7 +44,7 @@ public class GetHolidayPeriodContainingDate
         var periodDate1 = new Mock<IPeriodDate>();
         holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
 
-        var holidayPlan = new HolidayPlan(holidayPeriod.Object, collab.Object);
+        var holidayPlan = new HolidayPlan(collab.Object, holidayPeriod.Object);
 
         //act
         var result = holidayPlan.GetHolidayPeriodContainingDate(date);

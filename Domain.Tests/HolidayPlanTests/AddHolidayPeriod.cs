@@ -37,7 +37,7 @@ public class AddHolidayPlan
         };
 
         // Instatiate Holiday plan class object
-        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
+        HolidayPlan holidayPlan = new HolidayPlan(collaboratorDouble.Object, holidayPeriods);
 
         // Test double for Holiday Period to be added
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
@@ -82,7 +82,7 @@ public class AddHolidayPlan
         };
 
         // Instatiate Holiday plan class object
-        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
+        HolidayPlan holidayPlan = new HolidayPlan(collaboratorDouble.Object, holidayPeriods);
 
         // Test double for holiday period to be added to plan
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
@@ -130,7 +130,7 @@ public class AddHolidayPlan
         };
 
         // Instatiate Holiday plan class object
-        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
+        HolidayPlan holidayPlan = new HolidayPlan(collaboratorDouble.Object, holidayPeriods);
 
         // Test double for holiday period to be added to plan
         Mock<IHolidayPeriod> holidayPeriodDoubleToAdd = new Mock<IHolidayPeriod>();
