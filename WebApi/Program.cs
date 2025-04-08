@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     );
 
 builder.Services.AddTransient<ProjectMapper>();
+builder.Services.AddTransient<UserMapper>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
