@@ -27,7 +27,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
 
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object, collabRepository.Object);
         // Act
-        var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object);
+        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDate.Object);
 
         // Assert
         Assert.Single(result);
@@ -59,7 +59,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object, collabRepository.Object);
 
         // Act
-        var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object);
+        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDate.Object);
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -88,7 +88,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object, collabRepository.Object);
 
         // Act
-        var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object);
+        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDate.Object);
 
         // Assert
         Assert.Single(result);
@@ -115,7 +115,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object, collabRepository.Object);
 
         // Act
-        var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object);
+        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDate.Object);
 
         // Assert
         Assert.Empty(result);
@@ -135,7 +135,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
 
         var colabService = new CollaboratorService(APCRepo.Object, hpRepoMock.Object, collabRepository.Object);
         // Act
-        var result = colabService.FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate.Object);
+        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDate.Object);
 
         // Assert
         Assert.Empty(result);
