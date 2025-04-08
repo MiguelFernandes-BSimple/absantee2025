@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
 namespace Infrastructure.DataModel
 {
@@ -15,6 +16,10 @@ namespace Infrastructure.DataModel
         public PeriodDateDataModel()
         {}
 
-
+        public PeriodDateDataModel(IPeriodDate periodDate)
+        {
+            _initDate = periodDate.GetInitDate();
+            _finalDate = periodDate.GetFinalDate();
+        }
     }
 }

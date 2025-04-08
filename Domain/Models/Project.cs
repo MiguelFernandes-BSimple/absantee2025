@@ -4,6 +4,7 @@ using Domain.Interfaces;
 namespace Domain.Models;
 public class Project : IProject
 {
+    private long _id;
     private string _title;
     private string _acronym;
     private IPeriodDate _periodDate;
@@ -18,6 +19,31 @@ public class Project : IProject
         }
         else
             throw new ArgumentException("Invalid Arguments");
+    }
+
+    public long GetId()
+    {
+        return _id;
+    }
+
+    public void SetId(long id)
+    {
+        _id = id;
+    }
+
+    public string GetTitle()
+    {
+        return _title;
+    }
+
+    public string GetAcronym()
+    {
+        return _acronym;
+    }
+
+    public IPeriodDate GetPeriodDate()
+    {
+        return _periodDate;
     }
 
     private bool CheckInputValues(string title, string acronym)

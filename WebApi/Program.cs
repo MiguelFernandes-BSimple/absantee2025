@@ -1,5 +1,5 @@
-using AutoMapper;
 using Infrastructure;
+using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AbsanteeContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
+
+builder.Services.AddTransient<ProjectMapper>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
