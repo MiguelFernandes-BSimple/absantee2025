@@ -13,8 +13,8 @@ public class Collaborator : ICollaborator
     {
         if (CheckInputFields(user, periodDateTime))
         {
-            this._periodDateTime = periodDateTime;
-            this._user = user;
+            _periodDateTime = periodDateTime;
+            _user = user;
         }
         else
             throw new ArgumentException("Invalid Arguments");
