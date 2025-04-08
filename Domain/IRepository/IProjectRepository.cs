@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 
 namespace Infrastructure.Repositories
 {
-    public interface IProjectRepository : IGenericRepository<Project>
+    public interface IProjectRepository : IGenericRepository<IProject>
     {
     }
 }

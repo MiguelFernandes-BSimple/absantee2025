@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Interfaces;
+using Domain.Models;
 
 namespace Infrastructure.DataModel
 {
@@ -14,7 +15,7 @@ namespace Infrastructure.DataModel
         public DateOnly _finalDate { get; set; }
 
         public PeriodDateDataModel()
-        {}
+        { }
 
         public PeriodDateDataModel(IPeriodDate periodDate)
         {

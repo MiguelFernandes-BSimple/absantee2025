@@ -4,11 +4,21 @@ namespace Domain.Models;
 
 public class HolidayPeriod : IHolidayPeriod
 {
-    public IPeriodDate _periodDate { get; set; }
+    private long _id;
+    private IPeriodDate _periodDate;
 
     public HolidayPeriod(IPeriodDate periodDate)
     {
         _periodDate = periodDate;
+    }
+    public long GetId()
+    {
+        return _id;
+    }
+
+    public void SetId(long id)
+    {
+        _id = id;
     }
 
     public IPeriodDate GetPeriodDate()

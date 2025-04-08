@@ -4,24 +4,61 @@ namespace Domain.Models;
 
 public class HolidayPlan : IHolidayPlan
 {
-    public ICollaborator _collaborator { get; set; }
-    public List<IHolidayPeriod> _holidaysPeriods { get; set; }
+    private long _id;
+    private long _collaboratorId;
+    private ICollaborator _collaborator;
+    private List<IHolidayPeriod> _holidaysPeriods;
 
-    public HolidayPlan(List<IHolidayPeriod> holidaysPeriods, ICollaborator collaborator)
+    public HolidayPlan(ICollaborator collaborator, List<IHolidayPeriod> holidaysPeriods)
     {
         if (CheckInputValues(holidaysPeriods, collaborator))
         {
-            this._holidaysPeriods = new List<IHolidayPeriod>(holidaysPeriods);
             this._collaborator = collaborator;
+            this._holidaysPeriods = new List<IHolidayPeriod>(holidaysPeriods);
         }
         else
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public HolidayPlan(IHolidayPeriod holidayPeriod, ICollaborator collaborator)
+    public HolidayPlan(ICollaborator collaborator, IHolidayPeriod holidayPeriod)
     {
-        this._holidaysPeriods = new List<IHolidayPeriod>() { holidayPeriod };
         this._collaborator = collaborator;
+        this._holidaysPeriods = new List<IHolidayPeriod>() { holidayPeriod };
+    }
+
+    public HolidayPlan(long collaboratorId, ICollaborator collaborator, List<IHolidayPeriod> holidaysPeriods)
+        : this(collaborator, holidaysPeriods)
+    {
+        _collaboratorId = collaboratorId;
+    }
+
+    public long GetId()
+    {
+        return _id;
+    }
+
+    public void SetId(long id)
+    {
+        _id = id;
+    }
+
+    public long GetCollaboratorId()
+    {
+        return _collaboratorId;
+    }
+
+    public ICollaborator GetCollaborator()
+    {
+        // Este método retorna uma referencia do objeto uma vez que, para implementar uma cópia,
+        // seriam necessários métodos auxiliares no collaborador e user.
+        // pelo que vi, existem outras alternativas, mas também implicam algumas modificações:
+        // https://www.reddit.com/r/csharp/comments/uc81wl/create_a_copy_of_an_object/
+        return _collaborator;
+    }
+
+    public List<IHolidayPeriod> GetHolidayPeriods()
+    {
+        return new List<IHolidayPeriod>(_holidaysPeriods);
     }
 
     public bool AddHolidayPeriod(IHolidayPeriod holidayPeriod)
@@ -75,11 +112,6 @@ public class HolidayPlan : IHolidayPlan
         return true;
     }
 
-    public List<IHolidayPeriod> GetHolidayPeriods()
-    {
-        return new List<IHolidayPeriod>(_holidaysPeriods);
-    }
-
     public int GetDurationInDays(IPeriodDate periodDate)
     {
         return _holidaysPeriods.Sum(hp => hp.GetInterceptionDurationInDays(periodDate));
@@ -92,15 +124,6 @@ public class HolidayPlan : IHolidayPlan
             return true;
 
         return false;
-    }
-
-    public ICollaborator GetCollaborator()
-    {
-        // Este método retorna uma referencia do objeto uma vez que, para implementar uma cópia,
-        // seriam necessários métodos auxiliares no collaborador e user.
-        // pelo que vi, existem outras alternativas, mas também implicam algumas modificações:
-        // https://www.reddit.com/r/csharp/comments/uc81wl/create_a_copy_of_an_object/
-        return _collaborator;
     }
 
     public IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date)

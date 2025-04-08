@@ -26,7 +26,7 @@ public class GetDurationInDays
         holidayPeriod2Mock.Setup(hp => hp.GetPeriodDate()).Returns(periodDateMock2.Object);
         holidayPeriod2Mock.Setup(hp => hp.GetInterceptionDurationInDays(It.IsAny<IPeriodDate>())).Returns(7);
 
-        var holidayPlan = new HolidayPlan(new List<IHolidayPeriod> { holidayPeriod1Mock.Object, holidayPeriod2Mock.Object }, collaboratorMock.Object);
+        var holidayPlan = new HolidayPlan(collaboratorMock.Object, new List<IHolidayPeriod> { holidayPeriod1Mock.Object, holidayPeriod2Mock.Object });
 
         // Act
         int totalDays = holidayPlan.GetDurationInDays(periodDateMock3.Object);

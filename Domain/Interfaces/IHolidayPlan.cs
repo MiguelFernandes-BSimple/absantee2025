@@ -9,6 +9,7 @@ public interface IHolidayPlan
     IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date);
     IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsBetweenDatesLongerThan(IPeriodDate periodDate, int days);
     public ICollaborator GetCollaborator();
+    public long GetCollaboratorId();
     int GetNumberOfHolidayDaysBetween(IPeriodDate periodDate);
     bool HasPeriodLongerThan(int days);
     public IEnumerable<IHolidayPeriod> GetHolidayPeriodsBetweenPeriod(IPeriodDate period);

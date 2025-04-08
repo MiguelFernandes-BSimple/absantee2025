@@ -3,6 +3,10 @@
 namespace Domain.Models;
 public class PeriodDate : IPeriodDate
 {
+
+
+    private long _id;
+    
     private DateOnly _initDate;
     private DateOnly _finalDate;
 
@@ -13,6 +17,17 @@ public class PeriodDate : IPeriodDate
         _initDate = initDate;
         _finalDate = finalDate;
     }
+
+    public void SetId(long id)
+    {
+        _id = id;
+    }
+
+    public long GetId()
+    {
+        return _id;
+    }
+
 
     public DateOnly GetInitDate()
     {

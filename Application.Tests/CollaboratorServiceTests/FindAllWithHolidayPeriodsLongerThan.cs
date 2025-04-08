@@ -2,7 +2,7 @@
 using Domain.IRepository;
 using Application.Services;
 using Moq;
-using Domain.IRepository;
+using System.Linq.Expressions;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
@@ -17,8 +17,10 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<ICollaborator> collaboratorDouble1 = new Mock<ICollaborator>();
             //Mock<ICollaborator> collaboratorDouble2 = new Mock<ICollaborator>();
 
+            var expected = new List<ICollaborator> { collaboratorDouble1.Object };
+
             Mock<IHolidayPlan> holidayPlanDouble1 = new Mock<IHolidayPlan>();
-            holidayPlanDouble1.Setup(p => p.GetCollaborator()).Returns(collaboratorDouble1.Object);
+            holidayPlanDouble1.Setup(p => p.GetCollaboratorId()).Returns(collaboratorDouble1.Object.GetId);
             //holidayPlanDouble1.Setup(p => p.HasPeriodLongerThan(days)).Returns(true);
 
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
@@ -26,6 +28,7 @@ namespace Application.Tests.CollaboratorServiceTests
             holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThan(days)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object });
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
+            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(expected);
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object);
 
@@ -33,7 +36,6 @@ namespace Application.Tests.CollaboratorServiceTests
             var result = collaboratorService.FindAllWithHolidayPeriodsLongerThan(days).ToList();
 
             //assert
-            var expected = new List<ICollaborator> { collaboratorDouble1.Object };
             Assert.Equal(expected, result);
         }
 

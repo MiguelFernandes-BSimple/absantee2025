@@ -12,7 +12,7 @@ namespace Infrastructure.Mapper
         public PeriodDate ToDomain(PeriodDateDataModel periodDateDM)
         {
             PeriodDate periodDate = new PeriodDate(periodDateDM._initDate, periodDateDM._finalDate);
-            
+
             return periodDate;
         }
 
@@ -21,12 +21,12 @@ namespace Infrastructure.Mapper
             return periodDateDM.Select(ToDomain);
         }
 
-        public PeriodDateDataModel ToDataModel(IPeriodDate periodDate)
+        public PeriodDateDataModel ToDataModel(PeriodDate periodDate)
         {
             return new PeriodDateDataModel(periodDate);
         }
 
-        public IEnumerable<PeriodDateDataModel> ToDataModel(IEnumerable<IPeriodDate> periodDate)
+        public IEnumerable<PeriodDateDataModel> ToDataModel(IEnumerable<PeriodDate> periodDate)
         {
             return periodDate.Select(ToDataModel);
         }
