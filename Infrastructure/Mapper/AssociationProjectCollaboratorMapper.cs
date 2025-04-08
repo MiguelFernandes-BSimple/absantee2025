@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.DataModel;
 
@@ -10,9 +11,15 @@ namespace Infrastructure.Mapper
 {
     public class AssociationProjectCollaboratorMapper
     {
+        private PeriodDateMapper _periodDateMapper;
+        public AssociationProjectCollaboratorMapper(PeriodDateMapper periodDateMapper)
+        {
+            _periodDateMapper = periodDateMapper;
+        }
+
         public AssociationProjectCollaborator ToDomain(AssociationProjectCollaboratorDataModel apcModel)
         {
-            var periodDate = new PeriodDate(apcModel.Period._initDate, apcModel.Period._finalDate);
+            IPeriodDate periodDate = _periodDateMapper.ToDomain(apcModel.Period);
             var apcDomain = new AssociationProjectCollaborator(apcModel.CollaboratorId, apcModel.ProjectId, periodDate, apcModel.Collaborator, apcModel.Project);
 
             apcDomain.SetId(apcModel.Id);
