@@ -11,9 +11,15 @@ namespace Infrastructure.Mapper
 {
     public class ProjectMapper
     {
+        private PeriodDateMapper _periodDateMapper;
+        public ProjectMapper(PeriodDateMapper periodDateMapper) 
+        {
+            _periodDateMapper = periodDateMapper;
+        }
+
         public Project ToDomain(ProjectDataModel projectDM)
         {
-            IPeriodDate periodDate = new PeriodDate(projectDM.PeriodDate._initDate, projectDM.PeriodDate._finalDate);
+            IPeriodDate periodDate = _periodDateMapper.ToDomain(projectDM.PeriodDate);
             Project proj = new Project(projectDM.Title, projectDM.Acronym, periodDate);
 
             proj.SetId(projectDM.Id);

@@ -6,12 +6,16 @@ namespace Infrastructure.Mapper
 {
     public class TrainingPeriodMapper
     {
+        private PeriodDateMapper _periodDateMapper;
+
+        public TrainingPeriodMapper(PeriodDateMapper periodDateMapper)
+        {
+            _periodDateMapper = periodDateMapper;
+        }
+
         public TrainingPeriod ToDomain(TrainingPeriodDataModel trainingPeriodDM)
         {
-            var trainingPeriodInitDate = trainingPeriodDM.PeriodDate._initDate;
-            var trainingPeriodFinalDate = trainingPeriodDM.PeriodDate._finalDate;
-
-            IPeriodDate periodDate = new PeriodDate(trainingPeriodInitDate, trainingPeriodFinalDate);
+            IPeriodDate periodDate = _periodDateMapper.ToDomain(trainingPeriodDM.PeriodDate);
             TrainingPeriod trainingPeriod = new TrainingPeriod(periodDate);
 
             trainingPeriod.SetId(trainingPeriodDM.Id);
