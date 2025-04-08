@@ -22,7 +22,8 @@ public class CollaboratorService
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public IEnumerable<ICollaborator> FindAllWithHolidayPeriodsLongerThan(int days)
     {
-        return _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThan(days).Select(p => p.GetCollaborator());
+        var collabIds = _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThan(days).Select(hp => hp.GetCollaboratorId());
+        return _collaboratorRepository.Find(c => collabIds.Contains(c.GetId()));
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período

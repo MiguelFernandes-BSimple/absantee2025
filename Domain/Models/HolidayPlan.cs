@@ -103,6 +103,11 @@ public class HolidayPlan : IHolidayPlan
         return _collaborator;
     }
 
+    public long GetCollaboratorId()
+    {
+        return _collaborator.GetId();
+    }
+
     public IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date)
     {
         return _holidaysPeriods.Where(a => a.ContainsDate(date)).FirstOrDefault();
