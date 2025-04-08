@@ -14,6 +14,6 @@ public class HolidayPeriodDataModel
     public HolidayPeriodDataModel(HolidayPeriod holidayPeriod)
     {
         Id = holidayPeriod.GetId();
-        PeriodDate = new PeriodDateDataModel(holidayPeriod.GetPeriodDate());
+        PeriodDate = new PeriodDateDataModel((PeriodDate)holidayPeriod.GetPeriodDate());
     }
 }
