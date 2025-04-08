@@ -46,6 +46,12 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
         }
     }
 
+    public async Task<bool> AddAsync(IAssociationProjectCollaborator newAssociation)
+    {
+        var result = Add(newAssociation);
+        return await Task.FromResult(result);
+    }
+
     private bool CheckInputValue(List<IAssociationProjectCollaborator> associationsProjectCollaborator)
     {
         for (int i = 0; i < associationsProjectCollaborator.Count - 1; i++)
