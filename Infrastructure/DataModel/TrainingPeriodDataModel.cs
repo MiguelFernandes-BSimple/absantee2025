@@ -9,5 +9,11 @@ namespace Infrastructure.DataModel
         public TrainingPeriodDataModel()
         {
         }
+
+        public TrainingPeriodDataModel(TrainingPeriod trainingPeriod)
+        {
+            Id = trainingPeriod.GetId();
+            PeriodDate = new PeriodDateDataModel(trainingPeriod.GetPeriodDate());
+        }
     }
 }

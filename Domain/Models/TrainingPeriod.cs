@@ -3,7 +3,22 @@ namespace Domain.Models;
 
 public class TrainingPeriod : ITrainingPeriod
 {
+    private long _id;
     private IPeriodDate _periodDate;
+
+    public long GetId()
+    {
+        return _id;
+    }
+    public void SetId(long id)
+    {
+        _id = id;
+    }
+
+    public IPeriodDate GetPeriodDate()
+    {
+        return _periodDate;
+    }
 
     public TrainingPeriod(IPeriodDate periodDate)
     {

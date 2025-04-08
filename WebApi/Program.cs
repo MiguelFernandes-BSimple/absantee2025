@@ -13,7 +13,11 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     );
 
 builder.Services.AddTransient<ProjectMapper>();
+builder.Services.AddTransient<TrainingPeriodMapper>();
 builder.Services.AddTransient<UserMapper>();
+builder.Services.AddTransient<PeriodDateMapper>();
+builder.Services.AddTransient<PeriodDateTimeMapper>();
+builder.Services.AddTransient<ProjectManagerMapper>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
