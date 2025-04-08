@@ -87,6 +87,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return await Task.FromResult(result);
     }
 
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(long collaboratorId, IPeriodDate periodDate)
+    {
+        var holidayPlan = _holidayPlans.FirstOrDefault(h => h.HasCollaboratorId(collaboratorId));
+        return holidayPlan?.GetHolidayPeriodsBetweenPeriod(periodDate) ?? Enumerable.Empty<IHolidayPeriod>();
+    }
+
     public IEnumerable<IHolidayPlan> FindHolidayPlansWithinPeriod(IPeriodDate periodDate)
     {
         return _holidayPlans
