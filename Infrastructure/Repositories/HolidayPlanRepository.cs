@@ -142,6 +142,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return await Task.FromResult(result);
     }
 
+    public IHolidayPlan? FindHolidayPlanByCollaborator(long collaboratorId)
+    {
+        return _holidayPlans.SingleOrDefault(p => p.GetCollaboratorId() == collaboratorId);
+    }
 
     //uc22
     public IEnumerable<IHolidayPeriod> FindHolidayPeriodsByCollaborator(ICollaborator collaborator)

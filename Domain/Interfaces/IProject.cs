@@ -4,4 +4,5 @@ public interface IProject
 {
     public bool ContainsDates(IPeriodDate periodDate);
     public bool IsFinished();
+    public long GetId();
 }

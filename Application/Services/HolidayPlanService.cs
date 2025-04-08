@@ -1,9 +1,6 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 
-using Domain.Models;
-using Domain.IRepository;
-
 namespace Application.Services;
 public class HolidayPlanService
 {
@@ -17,15 +14,14 @@ public class HolidayPlanService
     }
 
     //UC16: Como gestor de projeto, quero listar quantos dias de férias um colaborador tem marcado durante um projeto
-    public int GetHolidayDaysOfCollaboratorInProject(IProject project, ICollaborator collaborator)
+    public int GetHolidayDaysOfCollaboratorInProject(long projectId, long collaboratorId)
     {
 
-        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(project, collaborator) 
-            ?? throw new Exception("A associação com os parâmetros fornecidos não existe.");
+        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(projectId, collaboratorId) ?? throw new Exception("A associação com os parâmetros fornecidos não existe.");
 
         int numberOfHolidayDays = 0;
 
-        var collaboratorHolidayPlan = _holidayPlanRepository.FindHolidayPlanByCollaborator(collaborator);
+        var collaboratorHolidayPlan = _holidayPlanRepository.FindHolidayPlanByCollaborator(collaboratorId);
 
         if (collaboratorHolidayPlan == null)
         {

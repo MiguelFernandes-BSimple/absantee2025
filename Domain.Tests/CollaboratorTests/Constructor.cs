@@ -33,7 +33,7 @@ public class Constructor
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
-        new Collaborator(user.Object, It.IsAny<IPeriodDateTime>());
+        new Collaborator(user.Object, periodDateTime.Object);
         //assert
     }
 

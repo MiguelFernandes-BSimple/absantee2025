@@ -16,6 +16,7 @@ public interface IHolidayPlanRepository
     public Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(List<ICollaborator> validCollaborators, IPeriodDate periodDate);
     public IHolidayPlan? FindHolidayPlanByCollaborator(ICollaborator collaborator);
     public Task<IHolidayPlan?> FindHolidayPlanByCollaboratorAsync(ICollaborator collaborator);
+    public IHolidayPlan? FindHolidayPlanByCollaborator(long collaboratorId);
     public IEnumerable<IHolidayPeriod> FindHolidayPeriodsByCollaborator(ICollaborator collaborator);
     public Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorAsync(ICollaborator collaborator);
     public IEnumerable<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDates(ICollaborator collaborator, IPeriodDate period);
