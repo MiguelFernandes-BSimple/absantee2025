@@ -29,8 +29,8 @@ public class Constructor
 
         // Act
         HolidayPlan holidayPlan = new HolidayPlan(
-            holidayPeriodDouble.Object,
-            collaboratorDouble.Object
+            collaboratorDouble.Object,
+            holidayPeriodDouble.Object
         );
 
         // Assert
@@ -86,7 +86,7 @@ public class Constructor
         };
 
         // Act
-        HolidayPlan holidayPlan = new HolidayPlan(holidayPeriods, collaboratorDouble.Object);
+        HolidayPlan holidayPlan = new HolidayPlan(collaboratorDouble.Object, holidayPeriods);
 
         // Assert
     }
@@ -129,7 +129,7 @@ public class Constructor
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 // Act
-                new HolidayPlan(holidayPeriods, collaboratorDouble.Object)
+                new HolidayPlan(collaboratorDouble.Object, holidayPeriods)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);
@@ -175,7 +175,7 @@ public class Constructor
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 // Act
-                new HolidayPlan(holidayPeriods, collaboratorDouble.Object)
+                new HolidayPlan(collaboratorDouble.Object, holidayPeriods)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);

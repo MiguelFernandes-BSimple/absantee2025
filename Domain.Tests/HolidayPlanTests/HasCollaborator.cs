@@ -23,7 +23,7 @@ public class HasCollaborator
 
         collaborator.Setup(c => c.Equals(collaborator.Object)).Returns(true);
 
-        var holidayPlan = new HolidayPlan(holidayPeriod.Object, collaborator.Object);
+        var holidayPlan = new HolidayPlan(collaborator.Object, holidayPeriod.Object);
 
         // Act
         var result = holidayPlan.HasCollaborator(collaborator.Object);
@@ -50,7 +50,7 @@ public class HasCollaborator
 
         holidayPeriod.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
 
-        var holidayPlan = new HolidayPlan(holidayPeriod.Object, collaborator1.Object);
+        var holidayPlan = new HolidayPlan(collaborator1.Object, holidayPeriod.Object);
 
         // Act
         var result = holidayPlan.HasCollaborator(collaborator2.Object);
