@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Interfaces;
 using Domain.Models;
 
 namespace Infrastructure.DataModel
@@ -20,6 +16,15 @@ namespace Infrastructure.DataModel
         public UserDataModel() { }
 
         public UserDataModel(User user)
+        {
+            Id = user.GetId();
+            Names = user.GetNames();
+            Surnames = user.GetSurnames();
+            Email = user.GetEmail();
+            PeriodDateTime = new PeriodDateTimeDataModel(user.GetPeriodDateTime());
+        }
+
+        public UserDataModel(IUser user)
         {
             Id = user.GetId();
             Names = user.GetNames();
