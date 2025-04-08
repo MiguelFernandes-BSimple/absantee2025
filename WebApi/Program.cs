@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     );
 
 builder.Services.AddTransient<ProjectMapper>();
+builder.Services.AddTransient<TrainingPeriodMapper>();
 builder.Services.AddTransient<UserMapper>();
 builder.Services.AddTransient<PeriodDateMapper>();
 builder.Services.AddTransient<PeriodDateTimeMapper>();
