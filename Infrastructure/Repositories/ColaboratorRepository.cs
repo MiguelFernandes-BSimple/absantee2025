@@ -54,6 +54,11 @@ public class CollaboratorRepository : ICollaboratorRepository, IGenericRepositor
         return isRepeated;
     }
 
+    public bool isRepeated(ICollaborator collaborator)
+    {
+        return IsRepeated(collaborator, _collaborators);
+    }
+
     /**
     * Method to add a single collaborator to the repository
     * Not in use right now!

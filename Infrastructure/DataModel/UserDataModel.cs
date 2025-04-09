@@ -15,15 +15,6 @@ namespace Infrastructure.DataModel
 
         public UserDataModel() { }
 
-        public UserDataModel(User user)
-        {
-            Id = user.GetId();
-            Names = user.GetNames();
-            Surnames = user.GetSurnames();
-            Email = user.GetEmail();
-            PeriodDateTime = new PeriodDateTimeDataModel(user.GetPeriodDateTime());
-        }
-
         public UserDataModel(IUser user)
         {
             Id = user.GetId();

@@ -1,11 +1,12 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
+using System.Linq.Expressions;
 
 
 namespace Infrastructure.Repositories;
 
-public class AssociationProjectCollaboratorRepository : IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepository : IAssociationProjectCollaboratorRepository, IGenericRepository<IAssociationProjectCollaborator>
 {
     private List<IAssociationProjectCollaborator> _associationsProjectCollaborator;
 
@@ -97,5 +98,48 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
     {
         var result = FindAllByProjectAndBetweenPeriod(project, periodDate);
         return await Task.FromResult(result);
+    }
+
+    public IAssociationProjectCollaborator? GetById(int id)
+    {
+        return _associationsProjectCollaborator.FirstOrDefault(a => a.GetId() == id);
+    }
+
+    public IAssociationProjectCollaborator? GetById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IAssociationProjectCollaborator> GetAll()
+    {
+        return new List<IAssociationProjectCollaborator>(_associationsProjectCollaborator);
+    }
+
+    public IEnumerable<IAssociationProjectCollaborator> Find(Expression<Func<IAssociationProjectCollaborator, bool>> expression)
+    {
+        return _associationsProjectCollaborator.Where(expression.Compile());
+    }
+
+    void IGenericRepository<IAssociationProjectCollaborator>.Add(IAssociationProjectCollaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddRange(IEnumerable<IAssociationProjectCollaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(IAssociationProjectCollaborator entity)
+    {
+        _associationsProjectCollaborator.Remove(entity);
+    }
+
+    public void RemoveRange(IEnumerable<IAssociationProjectCollaborator> entities)
+    {
+        foreach (var entity in entities)
+        {
+            _associationsProjectCollaborator.Remove(entity);
+        }
     }
 }
