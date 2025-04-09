@@ -3,6 +3,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.IRepository;
 using System.Linq;
+using Domain.Factory;
 
 namespace Application.Services;
 
@@ -11,6 +12,8 @@ public class CollaboratorService
     private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
+    private IUserRepository _userRepository;
+    private ICheckCollaboratorFactory _checkCollaboratorFactory;
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository)
     {
@@ -45,4 +48,23 @@ public class CollaboratorService
         return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
+    public bool Add(long userId, IPeriodDateTime periodDateTime)
+    {
+        var user = _userRepository.GetById((int)userId);
+        if (user == null)
+            return false;
+
+        ICollaborator colab;
+        try
+        {
+            colab = _checkCollaboratorFactory.Create(user, periodDateTime);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        _collaboratorRepository.Add(colab);
+        
+        return true;
+    }
 }

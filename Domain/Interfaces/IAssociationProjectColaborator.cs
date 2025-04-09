@@ -10,6 +10,7 @@ public interface IAssociationProjectCollaborator
     public ICollaborator GetCollaborator();
     public IPeriodDate GetPeriodDate();
     public bool HasProject(IProject project);
+    public bool HasProjectIds(long projectIds);
     public bool HasCollaborator(ICollaborator collaborator);
     public bool AssociationIntersectPeriod(IPeriodDate periodDate);
 }

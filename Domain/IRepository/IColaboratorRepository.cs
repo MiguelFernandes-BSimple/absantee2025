@@ -38,5 +38,5 @@ public interface ICollaboratorRepository : IGenericRepository<ICollaborator>
     */
     IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string name, string surname);
     Task<IEnumerable<ICollaborator>> FindAllCollaboratorsWithNameAndSurnameAsync(string name, string surname);
-
+    bool isRepeated(ICollaborator collaborator);
 }

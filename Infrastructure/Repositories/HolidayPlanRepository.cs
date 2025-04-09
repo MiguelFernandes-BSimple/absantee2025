@@ -129,6 +129,12 @@ public class HolidayPlanRepository : IHolidayPlanRepository
             .Where(hp => collaborators.Contains(hp.GetCollaborator()))
             .SelectMany(hp => hp.GetHolidayPeriodsBetweenPeriod(periodDate));
     }
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(List<long> validCollaborators, IPeriodDate periodDate)
+    {
+        return _holidayPlans
+            .Where(hp => validCollaborators.Contains(hp.GetCollaboratorId()))
+            .SelectMany(hp => hp.GetHolidayPeriodsBetweenPeriod(periodDate));
+    }
 
     public async Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(List<ICollaborator> collaborators, IPeriodDate periodDate)
     {
@@ -172,7 +178,11 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return _holidayPlans.FirstOrDefault(hp =>
             hp.HasCollaborator(collaborator))?.GetHolidayPeriodsBetweenPeriod(periodDate) ?? Enumerable.Empty<IHolidayPeriod>();
     }
-
+    public IEnumerable<IHolidayPeriod> FindHolidayPeriodsByCollaboratorBetweenDates(long collaboratorId, IPeriodDate period)
+    {
+        return _holidayPlans.FirstOrDefault(hp =>
+            hp.HasCollaboratorId(collaboratorId))?.GetHolidayPeriodsBetweenPeriod(period) ?? Enumerable.Empty<IHolidayPeriod>();
+    }
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(ICollaborator collaborator, IPeriodDate periodDate)
     {
         var result = FindHolidayPeriodsByCollaboratorBetweenDates(collaborator, periodDate);

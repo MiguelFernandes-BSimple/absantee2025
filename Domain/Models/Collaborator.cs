@@ -20,6 +20,14 @@ public class Collaborator : ICollaborator
             throw new ArgumentException("Invalid Arguments");
     }
 
+    public Collaborator(long id, long userId, IUser user, IPeriodDateTime periodDateTime)
+    {
+        _id = id;
+        _userId = userId;
+        _user = user;
+        _periodDateTime = periodDateTime;
+    }
+
     public Collaborator(long userId, IUser user, DateTime initDate) :
         this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
     {

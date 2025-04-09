@@ -101,6 +101,10 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         return this._project.Equals(project);
     }
+    public bool HasProjectIds(long projectIds)
+    {
+        return this._project.GetId() == projectIds;
+    }
 
     public bool AssociationIntersectPeriod(IPeriodDate periodDate)
     {
