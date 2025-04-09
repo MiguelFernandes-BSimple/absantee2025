@@ -11,10 +11,10 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
     public void WhenFindingHolidayPeriodsForProjectCollaborators_ThenReturnCorrectPeriods()
     {
         // Arrange
-        var projectMock = new Mock<IProject>();
-        var collaboratorMock = new Mock<ICollaborator>();
-        var collaboratorList = new List<ICollaborator>(){
-                collaboratorMock.Object
+        long projectId = 1;
+        long collaboratorId = 1;
+        var collaboratorList = new List<long>(){
+                collaboratorId
             };
 
         var periodDouble = new Mock<IPeriodDate>();
@@ -27,13 +27,13 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         associationRepoMock
             .Setup(a =>
                 a.FindAllByProjectAndBetweenPeriod(
-                    projectMock.Object,
+                    projectId,
                     periodDouble.Object
                 )
             )
             .Returns(associationsList);
 
-        associationMock.Setup(a => a.GetCollaborator()).Returns(collaboratorMock.Object);
+        associationMock.Setup(a => a.GetCollaboratorId()).Returns(collaboratorId);
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
         var expected = new List<IHolidayPeriod>() { holidayPeriodMock.Object };
@@ -43,7 +43,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
         // Act
         var result = holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
-            projectMock.Object,
+            projectId,
             periodDouble.Object
         );
 
@@ -54,10 +54,10 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
     public void WhenNoHolidayPeriodsForCollaboratorWithinInterval_ThenReturnEmptyList()
     {
         // Arrange
-        var projectMock = new Mock<IProject>();
-        var collaboratorMock = new Mock<ICollaborator>();
-        var collaboratorList = new List<ICollaborator>(){
-                collaboratorMock.Object
+        long projectId = 1;
+        long collaboratorId = 1;
+        var collaboratorList = new List<long>(){
+                collaboratorId
             };
 
         var periodDouble = new Mock<IPeriodDate>();
@@ -70,13 +70,13 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         associationRepoMock
             .Setup(a =>
                 a.FindAllByProjectAndBetweenPeriod(
-                    projectMock.Object,
+                    projectId,
                     periodDouble.Object
                 )
             )
             .Returns(associationsList);
 
-        associationMock.Setup(a => a.GetCollaborator()).Returns(collaboratorMock.Object);
+        associationMock.Setup(a => a.GetCollaboratorId()).Returns(collaboratorId);
 
         var expected = new List<IHolidayPeriod>();
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
@@ -85,7 +85,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
         // Act
         var result = holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
-            projectMock.Object,
+            projectId,
             periodDouble.Object
         );
 
