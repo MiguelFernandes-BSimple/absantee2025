@@ -1,6 +1,7 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.IRepository;
 using System.Linq;
 using Domain.Factory;
 
@@ -35,15 +36,15 @@ public class CollaboratorService
         return _collaboratorRepository.Find(c => collabIds.Contains(c.GetId()));
     }
 
-    public IEnumerable<ICollaborator> FindAllByProject(long projectId)
+    public IEnumerable<ICollaborator> FindAllByProject(IProject project)
     {
-        var collabsIds = _associationProjectCollaboratorRepository.FindAllByProject(projectId).Select(a => a.GetCollaboratorId());
+        var collabsIds = _associationProjectCollaboratorRepository.FindAllByProject(project).Select(a => a.GetCollaboratorId());
         return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
-    public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(long projectId, IPeriodDate periodDate)
+    public IEnumerable<ICollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
     {
-        var collabsIds = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(projectId, periodDate).Select(a => a.GetCollaboratorId());
+        var collabsIds = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(project, periodDate).Select(a => a.GetCollaboratorId());
         return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
