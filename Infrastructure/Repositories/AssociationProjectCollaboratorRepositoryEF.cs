@@ -181,4 +181,25 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             return null;
         }
     }
+
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(long project, IPeriodDate periodDate)
+    {
+        try
+        {
+            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
+            _context.Set<AssociationProjectCollaboratorDataModel>()
+                    .Where(a => a.ProjectId == project
+                        && a.Period._initDate <= periodDate.GetFinalDate()
+                        && periodDate.GetInitDate() <= a.Period._finalDate);
+
+            IEnumerable<IAssociationProjectCollaborator> assocs =
+                _associationProjectCollaboratorMapper.ToDomain(assocDM);
+
+            return assocs;
+        }
+        catch
+        {
+            throw;
+        }
+    }
 }
