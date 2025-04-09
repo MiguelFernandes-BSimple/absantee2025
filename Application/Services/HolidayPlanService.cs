@@ -90,6 +90,19 @@ public class HolidayPlanService
         return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaborators.ToList(), period);
 
     }
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates(
+        long projectId,
+        IPeriodDate period
+    )
+    {
+        var collaborators = _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriod(
+            projectId,
+            period
+        ).Select(a => a.GetCollaboratorId());
+
+        return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collaborators.ToList(), period);
+
+    }
     //uc22
     public int GetHolidayDaysForProjectCollaboratorBetweenDates(
         IProject project,
@@ -106,6 +119,30 @@ public class HolidayPlanService
 
         int totalHolidayDays = 0;
         var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDates(collaborator, periodDate);
+
+        foreach (var holidayColabPeriod in holidayPeriods)
+        {
+
+            totalHolidayDays += holidayColabPeriod.GetNumberOfCommonUtilDays();
+        }
+
+        return totalHolidayDays;
+    }
+    public int GetHolidayDaysForProjectCollaboratorBetweenDates(
+       long projectId,
+       long collaboratorId,
+       IPeriodDate periodDate
+   )
+    {
+        var association = _associationProjectCollaboratorRepository.FindByProjectAndCollaborator(projectId, collaboratorId);
+        if (association == null)
+        {
+            throw new Exception("No association found for the project and collaborator");
+        }
+
+
+        int totalHolidayDays = 0;
+        var holidayPeriods = _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDates(collaboratorId, periodDate);
 
         foreach (var holidayColabPeriod in holidayPeriods)
         {

@@ -38,7 +38,12 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
                 .Where(a => a.HasProject(project)
                     && a.AssociationIntersectPeriod(periodDate));
     }
-
+    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(long projectIds, IPeriodDate periodDate)
+    {
+        return _associationsProjectCollaborator
+                .Where(a => a.HasProjectIds(projectIds)
+                    && a.AssociationIntersectPeriod(periodDate));
+    }
     public bool Add(IAssociationProjectCollaborator newAssociation)
     {
         if (IsRepeated(newAssociation))
