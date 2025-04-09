@@ -102,7 +102,7 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
 
     public IAssociationProjectCollaborator? GetById(int id)
     {
-        throw new NotImplementedException();
+        return _associationsProjectCollaborator.FirstOrDefault(a => a.GetId() == id);
     }
 
     public IAssociationProjectCollaborator? GetById(Guid id)
@@ -112,12 +112,12 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
 
     public IEnumerable<IAssociationProjectCollaborator> GetAll()
     {
-        throw new NotImplementedException();
+        return new List<IAssociationProjectCollaborator>(_associationsProjectCollaborator);
     }
 
     public IEnumerable<IAssociationProjectCollaborator> Find(Expression<Func<IAssociationProjectCollaborator, bool>> expression)
     {
-        throw new NotImplementedException();
+        return _associationsProjectCollaborator.Where(expression.Compile());
     }
 
     void IGenericRepository<IAssociationProjectCollaborator>.Add(IAssociationProjectCollaborator entity)
@@ -132,11 +132,14 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
 
     public void Remove(IAssociationProjectCollaborator entity)
     {
-        throw new NotImplementedException();
+        _associationsProjectCollaborator.Remove(entity);
     }
 
     public void RemoveRange(IEnumerable<IAssociationProjectCollaborator> entities)
     {
-        throw new NotImplementedException();
+        foreach (var entity in entities)
+        {
+            _associationsProjectCollaborator.Remove(entity);
+        }
     }
 }
