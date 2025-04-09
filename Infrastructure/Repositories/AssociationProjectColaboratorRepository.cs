@@ -1,11 +1,12 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
+using System.Linq.Expressions;
 
 
 namespace Infrastructure.Repositories;
 
-public class AssociationProjectCollaboratorRepository : IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepository : IAssociationProjectCollaboratorRepository, IGenericRepository<IAssociationProjectCollaborator>
 {
     private List<IAssociationProjectCollaborator> _associationsProjectCollaborator;
 
@@ -92,5 +93,45 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
     {
         var result = FindAllByProjectAndBetweenPeriod(project, periodDate);
         return await Task.FromResult(result);
+    }
+
+    public IAssociationProjectCollaborator? GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IAssociationProjectCollaborator? GetById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IAssociationProjectCollaborator> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IAssociationProjectCollaborator> Find(Expression<Func<IAssociationProjectCollaborator, bool>> expression)
+    {
+        throw new NotImplementedException();
+    }
+
+    void IGenericRepository<IAssociationProjectCollaborator>.Add(IAssociationProjectCollaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddRange(IEnumerable<IAssociationProjectCollaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(IAssociationProjectCollaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveRange(IEnumerable<IAssociationProjectCollaborator> entities)
+    {
+        throw new NotImplementedException();
     }
 }

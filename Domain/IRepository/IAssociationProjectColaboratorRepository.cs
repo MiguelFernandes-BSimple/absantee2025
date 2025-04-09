@@ -2,7 +2,7 @@ using Domain.Interfaces;
 
 namespace Domain.IRepository;
 
-public interface IAssociationProjectCollaboratorRepository
+public interface IAssociationProjectCollaboratorRepository : IGenericRepository<IAssociationProjectCollaborator>
 {
     public IEnumerable<IAssociationProjectCollaborator> FindAllByProject(IProject project);
     public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(IProject project);
