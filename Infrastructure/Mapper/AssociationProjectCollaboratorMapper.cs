@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.DataModel;
@@ -12,18 +7,18 @@ namespace Infrastructure.Mapper
     public class AssociationProjectCollaboratorMapper
     {
         private PeriodDateMapper _periodDateMapper;
-        public AssociationProjectCollaboratorMapper(PeriodDateMapper periodDateMapper)
+        private ITrustedAssociationProjectCollaboratorFactory _trustedAssociationProjectCollaboratorFactory;
+
+        public AssociationProjectCollaboratorMapper(PeriodDateMapper periodDateMapper, ITrustedAssociationProjectCollaboratorFactory trustedAssociationProjectCollaboratorFactory)
         {
             _periodDateMapper = periodDateMapper;
+            _trustedAssociationProjectCollaboratorFactory = trustedAssociationProjectCollaboratorFactory;
         }
 
         public AssociationProjectCollaborator ToDomain(AssociationProjectCollaboratorDataModel apcModel)
         {
             IPeriodDate periodDate = _periodDateMapper.ToDomain(apcModel.Period);
-            var apcDomain = new AssociationProjectCollaborator(apcModel.CollaboratorId, apcModel.ProjectId, periodDate, apcModel.Collaborator, apcModel.Project);
-
-            apcDomain.SetId(apcModel.Id);
-
+            var apcDomain = _trustedAssociationProjectCollaboratorFactory.Create(apcModel.Id, apcModel.CollaboratorId, apcModel.ProjectId, periodDate);
             return apcDomain;
         }
 
@@ -32,12 +27,12 @@ namespace Infrastructure.Mapper
             return apcModels.Select(ToDomain);
         }
 
-        public AssociationProjectCollaboratorDataModel ToDataModel(AssociationProjectCollaborator apc)
+        public AssociationProjectCollaboratorDataModel ToDataModel(IAssociationProjectCollaborator apc)
         {
             return new AssociationProjectCollaboratorDataModel(apc);
         }
 
-        public IEnumerable<AssociationProjectCollaboratorDataModel> ToDataModel(IEnumerable<AssociationProjectCollaborator> apcs)
+        public IEnumerable<AssociationProjectCollaboratorDataModel> ToDataModel(IEnumerable<IAssociationProjectCollaborator> apcs)
         {
             return apcs.Select(ToDataModel);
         }

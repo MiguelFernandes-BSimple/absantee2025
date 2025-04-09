@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Factory;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure.Repositories;
@@ -10,25 +11,20 @@ namespace Application.Services
         private IAssociationProjectCollaboratorRepository _assocRepository;
         private ICollaboratorRepository _collaboratorRepository;
         private IProjectRepository _projectRepository;
+        private ICheckAssociationProjectCollaboratorFactory _checkAssociationProjectCollaboratorFactory;
 
-        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository)
+        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository, ICheckAssociationProjectCollaboratorFactory checkAssociationProjectCollaboratorFactory)
         {
             _assocRepository = assocRepository;
             _collaboratorRepository = collaboratorRepository;
             _projectRepository = projectRepository;
+            _checkAssociationProjectCollaboratorFactory = checkAssociationProjectCollaboratorFactory;
         }
 
-        public bool Add(IPeriodDate periodDate, long collabId, long projectId)
+        public void Add(IPeriodDate periodDate, long collabId, long projectId)
         {
-            var project = _projectRepository.GetById((int)projectId);
-            var collab = _collaboratorRepository.GetById((int)collabId);
-            if (project == null || collab == null)
-            {
-                throw new ArgumentException("Invalid Arguments");
-            }
-
-            var assoc = new AssociationProjectCollaborator(periodDate, collab, project);
-            return _assocRepository.Add(assoc);
+            var assoc = _checkAssociationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
+            _assocRepository.Add(assoc);
         }
     }
 }
