@@ -6,9 +6,16 @@ namespace Infrastructure.Mapper;
 
 public class HolidayPeriodMapper
 {
+    private PeriodDateMapper _periodDateMapper;
+
+    public HolidayPeriodMapper(PeriodDateMapper periodDateMapper)
+    {
+        _periodDateMapper = periodDateMapper;
+    }
+
     public HolidayPeriod ToDomain(HolidayPeriodDataModel holidayPeriodDM)
     {
-        IPeriodDate periodDate = new PeriodDate(holidayPeriodDM.PeriodDate._initDate, holidayPeriodDM.PeriodDate._finalDate);
+        IPeriodDate periodDate = _periodDateMapper.ToDomain(holidayPeriodDM.PeriodDate);
         HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
 
         holidayPeriod.SetId(holidayPeriodDM.Id);

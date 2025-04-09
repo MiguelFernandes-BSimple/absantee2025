@@ -8,7 +8,7 @@ public class CollaboratorDataModel
 {
     public long Id { get; set; }
     public long UserID { get; set; }
-    public User User { get; set; }
+    public UserDataModel User { get; set; }
     public PeriodDateTimeDataModel PeriodDateTime { get; set; }
 
     public CollaboratorDataModel()
@@ -18,7 +18,7 @@ public class CollaboratorDataModel
     {
         Id = collaborator.GetId();
         UserID = collaborator.GetUserId();
-        User = (User)collaborator.GetUser();
+        User = new UserDataModel(collaborator.GetUser());
         PeriodDateTime = new PeriodDateTimeDataModel(collaborator.GetPeriodDateTime());
     }
 }

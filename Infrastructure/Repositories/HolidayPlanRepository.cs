@@ -87,16 +87,21 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return await Task.FromResult(result);
     }
 
-    // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-    public IEnumerable<IHolidayPlan> FindAllCollaboratorsWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
+    public IEnumerable<IHolidayPeriod> FindAllHolidayPeriodsForCollaboratorBetweenDates(long collaboratorId, IPeriodDate periodDate)
+    {
+        var holidayPlan = _holidayPlans.FirstOrDefault(h => h.HasCollaboratorId(collaboratorId));
+        return holidayPlan?.GetHolidayPeriodsBetweenPeriod(periodDate) ?? Enumerable.Empty<IHolidayPeriod>();
+    }
+
+    public IEnumerable<IHolidayPlan> FindHolidayPlansWithinPeriod(IPeriodDate periodDate)
     {
         return _holidayPlans
             .Where(h => h.HasIntersectingHolidayPeriod(periodDate));
     }
 
-    public async Task<IEnumerable<IHolidayPlan>> FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(IPeriodDate periodDate)
+    public async Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(IPeriodDate periodDate)
     {
-        var result = FindAllCollaboratorsWithHolidayPeriodsBetweenDates(periodDate);
+        var result = FindHolidayPlansWithinPeriod(periodDate);
         return await Task.FromResult(result);
     }
 
@@ -143,6 +148,10 @@ public class HolidayPlanRepository : IHolidayPlanRepository
         return await Task.FromResult(result);
     }
 
+    public IHolidayPlan? FindHolidayPlanByCollaborator(long collaboratorId)
+    {
+        return _holidayPlans.SingleOrDefault(p => p.GetCollaboratorId() == collaboratorId);
+    }
 
     //uc22
     public IEnumerable<IHolidayPeriod> FindHolidayPeriodsByCollaborator(ICollaborator collaborator)

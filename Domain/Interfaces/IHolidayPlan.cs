@@ -14,4 +14,5 @@ public interface IHolidayPlan
     bool HasPeriodLongerThan(int days);
     public IEnumerable<IHolidayPeriod> GetHolidayPeriodsBetweenPeriod(IPeriodDate period);
     public bool HasIntersectingHolidayPeriod(IPeriodDate period);
+    public bool HasCollaboratorId(long collabId);
 }

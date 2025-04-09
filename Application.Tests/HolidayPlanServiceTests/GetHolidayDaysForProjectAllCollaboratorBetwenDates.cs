@@ -2,7 +2,6 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
-using Domain.IRepository;
 namespace Application.Tests.HolidayPlanServiceTests;
 
 public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
@@ -33,7 +32,7 @@ public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
 
         mockHolidayPlanRepo
             .Setup(repo => repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collabList, periodDouble.Object))
-            .Returns(new List<IHolidayPeriod> { 
+            .Returns(new List<IHolidayPeriod> {
                 mockHolidayPeriod1.Object,
                 mockHolidayPeriod2.Object
             });

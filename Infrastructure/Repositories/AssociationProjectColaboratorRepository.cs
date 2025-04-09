@@ -27,6 +27,11 @@ public class AssociationProjectCollaboratorRepository : IAssociationProjectColla
         return _associationsProjectCollaborator.Where(a => a.HasProject(project) && a.HasCollaborator(collaborator)).FirstOrDefault();
     }
 
+    public IAssociationProjectCollaborator? FindByProjectAndCollaborator(long projectId, long collaboratorId)
+    {
+        return _associationsProjectCollaborator.Where(a => a.GetProjectId() == projectId && a.GetCollaboratorId() == collaboratorId).FirstOrDefault();
+    }
+
     public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
     {
         return _associationsProjectCollaborator

@@ -2,7 +2,6 @@
 using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
-using Domain.IRepository;
 using Domain.Models;
 using System.Linq.Expressions;
 
@@ -16,7 +15,7 @@ namespace Application.Tests.CollaboratorServiceTests
             //arrange
             Mock<IProject> projectMock = new Mock<IProject>();
 
-            
+
             Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
             Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
 

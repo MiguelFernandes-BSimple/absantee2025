@@ -10,10 +10,18 @@ namespace Infrastructure.Mapper;
 
 public class CollaboratorMapper
 {
+    private UserMapper _userMapper;
+    private PeriodDateTimeMapper _periodDateTimeMapper;
+    public CollaboratorMapper(UserMapper userMapper, PeriodDateTimeMapper periodDateTimeMapper)
+    {
+        _userMapper = userMapper;
+        _periodDateTimeMapper = periodDateTimeMapper;
+    }
     public Collaborator ToDomain(CollaboratorDataModel collaboratorDataModel)
     {
-        var periodDateTime = new PeriodDateTime(collaboratorDataModel.PeriodDateTime._initDate, collaboratorDataModel.PeriodDateTime._finalDate);
-        var CollaboratorDomain = new Collaborator(collaboratorDataModel.User, periodDateTime);
+        IUser user = _userMapper.ToDomain(collaboratorDataModel.User);
+        IPeriodDateTime periodDateTime = _periodDateTimeMapper.ToDomain(collaboratorDataModel.PeriodDateTime);
+        var CollaboratorDomain = new Collaborator(user, periodDateTime);
         CollaboratorDomain.SetId(collaboratorDataModel.Id);
         return CollaboratorDomain;
     }

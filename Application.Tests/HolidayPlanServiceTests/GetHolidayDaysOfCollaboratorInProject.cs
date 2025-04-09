@@ -2,7 +2,7 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
-using Domain.IRepository;
+
 namespace Application.Tests.HolidayPlanServiceTests;
 
 public class GetHolidayDaysOfCollaboratorInProject
@@ -11,26 +11,28 @@ public class GetHolidayDaysOfCollaboratorInProject
     public void WhenCalculatingHolidayDaysOfCollaboratorInAProject_ThenReturnCorrectValue()
     {
         //arrange
-        Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
-        Mock<IProject> projectDouble = new Mock<IProject>();
+
+        long projectId = 1;
+        long collaboratorId = 1;
+
+        Mock<IPeriodDate> periodDouble = new Mock<IPeriodDate>();
+
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
+        associationDouble.Setup(a => a.GetPeriodDate()).Returns(periodDouble.Object);
 
-        associationDouble.Setup(a => a.GetCollaborator()).Returns(collaboratorDouble.Object);
-
-        holidayPlanDouble.Setup(hp => hp.GetCollaborator()).Returns(collaboratorDouble.Object);
-        holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(It.IsAny<IPeriodDate>())).Returns(5);
+        Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
+        holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(periodDouble.Object)).Returns(5);
 
         Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorDouble.Object)).Returns(holidayPlanDouble.Object);
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorId)).Returns(holidayPlanDouble.Object);
 
         Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object)).Returns(associationDouble.Object);
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectId, collaboratorId)).Returns(associationDouble.Object);
 
         HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
 
         //act
-        int result = service.GetHolidayDaysOfCollaboratorInProject(projectDouble.Object, collaboratorDouble.Object);
+        int result = service.GetHolidayDaysOfCollaboratorInProject(projectId, collaboratorId);
 
         //assert
         Assert.Equal(5, result);
@@ -40,20 +42,21 @@ public class GetHolidayDaysOfCollaboratorInProject
     public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectWithoutHolidayPlan_ThenReturnZero()
     {
         //arrange
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
-        Mock<IProject> projectDouble = new Mock<IProject>();
+        long projectId = 1;
+        long collaboratorId = 1;
+
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
 
         Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorDouble.Object)).Returns((IHolidayPlan?)null);
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorId)).Returns((IHolidayPlan?)null);
 
         Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectDouble.Object, collaboratorDouble.Object)).Returns(associationDouble.Object);
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectId, collaboratorId)).Returns(associationDouble.Object);
 
         HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
 
         //act
-        int result = service.GetHolidayDaysOfCollaboratorInProject(projectDouble.Object, collaboratorDouble.Object);
+        int result = service.GetHolidayDaysOfCollaboratorInProject(projectId, collaboratorId);
 
         //assert
         Assert.Equal(0, result);
@@ -64,20 +67,21 @@ public class GetHolidayDaysOfCollaboratorInProject
     {
 
         //arrange
-        Mock<IProject> projectMock = new Mock <IProject>();
-        Mock<ICollaborator> collaboratorMock = new Mock<ICollaborator>();
-        Mock<IAssociationProjectCollaboratorRepository> association = new Mock<IAssociationProjectCollaboratorRepository>();
-        Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>(); 
+        long projectId = 1;
+        long collaboratorId = 1;
 
-        association.Setup(hpr => hpr.FindByProjectAndCollaborator(projectMock.Object, collaboratorMock.Object)).Returns((IAssociationProjectCollaborator?)null);
+        Mock<IAssociationProjectCollaboratorRepository> association = new Mock<IAssociationProjectCollaboratorRepository>();
+        Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+
+        association.Setup(hpr => hpr.FindByProjectAndCollaborator(projectId, collaboratorId)).Returns((IAssociationProjectCollaborator?)null);
 
         HolidayPlanService service = new HolidayPlanService(association.Object, holidayPlanRepositoryDouble.Object);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => 
-            service.GetHolidayDaysOfCollaboratorInProject(projectMock.Object, collaboratorMock.Object));
+        var exception = Assert.Throws<Exception>(() =>
+            service.GetHolidayDaysOfCollaboratorInProject(projectId, collaboratorId));
 
         Assert.Equal("A associação com os parâmetros fornecidos não existe.", exception.Message);
-    
+
     }
 }

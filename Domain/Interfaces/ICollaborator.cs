@@ -8,7 +8,7 @@ public interface ICollaborator
     public long GetUserId();
     public IUser GetUser();
     public IPeriodDateTime GetPeriodDateTime();
-    public void SetId(long id);
+
 
     public bool ContractContainsDates(IPeriodDateTime periodDateTime);
 

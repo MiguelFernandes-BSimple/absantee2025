@@ -126,6 +126,14 @@ public class HolidayPlan : IHolidayPlan
         return false;
     }
 
+    public bool HasCollaboratorId(long collabId)
+    {
+        if (_collaborator.GetId() == collabId)
+            return true;
+
+        return false;
+    }
+
     public IHolidayPeriod? GetHolidayPeriodContainingDate(DateOnly date)
     {
         return _holidaysPeriods.Where(a => a.ContainsDate(date)).FirstOrDefault();
