@@ -2,7 +2,6 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
-using Infrastructure.Repositories;
 
 namespace Domain.Factory;
 

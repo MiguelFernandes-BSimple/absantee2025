@@ -1,31 +1,28 @@
-using Domain.Interfaces;
+using Domain.Factory.TrainingPeriodFactory;
 using Domain.Models;
 using Infrastructure.DataModel;
+using Domain.Visitor;
 
 namespace Infrastructure.Mapper
 {
     public class TrainingPeriodMapper
     {
-        private PeriodDateMapper _periodDateMapper;
 
-        public TrainingPeriodMapper(PeriodDateMapper periodDateMapper)
+        private ITrainingPeriodFactory _trainingPeriodFactory;
+
+        public TrainingPeriodMapper(ITrainingPeriodFactory trainingPeriodFactory)
         {
-            _periodDateMapper = periodDateMapper;
+            _trainingPeriodFactory = trainingPeriodFactory;
         }
 
-        public TrainingPeriod ToDomain(TrainingPeriodDataModel trainingPeriodDM)
+        public TrainingPeriod ToDomain(TrainingPeriodDataModel trainingPeriodDataModel)
         {
-            IPeriodDate periodDate = _periodDateMapper.ToDomain(trainingPeriodDM.PeriodDate);
-            TrainingPeriod trainingPeriod = new TrainingPeriod(periodDate);
-
-            trainingPeriod.SetId(trainingPeriodDM.Id);
-
-            return trainingPeriod;
+            return _trainingPeriodFactory.Create(trainingPeriodDataModel);
         }
 
-        public IEnumerable<TrainingPeriod> ToDomain(IEnumerable<TrainingPeriodDataModel> trainingPeriodsDM)
+        public IEnumerable<TrainingPeriod> ToDomain(IEnumerable<TrainingPeriodDataModel> trainingPeriodDataModels)
         {
-            return trainingPeriodsDM.Select(ToDomain);
+            return trainingPeriodDataModels.Select(ToDomain);
         }
 
         public TrainingPeriodDataModel ToDataModel(TrainingPeriod trainingPeriod)
