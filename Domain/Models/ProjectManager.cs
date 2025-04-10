@@ -19,6 +19,17 @@ public class ProjectManager : IProjectManager
             throw new ArgumentException("Invalid Arguments");
     }
 
+    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
+    {
+        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
+            return false;
+
+        if (user.IsDeactivated())
+            return false;
+
+        return true;
+    }
+
     public ProjectManager(IUser user, DateTime initDate) :
         this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
     {
@@ -41,16 +52,5 @@ public class ProjectManager : IProjectManager
     public IPeriodDateTime GetPeriodDateTime()
     {
         return _periodDateTime;
-    }
-
-    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
-    {
-        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
-            return false;
-
-        if (user.IsDeactivated())
-            return false;
-
-        return true;
     }
 }

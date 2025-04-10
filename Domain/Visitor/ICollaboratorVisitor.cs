@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models;
 
-namespace Domain.Factory
+namespace Domain.Visitor
 {
-    public interface ICheckCollaboratorFactory
+    public interface ICollaboratorVisitor
     {
-        ICollaborator Create(IUser user, IPeriodDateTime periodDateTime);
+        long Id { get; }
+        long UserID { get; }
+        PeriodDateTime PeriodDateTime { get; }
+
     }
 }

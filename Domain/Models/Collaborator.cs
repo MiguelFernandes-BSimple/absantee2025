@@ -6,33 +6,21 @@ public class Collaborator : ICollaborator
 {
     private long _id;
     private long _userId;
-    private IUser _user;
     private IPeriodDateTime _periodDateTime;
 
-    public Collaborator(IUser user, IPeriodDateTime periodDateTime)
+    public Collaborator(long userId, IPeriodDateTime periodDateTime)
     {
-        if (CheckInputFields(user, periodDateTime))
-        {
-            _periodDateTime = periodDateTime;
-            _user = user;
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
+        _periodDateTime = periodDateTime;
+        _userId = userId;
     }
 
-    public Collaborator(long id, long userId, IUser user, IPeriodDateTime periodDateTime)
+    public Collaborator(long id, long userId, IPeriodDateTime periodDateTime)
     {
         _id = id;
         _userId = userId;
-        _user = user;
         _periodDateTime = periodDateTime;
     }
 
-    public Collaborator(long userId, IUser user, DateTime initDate) :
-        this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
-    {
-        _userId = userId;
-    }
     public void SetId(long id)
     {
         _id = id;
@@ -45,24 +33,9 @@ public class Collaborator : ICollaborator
     {
         return _userId;
     }
-    public IUser GetUser()
-    {
-        return _user;
-    }
     public IPeriodDateTime GetPeriodDateTime()
     {
         return _periodDateTime;
-    }
-
-    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
-    {
-        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
-            return false;
-
-        if (user.IsDeactivated())
-            return false;
-
-        return true;
     }
 
     public bool ContractContainsDates(IPeriodDateTime periodDateTime)
@@ -70,15 +43,6 @@ public class Collaborator : ICollaborator
         return _periodDateTime.Contains(periodDateTime);
     }
 
-    public bool HasNames(string names)
-    {
-        return _user.HasNames(names);
-    }
-
-    public bool HasSurnames(string surnames)
-    {
-        return _user.HasSurnames(surnames);
-    }
 
     override public bool Equals(Object? obj)
     {
@@ -87,7 +51,7 @@ public class Collaborator : ICollaborator
         if (obj.GetType() == typeof(Collaborator))
         {
             Collaborator other = (Collaborator)obj;
-            if (_user.Equals(other._user)
+            if (_userId.Equals(other._userId)
                 && _periodDateTime.Intersects(other._periodDateTime))
                 return true;
         }

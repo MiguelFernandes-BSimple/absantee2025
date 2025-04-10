@@ -16,6 +16,22 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         _periodDate = periodDate;
     }
 
+    private bool CheckInputValues(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
+    {
+        if (!project.ContainsDates(periodDate))
+            return false;
+
+        if (project.IsFinished())
+            return false;
+
+        PeriodDateTime periodDateTime = new PeriodDateTime(periodDate);
+
+        if (!collaborator.ContractContainsDates(periodDateTime))
+            return false;
+
+        return true;
+    }
+
     public void SetId(long id)
     {
         _id = id;
@@ -41,6 +57,33 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return _periodDate;
     }
 
+<<<<<<< HEAD
+=======
+    public ICollaborator GetCollaborator()
+    {
+        return _collaborator;
+    }
+
+    public IProject GetProject()
+    {
+        return _project;
+    }
+
+    public bool HasCollaborator(ICollaborator collaborator)
+    {
+        return this._collaborator.Equals(collaborator);
+    }
+
+    public bool HasProject(IProject project)
+    {
+        return this._project.Equals(project);
+    }
+    public bool HasProjectIds(long projectIds)
+    {
+        return this._project.GetId() == projectIds;
+    }
+
+>>>>>>> 6eae424780baeafde92df33231ec6a1061358a97
     public bool AssociationIntersectPeriod(IPeriodDate periodDate)
     {
         return _periodDate.Intersects(periodDate);

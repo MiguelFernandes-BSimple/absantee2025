@@ -6,20 +6,6 @@ public class TrainingPeriod : ITrainingPeriod
     private long _id;
     private IPeriodDate _periodDate;
 
-    public long GetId()
-    {
-        return _id;
-    }
-    public void SetId(long id)
-    {
-        _id = id;
-    }
-
-    public IPeriodDate GetPeriodDate()
-    {
-        return _periodDate;
-    }
-
     public TrainingPeriod(IPeriodDate periodDate)
     {
         if (CheckInputValues(periodDate))
@@ -37,5 +23,19 @@ public class TrainingPeriod : ITrainingPeriod
             return false;
 
         return true;
+    }
+
+    public long GetId()
+    {
+        return _id;
+    }
+    public void SetId(long id)
+    {
+        _id = id;
+    }
+
+    public IPeriodDate GetPeriodDate()
+    {
+        return _periodDate;
     }
 }

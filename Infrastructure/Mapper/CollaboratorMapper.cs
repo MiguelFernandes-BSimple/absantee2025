@@ -11,23 +11,16 @@ namespace Infrastructure.Mapper;
 
 public class CollaboratorMapper
 {
-    private UserMapper _userMapper;
-    private PeriodDateTimeMapper _periodDateTimeMapper;
-    private ITrustedCollaboratorFactory _trustedCollaboratorFactory;
+    private ICollaboratorFactory _checkCollaboratorFactory;
 
-    public CollaboratorMapper(UserMapper userMapper, PeriodDateTimeMapper periodDateTimeMapper, ITrustedCollaboratorFactory trustedCollaboratorFactory)
+    public CollaboratorMapper(ICollaboratorFactory checkCollaboratorFactory)
     {
-        _userMapper = userMapper;
-        _periodDateTimeMapper = periodDateTimeMapper;
-        _trustedCollaboratorFactory = trustedCollaboratorFactory;
+        _checkCollaboratorFactory = checkCollaboratorFactory;
     }
 
     public Collaborator ToDomain(CollaboratorDataModel collaboratorDataModel)
     {
-        IUser user = _userMapper.ToDomain(collaboratorDataModel.User);
-        IPeriodDateTime periodDateTime = _periodDateTimeMapper.ToDomain(collaboratorDataModel.PeriodDateTime);
-        var CollaboratorDomain = _trustedCollaboratorFactory.Create(collaboratorDataModel.Id, collaboratorDataModel.UserID, user, periodDateTime);
-        CollaboratorDomain.SetId(collaboratorDataModel.Id);
+        var CollaboratorDomain = _checkCollaboratorFactory.Create(collaboratorDataModel);
         return CollaboratorDomain;
     }
     public CollaboratorDataModel ToDataModel(Collaborator collaborator)

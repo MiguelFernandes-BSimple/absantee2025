@@ -27,6 +27,29 @@ public class User : IUser
             throw new ArgumentException("Invalid Arguments");
     }
 
+    private bool CheckInputValues(string names, string surnames, string email, DateTime? deactivationDate)
+    {
+        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
+
+        if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
+            return false;
+
+        try
+        {
+            var emailValidator = new MailAddress(email);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        // Date validation
+        if (DateTime.Now >= deactivationDate)
+            return false;
+
+        return true;
+    }
+
     public long GetId()
     {
         return _id;
@@ -55,29 +78,6 @@ public class User : IUser
     public IPeriodDateTime GetPeriodDateTime()
     {
         return _periodDateTime;
-    }
-
-    private bool CheckInputValues(string names, string surnames, string email, DateTime? deactivationDate)
-    {
-        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
-
-        if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
-            return false;
-
-        try
-        {
-            var emailValidator = new MailAddress(email);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-
-        // Date validation
-        if (DateTime.Now >= deactivationDate)
-            return false;
-
-        return true;
     }
 
     public bool IsDeactivated()

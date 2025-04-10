@@ -21,6 +21,19 @@ public class Project : IProject
             throw new ArgumentException("Invalid Arguments");
     }
 
+    private bool CheckInputValues(string title, string acronym)
+    {
+        Regex tituloRegex = new Regex(@"^.{1,50}$");
+        Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
+
+        if (!tituloRegex.IsMatch(title) || !siglaRegex.IsMatch(acronym))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public long GetId()
     {
         return _id;
@@ -44,19 +57,6 @@ public class Project : IProject
     public IPeriodDate GetPeriodDate()
     {
         return _periodDate;
-    }
-
-    private bool CheckInputValues(string title, string acronym)
-    {
-        Regex tituloRegex = new Regex(@"^.{1,50}$");
-        Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
-
-        if (!tituloRegex.IsMatch(title) || !siglaRegex.IsMatch(acronym))
-        {
-            return false;
-        }
-
-        return true;
     }
 
     public bool ContainsDates(IPeriodDate periodDate)

@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.Visitor;
 
 namespace Domain.Factory
 {
-    public interface ITrustedCollaboratorFactory
+    public interface ICollaboratorFactory
     {
-        Collaborator Create(long id, long userId, IUser user, IPeriodDateTime periodDateTime);
+        Collaborator Create(long userId, IPeriodDateTime periodDateTime);
+        Collaborator Create(ICollaboratorVisitor visitor);
     }
 }
