@@ -1,23 +1,17 @@
 ﻿using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
-using Infrastructure.Repositories;
 
 namespace Application.Services
 {
     public class AssociationProjectCollaboratorService
     {
         private IAssociationProjectCollaboratorRepository _assocRepository;
-        private ICollaboratorRepository _collaboratorRepository;
-        private IProjectRepository _projectRepository;
-        private ICheckAssociationProjectCollaboratorFactory _checkAssociationProjectCollaboratorFactory;
+        private IAssociationProjectCollaboratorFactory _checkAssociationProjectCollaboratorFactory;
 
-        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository, ICheckAssociationProjectCollaboratorFactory checkAssociationProjectCollaboratorFactory)
+        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, IAssociationProjectCollaboratorFactory checkAssociationProjectCollaboratorFactory)
         {
             _assocRepository = assocRepository;
-            _collaboratorRepository = collaboratorRepository;
-            _projectRepository = projectRepository;
             _checkAssociationProjectCollaboratorFactory = checkAssociationProjectCollaboratorFactory;
         }
 

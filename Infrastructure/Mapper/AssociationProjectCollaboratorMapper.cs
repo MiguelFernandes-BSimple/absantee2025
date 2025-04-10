@@ -1,3 +1,4 @@
+using Domain.Factory;
 using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.DataModel;
@@ -6,19 +7,16 @@ namespace Infrastructure.Mapper
 {
     public class AssociationProjectCollaboratorMapper
     {
-        private PeriodDateMapper _periodDateMapper;
-        private ITrustedAssociationProjectCollaboratorFactory _trustedAssociationProjectCollaboratorFactory;
+        private IAssociationProjectCollaboratorFactory _associationProjectCollaboratorFactory;
 
-        public AssociationProjectCollaboratorMapper(PeriodDateMapper periodDateMapper, ITrustedAssociationProjectCollaboratorFactory trustedAssociationProjectCollaboratorFactory)
+        public AssociationProjectCollaboratorMapper(IAssociationProjectCollaboratorFactory associationProjectCollaboratorFactory)
         {
-            _periodDateMapper = periodDateMapper;
-            _trustedAssociationProjectCollaboratorFactory = trustedAssociationProjectCollaboratorFactory;
+            _associationProjectCollaboratorFactory = associationProjectCollaboratorFactory;
         }
 
         public AssociationProjectCollaborator ToDomain(AssociationProjectCollaboratorDataModel apcModel)
         {
-            IPeriodDate periodDate = _periodDateMapper.ToDomain(apcModel.Period);
-            var apcDomain = _trustedAssociationProjectCollaboratorFactory.Create(apcModel.Id, apcModel.CollaboratorId, apcModel.ProjectId, periodDate);
+            var apcDomain = _associationProjectCollaboratorFactory.Create(apcModel);
             return apcDomain;
         }
 

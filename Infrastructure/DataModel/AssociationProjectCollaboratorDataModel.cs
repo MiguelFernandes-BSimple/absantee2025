@@ -1,13 +1,14 @@
 using Domain.Interfaces;
+using Domain.Visitor;
 
 namespace Infrastructure.DataModel
 {
-    public class AssociationProjectCollaboratorDataModel
+    public class AssociationProjectCollaboratorDataModel : IAssociationProjectCollaboratorVisitor
     {
         public long Id { get; set; }
         public long CollaboratorId { get; set; }
         public long ProjectId { get; set; }
-        public PeriodDateDataModel Period { get; set; }
+        public IPeriodDate Period { get; set; }
 
         public AssociationProjectCollaboratorDataModel() { }
 
@@ -16,7 +17,7 @@ namespace Infrastructure.DataModel
             Id = apc.GetId();
             CollaboratorId = apc.GetCollaboratorId();
             ProjectId = apc.GetProjectId();
-            Period = new PeriodDateDataModel(apc.GetPeriodDate());
+            Period = apc.GetPeriodDate();
         }
     }
 }
