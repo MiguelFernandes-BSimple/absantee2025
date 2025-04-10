@@ -37,7 +37,7 @@ namespace Infrastructure.Repositories
             return _context.Set<T>().ToList();
         }
 
-        public T? GetById(int id)
+        public T? GetById(long id)
         {
             return _context.Set<T>().Find(id);
         }
@@ -87,7 +87,7 @@ namespace Infrastructure.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        async Task<T?> IGenericRepository.GetByIdAsync<T>(int id) where T : class
+        async Task<T?> IGenericRepository.GetByIdAsync<T>(long id) where T : class
         {
             return await _context.Set<T>().FindAsync(id);
         }

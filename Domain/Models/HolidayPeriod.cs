@@ -11,6 +11,13 @@ public class HolidayPeriod : IHolidayPeriod
     {
         _periodDate = periodDate;
     }
+
+    public HolidayPeriod(long id, IPeriodDate periodDate)
+    {
+        _id = id;
+        _periodDate = periodDate;
+    }
+
     public long GetId()
     {
         return _id;

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 public interface IGenericRepository<T> where T : class
 {
-    T? GetById(int id);
+    T? GetById(long id);
     T? GetById(Guid id);
     IEnumerable<T> GetAll();
     IEnumerable<T> Find(Expression<Func<T, bool>> expression);
@@ -16,7 +16,7 @@ public interface IGenericRepository<T> where T : class
 
 public interface IGenericRepository
 {
-    Task<T?> GetByIdAsync<T>(int id) where T : class;
+    Task<T?> GetByIdAsync<T>(long id) where T : class;
     Task<T?> GetByIdAsync<T>(Guid id) where T : class;
     Task<IEnumerable<T>> GetAllAsync<T>() where T : class;
     Task<IEnumerable<T>> FindAsync<T>(Expression<Func<T, bool>> expression) where T : class;

@@ -8,21 +8,13 @@ public class TrainingPeriod : ITrainingPeriod
 
     public TrainingPeriod(IPeriodDate periodDate)
     {
-        if (CheckInputValues(periodDate))
-        {
-            _periodDate = periodDate;
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
+        _periodDate = periodDate;
     }
 
-    private bool CheckInputValues(IPeriodDate periodDate)
+    public TrainingPeriod(long id, IPeriodDate periodDate)
     {
-
-        if (periodDate.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now)))
-            return false;
-
-        return true;
+        _id = id;
+        _periodDate = periodDate;
     }
 
     public long GetId()

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
-using Domain.IRepository;
-using Domain.Models;
+﻿using Domain.Interfaces;
 
-namespace Infrastructure.Repositories
+namespace Domain.IRepository;
+
+public interface IProjectRepository : IGenericRepository<IProject>
 {
-    public interface IProjectRepository : IGenericRepository<IProject>
-    {
-    }
 }
