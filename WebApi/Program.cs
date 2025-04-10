@@ -1,4 +1,5 @@
 using Domain.Factory;
+using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
 using Infrastructure;
 using Infrastructure.Mapper;
@@ -18,7 +19,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
-builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepository>();
+builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
 builder.Services.AddTransient<IProjectRepository, ProjectRepositoryEF>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepository>();
 
@@ -33,8 +34,7 @@ builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
 
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
-builder.Services.AddTransient<ITrustedCollaboratorFactory, TrustedCollaboratorFactory>();
-
+builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

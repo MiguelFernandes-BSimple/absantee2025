@@ -1,10 +1,11 @@
 using Domain.Models;
+using Domain.Visitor;
 namespace Infrastructure.DataModel
 {
-    public class TrainingPeriodDataModel
+    public class TrainingPeriodDataModel : ITrainingPeriodVisitor
     {
         public long Id { get; set; }
-        public PeriodDateDataModel PeriodDate { get; set; }
+        public PeriodDate PeriodDate { get; set; }
 
         public TrainingPeriodDataModel()
         {
@@ -13,7 +14,7 @@ namespace Infrastructure.DataModel
         public TrainingPeriodDataModel(TrainingPeriod trainingPeriod)
         {
             Id = trainingPeriod.GetId();
-            PeriodDate = new PeriodDateDataModel(trainingPeriod.GetPeriodDate());
+            PeriodDate = (PeriodDate)trainingPeriod.GetPeriodDate();
         }
     }
 }
