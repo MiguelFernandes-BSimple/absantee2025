@@ -20,6 +20,17 @@ public class Collaborator : ICollaborator
             throw new ArgumentException("Invalid Arguments");
     }
 
+    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
+    {
+        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
+            return false;
+
+        if (user.IsDeactivated())
+            return false;
+
+        return true;
+    }
+
     public Collaborator(long id, long userId, IUser user, IPeriodDateTime periodDateTime)
     {
         _id = id;
@@ -52,17 +63,6 @@ public class Collaborator : ICollaborator
     public IPeriodDateTime GetPeriodDateTime()
     {
         return _periodDateTime;
-    }
-
-    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
-    {
-        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
-            return false;
-
-        if (user.IsDeactivated())
-            return false;
-
-        return true;
     }
 
     public bool ContractContainsDates(IPeriodDateTime periodDateTime)
