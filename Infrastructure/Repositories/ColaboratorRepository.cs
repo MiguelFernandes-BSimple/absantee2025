@@ -17,7 +17,7 @@ public class CollaboratorRepository : ICollaboratorRepository, IGenericRepositor
     public CollaboratorRepository(List<ICollaborator> collaborators) : this()
     {
         bool isAdded = Add(collaborators);
-    
+
         if (!isAdded)
             throw new ArgumentException("Arguments are not valid!");
     }
@@ -120,9 +120,10 @@ public class CollaboratorRepository : ICollaboratorRepository, IGenericRepositor
         return await Task.FromResult(result);
     }
 
-    public ICollaborator? GetById(int id)
+    public ICollaborator? GetById(long id)
     {
-        throw new NotImplementedException();
+        var result = FindAllCollaborators().Single(c => c.GetId() == id);
+        return result;
     }
 
     public ICollaborator? GetById(Guid id)
