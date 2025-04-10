@@ -35,6 +35,8 @@ builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
 builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
+builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

@@ -42,20 +42,4 @@ public class Collaborator : ICollaborator
     {
         return _periodDateTime.Contains(periodDateTime);
     }
-
-
-    override public bool Equals(Object? obj)
-    {
-        if (obj == null) return false;
-
-        if (obj.GetType() == typeof(Collaborator))
-        {
-            Collaborator other = (Collaborator)obj;
-            if (_userId.Equals(other._userId)
-                && _periodDateTime.Intersects(other._periodDateTime))
-                return true;
-        }
-
-        return false;
-    }
 }
