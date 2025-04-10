@@ -1,3 +1,4 @@
+using Domain.Factory;
 using Domain.Interfaces;
 
 namespace Domain.Models;
@@ -6,42 +7,31 @@ public class HolidayPlan : IHolidayPlan
 {
     private long _id;
     private long _collaboratorId;
-    private ICollaborator _collaborator;
     private List<IHolidayPeriod> _holidaysPeriods;
 
-    public HolidayPlan(ICollaborator collaborator, List<IHolidayPeriod> holidaysPeriods)
+    public HolidayPlan(long collaboratorId)
     {
-        if (CheckInputValues(holidaysPeriods, collaborator))
+        this._collaboratorId = collaboratorId;
+        this._holidaysPeriods = new List<IHolidayPeriod>();
+    }
+
+    public HolidayPlan(long id, long collaboratorId)
+    {
+        this._id = id;
+        this._collaboratorId = collaboratorId;
+        this._holidaysPeriods = new List<IHolidayPeriod>();
+    }
+
+    /*     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, ICollaborator collaborador)
         {
-            this._collaborator = collaborator;
-            this._holidaysPeriods = new List<IHolidayPeriod>(holidaysPeriods);
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
-    }
+            for (int i = 0; i < periodoFerias.Count; i++)
+            {
+                if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), collaborador))
+                    return false;
+            }
 
-    public HolidayPlan(ICollaborator collaborator, IHolidayPeriod holidayPeriod)
-    {
-        this._collaborator = collaborator;
-        this._holidaysPeriods = new List<IHolidayPeriod>() { holidayPeriod };
-    }
-
-    public HolidayPlan(long collaboratorId, ICollaborator collaborator, List<IHolidayPeriod> holidaysPeriods)
-        : this(collaborator, holidaysPeriods)
-    {
-        _collaboratorId = collaboratorId;
-    }
-
-    private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, ICollaborator collaborador)
-    {
-        for (int i = 0; i < periodoFerias.Count; i++)
-        {
-            if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), collaborador))
-                return false;
-        }
-
-        return true;
-    }
+            return true;
+        } */
 
     public long GetId()
     {
@@ -58,29 +48,40 @@ public class HolidayPlan : IHolidayPlan
         return _collaboratorId;
     }
 
-    public ICollaborator GetCollaborator()
-    {
-        // Este método retorna uma referencia do objeto uma vez que, para implementar uma cópia,
-        // seriam necessários métodos auxiliares no collaborador e user.
-        // pelo que vi, existem outras alternativas, mas também implicam algumas modificações:
-        // https://www.reddit.com/r/csharp/comments/uc81wl/create_a_copy_of_an_object/
-        return _collaborator;
-    }
-
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
         return new List<IHolidayPeriod>(_holidaysPeriods);
     }
 
-    public bool AddHolidayPeriod(IHolidayPeriod holidayPeriod)
+    public bool AddHolidayPeriod(IPeriodDate periodDate)
     {
-        if (CanInsertHolidayPeriod(holidayPeriod, this._holidaysPeriods, this._collaborator))
+
+        HolidayPlanFactory factory = new HolidayPlanFactory();
+
+        if (CanInsertHolidayPeriod(periodDate, this._holidaysPeriods, this._collaboratorId))
         {
             _holidaysPeriods.Add(holidayPeriod);
             return true;
         }
         else
             return false;
+    }
+
+    private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, long collaboratorId)
+    {
+        IPeriodDate period = holidayPeriod.GetPeriodDate();
+        PeriodDateTime periodDateTime = new PeriodDateTime(period);
+
+        if (!collaboratorId.ContractContainsDates(periodDateTime))
+            return false;
+
+        foreach (IHolidayPeriod pf in holidayPeriods)
+        {
+            if (holidayPeriod.Contains(pf))
+                return false;
+        }
+
+        return true;
     }
 
     public int GetNumberOfHolidayDaysBetween(IPeriodDate periodDate)
@@ -95,34 +96,15 @@ public class HolidayPlan : IHolidayPlan
         return _holidaysPeriods.Any(period => period.IsLongerThan(days));
     }
 
-
-
-    private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, ICollaborator collaborator)
-    {
-        IPeriodDate period = holidayPeriod.GetPeriodDate();
-        PeriodDateTime periodDateTime = new PeriodDateTime(period);
-
-        if (!collaborator.ContractContainsDates(periodDateTime))
-            return false;
-
-        foreach (IHolidayPeriod pf in holidayPeriods)
-        {
-            if (holidayPeriod.Contains(pf))
-                return false;
-        }
-
-        return true;
-    }
-
     public int GetDurationInDays(IPeriodDate periodDate)
     {
         return _holidaysPeriods.Sum(hp => hp.GetInterceptionDurationInDays(periodDate));
     }
 
     // métodos utilizados no holiday plan repository
-    public bool HasCollaborator(ICollaborator collaborator)
+    public bool HasCollaborator(long collaboratorId)
     {
-        if (collaborator.Equals(_collaborator))
+        if (collaboratorId.Equals(_collaboratorId))
             return true;
 
         return false;
@@ -130,7 +112,7 @@ public class HolidayPlan : IHolidayPlan
 
     public bool HasCollaboratorId(long collabId)
     {
-        if (_collaborator.GetId() == collabId)
+        if (_collaboratorId == collabId)
             return true;
 
         return false;
