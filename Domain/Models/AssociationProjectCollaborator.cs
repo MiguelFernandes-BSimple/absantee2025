@@ -16,22 +16,6 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         _periodDate = periodDate;
     }
 
-    private bool CheckInputValues(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
-    {
-        if (!project.ContainsDates(periodDate))
-            return false;
-
-        if (project.IsFinished())
-            return false;
-
-        PeriodDateTime periodDateTime = new PeriodDateTime(periodDate);
-
-        if (!collaborator.ContractContainsDates(periodDateTime))
-            return false;
-
-        return true;
-    }
-
     public void SetId(long id)
     {
         _id = id;
