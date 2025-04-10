@@ -2,6 +2,7 @@ namespace Domain.Interfaces;
 
 public interface IHolidayPlan
 {
+    long GetId();
     bool AddHolidayPeriod(IHolidayPeriod holidayPeriod);
     public List<IHolidayPeriod> GetHolidayPeriods();
     public int GetDurationInDays(IPeriodDate periodDate);
