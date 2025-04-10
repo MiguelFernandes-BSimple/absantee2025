@@ -9,13 +9,10 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
 {
     private ICollaboratorRepository _collaboratorRepository;
     private IProjectRepository _projectRepository;
-    private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
-
-    public AssociationProjectCollaboratorFactory(ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository, IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository)
+    public AssociationProjectCollaboratorFactory(ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository)
     {
         _collaboratorRepository = collaboratorRepository;
         _projectRepository = projectRepository;
-        _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
     }
 
     public AssociationProjectCollaborator Create(IPeriodDate periodDate, long collaboratorId, long projectId)
