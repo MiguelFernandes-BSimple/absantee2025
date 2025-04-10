@@ -12,6 +12,5 @@ public interface IAssociationProjectCollaboratorRepository : IGenericRepository<
     public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate);
     public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(long project, IPeriodDate periodDate);
     public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(IProject project, IPeriodDate periodDate);
-    public bool Add(IAssociationProjectCollaborator newAssociation);
     public Task<bool> AddAsync(IAssociationProjectCollaborator newAssociation);
 }

@@ -8,8 +8,8 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     private long _collaboratorId;
     public long _projectId;
     private IPeriodDate _periodDate;
-    private ICollaborator _collaborator;
-    private IProject _project;
+    private ICollaborator? _collaborator;
+    private IProject? _project;
 
     public AssociationProjectCollaborator(IPeriodDate periodDate, ICollaborator collaborator, IProject project)
     {
@@ -28,6 +28,14 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         _collaboratorId = collaboratorId;
         _projectId = projectId;
+    }
+
+    public AssociationProjectCollaborator(long Id, long collaboratorId, long projectId, IPeriodDate periodDate)
+    {
+        _id = Id;
+        _collaboratorId = collaboratorId;
+        _projectId = projectId;
+        _periodDate = periodDate;
     }
 
     public void SetId(long id)

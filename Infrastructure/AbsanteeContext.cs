@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models;
+﻿using Domain.Models;
 using Infrastructure.DataModel;
-using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
@@ -13,11 +7,12 @@ namespace Infrastructure
     public class AbsanteeContext : DbContext
     {
         public virtual DbSet<CollaboratorDataModel> Collaborators { get; set; }
-        public virtual DbSet<AssociationProjectCollaboratorDataModel> Associations  { get; set; }
+        public virtual DbSet<AssociationProjectCollaboratorDataModel> Associations { get; set; }
         public virtual DbSet<HolidayPlanDataModel> HolidayPlans { get; set; }
         public virtual DbSet<ProjectDataModel> Projects { get; set; }
+        public virtual DbSet<UserDataModel> Users { get; set; }
 
-        public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options) 
+        public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options)
         {
         }
 
