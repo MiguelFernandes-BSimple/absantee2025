@@ -32,6 +32,17 @@ public class HolidayPlan : IHolidayPlan
         _collaboratorId = collaboratorId;
     }
 
+    private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, ICollaborator collaborador)
+    {
+        for (int i = 0; i < periodoFerias.Count; i++)
+        {
+            if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), collaborador))
+                return false;
+        }
+
+        return true;
+    }
+
     public long GetId()
     {
         return _id;
@@ -84,16 +95,7 @@ public class HolidayPlan : IHolidayPlan
         return _holidaysPeriods.Any(period => period.IsLongerThan(days));
     }
 
-    private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, ICollaborator collaborador)
-    {
-        for (int i = 0; i < periodoFerias.Count; i++)
-        {
-            if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), collaborador))
-                return false;
-        }
 
-        return true;
-    }
 
     private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, ICollaborator collaborator)
     {
