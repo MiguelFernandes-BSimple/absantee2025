@@ -7,7 +7,7 @@ namespace Infrastructure.DataModel;
 public class ProjectManagerDataModel
 {
     public long Id { get; set; }
-    public UserDataModel User { get; set; }
+    public long UserId { get; set; }
     public PeriodDateTimeDataModel PeriodDateTime { get; set; }
 
     public ProjectManagerDataModel() { }
@@ -15,7 +15,7 @@ public class ProjectManagerDataModel
     public ProjectManagerDataModel(ProjectManager projectManager)
     {
         Id = projectManager.GetId();
-        User = new UserDataModel(projectManager.GetUser());
+        UserId = projectManager.GetUserId();
         PeriodDateTime = new PeriodDateTimeDataModel(projectManager.GetPeriodDateTime());
     }
 }

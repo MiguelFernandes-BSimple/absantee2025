@@ -6,21 +6,18 @@ using Infrastructure.DataModel;
 
 public class ProjectManagerMapper
 {
-    private UserMapper _userMapper;
     private PeriodDateTimeMapper _periodDateTimeMapper;
 
-    public ProjectManagerMapper(UserMapper userMapper, PeriodDateTimeMapper periodDateTimeMapper)
+    public ProjectManagerMapper(PeriodDateTimeMapper periodDateTimeMapper)
     {
-        _userMapper = userMapper;
         _periodDateTimeMapper = periodDateTimeMapper;
     }
 
     public ProjectManager ToDomain(ProjectManagerDataModel projectManagerDM)
     {
-        IUser user = _userMapper.ToDomain(projectManagerDM.User);
         IPeriodDateTime periodDateTime = _periodDateTimeMapper.ToDomain(projectManagerDM.PeriodDateTime);
 
-        ProjectManager projectManager = new ProjectManager(user, periodDateTime);
+        ProjectManager projectManager = new ProjectManager(projectManagerDM.UserId, periodDateTime);
 
         projectManager.SetId(projectManagerDM.Id);
 
