@@ -13,7 +13,7 @@ public class CollaboratorService
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
-    private ICheckCollaboratorFactory _checkCollaboratorFactory;
+    private ICollaboratorFactory _checkCollaboratorFactory;
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository)
     {
@@ -50,14 +50,10 @@ public class CollaboratorService
 
     public bool Add(long userId, IPeriodDateTime periodDateTime)
     {
-        var user = _userRepository.GetById((int)userId);
-        if (user == null)
-            return false;
-
         ICollaborator colab;
         try
         {
-            colab = _checkCollaboratorFactory.Create(user, periodDateTime);
+            colab = _checkCollaboratorFactory.Create(userId, periodDateTime);
         }
         catch (Exception)
         {
