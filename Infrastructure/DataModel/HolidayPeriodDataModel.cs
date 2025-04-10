@@ -7,13 +7,11 @@ namespace Infrastructure.DataModel;
 public class HolidayPeriodDataModel
 {
     public long Id { get; set; }
-    public PeriodDateDataModel PeriodDate { get; set; }
-
-    public HolidayPeriodDataModel() { }
+    public PeriodDate PeriodDate { get; set; }
 
     public HolidayPeriodDataModel(HolidayPeriod holidayPeriod)
     {
         Id = holidayPeriod.GetId();
-        PeriodDate = new PeriodDateDataModel(holidayPeriod.GetPeriodDate());
+        PeriodDate = (PeriodDate)holidayPeriod.GetPeriodDate();
     }
 }
