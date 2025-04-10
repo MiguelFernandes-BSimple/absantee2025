@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.Models;
+using Domain.Visitor;
 namespace Infrastructure.DataModel;
-public class CollaboratorDataModel
+public class CollaboratorDataModel : ICollaboratorVisitor
 {
     public long Id { get; set; }
     public long UserID { get; set; }
-    public UserDataModel User { get; set; }
-    public PeriodDateTimeDataModel PeriodDateTime { get; set; }
+    public PeriodDateTime PeriodDateTime { get; set; }
 
     public CollaboratorDataModel()
     {
@@ -18,7 +19,6 @@ public class CollaboratorDataModel
     {
         Id = collaborator.GetId();
         UserID = collaborator.GetUserId();
-        User = new UserDataModel(collaborator.GetUser());
-        PeriodDateTime = new PeriodDateTimeDataModel(collaborator.GetPeriodDateTime());
+        PeriodDateTime = (PeriodDateTime)collaborator.GetPeriodDateTime();
     }
 }

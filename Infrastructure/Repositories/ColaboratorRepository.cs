@@ -30,17 +30,20 @@ public class CollaboratorRepository : ICollaboratorRepository, IGenericRepositor
 
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithName(string names)
     {
-        return _collaborators.Where(c => c.HasNames(names));
+        //return _collaborators.Where(c => c.HasNames(names));
+        throw new NotImplementedException();
     }
 
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithSurname(string surnames)
     {
-        return _collaborators.Where(c => c.HasSurnames(surnames));
+        //return _collaborators.Where(c => c.HasSurnames(surnames));
+        throw new NotImplementedException();
     }
 
     public IEnumerable<ICollaborator> FindAllCollaboratorsWithNameAndSurname(string names, string surnames)
     {
-        return _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
+        //return _collaborators.Where(c => c.HasNames(names) && c.HasSurnames(surnames));
+        throw new NotImplementedException();
     }
 
     /**

@@ -9,15 +9,15 @@ public class Constructor
     public void WhenCreatingCollaboratorWithValidPeriod_ThenCollaboratorIsCreatedCorrectly()
     {
         //arrange
-        Mock<IUser> user = new Mock<IUser>();
-        user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
-        user.Setup(u => u.IsDeactivated()).Returns(false);
+        //Mock<IUser> user = new Mock<IUser>();
+        //user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
+        //user.Setup(u => u.IsDeactivated()).Returns(false);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
-        new Collaborator(user.Object, periodDateTime.Object);
+        new Collaborator(It.IsAny<long>(), periodDateTime.Object);
         //assert
     }
 
@@ -33,7 +33,7 @@ public class Constructor
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         //act
-        new Collaborator(user.Object, periodDateTime.Object);
+        new Collaborator(It.IsAny<long>(), periodDateTime.Object);
         //assert
     }
 
@@ -52,7 +52,7 @@ public class Constructor
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new Collaborator(user.Object, periodDateTime.Object)
+                new Collaborator(It.IsAny<long>(), periodDateTime.Object)
         );
         Assert.Equal("Invalid Arguments", exception.Message);
     }

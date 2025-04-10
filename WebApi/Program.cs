@@ -32,7 +32,7 @@ builder.Services.AddTransient<ProjectManagerMapper>();
 builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
 
 //Factories
-builder.Services.AddTransient<ICheckCollaboratorFactory, CheckCollaboratorFactory>();
+builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
 builder.Services.AddTransient<ITrustedCollaboratorFactory, TrustedCollaboratorFactory>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
