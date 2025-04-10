@@ -34,13 +34,13 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(IProject project)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(long projectId)
     {
         try
         {
             IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
                 await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == project.GetId())
+                              .Where(a => a.ProjectId == projectId)
                               .ToListAsync();
 
             IEnumerable<IAssociationProjectCollaborator> assocs =
@@ -54,13 +54,13 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(IProject project, ICollaborator collaborator)
+    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(long projectId, long collaboratorId)
     {
         try
         {
             AssociationProjectCollaboratorDataModel? assocDM =
                 await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == project.GetId() && a.CollaboratorId == collaborator.GetId())
+                              .Where(a => a.ProjectId == projectId && a.CollaboratorId == collaboratorId)
                               .FirstOrDefaultAsync();
 
             if (assocDM == null)
@@ -76,121 +76,16 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(IProject project, IPeriodDate periodDate)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, IPeriodDate periodDate)
     {
         try
         {
             IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
                 await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == project.GetId()
-                                    && a.Period._initDate <= periodDate.GetFinalDate()
-                                    && periodDate.GetInitDate() <= a.Period._finalDate)
+                              .Where(a => a.ProjectId == projectId
+                                    && a.Period.GetInitDate() <= periodDate.GetFinalDate()
+                                    && periodDate.GetInitDate() <= a.Period.GetFinalDate())
                               .ToListAsync();
-
-            IEnumerable<IAssociationProjectCollaborator> assocs =
-                _associationProjectCollaboratorMapper.ToDomain(assocDM);
-
-            return assocs;
-        }
-        catch
-        {
-            throw;
-        }
-    }
-
-    public IEnumerable<IAssociationProjectCollaborator> FindAllByProject(IProject project)
-    {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
-                _context.Set<AssociationProjectCollaboratorDataModel>()
-                        .Where(a => a.ProjectId == project.GetId());
-
-            IEnumerable<IAssociationProjectCollaborator> assocs =
-                _associationProjectCollaboratorMapper.ToDomain(assocDM);
-
-            return assocs;
-        }
-        catch
-        {
-            throw;
-        }
-    }
-
-    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(IProject project, IPeriodDate periodDate)
-    {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
-            _context.Set<AssociationProjectCollaboratorDataModel>()
-                    .Where(a => a.ProjectId == project.GetId()
-                        && a.Period._initDate <= periodDate.GetFinalDate()
-                        && periodDate.GetInitDate() <= a.Period._finalDate);
-
-            IEnumerable<IAssociationProjectCollaborator> assocs =
-                _associationProjectCollaboratorMapper.ToDomain(assocDM);
-
-            return assocs;
-        }
-        catch
-        {
-            throw;
-        }
-    }
-
-    public IAssociationProjectCollaborator? FindByProjectAndCollaborator(IProject project, ICollaborator collaborator)
-    {
-        try
-        {
-            AssociationProjectCollaboratorDataModel? assocDM =
-                _context.Set<AssociationProjectCollaboratorDataModel>()
-                        .Where(a => a.ProjectId == project.GetId() && a.CollaboratorId == collaborator.GetId())
-                        .FirstOrDefault();
-
-            if (assocDM == null)
-                return null;
-
-            IAssociationProjectCollaborator result = _associationProjectCollaboratorMapper.ToDomain(assocDM);
-
-            return result;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    public IAssociationProjectCollaborator? FindByProjectAndCollaborator(long projectId, long collaboratorId)
-    {
-        try
-        {
-            AssociationProjectCollaboratorDataModel? assocDM =
-                _context.Set<AssociationProjectCollaboratorDataModel>()
-                        .Where(a => a.ProjectId == projectId && a.CollaboratorId == collaboratorId)
-                        .FirstOrDefault();
-
-            if (assocDM == null)
-                return null;
-
-            IAssociationProjectCollaborator result = _associationProjectCollaboratorMapper.ToDomain(assocDM);
-
-            return result;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    public IEnumerable<IAssociationProjectCollaborator> FindAllByProjectAndBetweenPeriod(long project, IPeriodDate periodDate)
-    {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
-            _context.Set<AssociationProjectCollaboratorDataModel>()
-                    .Where(a => a.ProjectId == project
-                        && a.Period._initDate <= periodDate.GetFinalDate()
-                        && periodDate.GetInitDate() <= a.Period._finalDate);
 
             IEnumerable<IAssociationProjectCollaborator> assocs =
                 _associationProjectCollaboratorMapper.ToDomain(assocDM);
