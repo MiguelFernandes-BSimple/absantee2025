@@ -1,5 +1,7 @@
+using Domain.Factory.TrainingPeriodFactory;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.Visitor;
 using Moq;
 namespace Domain.Tests.TrainingPeriodTests;
 
@@ -15,10 +17,13 @@ public class Constructor
         // It's in the future
         periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(false);
 
+        TrainingPeriodFactory factory = new TrainingPeriodFactory();
+
         //Act
-        new TrainingPeriod(periodDate.Object);
+        factory.Create(periodDate.Object);
 
         //Assert
+
     }
 
     [Fact]
@@ -30,13 +35,32 @@ public class Constructor
         // when init date is smaller than DateOnly(DateTime.Now)
         periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(true);
 
+        TrainingPeriodFactory factory = new TrainingPeriodFactory();
+
+
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                new TrainingPeriod(periodDate.Object)
+                factory.Create(periodDate.Object)
+
         );
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Period date cannot start in the past.", exception.Message);
+    }
+
+    [Fact]
+    public void WhenPassingVisitor_ThenCreateTrainingPeriod()
+    {
+        //arrange
+        var visitor = new Mock<ITrainingPeriodVisitor>();
+        visitor.Setup(v => v.PeriodDate).Returns(It.IsAny<PeriodDate>());
+
+        var factory = new TrainingPeriodFactory();
+
+        //act
+        factory.Create(visitor.Object);
+
+        //assert
     }
 }
