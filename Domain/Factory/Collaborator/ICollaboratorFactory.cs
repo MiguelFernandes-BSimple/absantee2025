@@ -7,11 +7,10 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 
-namespace Domain.Factory
+namespace Domain.Factory;
+public interface ICollaboratorFactory
 {
-    public interface ICollaboratorFactory
-    {
-        Collaborator Create(long userId, IPeriodDateTime periodDateTime);
-        Collaborator Create(ICollaboratorVisitor visitor);
-    }
+    Collaborator Create(long userId, IPeriodDateTime periodDateTime);
+    Collaborator Create(ICollaboratorVisitor visitor);
 }
+

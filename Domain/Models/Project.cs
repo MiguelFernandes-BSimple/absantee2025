@@ -11,28 +11,11 @@ public class Project : IProject
 
     public Project(string title, string acronym, IPeriodDate periodDate)
     {
-        if (CheckInputValues(title, acronym))
-        {
-            this._title = title;
-            this._acronym = acronym;
-            this._periodDate = periodDate;
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
+        this._title = title;
+        this._acronym = acronym;
+        this._periodDate = periodDate;
     }
 
-    private bool CheckInputValues(string title, string acronym)
-    {
-        Regex tituloRegex = new Regex(@"^.{1,50}$");
-        Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
-
-        if (!tituloRegex.IsMatch(title) || !siglaRegex.IsMatch(acronym))
-        {
-            return false;
-        }
-
-        return true;
-    }
 
     public long GetId()
     {
