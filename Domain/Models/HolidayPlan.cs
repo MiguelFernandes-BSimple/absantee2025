@@ -22,17 +22,6 @@ public class HolidayPlan : IHolidayPlan
         this._holidaysPeriods = new List<IHolidayPeriod>();
     }
 
-    /*     private bool CheckInputValues(List<IHolidayPeriod> periodoFerias, ICollaborator collaborador)
-        {
-            for (int i = 0; i < periodoFerias.Count; i++)
-            {
-                if (!CanInsertHolidayPeriod(periodoFerias[i], periodoFerias.Skip(i + 1).ToList(), collaborador))
-                    return false;
-            }
-
-            return true;
-        } */
-
     public long GetId()
     {
         return _id;
@@ -51,37 +40,6 @@ public class HolidayPlan : IHolidayPlan
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
         return new List<IHolidayPeriod>(_holidaysPeriods);
-    }
-
-    public bool AddHolidayPeriod(IPeriodDate periodDate)
-    {
-
-        HolidayPlanFactory factory = new HolidayPlanFactory();
-
-        if (CanInsertHolidayPeriod(periodDate, this._holidaysPeriods, this._collaboratorId))
-        {
-            _holidaysPeriods.Add(holidayPeriod);
-            return true;
-        }
-        else
-            return false;
-    }
-
-    private bool CanInsertHolidayPeriod(IHolidayPeriod holidayPeriod, List<IHolidayPeriod> holidayPeriods, long collaboratorId)
-    {
-        IPeriodDate period = holidayPeriod.GetPeriodDate();
-        PeriodDateTime periodDateTime = new PeriodDateTime(period);
-
-        if (!collaboratorId.ContractContainsDates(periodDateTime))
-            return false;
-
-        foreach (IHolidayPeriod pf in holidayPeriods)
-        {
-            if (holidayPeriod.Contains(pf))
-                return false;
-        }
-
-        return true;
     }
 
     public int GetNumberOfHolidayDaysBetween(IPeriodDate periodDate)

@@ -8,4 +8,3 @@ public interface IHolidayPlanVisitor
     long CollaboratorId { get; }
     List<IHolidayPeriod> HolidayPeriods { get; }
 }
-
