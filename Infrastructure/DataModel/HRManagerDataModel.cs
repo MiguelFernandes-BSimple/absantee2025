@@ -11,11 +11,6 @@ namespace Infrastructure.DataModel
 
         public PeriodDateTime PeriodDateTime { get; set;}
 
-
-        public HRManagerDataModel()
-        {
-        }
-
         public HRManagerDataModel(HRManager hRManager)
         {
             Id = hRManager.GetId();

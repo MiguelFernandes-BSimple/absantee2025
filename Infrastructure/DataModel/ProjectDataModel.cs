@@ -16,10 +16,6 @@ namespace Infrastructure.DataModel
         public string Acronym { get; set; }
         public PeriodDate PeriodDate { get; set; }
 
-        public ProjectDataModel()
-        {
-        }
-
         public ProjectDataModel(Project project)
         {
             Id = project.GetId();

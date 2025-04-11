@@ -11,9 +11,7 @@ namespace Infrastructure.DataModel
         public string Names { get; set; }
         public string Surnames { get; set; }
         public string Email { get; set; }
-        public PeriodDateTimeDataModel PeriodDateTime { get; set; }
-
-        public UserDataModel() { }
+        public PeriodDateTime PeriodDateTime { get; set; }
 
         public UserDataModel(IUser user)
         {
@@ -21,7 +19,7 @@ namespace Infrastructure.DataModel
             Names = user.GetNames();
             Surnames = user.GetSurnames();
             Email = user.GetEmail();
-            PeriodDateTime = new PeriodDateTimeDataModel(user.GetPeriodDateTime());
+            PeriodDateTime = (PeriodDateTime)user.GetPeriodDateTime();
         }
     }
 }

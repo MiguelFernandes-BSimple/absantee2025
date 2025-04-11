@@ -30,7 +30,6 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
-            collabRepository.Setup(c => c.AddAsync(It.IsAny<ICollaborator>())).ReturnsAsync(It.IsAny<ICollaborator>());
 
             var collabFactory = new Mock<ICollaboratorFactory>();
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);

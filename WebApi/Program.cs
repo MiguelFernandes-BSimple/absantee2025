@@ -20,15 +20,13 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
-builder.Services.AddTransient<IProjectRepository, ProjectRepositoryEF>();
+builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 
 //Mappers
 builder.Services.AddTransient<ProjectMapper>();
 builder.Services.AddTransient<TrainingPeriodMapper>();
 builder.Services.AddTransient<UserMapper>();
-builder.Services.AddTransient<PeriodDateMapper>();
-builder.Services.AddTransient<PeriodDateTimeMapper>();
 builder.Services.AddTransient<ProjectManagerMapper>();
 builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
 
