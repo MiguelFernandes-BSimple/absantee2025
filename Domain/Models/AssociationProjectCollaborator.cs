@@ -45,21 +45,4 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         return _periodDate.Intersects(periodDate);
     }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj == null)
-            return false;
-
-        if (obj.GetType() == typeof(AssociationProjectCollaborator))
-        {
-            AssociationProjectCollaborator other = (AssociationProjectCollaborator)obj;
-
-            if (_collaboratorId == other._collaboratorId && _projectId == other._projectId
-                && _periodDate.Intersects(other._periodDate))
-                return true;
-        }
-
-        return false;
-    }
 }

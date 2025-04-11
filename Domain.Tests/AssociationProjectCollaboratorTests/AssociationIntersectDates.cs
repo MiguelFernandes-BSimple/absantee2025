@@ -3,31 +3,44 @@ namespace Domain.Tests.AssociationProjectCollaboratorTests;
 using Moq;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.IRepository;
+using Domain.Factory;
+
 public class AssociationIntersectDates
 {
 
     [Fact]
     public void WhenAssociationIntersectDatesReceivesValidaData_ReturnTrue()
     {
-        //arrange
-        Mock<IProject> ProjectMock = new Mock<IProject>();
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        // Arrange
+        // Get repositories
+        Mock<ICollaboratorRepository> collabRepo = new Mock<ICollaboratorRepository>();
+        Mock<IProjectRepository> projectRepo = new Mock<IProjectRepository>();
 
-        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
+        // Collaborator and Project stubs
+        Mock<ICollaborator> collab = new Mock<ICollaborator>();
+        Mock<IProject> project = new Mock<IProject>();
+        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<IPeriodDate> periodDateToIntersect = new Mock<IPeriodDate>();
 
-        ProjectMock.Setup(c => c.IsFinished()).Returns(false);
+        // Get collab and project from repos
+        collabRepo.Setup(cr => cr.GetById((int)It.IsAny<long>())).Returns(collab.Object);
+        projectRepo.Setup(pr => pr.GetById((int)It.IsAny<long>())).Returns(project.Object);
 
-        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        // All validations
+        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
+        project.Setup(p => p.IsFinished()).Returns(false);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
-        Mock<IPeriodDate> intersectionPeriod = new Mock<IPeriodDate>();
-        periodDateMock.Setup(pd => pd.Intersects(intersectionPeriod.Object)).Returns(true);
+        // Instatiate Factory
+        IAssociationProjectCollaboratorFactory factory = new AssociationProjectCollaboratorFactory(collabRepo.Object, projectRepo.Object);
 
+        AssociationProjectCollaborator assoc = factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId());
 
-        var assocProjCollab = new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
+        periodDate.Setup(pd => pd.Intersects(periodDateToIntersect.Object)).Returns(true);
 
         //act
-        bool result = assocProjCollab.AssociationIntersectPeriod(intersectionPeriod.Object);
+        bool result = assoc.AssociationIntersectPeriod(periodDateToIntersect.Object);
         //assert
         Assert.True(result);
     }
@@ -35,25 +48,35 @@ public class AssociationIntersectDates
     [Fact]
     public void WhenAssociationIntersectDatesReceivesValidaData_ReturnFalse()
     {
-        //arrange
-        Mock<IProject> ProjectMock = new Mock<IProject>();
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        // Arrange
+        // Get repositories
+        Mock<ICollaboratorRepository> collabRepo = new Mock<ICollaboratorRepository>();
+        Mock<IProjectRepository> projectRepo = new Mock<IProjectRepository>();
 
-        ProjectMock.Setup(p => p.ContainsDates(periodDateMock.Object)).Returns(true);
+        // Collaborator and Project stubs
+        Mock<ICollaborator> collab = new Mock<ICollaborator>();
+        Mock<IProject> project = new Mock<IProject>();
+        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<IPeriodDate> periodDateToIntersect = new Mock<IPeriodDate>();
 
-        ProjectMock.Setup(c => c.IsFinished()).Returns(false);
+        // Get collab and project from repos
+        collabRepo.Setup(cr => cr.GetById((int)It.IsAny<long>())).Returns(collab.Object);
+        projectRepo.Setup(pr => pr.GetById((int)It.IsAny<long>())).Returns(project.Object);
 
-        Mock<ICollaborator> CollaboradorMock = new Mock<ICollaborator>();
+        // All validations
+        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
+        project.Setup(p => p.IsFinished()).Returns(false);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
-        CollaboradorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        // Instatiate Factory
+        IAssociationProjectCollaboratorFactory factory = new AssociationProjectCollaboratorFactory(collabRepo.Object, projectRepo.Object);
 
-        Mock<IPeriodDate> intersectionPeriod = new Mock<IPeriodDate>();
-        periodDateMock.Setup(pd => pd.Intersects(intersectionPeriod.Object)).Returns(false);
+        AssociationProjectCollaborator assoc = factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId());
 
-        var assocProjCollab = new AssociationProjectCollaborator(periodDateMock.Object, CollaboradorMock.Object, ProjectMock.Object);
+        periodDate.Setup(pd => pd.Intersects(periodDateToIntersect.Object)).Returns(false);
 
         //act
-        bool result = assocProjCollab.AssociationIntersectPeriod(intersectionPeriod.Object);
+        bool result = assoc.AssociationIntersectPeriod(periodDateToIntersect.Object);
         //assert
         Assert.False(result);
     }

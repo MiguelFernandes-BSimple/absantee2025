@@ -5,34 +5,19 @@ namespace Domain.Models;
 public class ProjectManager : IProjectManager
 {
     private long _id;
-    private IUser _user;
+    private long _userId;
     private IPeriodDateTime _periodDateTime;
 
-    public ProjectManager(IUser user, IPeriodDateTime periodDateTime)
+    public ProjectManager(long userId, IPeriodDateTime periodDateTime)
     {
-        if (CheckInputFields(user, periodDateTime))
-        {
-            this._periodDateTime = periodDateTime;
-            this._user = user;
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
+        _userId = userId;
+        _periodDateTime = periodDateTime;
     }
 
-    private bool CheckInputFields(IUser user, IPeriodDateTime periodDateTime)
+    public ProjectManager(long userId, DateTime initDate)
     {
-        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
-            return false;
-
-        if (user.IsDeactivated())
-            return false;
-
-        return true;
-    }
-
-    public ProjectManager(IUser user, DateTime initDate) :
-        this(user, new PeriodDateTime(initDate, DateTime.MaxValue))
-    {
+        _userId = userId;
+        _periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
     }
 
     public long GetId()
@@ -44,9 +29,9 @@ public class ProjectManager : IProjectManager
     {
         _id = id;
     }
-    public IUser GetUser()
+    public long GetUserId()
     {
-        return _user;
+        return _userId;
     }
 
     public IPeriodDateTime GetPeriodDateTime()

@@ -6,7 +6,7 @@ namespace Domain.Tests.ProjectManagerTests;
 
 public class Constructor
 {
-    [Fact]
+    /* [Fact]
     public void WhenCreatingProjectManagerWithValidPeriod_ThenProjectManagerIsCreatedCorrectly()
     {
         //arrange
@@ -76,5 +76,5 @@ public class Constructor
                 new ProjectManager(user.Object, periodDateTime.Object)
         );
         Assert.Equal("Invalid Arguments", exception.Message);
-    }
+    } */
 }

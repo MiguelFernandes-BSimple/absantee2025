@@ -1,4 +1,3 @@
-using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -16,7 +15,7 @@ public class HolidayPlanFactory : IHolidayPlanFactory
     public HolidayPlan Create(long collaboratorId)
     {
         if (_collaboratorRepository.GetById(collaboratorId) == null)
-            return null;
+            throw new ArgumentException("Collaborator doesn't exist.");
 
         return new HolidayPlan(collaboratorId);
     }
