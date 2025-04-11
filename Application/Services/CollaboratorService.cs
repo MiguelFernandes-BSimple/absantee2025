@@ -68,30 +68,24 @@ public class CollaboratorService
         return true;
     }
 
-    public async Task<bool> HasNames(long collaboratorId, string names)
+    public async Task<IEnumerable<ICollaborator>> GetByNames(string names)
     {
-        ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
-        if (colab == null)
-            return false;
-
-        return await _userRepository.GetByNames(colab.GetUserId(), names);
+        var users = await _userRepository.GetByNames(names);
+        var userIds = users.Select(u => u.GetId());
+        return _collaboratorRepository.Find(c => userIds.Contains(c.GetUserId()));
     }
 
-    public async Task<bool> HasSurnames(long collaboratorId, string surnames)
+    public async Task<IEnumerable<ICollaborator>> GetBySurnames(string surnames)
     {
-        ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
-        if (colab == null)
-            return false;
-
-        return await _userRepository.GetBySurnames(colab.GetUserId(), surnames);
+        var users = await _userRepository.GetBySurnames(surnames);
+        var userIds = users.Select(u => u.GetId());
+        return _collaboratorRepository.Find(c => userIds.Contains(c.GetUserId()));
     }
 
-    public async Task<bool> HasNamesAndSurnames(long collaboratorId, string names, string surnames)
+    public async Task<IEnumerable<ICollaborator>> GetByNamesAndSurnames(string names, string surnames)
     {
-        ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
-        if (colab == null)
-            return false;
-
-        return await _userRepository.HasNamesAndSurnames(colab.GetUserId(), names, surnames);
+        var users = await _userRepository.GetByNamesAndSurnames(names, surnames);
+        var userIds = users.Select(u => u.GetId());
+        return _collaboratorRepository.Find(c => userIds.Contains(c.GetUserId()));
     }
 }
