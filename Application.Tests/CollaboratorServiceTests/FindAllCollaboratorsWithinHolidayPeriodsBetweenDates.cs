@@ -16,6 +16,7 @@ public class FindAllCollaboratorsWithinHolidayPeriodsBetweenDates
         // arrange
         var collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble.Setup(c => c.GetId()).Returns(1);
+        var collabsIds = new List<long>() { 1 };
 
         var periodDateDouble = new Mock<IPeriodDate>();
 
@@ -28,9 +29,10 @@ public class FindAllCollaboratorsWithinHolidayPeriodsBetweenDates
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
+        var expected = new List<ICollaborator>() { collaboratorDouble.Object };
+
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
-        collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                        .Returns(new List<ICollaborator> { collaboratorDouble.Object });
+        collabRepoDouble.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
 
         var userRepo = new Mock<IUserRepository>();
         var collabFactory = new Mock<ICollaboratorFactory>();

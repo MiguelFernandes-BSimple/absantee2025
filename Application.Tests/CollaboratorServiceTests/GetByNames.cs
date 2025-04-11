@@ -30,10 +30,14 @@ namespace Application.Tests.CollaboratorServiceTests
             {
                 userDouble1.Object, userDouble2.Object
             };
+            var userIdsList = new List<long>()
+            {
+                1, 2
+            };
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(u => u.GetByNames(It.IsAny<string>())).ReturnsAsync(userList);
-            userDouble1.Setup(u => u.GetId()).Returns(It.IsAny<long>());
-            userDouble2.Setup(u => u.GetId()).Returns(It.IsAny<long>());
+            userDouble1.Setup(u => u.GetId()).Returns(userIdsList[0]);
+            userDouble2.Setup(u => u.GetId()).Returns(userIdsList[0]);
             var collabFactory = new Mock<ICollaboratorFactory>();
 
             var expected = new List<ICollaborator>()
@@ -43,8 +47,7 @@ namespace Application.Tests.CollaboratorServiceTests
             };
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                            .Returns(expected);
+            collabRepository.Setup(c => c.GetByIdsAsync(userIdsList)).ReturnsAsync(expected);
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
@@ -71,8 +74,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var collabFactory = new Mock<ICollaboratorFactory>();
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                            .Returns(new List<ICollaborator>());
+            collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(new List<ICollaborator>());
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
@@ -108,8 +110,8 @@ namespace Application.Tests.CollaboratorServiceTests
             var expected = new List<ICollaborator>();
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                            .Returns(expected);
+            collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(new List<ICollaborator>());
+
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 

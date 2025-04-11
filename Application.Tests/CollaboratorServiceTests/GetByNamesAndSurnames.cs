@@ -38,8 +38,7 @@ namespace Application.Tests.CollaboratorServiceTests
             };
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                            .Returns(expected);
+            collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(expected);
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
@@ -66,8 +65,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var collabFactory = new Mock<ICollaboratorFactory>();
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                            .Returns(new List<ICollaborator>());
+            collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(new List<ICollaborator>());
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
@@ -103,8 +101,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var expected = new List<ICollaborator>();
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
-                            .Returns(expected);
+            collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(expected);
 
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 

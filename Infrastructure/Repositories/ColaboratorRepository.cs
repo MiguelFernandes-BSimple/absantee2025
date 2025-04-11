@@ -48,4 +48,26 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, Collabora
         var collab = _mapper.ToDomain(collabDM);
         return collab;
     }
+
+    public async Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<long> ids)
+    {
+        var collabsDm = await this._context.Set<CollaboratorDataModel>()
+                    .Where(c => ids.Contains(c.Id))
+                    .ToListAsync();
+
+        var collabs = _mapper.ToDomain(collabsDm);
+
+        return collabs;
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<long> ids)
+    {
+        var collabsDm = await this._context.Set<CollaboratorDataModel>()
+                    .Where(c => ids.Contains(c.UserID))
+                    .ToListAsync();
+
+        var collabs = _mapper.ToDomain(collabsDm);
+
+        return collabs;
+    }
 }

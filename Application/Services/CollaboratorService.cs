@@ -27,7 +27,7 @@ public class CollaboratorService
     {
         var holidayPlans = await _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThanAsync(days);
         var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
-        return _collaboratorRepository.Find(c => collabIds.Contains(c.GetId()));
+        return await _collaboratorRepository.GetByIdsAsync(collabIds);
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
@@ -35,21 +35,21 @@ public class CollaboratorService
     {
         var holidayPlans = await _holidayPlanRepository.FindHolidayPlansWithinPeriodAsync(periodDate);
         var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
-        return _collaboratorRepository.Find(c => collabIds.Contains(c.GetId()));
+        return await _collaboratorRepository.GetByIdsAsync(collabIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> FindAllByProject(long projectId)
     {
         var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
         var collabsIds = assocs.Select(c => c.GetCollaboratorId());
-        return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
+        return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> FindAllByProjectAndBetweenPeriod(long projectId, IPeriodDate periodDate)
     {
         var collabs = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, periodDate);
         var collabsIds = collabs.Select(c => c.GetCollaboratorId());
-        return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
+        return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
 
     public async Task<bool> Add(long userId, IPeriodDateTime periodDateTime)
@@ -58,8 +58,7 @@ public class CollaboratorService
         try
         {
             colab = await _collaboratorFactory.Create(userId, periodDateTime);
-            _collaboratorRepository.Add(colab);
-            await _collaboratorRepository.SaveChangesAsync();
+            await _collaboratorRepository.AddAsync(colab);
         }
         catch (Exception)
         {
@@ -73,20 +72,20 @@ public class CollaboratorService
     {
         var users = await _userRepository.GetByNames(names);
         var userIds = users.Select(u => u.GetId());
-        return _collaboratorRepository.Find(c => userIds.Contains(c.GetUserId()));
+        return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetBySurnames(string surnames)
     {
         var users = await _userRepository.GetBySurnames(surnames);
         var userIds = users.Select(u => u.GetId());
-        return _collaboratorRepository.Find(c => userIds.Contains(c.GetUserId()));
+        return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetByNamesAndSurnames(string names, string surnames)
     {
         var users = await _userRepository.GetByNamesAndSurnames(names, surnames);
         var userIds = users.Select(u => u.GetId());
-        return _collaboratorRepository.Find(c => userIds.Contains(c.GetUserId()));
+        return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 }

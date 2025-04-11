@@ -1,8 +1,9 @@
 using Domain.Interfaces;
+using Domain.Visitor;
 
 namespace Domain.IRepository;
 
-public interface IHolidayPlanRepository : IGenericRepository<IHolidayPlan>
+public interface IHolidayPlanRepository : IGenericRepository<IHolidayPlan, IHolidayPeriodVisitor>
 {
     public bool AddHolidayPlan(IHolidayPlan holidayPlan);
     public bool CanInsertHolidayPeriod(long holidayPlanId, IHolidayPeriod periodDate);

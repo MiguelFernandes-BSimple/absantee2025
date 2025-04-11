@@ -17,20 +17,30 @@ namespace Application.Tests.CollaboratorServiceTests
             int days = 5;
 
             Mock<ICollaborator> collaboratorDouble1 = new Mock<ICollaborator>();
-            //Mock<ICollaborator> collaboratorDouble2 = new Mock<ICollaborator>();
+            Mock<ICollaborator> collaboratorDouble2 = new Mock<ICollaborator>();
+            var collabsIds = new List<long>()
+            {
+                1, 2
+            };
 
-            var expected = new List<ICollaborator> { collaboratorDouble1.Object };
+            var expected = new List<ICollaborator> { collaboratorDouble1.Object, collaboratorDouble2.Object };
 
             Mock<IHolidayPlan> holidayPlanDouble1 = new Mock<IHolidayPlan>();
-            holidayPlanDouble1.Setup(p => p.GetCollaboratorId()).Returns(collaboratorDouble1.Object.GetId);
-            //holidayPlanDouble1.Setup(p => p.HasPeriodLongerThan(days)).Returns(true);
+            Mock<IHolidayPlan> holidayPlanDouble2 = new Mock<IHolidayPlan>();
+            var holidayPlans = new List<IHolidayPlan>()
+            {
+                holidayPlanDouble1.Object,
+                holidayPlanDouble2.Object
+            };
+            holidayPlanDouble1.Setup(p => p.GetCollaboratorId()).Returns(collabsIds[0]);
+            holidayPlanDouble2.Setup(p => p.GetCollaboratorId()).Returns(collabsIds[1]);
 
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThanAsync(days)).ReturnsAsync(new List<IHolidayPlan> { holidayPlanDouble1.Object });
+            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThanAsync(days)).ReturnsAsync(holidayPlans);
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(expected);
+            collabRepository.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
 
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();

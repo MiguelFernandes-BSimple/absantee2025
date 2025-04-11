@@ -27,8 +27,12 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IAssociationProjectCollaborator> assoc1 = new Mock<IAssociationProjectCollaborator>();
             Mock<IAssociationProjectCollaborator> assoc2 = new Mock<IAssociationProjectCollaborator>();
 
-            assoc1.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<long>());
-            assoc2.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<long>());
+            var collabsIds = new List<long>()
+            {
+                1, 2
+            };
+            assoc1.Setup(a => a.GetCollaboratorId()).Returns(collabsIds[0]);
+            assoc2.Setup(a => a.GetCollaboratorId()).Returns(collabsIds[1]);
 
             List<IAssociationProjectCollaborator> associations = new List<IAssociationProjectCollaborator>()
             {
@@ -42,7 +46,7 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
 
-            collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(expected);
+            collabRepository.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
 
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
