@@ -16,6 +16,44 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         _associationProjectCollaboratorMapper = associationProjectCollaboratorMapper;
     }
 
+    public override IAssociationProjectCollaborator? GetById(long id)
+    {
+        try
+        {
+            var assocDM = _context.Set<AssociationProjectCollaboratorDataModel>()
+                                  .FirstOrDefault(a => a.Id == id);
+
+            if (assocDM == null)
+                return null;
+
+            var assoc = _associationProjectCollaboratorMapper.ToDomain(assocDM);
+            return assoc;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public override async Task<IAssociationProjectCollaborator?> GetByIdAsync(long id)
+    {
+        try
+        {
+            var assocDM = await _context.Set<AssociationProjectCollaboratorDataModel>()
+                                  .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (assocDM == null)
+                return null;
+
+            var assoc = _associationProjectCollaboratorMapper.ToDomain(assocDM);
+            return assoc;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(long projectId)
     {
         try
@@ -78,10 +116,5 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         {
             throw;
         }
-    }
-
-    public override IAssociationProjectCollaborator? GetById(long id)
-    {
-        throw new NotImplementedException();
     }
 }

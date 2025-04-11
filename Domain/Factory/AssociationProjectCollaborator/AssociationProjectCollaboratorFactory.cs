@@ -20,8 +20,8 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
     public async Task<AssociationProjectCollaborator> Create(IPeriodDate periodDate, long collaboratorId, long projectId)
     {
         // Checking if input values are valid
-        ICollaborator? collaborator = _collaboratorRepository.GetById((int)collaboratorId);
-        IProject? project = _projectRepository.GetById((int)projectId);
+        ICollaborator? collaborator = _collaboratorRepository.GetById(collaboratorId);
+        IProject? project = _projectRepository.GetById(projectId);
 
         if (collaborator == null || project == null)
             throw new ArgumentException("Invalid arguments");
