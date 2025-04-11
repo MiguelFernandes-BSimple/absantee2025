@@ -1,6 +1,7 @@
 using Domain.Models;
 using Domain.Interfaces;
 using Moq;
+using Domain.IRepository;
 
 namespace Domain.Tests.HolidayPlanTests;
 
@@ -32,15 +33,7 @@ public class HasPeriodLongerThan
             .Setup(p => p.Contains(It.IsAny<IHolidayPeriod>()))
             .Returns(false);
 
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
-        collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
-            .Returns(true);
-
-        IHolidayPlan holidayPlan = new HolidayPlan(
-            collaboratorDouble.Object,
-            new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object }
-        );
+        var holidayPlan = new HolidayPlan(It.IsAny<long>(), new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object });
 
         //act
         bool result = holidayPlan.HasPeriodLongerThan(5);
@@ -76,7 +69,7 @@ public class HasPeriodLongerThan
             .Returns(true);
 
         IHolidayPlan holidayPlan = new HolidayPlan(
-            collaboratorDouble.Object,
+            It.IsAny<long>(),
             new List<IHolidayPeriod> { holidayPeriodDouble1.Object, holidayPeriodDouble2.Object }
         );
 

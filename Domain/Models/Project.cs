@@ -9,8 +9,9 @@ public class Project : IProject
     private string _acronym;
     private IPeriodDate _periodDate;
 
-    public Project(string title, string acronym, IPeriodDate periodDate)
+    public Project(long id, string title, string acronym, IPeriodDate periodDate)
     {
+        this._id = id;
         this._title = title;
         this._acronym = acronym;
         this._periodDate = periodDate;

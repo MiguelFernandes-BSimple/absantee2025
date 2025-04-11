@@ -10,7 +10,7 @@ public class ContainsDates
     {
         //arrange
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
+        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
         Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
         periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(true);
@@ -27,7 +27,7 @@ public class ContainsDates
     {
         //arrange
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
+        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
         Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
         periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(false);

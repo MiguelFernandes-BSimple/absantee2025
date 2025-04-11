@@ -51,12 +51,8 @@ public class GetNumberOfHolidayDaysBetween
             holidayPeriods.Add(holidayPeriodDouble.Object);
         }
 
-        var collaboratorDouble = new Mock<ICollaborator>();
-        collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
-            .Returns(true);
 
-        var holidayPlan = new HolidayPlan(collaboratorDouble.Object, holidayPeriods);
+        var holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
 
         var periodDateDouble = new Mock<IPeriodDate>();
 

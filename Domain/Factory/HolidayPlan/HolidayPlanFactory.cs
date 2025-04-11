@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -12,16 +13,16 @@ public class HolidayPlanFactory : IHolidayPlanFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPlan Create(long collaboratorId)
+    public HolidayPlan Create(long collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
         if (_collaboratorRepository.GetById(collaboratorId) == null)
             throw new ArgumentException("Collaborator doesn't exist.");
 
-        return new HolidayPlan(collaboratorId);
+        return new HolidayPlan(collaboratorId, holidayPeriods);
     }
 
     public HolidayPlan Create(IHolidayPlanVisitor visitor)
     {
-        return new HolidayPlan(visitor.Id, visitor.CollaboratorId);
+        return new HolidayPlan(visitor.Id, visitor.CollaboratorId, visitor.HolidayPeriods);
     }
 }

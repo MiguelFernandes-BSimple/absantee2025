@@ -14,7 +14,7 @@ public class IsFinished
 
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
         periodDateMock.Setup(p => p.IsFinalDateSmallerThan(It.IsAny<DateOnly>())).Returns(true);
-        Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
+        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
         //act
         bool result = project.IsFinished();
@@ -30,7 +30,7 @@ public class IsFinished
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
         periodDateMock.Setup(p => p.IsFinalDateSmallerThan(It.IsAny<DateOnly>())).Returns(false);
 
-        Project project = new Project("Titulo 1", "T1", periodDateMock.Object);
+        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
         //act
         bool result = project.IsFinished();
