@@ -5,5 +5,6 @@ namespace Domain.IRepository;
 
 public interface ICollaboratorRepository : IGenericRepository<ICollaborator>
 {
-    bool isRepeated(ICollaborator collaborator);
+    Task<bool> isRepeated(ICollaborator collaborator);
+    Task<ICollaborator> AddAsync(ICollaborator collaborator);
 }

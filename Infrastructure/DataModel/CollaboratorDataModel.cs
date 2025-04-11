@@ -15,7 +15,7 @@ public class CollaboratorDataModel : ICollaboratorVisitor
     public CollaboratorDataModel()
     {
     }
-    public CollaboratorDataModel(Collaborator collaborator)
+    public CollaboratorDataModel(ICollaborator collaborator)
     {
         Id = collaborator.GetId();
         UserID = collaborator.GetUserId();

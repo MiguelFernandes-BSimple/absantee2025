@@ -3,13 +3,15 @@ using Domain.IRepository;
 using Application.Services;
 using Moq;
 using System.Linq.Expressions;
+using Domain.Factory;
+using System.Threading.Tasks;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
     public class FindAllWithHolidayPeriodsLongerThan
     {
         [Fact]
-        public void WhenFindingAllCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()
+        public async Task WhenFindingAllCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()
         {
             //arrange
             int days = 5;
@@ -25,36 +27,40 @@ namespace Application.Tests.CollaboratorServiceTests
 
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThan(days)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object });
+            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThanAsync(days)).ReturnsAsync(new List<IHolidayPlan> { holidayPlanDouble1.Object });
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(expected);
 
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object);
+            var userRepo = new Mock<IUserRepository>();
+            var collabFactory = new Mock<ICollaboratorFactory>();
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
             //act
-            var result = collaboratorService.FindAllWithHolidayPeriodsLongerThan(days).ToList();
+            var result = await collaboratorService.FindAllWithHolidayPeriodsLongerThan(days);
 
             //assert
-            Assert.Equal(expected, result);
+            Assert.True(expected.SequenceEqual(result));
         }
 
         [Fact]
-        public void WhenNoCollaboratorHaveHolidayPeriodLongerThan_ThenShouldReturnEmptyList()
+        public async Task WhenNoCollaboratorHaveHolidayPeriodLongerThan_ThenShouldReturnEmptyList()
         {
             //arrange
             int days = 5;
 
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThan(days)).Returns(new List<IHolidayPlan> { });
+            holidayPlanRepositoryDouble.Setup(hpr => hpr.FindAllWithHolidayPeriodsLongerThanAsync(days)).ReturnsAsync(new List<IHolidayPlan> { });
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
 
-            CollaboratorService service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object);
+            var userRepo = new Mock<IUserRepository>();
+            var collabFactory = new Mock<ICollaboratorFactory>();
+            CollaboratorService service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
             //act
-            var result = service.FindAllWithHolidayPeriodsLongerThan(days);
+            var result = await service.FindAllWithHolidayPeriodsLongerThan(days);
 
             //assert
             Assert.Empty(result);
