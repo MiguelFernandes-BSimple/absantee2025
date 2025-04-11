@@ -20,7 +20,7 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
+        collabRepo.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
@@ -44,7 +44,7 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
+        collabRepo.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
@@ -70,7 +70,7 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
+        collabRepo.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
@@ -96,7 +96,7 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
+        collabRepo.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns((IUser?)null);
 
@@ -122,7 +122,7 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(true);
+        collabRepo.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(true);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 

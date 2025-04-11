@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class AbsanteeContext : DbContext
+    public class AbsanteeContext : DbContext, IAbsanteeContext
     {
         public virtual DbSet<CollaboratorDataModel> Collaborators { get; set; }
         public virtual DbSet<AssociationProjectCollaboratorDataModel> Associations { get; set; }

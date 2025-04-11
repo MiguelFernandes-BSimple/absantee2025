@@ -32,7 +32,7 @@ namespace Domain.Factory
 
             Collaborator collab = new Collaborator(userId, periodDateTime);
 
-            if (await _collabRepository.isRepeated(collab))
+            if (await _collabRepository.IsRepeated(collab))
                 throw new ArgumentException("Collaborator already exists");
 
             return collab;
