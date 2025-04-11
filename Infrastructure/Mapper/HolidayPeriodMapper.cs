@@ -6,11 +6,8 @@ namespace Infrastructure.Mapper;
 
 public class HolidayPeriodMapper
 {
-    private PeriodDateMapper _periodDateMapper;
-
-    public HolidayPeriodMapper(PeriodDateMapper periodDateMapper)
+    public HolidayPeriodMapper()
     {
-        _periodDateMapper = periodDateMapper;
     }
 
     public HolidayPeriod ToDomain(HolidayPeriodDataModel holidayPeriodDM)
