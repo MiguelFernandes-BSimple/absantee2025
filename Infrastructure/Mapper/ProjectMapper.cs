@@ -9,12 +9,8 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Mapper
 {
-    public class ProjectMapper
+    public class ProjectMapper : IMapper<Project, ProjectDataModel>
     {
-        public ProjectMapper()
-        {
-        }
-
         public Project ToDomain(ProjectDataModel projectDM)
         {
             Project proj = new Project(projectDM.Id, projectDM.Title, projectDM.Acronym, projectDM.PeriodDate);

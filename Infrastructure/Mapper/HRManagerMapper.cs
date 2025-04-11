@@ -5,7 +5,7 @@ using Domain.Factory;
 
 namespace Infrastructure.Mapper;
 
-public class HRManagerMapper
+public class HRManagerMapper : IMapper<HRManager, HRManagerDataModel>
 {
     private IHRManagerFactory _checkHRManagerFactory;
 
@@ -33,6 +33,4 @@ public class HRManagerMapper
     {
         return hRManagers.Select(ToDataModel);
     }
-
-
 }

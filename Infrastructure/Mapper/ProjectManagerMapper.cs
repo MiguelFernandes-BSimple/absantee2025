@@ -4,20 +4,11 @@ using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.DataModel;
 
-public class ProjectManagerMapper
+public class ProjectManagerMapper : IMapper<ProjectManager, ProjectManagerDataModel>
 {
-    private PeriodDateTimeMapper _periodDateTimeMapper;
-
-    public ProjectManagerMapper(PeriodDateTimeMapper periodDateTimeMapper)
-    {
-        _periodDateTimeMapper = periodDateTimeMapper;
-    }
-
     public ProjectManager ToDomain(ProjectManagerDataModel projectManagerDM)
     {
-        IPeriodDateTime periodDateTime = _periodDateTimeMapper.ToDomain(projectManagerDM.PeriodDateTime);
-
-        ProjectManager projectManager = new ProjectManager(projectManagerDM.UserId, periodDateTime);
+        ProjectManager projectManager = new ProjectManager(projectManagerDM.UserId, projectManagerDM.PeriodDateTime);
 
         projectManager.SetId(projectManagerDM.Id);
 
