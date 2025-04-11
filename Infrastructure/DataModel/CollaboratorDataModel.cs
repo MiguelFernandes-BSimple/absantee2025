@@ -12,9 +12,6 @@ public class CollaboratorDataModel : ICollaboratorVisitor
     public long UserID { get; set; }
     public PeriodDateTime PeriodDateTime { get; set; }
 
-    public CollaboratorDataModel()
-    {
-    }
     public CollaboratorDataModel(ICollaborator collaborator)
     {
         Id = collaborator.GetId();

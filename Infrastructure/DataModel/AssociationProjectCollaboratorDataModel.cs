@@ -1,4 +1,5 @@
 using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 
 namespace Infrastructure.DataModel
@@ -8,16 +9,14 @@ namespace Infrastructure.DataModel
         public long Id { get; set; }
         public long CollaboratorId { get; set; }
         public long ProjectId { get; set; }
-        public IPeriodDate Period { get; set; }
-
-        public AssociationProjectCollaboratorDataModel() { }
+        public PeriodDate Period { get; set; }
 
         public AssociationProjectCollaboratorDataModel(IAssociationProjectCollaborator apc)
         {
             Id = apc.GetId();
             CollaboratorId = apc.GetCollaboratorId();
             ProjectId = apc.GetProjectId();
-            Period = apc.GetPeriodDate();
+            Period = (PeriodDate)apc.GetPeriodDate();
         }
     }
 }
