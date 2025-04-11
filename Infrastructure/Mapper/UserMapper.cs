@@ -9,7 +9,7 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Mapper
 {
-    public class UserMapper
+    public class UserMapper : IMapper<User, UserDataModel>
     {
         public User ToDomain(UserDataModel userDM)
         {
@@ -20,7 +20,7 @@ namespace Infrastructure.Mapper
             return user;
         }
 
-        public IEnumerable<User> ToDomain(IEnumerable<UserDataModel> usersDM) 
+        public IEnumerable<User> ToDomain(IEnumerable<UserDataModel> usersDM)
         {
             return usersDM.Select(ToDomain);
         }

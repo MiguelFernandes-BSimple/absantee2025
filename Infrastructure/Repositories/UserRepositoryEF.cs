@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepositoryEF : GenericRepository<IUser>, IUserRepository
+    public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRepository
     {
         private UserMapper _mapper;
-        public UserRepositoryEF(DbContext context, UserMapper mapper) : base(context)
+        public UserRepositoryEF(AbsanteeContext context, UserMapper mapper) : base(context, (IMapper<IUser, UserDataModel>)mapper)
         {
             _mapper = mapper;
         }
@@ -59,5 +60,26 @@ namespace Infrastructure.Repositories
             return users;
         }
 
+        public override IUser? GetById(long id)
+        {
+            var userDM = _context.Set<UserDataModel>().FirstOrDefault(c => c.Id == id);
+
+            if (userDM == null)
+                return null;
+
+            var user = _mapper.ToDomain(userDM);
+            return user;
+        }
+
+        public override async Task<IUser?> GetByIdAsync(long id)
+        {
+            var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Id == id);
+
+            if (userDM == null)
+                return null;
+
+            var user = _mapper.ToDomain(userDM);
+            return user;
+        }
     }
 }
