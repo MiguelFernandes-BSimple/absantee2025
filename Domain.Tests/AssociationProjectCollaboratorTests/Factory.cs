@@ -84,7 +84,7 @@ public class Factory
             // Act
             factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId()));
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Invalid arguments", exception.Message);
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class Factory
             // Act
             factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId()));
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Invalid arguments", exception.Message);
     }
 
     [Fact]
@@ -163,7 +163,7 @@ public class Factory
             // Act
             factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId()));
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Invalid arguments", exception.Message);
     }
 
 
@@ -204,7 +204,7 @@ public class Factory
             factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId()));
 
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Invalid arguments", exception.Message);
     }
 
     [Fact]
@@ -244,7 +244,7 @@ public class Factory
             factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId()));
 
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Invalid arguments", exception.Message);
     }
 
     [Fact]
@@ -330,7 +330,7 @@ public class Factory
             factory.Create(periodDate.Object, collab.Object.GetId(), project.Object.GetId()));
 
 
-        Assert.Equal("Invalid Arguments", exception.Message);
+        Assert.Equal("Invalid arguments", exception.Message);
     }
 
     [Fact]
