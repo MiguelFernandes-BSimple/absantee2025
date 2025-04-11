@@ -9,17 +9,18 @@ public class HolidayPlan : IHolidayPlan
     private long _collaboratorId;
     private List<IHolidayPeriod> _holidaysPeriods;
 
-    public HolidayPlan(long collaboratorId)
+    public HolidayPlan(long collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
         this._collaboratorId = collaboratorId;
-        this._holidaysPeriods = new List<IHolidayPeriod>();
+        this._holidaysPeriods = holidayPeriods;
     }
 
-    public HolidayPlan(long id, long collaboratorId)
+    public HolidayPlan(long id, long collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
         this._id = id;
         this._collaboratorId = collaboratorId;
-        this._holidaysPeriods = new List<IHolidayPeriod>();
+        this._holidaysPeriods = holidayPeriods;
+
     }
 
     public long GetId()

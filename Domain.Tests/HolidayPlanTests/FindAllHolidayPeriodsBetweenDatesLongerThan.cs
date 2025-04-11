@@ -40,7 +40,7 @@ public class FindAllHolidayPeriodsBetweenDatesLongerThan
         holidayPeriod4.Setup(a => a.GetDuration()).Returns(3);
 
         var holidayPeriods = new List<IHolidayPeriod> { holidayPeriod1.Object, holidayPeriod2.Object, holidayPeriod3.Object, holidayPeriod4.Object };
-        HolidayPlan holidayPlan = new HolidayPlan(collab.Object, holidayPeriods);
+        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
 
         var expected = new List<IHolidayPeriod>() { holidayPeriod1.Object };
         //act

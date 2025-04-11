@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
@@ -10,7 +11,7 @@ public class HasCollaborator
     {
         //Arrange
         var collaboratorId = 1;
-        var holidayPlan = new HolidayPlan(collaboratorId);
+        var holidayPlan = new HolidayPlan(collaboratorId, new List<IHolidayPeriod>());
 
         // Act
         var result = holidayPlan.HasCollaborator(collaboratorId);
@@ -24,7 +25,7 @@ public class HasCollaborator
     {
         // Arrange
         var collaboratorId = 1;
-        var holidayPlan = new HolidayPlan(collaboratorId);
+        var holidayPlan = new HolidayPlan(collaboratorId, new List<IHolidayPeriod>());
 
         // Act
         var result = holidayPlan.HasCollaborator(It.IsAny<long>());

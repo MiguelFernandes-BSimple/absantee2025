@@ -19,19 +19,18 @@ public class Constructor
         holidayPeriodDouble.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
 
         // Test double for Collaborator
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
 
         // Holiday period dates must be in the collaborator contract time frame
 
-        collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
-            .Returns(true);
+        //collaboratorDouble
+        //.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
+        //.Returns(true);
+
+        var holidayPeriods = new List<IHolidayPeriod> { holidayPeriodDouble.Object };
 
         // Act
-        HolidayPlan holidayPlan = new HolidayPlan(
-            collaboratorDouble.Object,
-            holidayPeriodDouble.Object
-        );
+        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
 
         // Assert
     }
@@ -58,13 +57,13 @@ public class Constructor
         holidayPeriodDouble3.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
 
         // Test double for Collaborator
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
 
         // Holiday period dates must be in the collaborator contract time frame
 
-        collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
-            .Returns(true);
+        //collaboratorDouble
+        //  .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
+        //.Returns(true);
 
         // Can't overlap with any other holiday periods
         holidayPeriodDouble1
@@ -86,7 +85,7 @@ public class Constructor
         };
 
         // Act
-        HolidayPlan holidayPlan = new HolidayPlan(collaboratorDouble.Object, holidayPeriods);
+        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
 
         // Assert
     }
@@ -106,13 +105,13 @@ public class Constructor
         holidayPeriodDouble2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
         // Test double for Collaborator
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
 
         // Holiday period dates must be in the collaborator contract time frame
 
-        collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
-            .Returns(true);
+        //collaboratorDouble
+        //  .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
+        // .Returns(true);
 
         // There is overlap with other holiday periods
         // If there is two dates that overlap, the exception shall happen
@@ -129,7 +128,7 @@ public class Constructor
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 // Act
-                new HolidayPlan(collaboratorDouble.Object, holidayPeriods)
+                new HolidayPlan(It.IsAny<long>(), holidayPeriods)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);
@@ -151,14 +150,14 @@ public class Constructor
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
 
         // Test double for Collaborator
-        Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
+        /* Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>(); */
 
         // At least one holiday period is outside the collaborator contract time frame - ContractContainsDates = false
 
         // In order for the exception to be thrown
-        collaboratorDouble
+        /* collaboratorDouble
             .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
-            .Returns(false);
+            .Returns(false); */
 
         // There no overlap with other holiday periods
         holidayPeriodDouble1.Setup(hp1 => hp1.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
@@ -175,7 +174,7 @@ public class Constructor
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 // Act
-                new HolidayPlan(collaboratorDouble.Object, holidayPeriods)
+                new HolidayPlan(It.IsAny<long>(), holidayPeriods)
         );
 
         Assert.Equal("Invalid Arguments", exception.Message);

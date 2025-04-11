@@ -11,14 +11,12 @@ public class GetDurationInDays
     public void WhenCalculatingHolidayDuration_ThenReturnsCorrectValue()
     {
         // Arrange
-        var collaboratorMock = new Mock<ICollaborator>();
         var holidayPeriod1Mock = new Mock<IHolidayPeriod>();
         var holidayPeriod2Mock = new Mock<IHolidayPeriod>();
         var periodDateMock1 = new Mock<IPeriodDate>();
         var periodDateMock2 = new Mock<IPeriodDate>();
         var periodDateMock3 = new Mock<IPeriodDate>();
 
-        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
         holidayPeriod1Mock.Setup(hp => hp.GetPeriodDate()).Returns(periodDateMock1.Object);
         holidayPeriod1Mock.Setup(hp => hp.GetInterceptionDurationInDays(It.IsAny<IPeriodDate>())).Returns(5);
@@ -26,7 +24,7 @@ public class GetDurationInDays
         holidayPeriod2Mock.Setup(hp => hp.GetPeriodDate()).Returns(periodDateMock2.Object);
         holidayPeriod2Mock.Setup(hp => hp.GetInterceptionDurationInDays(It.IsAny<IPeriodDate>())).Returns(7);
 
-        var holidayPlan = new HolidayPlan(collaboratorMock.Object, new List<IHolidayPeriod> { holidayPeriod1Mock.Object, holidayPeriod2Mock.Object });
+        var holidayPlan = new HolidayPlan(It.IsAny<long>(), new List<IHolidayPeriod> { holidayPeriod1Mock.Object, holidayPeriod2Mock.Object });
 
         // Act
         int totalDays = holidayPlan.GetDurationInDays(periodDateMock3.Object);
