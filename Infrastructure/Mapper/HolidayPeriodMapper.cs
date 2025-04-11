@@ -15,8 +15,7 @@ public class HolidayPeriodMapper
 
     public HolidayPeriod ToDomain(HolidayPeriodDataModel holidayPeriodDM)
     {
-        IPeriodDate periodDate = _periodDateMapper.ToDomain(holidayPeriodDM.PeriodDate);
-        HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
+        HolidayPeriod holidayPeriod = new HolidayPeriod(holidayPeriodDM.PeriodDate);
 
         holidayPeriod.SetId(holidayPeriodDM.Id);
 

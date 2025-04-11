@@ -8,8 +8,8 @@ public class HolidayPlanMapper
 {
     public HolidayPlan ToDomain(HolidayPlanDataModel holidayPlanDM)
     {
-        List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod>(holidayPlanDM.HolidayPeriods);
-        HolidayPlan holidayPlan = new HolidayPlan(holidayPlanDM.CollaboratorId, holidayPlanDM.Collaborator, holidayPeriods);
+        List<IHolidayPeriod> holidayPeriods = holidayPlanDM.HolidayPeriods;
+        HolidayPlan holidayPlan = new HolidayPlan(holidayPlanDM.CollaboratorId, holidayPeriods);
 
         holidayPlan.SetId(holidayPlanDM.Id);
 

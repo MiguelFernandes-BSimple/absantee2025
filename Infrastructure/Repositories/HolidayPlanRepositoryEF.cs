@@ -12,7 +12,7 @@ using Infrastructure.Mapper;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories;
-public class HolidayPlanRepositoryEF : GenericRepository<HolidayPlan>, IHolidayPlanRepository
+public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan>, IHolidayPlanRepository
 {
     private HolidayPlanMapper mapper;
     public HolidayPlanRepositoryEF(AbsanteeContext context) : base(context)
@@ -44,7 +44,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<HolidayPlan>, IHolidayP
 
         if (canInsert)
         {
-            _context.Set<HolidayPlanDataModel>().Add(mapper.ToDataModel(holidayPlan));
+            _context.Set<HolidayPlanDataModel>().Add(mapper.ToDataModel((HolidayPlan) holidayPlan));
             _context.SaveChanges();
         }
 
@@ -57,7 +57,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<HolidayPlan>, IHolidayP
 
         if (canInsert)
         {
-            await _context.Set<HolidayPlanDataModel>().AddAsync(mapper.ToDataModel(holidayPlan));
+            await _context.Set<HolidayPlanDataModel>().AddAsync(mapper.ToDataModel((HolidayPlan) holidayPlan));
             await _context.SaveChangesAsync();
         }
 

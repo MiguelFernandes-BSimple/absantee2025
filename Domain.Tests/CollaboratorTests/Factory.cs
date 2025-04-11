@@ -20,7 +20,7 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).Returns(false);
+        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
@@ -33,7 +33,7 @@ public class Factory
     }
 
     [Fact]
-    public void WhenCreatingCollaboratorWhereFinalDateIsAfterDeactivationDate_ThenShouldThrowException()
+    public async Task WhenCreatingCollaboratorWhereFinalDateIsAfterDeactivationDate_ThenShouldThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -44,13 +44,13 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).Returns(false);
+        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
         var collabFactory = new CollaboratorFactory(collabRepo.Object, userRepo.Object);
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 collabFactory.Create(It.IsAny<long>(), periodDateTime.Object)
@@ -59,7 +59,7 @@ public class Factory
     }
 
     [Fact]
-    public void WhenCreatingCollaboratorWhereUserIsDeactivated_ThenShowThrowException()
+    public async Task WhenCreatingCollaboratorWhereUserIsDeactivated_ThenShowThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -70,13 +70,13 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).Returns(false);
+        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
         var collabFactory = new CollaboratorFactory(collabRepo.Object, userRepo.Object);
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 collabFactory.Create(It.IsAny<long>(), periodDateTime.Object)
@@ -85,7 +85,7 @@ public class Factory
     }
 
     [Fact]
-    public void WhenCreatingCollaboratorWhereUserDontExists_ThenShowThrowException()
+    public async Task WhenCreatingCollaboratorWhereUserDontExists_ThenShowThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -96,13 +96,13 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).Returns(false);
+        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns((IUser?)null);
 
         var collabFactory = new CollaboratorFactory(collabRepo.Object, userRepo.Object);
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 collabFactory.Create(It.IsAny<long>(), periodDateTime.Object)
@@ -111,7 +111,7 @@ public class Factory
     }
 
     [Fact]
-    public void WhenCreatingCollaboratorWhereCollaboratorAlreadyExists_ThenShowThrowException()
+    public async Task WhenCreatingCollaboratorWhereCollaboratorAlreadyExists_ThenShowThrowException()
     {
         //arrange
         Mock<IUser> user = new Mock<IUser>();
@@ -122,13 +122,13 @@ public class Factory
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
-        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).Returns(true);
+        collabRepo.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(true);
         var userRepo = new Mock<IUserRepository>();
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
         var collabFactory = new CollaboratorFactory(collabRepo.Object, userRepo.Object);
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 collabFactory.Create(It.IsAny<long>(), periodDateTime.Object)
