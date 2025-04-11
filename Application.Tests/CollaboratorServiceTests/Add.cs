@@ -29,7 +29,7 @@ namespace Application.Tests.CollaboratorServiceTests
             userDouble.Setup(u => u.IsDeactivated()).Returns(false);
 
             var collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.isRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
+            collabRepository.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
             collabRepository.Setup(c => c.AddAsync(It.IsAny<ICollaborator>())).ReturnsAsync(It.IsAny<ICollaborator>());
 
             var collabFactory = new Mock<ICollaboratorFactory>();

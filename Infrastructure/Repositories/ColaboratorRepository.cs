@@ -9,15 +9,15 @@ using Infrastructure.Mapper;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepository : GenericRepository<ICollaborator>, ICollaboratorRepository
+public class CollaboratorRepository : GenericRepository<ICollaborator, CollaboratorDataModel>, ICollaboratorRepository
 {
     private readonly CollaboratorMapper _mapper;
-    public CollaboratorRepository(DbContext context, CollaboratorMapper mapper) : base(context)
+    public CollaboratorRepository(AbsanteeContext context, CollaboratorMapper mapper) : base(context, (IMapper<ICollaborator, CollaboratorDataModel>)mapper)
     {
         _mapper = mapper;
     }
 
-    public async Task<bool> isRepeated(ICollaborator collaborator)
+    public async Task<bool> IsRepeated(ICollaborator collaborator)
     {
         return await this._context.Set<CollaboratorDataModel>()
                 .AnyAsync(c => c.UserID == collaborator.GetUserId()
@@ -43,5 +43,17 @@ public class CollaboratorRepository : GenericRepository<ICollaborator>, ICollabo
         {
             throw;
         }
+    }
+
+    public override ICollaborator? GetById(long id)
+    {
+        var collabDM = this._context.Set<CollaboratorDataModel>()
+                            .FirstOrDefault(c => c.Id == id);
+
+        if (collabDM == null)
+            return null;
+
+        var collab = _mapper.ToDomain(collabDM);
+        return collab;
     }
 }

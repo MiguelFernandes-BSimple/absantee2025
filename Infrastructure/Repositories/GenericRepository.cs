@@ -1,110 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.IRepository;
+﻿using Domain.IRepository;
+using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public abstract class GenericRepository<TDomain, TDataModel> : IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
     {
         protected readonly DbContext _context;
-        public GenericRepository(DbContext context)
+        private readonly IMapper<TDomain, TDataModel> _mapper;
+        public GenericRepository(DbContext context, IMapper<TDomain, TDataModel> mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public void Add(T entity)
+        public void Add(TDomain entity)
         {
-            _context.Set<T>().Add(entity);
+            var dataModel = _mapper.ToDataModel(entity);
+            _context.Set<TDataModel>().Add(dataModel);
         }
 
-        public void AddRange(IEnumerable<T> entities)
+        public void AddRange(IEnumerable<TDomain> entities)
         {
-            _context.Set<T>().AddRange(entities);
+            var dataModels = entities.Select(e => _mapper.ToDataModel(e));
+            _context.Set<TDataModel>().AddRange(dataModels);
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+        public IEnumerable<TDomain> GetAll()
         {
-            return _context.Set<T>().Where(expression);
+            var dataModels = _context.Set<TDataModel>().ToList();
+            return _mapper.ToDomain(dataModels);
         }
 
-        public IEnumerable<T> GetAll()
+        public abstract TDomain? GetById(long id);
+
+        public void Remove(TDomain entity)
         {
-            return _context.Set<T>().ToList();
+            var dataModel = _mapper.ToDataModel(entity);
+            _context.Set<TDataModel>().Remove(dataModel);
         }
 
-        public T? GetById(long id)
+        public void RemoveRange(IEnumerable<TDomain> entities)
         {
-            return _context.Set<T>().Find(id);
+            var dataModels = _mapper.ToDataModel(entities);
+            _context.Set<TDataModel>().RemoveRange(dataModels);
         }
 
-        public T? GetById(Guid id)
+        public async Task<int> SaveChangesAsync()
         {
-            return _context.Set<T>().Find(id);
-        }
-
-        public void Remove(T entity)
-        {
-            _context.Set<T>().Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<T> entities)
-        {
-            _context.Set<T>().RemoveRange(entities);
-        }
-    }
-
-    public class GenericRepository : IGenericRepository
-    {
-        protected readonly DbContext _context;
-
-        public GenericRepository(DbContext context)
-        {
-            _context = context;
-        }
-
-        async Task IGenericRepository.AddAsync<T>(T entity) where T : class
-        {
-            await _context.Set<T>().AddAsync(entity);
-        }
-
-        async Task IGenericRepository.AddRangeAsync<T>(IEnumerable<T> entities) where T : class
-        {
-            await _context.Set<T>().AddRangeAsync(entities);
-        }
-
-        async Task<IEnumerable<T>> IGenericRepository.FindAsync<T>(Expression<Func<T, bool>> expression) where T : class
-        {
-            return await _context.Set<T>().Where(expression).ToListAsync();
-        }
-
-        async Task<IEnumerable<T>> IGenericRepository.GetAllAsync<T>() where T : class
-        {
-            return await _context.Set<T>().ToListAsync();
-        }
-
-        async Task<T?> IGenericRepository.GetByIdAsync<T>(long id) where T : class
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
-
-        async Task<T?> IGenericRepository.GetByIdAsync<T>(Guid id) where T : class
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
-
-        void IGenericRepository.Remove<T>(T entity) where T : class
-        {
-            _context.Set<T>().Remove(entity);
-        }
-
-        void IGenericRepository.RemoveRange<T>(IEnumerable<T> entities) where T : class
-        {
-            _context.Set<T>().RemoveRange(entities);
+            return await _context.SaveChangesAsync();
         }
     }
 }

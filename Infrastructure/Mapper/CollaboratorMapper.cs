@@ -9,7 +9,7 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Mapper;
 
-public class CollaboratorMapper
+public class CollaboratorMapper : IMapper<Collaborator, CollaboratorDataModel>
 {
     private ICollaboratorFactory _checkCollaboratorFactory;
 
