@@ -5,7 +5,7 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Mapper
 {
-    public class AssociationProjectCollaboratorMapper
+    public class AssociationProjectCollaboratorMapper : IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>
     {
         private IAssociationProjectCollaboratorFactory _associationProjectCollaboratorFactory;
 
@@ -25,14 +25,15 @@ namespace Infrastructure.Mapper
             return apcModels.Select(ToDomain);
         }
 
-        public AssociationProjectCollaboratorDataModel ToDataModel(IAssociationProjectCollaborator apc)
+        public AssociationProjectCollaboratorDataModel ToDataModel(AssociationProjectCollaborator apc)
         {
             return new AssociationProjectCollaboratorDataModel(apc);
         }
 
-        public IEnumerable<AssociationProjectCollaboratorDataModel> ToDataModel(IEnumerable<IAssociationProjectCollaborator> apcs)
+        public IEnumerable<AssociationProjectCollaboratorDataModel> ToDataModel(IEnumerable<AssociationProjectCollaborator> apcs)
         {
             return apcs.Select(ToDataModel);
         }
+
     }
 }
