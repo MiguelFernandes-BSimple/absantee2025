@@ -9,14 +9,17 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
 {
     private ICollaboratorRepository _collaboratorRepository;
     private IProjectRepository _projectRepository;
-    public AssociationProjectCollaboratorFactory(ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository)
+    private IAssociationProjectCollaboratorRepository _associationProjectRepository;
+    public AssociationProjectCollaboratorFactory(ICollaboratorRepository collaboratorRepository, IProjectRepository projectRepository, IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository)
     {
         _collaboratorRepository = collaboratorRepository;
         _projectRepository = projectRepository;
+        _associationProjectRepository = associationProjectCollaboratorRepository;
     }
 
-    public AssociationProjectCollaborator Create(IPeriodDate periodDate, long collaboratorId, long projectId)
+    public async Task<AssociationProjectCollaborator> Create(IPeriodDate periodDate, long collaboratorId, long projectId)
     {
+        // Checking if input values are valid
         ICollaborator? collaborator = _collaboratorRepository.GetById((int)collaboratorId);
         IProject? project = _projectRepository.GetById((int)projectId);
 
@@ -32,6 +35,15 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
         PeriodDateTime periodDateTime = new PeriodDateTime(periodDate);
 
         if (!collaborator.ContractContainsDates(periodDateTime))
+            throw new ArgumentException("Invalid arguments");
+
+        // Checking Association's unicity
+        // There can't be two associations with the same collab and project 
+        // AND the periods intersect
+        IAssociationProjectCollaborator? sameCollabAndProject = await
+            _associationProjectRepository.FindByProjectAndCollaboratorAsync(projectId, collaboratorId);
+
+        if (sameCollabAndProject != null && periodDate.Intersects(sameCollabAndProject.GetPeriodDate()))
             throw new ArgumentException("Invalid arguments");
 
         return new AssociationProjectCollaborator(collaboratorId, projectId, periodDate);

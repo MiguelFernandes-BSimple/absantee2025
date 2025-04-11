@@ -1,37 +1,19 @@
 using Domain.Interfaces;
 using Domain.IRepository;
+using Infrastructure;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator>, IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>, IAssociationProjectCollaboratorRepository
 {
-    private AssociationProjectCollaboratorMapper _associationProjectCollaboratorMapper;
+    private readonly AssociationProjectCollaboratorMapper _associationProjectCollaboratorMapper;
 
-    public AssociationProjectCollaboratorRepositoryEF(DbContext context, AssociationProjectCollaboratorMapper associationProjectCollaboratorMapper) : base(context)
+    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, AssociationProjectCollaboratorMapper associationProjectCollaboratorMapper)
+        : base(context, (IMapper<IAssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>)associationProjectCollaboratorMapper)
     {
         _associationProjectCollaboratorMapper = associationProjectCollaboratorMapper;
-    }
-
-    public async Task<bool> AddAsync(IAssociationProjectCollaborator newAssociation)
-    {
-        try
-        {
-            AssociationProjectCollaboratorDataModel assocDataModel = _associationProjectCollaboratorMapper.ToDataModel(newAssociation);
-
-            EntityEntry<AssociationProjectCollaboratorDataModel> assocDMEntityEntry =
-                _context.Set<AssociationProjectCollaboratorDataModel>().Add(assocDataModel);
-
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
     }
 
     public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(long projectId)
@@ -96,5 +78,10 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         {
             throw;
         }
+    }
+
+    public override IAssociationProjectCollaborator? GetById(long id)
+    {
+        throw new NotImplementedException();
     }
 }

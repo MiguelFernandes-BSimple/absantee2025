@@ -15,10 +15,13 @@ namespace Application.Services
             _checkAssociationProjectCollaboratorFactory = checkAssociationProjectCollaboratorFactory;
         }
 
-        public void Add(IPeriodDate periodDate, long collabId, long projectId)
+        public async Task<bool> Add(IPeriodDate periodDate, long collabId, long projectId)
         {
-            var assoc = _checkAssociationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
-            _assocRepository.Add(assoc);
+            var assoc = await _checkAssociationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
+            if (assoc != null)
+                return await _assocRepository.AddAsync(assoc);
+
+            return false;
         }
     }
 }

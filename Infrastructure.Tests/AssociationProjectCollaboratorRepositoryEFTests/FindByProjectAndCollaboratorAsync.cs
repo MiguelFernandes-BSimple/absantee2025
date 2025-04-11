@@ -1,0 +1,6 @@
+namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
+
+public class FindByProjectAndCollaboratorAsync
+{
+
+}
