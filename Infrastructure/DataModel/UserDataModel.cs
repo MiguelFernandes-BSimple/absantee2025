@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.Visitor;
 
 namespace Infrastructure.DataModel
 {
     [Table("User")]
-    public class UserDataModel
+    public class UserDataModel : IUserVisitor
     {
         public long Id { get; set; }
         public string Names { get; set; }

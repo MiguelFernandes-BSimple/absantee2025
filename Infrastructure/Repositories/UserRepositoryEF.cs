@@ -1,85 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Domain.IRepository;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories;
+
+public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRepository
 {
-    public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRepository
+    private UserMapper _mapper;
+    public UserRepositoryEF(AbsanteeContext context, UserMapper mapper) : base(context, (IMapper<IUser, UserDataModel>)mapper)
     {
-        private UserMapper _mapper;
-        public UserRepositoryEF(AbsanteeContext context, UserMapper mapper) : base(context, (IMapper<IUser, UserDataModel>)mapper)
-        {
-            _mapper = mapper;
-        }
+        _mapper = mapper;
+    }
 
-        public async Task<IEnumerable<IUser>> GetByNames(string names)
-        {
-            if (string.IsNullOrWhiteSpace(names))
-                return new List<IUser>();
+    public async Task<IEnumerable<IUser>> GetByNames(string names)
+    {
+        if (string.IsNullOrWhiteSpace(names))
+            return new List<IUser>();
 
-            var usersDM = await this._context.Set<UserDataModel>()
-                        .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        var usersDM = await this._context.Set<UserDataModel>()
+                    .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-            var users = _mapper.ToDomain(usersDM);
+        var users = _mapper.ToDomain(usersDM);
 
-            return users;
-        }
+        return users;
+    }
 
-        public async Task<IEnumerable<IUser>> GetBySurnames(string surnames)
-        {
-            if (string.IsNullOrWhiteSpace(surnames))
-                return new List<IUser>();
+    public async Task<IEnumerable<IUser>> GetBySurnames(string surnames)
+    {
+        if (string.IsNullOrWhiteSpace(surnames))
+            return new List<IUser>();
 
-            var usersDM = await this._context.Set<UserDataModel>()
-                        .Where(u => u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        var usersDM = await this._context.Set<UserDataModel>()
+                    .Where(u => u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-            var users = _mapper.ToDomain(usersDM);
+        var users = _mapper.ToDomain(usersDM);
 
-            return users;
-        }
+        return users;
+    }
 
-        public async Task<IEnumerable<IUser>> GetByNamesAndSurnames(string names, string surnames)
-        {
-            if (string.IsNullOrWhiteSpace(names) && string.IsNullOrWhiteSpace(surnames))
-                return new List<IUser>();
+    public async Task<IEnumerable<IUser>> GetByNamesAndSurnames(string names, string surnames)
+    {
+        if (string.IsNullOrWhiteSpace(names) && string.IsNullOrWhiteSpace(surnames))
+            return new List<IUser>();
 
-            var usersDM = await this._context.Set<UserDataModel>()
-                        .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)
-                                 && u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        var usersDM = await this._context.Set<UserDataModel>()
+                    .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)
+                             && u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-            var users = _mapper.ToDomain(usersDM);
+        var users = _mapper.ToDomain(usersDM);
 
-            return users;
-        }
+        return users;
+    }
 
-        public override IUser? GetById(long id)
-        {
-            var userDM = _context.Set<UserDataModel>().FirstOrDefault(c => c.Id == id);
+    public override IUser? GetById(long id)
+    {
+        var userDM = _context.Set<UserDataModel>().FirstOrDefault(c => c.Id == id);
 
-            if (userDM == null)
-                return null;
+        if (userDM == null)
+            return null;
 
-            var user = _mapper.ToDomain(userDM);
-            return user;
-        }
+        var user = _mapper.ToDomain(userDM);
+        return user;
+    }
 
-        public override async Task<IUser?> GetByIdAsync(long id)
-        {
-            var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Id == id);
+    public override async Task<IUser?> GetByIdAsync(long id)
+    {
+        var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Id == id);
 
-            if (userDM == null)
-                return null;
+        if (userDM == null)
+            return null;
 
-            var user = _mapper.ToDomain(userDM);
-            return user;
-        }
+        var user = _mapper.ToDomain(userDM);
+        return user;
     }
 }

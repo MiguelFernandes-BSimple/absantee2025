@@ -9,6 +9,4 @@ public interface IUserVisitor
     string Surnames { get; }
     string Email { get; }
     PeriodDateTime PeriodDateTime { get; }
-
-
 }
