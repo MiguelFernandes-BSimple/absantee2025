@@ -1,10 +1,6 @@
 using Domain.IRepository;
 using Domain.Interfaces;
-using Domain.Models;
-using Domain.IRepository;
-using System.Linq;
 using Domain.Factory;
-using System.Threading.Tasks;
 
 namespace Application.Services;
 
@@ -71,21 +67,30 @@ public class CollaboratorService
         return true;
     }
 
-    public bool HasNames(long collaboratorId, string names)
+    public async Task<bool> HasNames(long collaboratorId, string names)
     {
         ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
         if (colab == null)
             return false;
 
-        return _userRepository.HasNames(colab.GetUserId(), names);
+        return await _userRepository.HasNames(colab.GetUserId(), names);
     }
 
-    public bool HasSurnames(long collaboratorId, string surnames)
+    public async Task<bool> HasSurnames(long collaboratorId, string surnames)
     {
         ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
         if (colab == null)
             return false;
 
-        return _userRepository.HasSurnames(colab.GetUserId(), surnames);
+        return await _userRepository.HasSurnames(colab.GetUserId(), surnames);
+    }
+
+    public async Task<bool> HasNamesAndSurnames(long collaboratorId, string names, string surnames)
+    {
+        ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
+        if (colab == null)
+            return false;
+
+        return await _userRepository.HasNamesAndSurnames(colab.GetUserId(), names, surnames);
     }
 }
