@@ -2,6 +2,7 @@ using Domain.Models;
 using Domain.Visitor;
 using Domain.IRepository;
 using System.Text.RegularExpressions;
+using Domain.Interfaces;
 
 namespace Domain.Factory;
 public class ProjectFactory : IProjectFactory
@@ -11,21 +12,20 @@ public class ProjectFactory : IProjectFactory
     {
         _projectRepository = projectRepository;
     }
-    public Project Create(long id, string title, string acronym, PeriodDate periodDate)
+    public Project Create(long id, string title, string acronym, IPeriodDate periodDate)
     {
         Regex tituloRegex = new Regex(@"^.{1,50}$");
         Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
-        if (tituloRegex.IsMatch(title) && siglaRegex.IsMatch(acronym))
+        if (!tituloRegex.IsMatch(title) || !siglaRegex.IsMatch(acronym))
         {
             throw new ArgumentException("Invalid Arguments");
         }
-        Project project = new Project(title, acronym, periodDate);
+        Project project = new Project(id, title, acronym, periodDate);
         return project;
     }
 
     public Project Create(IProjectVisitor visitor)
     {
-        return new Project(visitor.Title, visitor.Acronym, visitor.PeriodDate);
+        return new Project(visitor.Id, visitor.Title, visitor.Acronym, visitor.PeriodDate);
     }
-
 }
