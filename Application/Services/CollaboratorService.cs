@@ -58,7 +58,8 @@ public class CollaboratorService
         try
         {
             colab = await _collaboratorFactory.Create(userId, periodDateTime);
-            await _collaboratorRepository.AddAsync(colab);
+            _collaboratorRepository.Add(colab);
+            await _collaboratorRepository.SaveChangesAsync();
         }
         catch (Exception)
         {

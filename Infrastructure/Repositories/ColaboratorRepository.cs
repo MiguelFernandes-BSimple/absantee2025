@@ -25,30 +25,22 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, Collabora
                     && collaborator.GetPeriodDateTime().GetInitDate() <= c.PeriodDateTime.GetFinalDate());
     }
 
-    public async Task<ICollaborator> AddAsync(ICollaborator collaborator)
-    {
-        try
-        {
-            CollaboratorDataModel collabDM = new CollaboratorDataModel(collaborator);
-            var colabEntityEntry = this._context.Set<CollaboratorDataModel>().Add(collabDM);
-
-            await this._context.SaveChangesAsync();
-
-            collabDM = colabEntityEntry.Entity;
-            Collaborator collab = _mapper.ToDomain(collabDM);
-
-            return collab;
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
     public override ICollaborator? GetById(long id)
     {
         var collabDM = this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefault(c => c.Id == id);
+
+        if (collabDM == null)
+            return null;
+
+        var collab = _mapper.ToDomain(collabDM);
+        return collab;
+    }
+
+    public override async Task<ICollaborator?> GetByIdAsync(long id)
+    {
+        var collabDM = await this._context.Set<CollaboratorDataModel>()
+                            .FirstOrDefaultAsync(c => c.Id == id);
 
         if (collabDM == null)
             return null;
