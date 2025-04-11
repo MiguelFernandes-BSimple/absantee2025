@@ -28,8 +28,8 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
         if (projectDM == null)
             return null;
 
-        var collab = _mapper.ToDomain(projectDM);
-        return collab;
+        var project = _mapper.ToDomain(projectDM);
+        return project;
     }
 
     public override async Task<IProject?> GetByIdAsync(long id)
