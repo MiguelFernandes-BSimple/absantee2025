@@ -14,33 +14,37 @@ public class CollaboratorService
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
-    private ICollaboratorFactory _checkCollaboratorFactory;
+    private ICollaboratorFactory _collaboratorFactory;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
+        _userRepository = userRepository;
+        _collaboratorFactory = checkCollaboratorFactory;
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
-    public IEnumerable<ICollaborator> FindAllWithHolidayPeriodsLongerThan(int days)
+    public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
     {
-        var collabIds = _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThan(days).Select(hp => hp.GetCollaboratorId());
+        var holidayPlans = await _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThanAsync(days);
+        var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
         return _collaboratorRepository.Find(c => collabIds.Contains(c.GetId()));
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-    public IEnumerable<ICollaborator> FindAllWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
+    public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
     {
-        var collabIds = _holidayPlanRepository.FindHolidayPlansWithinPeriod(periodDate).Select(hp => hp.GetCollaboratorId());
+        var holidayPlans = await _holidayPlanRepository.FindHolidayPlansWithinPeriodAsync(periodDate);
+        var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
         return _collaboratorRepository.Find(c => collabIds.Contains(c.GetId()));
     }
 
     public async Task<IEnumerable<ICollaborator>> FindAllByProject(long projectId)
     {
-        var collabs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
-        var collabsIds = collabs.Select(c => c.GetCollaboratorId());
+        var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
+        var collabsIds = assocs.Select(c => c.GetCollaboratorId());
         return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
@@ -56,7 +60,7 @@ public class CollaboratorService
         ICollaborator colab;
         try
         {
-            colab = _checkCollaboratorFactory.Create(userId, periodDateTime);
+            colab = _collaboratorFactory.Create(userId, periodDateTime);
         }
         catch (Exception)
         {
@@ -65,5 +69,23 @@ public class CollaboratorService
         _collaboratorRepository.Add(colab);
         
         return true;
+    }
+
+    public bool HasNames(long collaboratorId, string names)
+    {
+        ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
+        if (colab == null)
+            return false;
+
+        return _userRepository.HasNames(colab.GetUserId(), names);
+    }
+
+    public bool HasSurnames(long collaboratorId, string surnames)
+    {
+        ICollaborator? colab = _collaboratorRepository.GetById(collaboratorId);
+        if (colab == null)
+            return false;
+
+        return _userRepository.HasSurnames(colab.GetUserId(), surnames);
     }
 }

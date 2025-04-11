@@ -3,13 +3,15 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using System.Linq.Expressions;
+using Domain.Factory;
+using System.Threading.Tasks;
 
 namespace Application.Tests.CollaboratorServiceTests;
 
-public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
+public class FindAllCollaboratorsWithinHolidayPeriodsBetweenDates
 {
     [Fact]
-    public void WhenCollaboratorHasHolidayPeriodWithinDateRange_ThenReturnsCollaborator()
+    public async Task WhenCollaboratorHasHolidayPeriodWithinDateRange_ThenReturnsCollaborator()
     {
         // arrange
         var collaboratorDouble = new Mock<ICollaborator>();
@@ -21,17 +23,21 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
 
         var holidayPlanRepoDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriod(periodDateDouble.Object)).Returns(new List<IHolidayPlan> { holidayPlanDouble.Object });
+        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriodAsync(periodDateDouble.Object))
+                             .ReturnsAsync(new List<IHolidayPlan> { holidayPlanDouble.Object });
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
-        collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(new List<ICollaborator> { collaboratorDouble.Object });
+        collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>()))
+                        .Returns(new List<ICollaborator> { collaboratorDouble.Object });
 
-        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object);
+        var userRepo = new Mock<IUserRepository>();
+        var collabFactory = new Mock<ICollaboratorFactory>();
+        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object);
 
         // act  
-        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDateDouble.Object);
+        var result = await colabService.FindAllWithHolidayPeriodsBetweenDates(periodDateDouble.Object);
 
         // assert
         Assert.Single(result);
@@ -41,7 +47,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
 
 
     [Fact]
-    public void WhenMultipleCollaboratorsHaveHolidayPeriodsWithinDateRange_ThenReturnsAllCollaborators()
+    public async Task WhenMultipleCollaboratorsHaveHolidayPeriodsWithinDateRange_ThenReturnsAllCollaborators()
     {
 
         // arrange
@@ -60,17 +66,19 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlanDouble2.Setup(hpd => hpd.GetCollaboratorId()).Returns(2);
 
         var holidayPlanRepoDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriod(periodDateDouble.Object)).Returns(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriodAsync(periodDateDouble.Object)).ReturnsAsync(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
         collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(new List<ICollaborator> { collaboratorDouble1.Object, collaboratorDouble2.Object });
 
-        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object);
+        var userRepo = new Mock<IUserRepository>();
+        var collabFactory = new Mock<ICollaboratorFactory>();
+        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object);
 
         // act  
-        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDateDouble.Object);
+        var result = await colabService.FindAllWithHolidayPeriodsBetweenDates(periodDateDouble.Object);
 
         // assert
         Assert.Equal(2, result.Count());
@@ -79,7 +87,7 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
     }
 
     [Fact]
-    public void WhenNoCollaboratorsHaveHolidayPeriodsInDateRange_ThenReturnsEmptyList()
+    public async Task WhenNoCollaboratorsHaveHolidayPeriodsInDateRange_ThenReturnsEmptyList()
     {
         // arrange
         var collaboratorDouble = new Mock<ICollaborator>();
@@ -91,17 +99,19 @@ public class FindAllCollaboratorsWithHolidayPeriodsBetweenDates
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
 
         var holidayPlanRepoDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriod(periodDateDouble.Object)).Returns(new List<IHolidayPlan>());
+        holidayPlanRepoDouble.Setup(hprd => hprd.FindHolidayPlansWithinPeriodAsync(periodDateDouble.Object)).ReturnsAsync(new List<IHolidayPlan>());
 
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
         collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(new List<ICollaborator>());
 
-        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object);
+        var userRepo = new Mock<IUserRepository>();
+        var collabFactory = new Mock<ICollaboratorFactory>();
+        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object);
 
         // act  
-        var result = colabService.FindAllWithHolidayPeriodsBetweenDates(periodDateDouble.Object);
+        var result = await colabService.FindAllWithHolidayPeriodsBetweenDates(periodDateDouble.Object);
 
         // assert
         Assert.Empty(result);

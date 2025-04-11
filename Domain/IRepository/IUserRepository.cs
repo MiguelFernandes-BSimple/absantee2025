@@ -9,5 +9,7 @@ namespace Domain.IRepository
 {
     public interface IUserRepository : IGenericRepository<IUser>
     {
+        bool HasNames(long userId, string names);
+        bool HasSurnames(long userId, string names);
     }
 }
