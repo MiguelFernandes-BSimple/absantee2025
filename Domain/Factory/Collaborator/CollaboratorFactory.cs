@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -16,7 +17,7 @@ namespace Domain.Factory
             _userRepository = userRepository;
         }
 
-        public Collaborator Create(long userId, IPeriodDateTime periodDateTime)
+        public async Task<Collaborator> Create(long userId, IPeriodDateTime periodDateTime)
         {
             IUser? user = _userRepository.GetById((int)userId);
 
@@ -31,7 +32,7 @@ namespace Domain.Factory
 
             Collaborator collab = new Collaborator(userId, periodDateTime);
 
-            if (_collabRepository.isRepeated(collab))
+            if (await _collabRepository.isRepeated(collab))
                 throw new ArgumentException("Collaborator already exists");
 
             return collab;

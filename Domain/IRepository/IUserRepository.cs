@@ -9,8 +9,8 @@ namespace Domain.IRepository
 {
     public interface IUserRepository : IGenericRepository<IUser>
     {
-        Task<bool> HasNames(long userId, string names);
-        Task<bool> HasSurnames(long userId, string names);
-        Task<bool> HasNamesAndSurnames(long userId, string names, string surnames);
+        Task<IEnumerable<IUser>> GetByNames(string names);
+        Task<IEnumerable<IUser>> GetBySurnames(string names);
+        Task<IEnumerable<IUser>> GetByNamesAndSurnames(string names, string surnames);
     }
 }

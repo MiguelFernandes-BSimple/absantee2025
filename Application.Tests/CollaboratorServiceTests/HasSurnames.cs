@@ -27,7 +27,7 @@ namespace Application.Tests.CollaboratorServiceTests
             collabRepository.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorDouble.Object);
 
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(u => u.HasSurnames(It.IsAny<long>(), It.IsAny<string>())).ReturnsAsync(true);
+            userRepo.Setup(u => u.GetBySurnames(It.IsAny<long>(), It.IsAny<string>())).ReturnsAsync(true);
             var collabFactory = new Mock<ICollaboratorFactory>();
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
@@ -52,7 +52,7 @@ namespace Application.Tests.CollaboratorServiceTests
             collabRepository.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorDouble.Object);
 
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(u => u.HasSurnames(It.IsAny<long>(), It.IsAny<string>())).ReturnsAsync(false);
+            userRepo.Setup(u => u.GetBySurnames(It.IsAny<long>(), It.IsAny<string>())).ReturnsAsync(false);
             var collabFactory = new Mock<ICollaboratorFactory>();
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
@@ -77,7 +77,7 @@ namespace Application.Tests.CollaboratorServiceTests
             collabRepository.Setup(c => c.GetById(It.IsAny<long>())).Returns((ICollaborator?)null);
 
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(u => u.HasSurnames(It.IsAny<long>(), It.IsAny<string>())).ReturnsAsync(true);
+            userRepo.Setup(u => u.GetBySurnames(It.IsAny<long>(), It.IsAny<string>())).ReturnsAsync(true);
             var collabFactory = new Mock<ICollaboratorFactory>();
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 

@@ -1,6 +1,7 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Factory;
+using System.Threading.Tasks;
 
 namespace Application.Services;
 
@@ -51,18 +52,18 @@ public class CollaboratorService
         return _collaboratorRepository.Find(c => collabsIds.Contains(c.GetId()));
     }
 
-    public bool Add(long userId, IPeriodDateTime periodDateTime)
+    public async Task<bool> Add(long userId, IPeriodDateTime periodDateTime)
     {
         ICollaborator colab;
         try
         {
-            colab = _collaboratorFactory.Create(userId, periodDateTime);
+            colab = await _collaboratorFactory.Create(userId, periodDateTime);
+            await _collaboratorRepository.AddAsync(colab);
         }
         catch (Exception)
         {
             return false;
         }
-        _collaboratorRepository.Add(colab);
         
         return true;
     }
@@ -73,7 +74,7 @@ public class CollaboratorService
         if (colab == null)
             return false;
 
-        return await _userRepository.HasNames(colab.GetUserId(), names);
+        return await _userRepository.GetByNames(colab.GetUserId(), names);
     }
 
     public async Task<bool> HasSurnames(long collaboratorId, string surnames)
@@ -82,7 +83,7 @@ public class CollaboratorService
         if (colab == null)
             return false;
 
-        return await _userRepository.HasSurnames(colab.GetUserId(), surnames);
+        return await _userRepository.GetBySurnames(colab.GetUserId(), surnames);
     }
 
     public async Task<bool> HasNamesAndSurnames(long collaboratorId, string names, string surnames)

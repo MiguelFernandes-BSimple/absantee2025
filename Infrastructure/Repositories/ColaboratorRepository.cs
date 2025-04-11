@@ -4,20 +4,44 @@ using Domain.Models;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.DataModel;
+using System.Threading.Tasks;
+using Infrastructure.Mapper;
 
 namespace Infrastructure.Repositories;
 
 public class CollaboratorRepository : GenericRepository<ICollaborator>, ICollaboratorRepository
 {
-    public CollaboratorRepository(DbContext context) : base(context)
+    private readonly CollaboratorMapper _mapper;
+    public CollaboratorRepository(DbContext context, CollaboratorMapper mapper) : base(context)
     {
+        _mapper = mapper;
     }
 
-    public bool isRepeated(ICollaborator collaborator)
+    public async Task<bool> isRepeated(ICollaborator collaborator)
     {
-        return this._context.Set<CollaboratorDataModel>()
-                .Any(c => c.UserID == collaborator.GetUserId()
+        return await this._context.Set<CollaboratorDataModel>()
+                .AnyAsync(c => c.UserID == collaborator.GetUserId()
                     && c.PeriodDateTime.GetInitDate() <= collaborator.GetPeriodDateTime().GetFinalDate()
                     && collaborator.GetPeriodDateTime().GetInitDate() <= c.PeriodDateTime.GetFinalDate());
+    }
+
+    public async Task<ICollaborator> AddAsync(ICollaborator collaborator)
+    {
+        try
+        {
+            CollaboratorDataModel collabDM = new CollaboratorDataModel(collaborator);
+            var colabEntityEntry = this._context.Set<CollaboratorDataModel>().Add(collabDM);
+
+            await this._context.SaveChangesAsync();
+
+            collabDM = colabEntityEntry.Entity;
+            Collaborator collab = _mapper.ToDomain(collabDM);
+
+            return collab;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }
