@@ -7,6 +7,9 @@ namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 public class FindHolidayPlanByCollaboratorAsync
 {
     [Fact]
+    public async Task WhenPassingValid
+
+    [Fact]
     public async Task WhenFindingHolidayPlanByCollaboratorAsync_ThenReturnsCorrectCollaborator()
     {
         //arrange
