@@ -8,10 +8,10 @@ using Moq;
 
 namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
-public class FindAllByProjectAsync
+public class FindAllByProjectAndCollaboratorAsync
 {
     [Fact]
-    public async Task WhenPassingExistingProjectId_ThenReturnRelatedAssociations()
+    public async Task WhenPassingExistingProjectAndCollaboratorIdCombo_ThenReturnAssociation()
     {
         // Arrange
         // Create mockSet
@@ -37,6 +37,10 @@ public class FindAllByProjectAsync
         long assocDM3Id = 3;
 
         // Setup assoc project id
+        long collab1Id = 1;
+        long collab2Id = 2;
+
+        // Setup assoc project id
         long project1Id = 1;
         long project2Id = 2;
 
@@ -49,13 +53,18 @@ public class FindAllByProjectAsync
         AssocDM2.Setup(a => a.Id).Returns(assocDM2Id);
         AssocDM3.Setup(a => a.Id).Returns(assocDM3Id);
 
+        // Collab Ids
+        AssocDM2.Setup(a => a.CollaboratorId).Returns(collab1Id);
+        AssocDM2.Setup(a => a.CollaboratorId).Returns(collab2Id);
+        AssocDM3.Setup(a => a.CollaboratorId).Returns(collab2Id);
+
         // Project Ids
         AssocDM2.Setup(a => a.ProjectId).Returns(project1Id);
         AssocDM2.Setup(a => a.ProjectId).Returns(project2Id);
         AssocDM3.Setup(a => a.ProjectId).Returns(project2Id);
 
-        // Filtered List - with project id 2
-        List<AssociationProjectCollaboratorDataModel> assocsFiltered =
+        // Filtered list - same collab id and same project id
+        List<AssociationProjectCollaboratorDataModel> assocDmsList =
             new List<AssociationProjectCollaboratorDataModel> { (AssociationProjectCollaboratorDataModel)AssocDM2.Object, (AssociationProjectCollaboratorDataModel)AssocDM3.Object };
 
         var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
@@ -63,17 +72,17 @@ public class FindAllByProjectAsync
         // Convert to domain
         Mock<IAssociationProjectCollaborator> assoc2 = new Mock<IAssociationProjectCollaborator>();
         Mock<IAssociationProjectCollaborator> assoc3 = new Mock<IAssociationProjectCollaborator>();
-        IEnumerable<AssociationProjectCollaborator> expected =
-            new List<AssociationProjectCollaborator> { (AssociationProjectCollaborator)assoc2.Object, (AssociationProjectCollaborator)assoc3.Object };
 
-        mapper.Setup(m => m.ToDomain(assocsFiltered)).Returns(expected);
+        List<AssociationProjectCollaborator> expected = new List<AssociationProjectCollaborator> { (AssociationProjectCollaborator)assoc2.Object, (AssociationProjectCollaborator)assoc3.Object };
+
+        mapper.Setup(m => m.ToDomain(assocDmsList)).Returns(expected);
 
         // Instatiate repository
         var assocRepo =
             new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
 
         // Act
-        IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAsync(project2Id);
+        IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndCollaboratorAsync(project2Id, collab2Id);
 
         // Assert
         Assert.True(expected.SequenceEqual(result));
