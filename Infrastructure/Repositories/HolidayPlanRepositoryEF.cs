@@ -77,11 +77,26 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
 
     public async Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(long collaboratorId, IPeriodDate periodDate, int days)
     {
-        return await _context.Set<HolidayPlanDataModel>()
-            .Where(hp => hp.CollaboratorId == collaboratorId)
-            .SelectMany(hp => hp.HolidayPeriods)
-            .Where(h => periodDate.Contains(h.GetPeriodDate()) && (periodDate.Duration() > days))
-            .ToListAsync();
+        try
+        {
+            HolidayPlanDataModel? holidayPlan =
+                await _context.Set<HolidayPlanDataModel>()
+                              .FirstAsync(hp => hp.CollaboratorId == collaboratorId);
+
+            if (holidayPlan == null)
+                return new List<IHolidayPeriod>();
+
+            List<IHolidayPeriod> result =
+                holidayPlan.HolidayPeriods.Where(h => periodDate.Contains(h.GetPeriodDate()) &&
+                                                (periodDate.Duration() > days))
+                                          .ToList();
+
+            return result;
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<IEnumerable<IHolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days)
@@ -98,10 +113,10 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         var holidayPlans = await _context.Set<HolidayPlanDataModel>()
             .FirstOrDefaultAsync(hp => hp.CollaboratorId == collaboratorId);
 
-        if(holidayPlans == null)
+        if (holidayPlans == null)
             return Enumerable.Empty<IHolidayPeriod>();
 
-        return holidayPlans.HolidayPeriods; 
+        return holidayPlans.HolidayPeriods;
     }
 
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(long collaboratorId, IPeriodDate period)

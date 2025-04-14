@@ -1,6 +1,10 @@
 using Infrastructure.Repositories;
 using Domain.Interfaces;
 using Moq;
+using Infrastructure.Mapper;
+using Infrastructure.DataModel;
+using Domain.Visitor;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
@@ -9,44 +13,110 @@ public class FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync
     [Fact]
     public async Task WhenGivenBadCollaboratorAndDatesAndLengthAsync_ThenReturnEmptyLists()
     {
-        //arrange
-        var collab = new Mock<ICollaborator>();
+        // Arrange
+        Mock<IAbsanteeContext> contextDouble = new Mock<IAbsanteeContext>();
+        Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>> mapper =
+            new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
 
-        var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
+        // Dbset data
+        Mock<IHolidayPlanVisitor> hpDM1 = new Mock<IHolidayPlanVisitor>();
+        Mock<IHolidayPlanVisitor> hpDM2 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlans = new List<HolidayPlanDataModel>
+        {
+            (HolidayPlanDataModel)hpDM1.Object,
+            (HolidayPlanDataModel)hpDM2.Object
+        }.AsQueryable();
 
-        IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>();
-        holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(It.IsAny<IPeriodDate>(), 4)).Returns(ret);
+        var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Provider).Returns(holidayPlans.Provider);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Expression).Returns(holidayPlans.Expression);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.ElementType).Returns(holidayPlans.ElementType);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(holidayPlans.GetEnumerator());
 
-        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
+        // Period to search
+        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
 
-        //act
-        var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(collab.Object, It.IsAny<IPeriodDate>(), 4);
+        long collab1Id = 1;
+        long collab2Id = 2;
+        int days = 4;
 
-        //assert
+        // Id to seach - no holidayplan with collab id
+        long toSearch = 3;
+
+        // Define collab id for each holiday plan
+        hpDM1.Setup(hp => hp.CollaboratorId).Returns(collab1Id);
+        hpDM2.Setup(hp => hp.CollaboratorId).Returns(collab2Id);
+
+        // Instantiate repository
+        var hpRepo = new HolidayPlanRepositoryEF((AbsanteeContext)contextDouble.Object, (HolidayPlanMapper)mapper.Object);
+
+        // Act
+        var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(toSearch, periodDate.Object, days);
+
+        // Assert
         Assert.Empty(result);
     }
 
     [Fact]
     public async Task WhenGivenGoodCollaboratorAndDatesAndLengthAsync_ThenReturnPeriods()
     {
-        //arrange
-        var collab = new Mock<ICollaborator>();
+        // Arrange
+        Mock<IAbsanteeContext> contextDouble = new Mock<IAbsanteeContext>();
+        Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>> mapper =
+            new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
 
-        var holidayPeriod = new Mock<IHolidayPeriod>();
+        // Dbset data
+        Mock<IHolidayPlanVisitor> hpDM1 = new Mock<IHolidayPlanVisitor>();
+        Mock<IHolidayPlanVisitor> hpDM2 = new Mock<IHolidayPlanVisitor>();
 
-        var holidayPlan = new Mock<IHolidayPlan>();
-        holidayPlan.Setup(a => a.HasCollaborator(collab.Object)).Returns(true);
+        var holidayPlans = new List<HolidayPlanDataModel>
+        {
+            (HolidayPlanDataModel)hpDM1.Object,
+            (HolidayPlanDataModel)hpDM2.Object
+        }.AsQueryable();
 
-        IEnumerable<IHolidayPeriod> ret = new List<IHolidayPeriod>() { holidayPeriod.Object };
-        holidayPlan.Setup(a => a.FindAllHolidayPeriodsBetweenDatesLongerThan(It.IsAny<IPeriodDate>(), 4)).Returns(ret);
+        var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Provider).Returns(holidayPlans.Provider);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Expression).Returns(holidayPlans.Expression);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.ElementType).Returns(holidayPlans.ElementType);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(holidayPlans.GetEnumerator());
 
-        var hpRepo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlan.Object });
+        long collab1Id = 1;
+        long collab2Id = 2;
 
-        //act
-        var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(collab.Object, It.IsAny<IPeriodDate>(), 4);
+        int searchDays = 4;
+        int days = 5;
 
-        //assert
-        Assert.Equal(ret, result);
+        // Define collab id for each holiday plan
+        hpDM1.Setup(hp => hp.CollaboratorId).Returns(collab1Id);
+        hpDM2.Setup(hp => hp.CollaboratorId).Returns(collab2Id);
+
+        Mock<IHolidayPeriod> hp1Period = new Mock<IHolidayPeriod>();
+        Mock<IPeriodDate> hpPeriodDate = new Mock<IPeriodDate>();
+
+        hp1Period.Setup(hp => hp.GetPeriodDate()).Returns(hpPeriodDate.Object);
+
+        // Setup both hoiday plans with the same holidayPeriod list
+        List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod> { hp1Period.Object };
+
+        hpDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods);
+        hpDM2.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods);
+
+        // Period to search
+        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+
+        // Restrictions
+        periodDate.Setup(pd => pd.Contains(hpPeriodDate.Object)).Returns(true);
+        // It has to be bigger than days
+        periodDate.Setup(pd => pd.Duration()).Returns(days);
+
+        // Instantiate repository
+        var hpRepo = new HolidayPlanRepositoryEF((AbsanteeContext)contextDouble.Object, (HolidayPlanMapper)mapper.Object);
+
+        // Act
+        var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(collab2Id, periodDate.Object, searchDays);
+
+        // Assert
+        Assert.Equal(holidayPeriods, result);
     }
 }
