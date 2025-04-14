@@ -51,17 +51,17 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             collaboratorDM2.Setup(c => c.UserID).Returns(2);
             var periodDateTime1 = new Mock<IPeriodDateTime>();
             periodDateTime1.Setup(a => a.GetInitDate()).Returns(init1);
-            periodDateTime1.Setup(a => a.GetInitDate()).Returns(final1);
+            periodDateTime1.Setup(a => a.GetFinalDate()).Returns(final1);
             collaboratorDM2.Setup(c => c.PeriodDateTime).Returns((PeriodDateTime)periodDateTime1.Object);
 
             var collaborator = new Mock<ICollaborator>();
             collaborator.Setup(c => c.GetUserId()).Returns(2);
             var periodDateTime2 = new Mock<IPeriodDateTime>();
             periodDateTime2.Setup(a => a.GetInitDate()).Returns(new DateTime(2020, 1, 1));
-            periodDateTime2.Setup(a => a.GetInitDate()).Returns(new DateTime(2021, 1, 1));
+            periodDateTime2.Setup(a => a.GetFinalDate()).Returns(new DateTime(2021, 1, 1));
 
             var collabMapper = new Mock<CollaboratorMapper>();
-            
+
             var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
             //Act 
             var result = await collaboratorRepository.IsRepeated(collaborator.Object);
