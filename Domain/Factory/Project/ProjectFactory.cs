@@ -3,6 +3,7 @@ using Domain.Visitor;
 using Domain.IRepository;
 using System.Text.RegularExpressions;
 using Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace Domain.Factory;
 public class ProjectFactory : IProjectFactory
@@ -12,7 +13,7 @@ public class ProjectFactory : IProjectFactory
     {
         _projectRepository = projectRepository;
     }
-    public Project Create(long id, string title, string acronym, IPeriodDate periodDate)
+    public async Task<Project> Create(long id, string title, string acronym, IPeriodDate periodDate)
     {
         Regex tituloRegex = new Regex(@"^.{1,50}$");
         Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
@@ -20,6 +21,10 @@ public class ProjectFactory : IProjectFactory
         {
             throw new ArgumentException("Invalid Arguments");
         }
+
+        if (!await _projectRepository.CheckIfAcronymIsUnique(acronym))
+            throw new ArgumentException("Invalid Arguments");
+
         Project project = new Project(id, title, acronym, periodDate);
         return project;
     }

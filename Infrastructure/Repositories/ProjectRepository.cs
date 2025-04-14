@@ -43,4 +43,12 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
         var project = _mapper.ToDomain(projectDM);
         return project;
     }
+
+    public async Task<bool> CheckIfAcronymIsUnique(string acronym)
+    {
+        var found = await this._context.Set<ProjectDataModel>()
+                            .FirstOrDefaultAsync(c => c.Acronym == acronym);
+
+        return found == null;
+    }
 }

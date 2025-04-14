@@ -35,7 +35,7 @@ public class Factory
 
     [Theory]
     [MemberData(nameof(ProjectData_InvalidTitle))]
-    public void WhenPassingInvalidTitle_ThenThrowException(string Title, string Acronym)
+    public async Task WhenPassingInvalidTitle_ThenThrowException(string Title, string Acronym)
     {
         //arrange
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
@@ -46,7 +46,7 @@ public class Factory
         var projectFactory = new ProjectFactory(ProjectRepositoryMock.Object);
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
              //act
              projectFactory.Create(1, Title, Acronym, periodDateMock.Object));
 
@@ -63,7 +63,7 @@ public class Factory
 
     [Theory]
     [MemberData(nameof(ProjectData_InvalidAcronym))]
-    public void WhenPassingInvalidAcronym_ThenThrowException(string Title, string Acronym)
+    public async Task WhenPassingInvalidAcronym_ThenThrowException(string Title, string Acronym)
     {
         //arrange
         Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
@@ -74,7 +74,7 @@ public class Factory
 
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
              //act
              projectFactory.Create(1, Title, Acronym, periodDateMock.Object));
 
