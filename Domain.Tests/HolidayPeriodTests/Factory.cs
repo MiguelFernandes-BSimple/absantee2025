@@ -19,7 +19,7 @@ public class Factory
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.HolidayPeriodExists(It.IsAny<long>(), periodDateMock.Object)).Returns(false);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
@@ -49,7 +49,7 @@ public class Factory
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.HolidayPeriodExists(It.IsAny<long>(), periodDateMock.Object)).Returns(true);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(false);
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
@@ -82,7 +82,7 @@ public class Factory
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.HolidayPeriodExists(It.IsAny<long>(), periodDateMock.Object)).Returns(false);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns((HolidayPlan?)null);
 
         var collaboratorMock = new Mock<ICollaborator>();
@@ -115,7 +115,7 @@ public class Factory
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.HolidayPeriodExists(It.IsAny<long>(), periodDateMock.Object)).Returns(false);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
@@ -144,11 +144,10 @@ public class Factory
         var periodDateMock = new Mock<IPeriodDate>();
         periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
         periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
-
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.HolidayPeriodExists(It.IsAny<long>(), periodDateMock.Object)).Returns(false);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();

@@ -15,14 +15,10 @@ namespace Infrastructure.Repositories;
 public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
 {
     private HolidayPlanMapper _mapper;
+
     public HolidayPlanRepositoryEF(AbsanteeContext context, HolidayPlanMapper mapper) : base(context, (IMapper<IHolidayPlan, HolidayPlanDataModel>)mapper)
     {
         _mapper = mapper;
-    }
-
-    private bool CanInsert(IHolidayPlan holidayPlan)
-    {
-        return _context.Set<HolidayPlanDataModel>().Any(hp => hp.Id == holidayPlan.GetCollaboratorId());
     }
 
     public bool CanInsertHolidayPeriod(long holidayPlanId, IHolidayPeriod periodDate)
@@ -126,21 +122,6 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(IPeriodDate periodDate)
     {
         throw new NotImplementedException();
-    }
-
-    public bool HolidayPeriodExists(long holidayPlanId, IPeriodDate periodDate)
-    {
-        var holidayPlan = GetById(holidayPlanId);
-
-        if (holidayPlan == null)
-            return false;
-
-        var result = holidayPlan.GetHolidayPeriods().Where(hp => hp.GetPeriodDate() == periodDate);
-
-        if (result == null)
-            return false;
-
-        return true;
     }
 
     public override async Task<IHolidayPlan?> GetByIdAsync(long id)
