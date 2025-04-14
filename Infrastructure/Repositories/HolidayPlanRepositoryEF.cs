@@ -94,10 +94,13 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
 
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorAsync(long collaboratorId)
     {
-        return await _context.Set<HolidayPlanDataModel>()
-            .Where(hp => hp.CollaboratorId == collaboratorId)
-            .SelectMany(hp => hp.HolidayPeriods)
-            .ToListAsync();
+        var holidayPlans = await _context.Set<HolidayPlanDataModel>()
+            .FirstOrDefaultAsync(hp => hp.CollaboratorId == collaboratorId);
+
+        if(holidayPlans == null)
+            return Enumerable.Empty<IHolidayPeriod>();
+
+        return holidayPlans.HolidayPeriods; 
     }
 
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(long collaboratorId, IPeriodDate period)
