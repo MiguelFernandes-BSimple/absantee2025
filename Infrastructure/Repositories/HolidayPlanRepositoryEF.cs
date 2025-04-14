@@ -153,4 +153,15 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         var hp = _mapper.ToDomain(hpDM);
         return hp;
     }
+
+    public override IHolidayPlan? GetById(long id)
+    {
+        var hpDM = _context.Set<HolidayPlanDataModel>().FirstOrDefault(hp => hp.Id == id);
+
+        if (hpDM == null)
+            return null;
+
+        var hp = _mapper.ToDomain(hpDM);
+        return hp;
+    }
 }

@@ -22,11 +22,11 @@ public class HRManagerFactory : IHRManagerFactory
         if (user == null)
             throw new ArgumentException("User does not exist");
 
-        if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
-            throw new ArgumentException("Invalid Arguments");
+        if (user.DeactivationDateIsBefore(periodDateTime.GetInitDate()))
+            throw new ArgumentException("Deactivation date is before init date");
 
         if (user.IsDeactivated())
-            throw new ArgumentException("Invalid Arguments");
+            throw new ArgumentException("User is deactivated");
 
         HRManager hRManager = new HRManager(userId, periodDateTime);
 
