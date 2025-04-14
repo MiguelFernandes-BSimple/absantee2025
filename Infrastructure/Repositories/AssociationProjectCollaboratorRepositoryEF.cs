@@ -96,6 +96,26 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(long projectId, long collaboratorId)
+    {
+        try
+        {
+            IEnumerable<AssociationProjectCollaboratorDataModel> assocsDM =
+                await _context.Set<AssociationProjectCollaboratorDataModel>()
+                              .Where(a => a.ProjectId == projectId && a.CollaboratorId == collaboratorId)
+                              .ToListAsync();
+
+
+            IEnumerable<IAssociationProjectCollaborator> result = _associationProjectCollaboratorMapper.ToDomain(assocsDM);
+
+            return result;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, IPeriodDate periodDate)
     {
         try
