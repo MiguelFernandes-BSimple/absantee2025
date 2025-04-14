@@ -13,9 +13,9 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories;
 public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
-{    
+{
     private HolidayPlanMapper _mapper;
-    public HolidayPlanRepositoryEF(AbsanteeContext context, HolidayPlanMapper mapper) : base(context, (IMapper<IHolidayPlan, HolidayPlanDataModel>) mapper)
+    public HolidayPlanRepositoryEF(AbsanteeContext context, HolidayPlanMapper mapper) : base(context, (IMapper<IHolidayPlan, HolidayPlanDataModel>)mapper)
     {
         _mapper = mapper;
     }
@@ -38,18 +38,6 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         return !await _context.Set<HolidayPlanDataModel>().AnyAsync(hp => hp.Id == holidayPlan.GetCollaboratorId());
     }
 
-    public bool AddHolidayPlan(IHolidayPlan holidayPlan)
-    {
-        bool canInsert = CanInsert(holidayPlan);
-
-        if (canInsert)
-        {
-            _context.Set<HolidayPlanDataModel>().Add(_mapper.ToDataModel((HolidayPlan) holidayPlan));
-            _context.SaveChanges();
-        }
-
-        return canInsert;
-    }
 
     public async Task<bool> AddHolidayPlanAsync(IHolidayPlan holidayPlan)
     {
@@ -57,7 +45,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
 
         if (canInsert)
         {
-            await _context.Set<HolidayPlanDataModel>().AddAsync(_mapper.ToDataModel((HolidayPlan) holidayPlan));
+            await _context.Set<HolidayPlanDataModel>().AddAsync(_mapper.ToDataModel((HolidayPlan)holidayPlan));
             await _context.SaveChangesAsync();
         }
 
@@ -153,17 +141,6 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
             return false;
 
         return true;
-    }
-
-    public override IHolidayPlan? GetById(long id)
-    {
-        var hpDM = _context.Set<HolidayPlanDataModel>().FirstOrDefault(hp => hp.Id == id);
-
-        if (hpDM == null)
-            return null;
-
-        var hp = _mapper.ToDomain(hpDM);
-        return hp;
     }
 
     public override async Task<IHolidayPlan?> GetByIdAsync(long id)

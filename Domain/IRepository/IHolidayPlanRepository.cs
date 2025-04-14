@@ -6,7 +6,6 @@ namespace Domain.IRepository;
 
 public interface IHolidayPlanRepository : IGenericRepository<IHolidayPlan, IHolidayPeriodVisitor>
 {
-    public bool AddHolidayPlan(IHolidayPlan holidayPlan);
     public bool CanInsertHolidayPeriod(long holidayPlanId, IHolidayPeriod periodDate);
     public Task<bool> AddHolidayPlanAsync(IHolidayPlan holidayPlan);
     public Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(long collaboratorId, IPeriodDate periodDate);
