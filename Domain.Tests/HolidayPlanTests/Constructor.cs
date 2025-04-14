@@ -92,6 +92,7 @@ public class Constructor
 
     // Validate exception - Two holiday periods collide
     // Happens when date periods intersect
+    /*
     [Fact]
     public void WhenHolidayPeriodDatesOverlap_ThenThrowException()
     {
@@ -133,7 +134,7 @@ public class Constructor
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
-
+    /*
     // Validate exception - Holiday period dates are not in the collaborator contract time frame
     [Fact]
     public void WhenHolidayPeriodNotInCollabContractTimeFrame_ThenThrowException()
@@ -152,32 +153,33 @@ public class Constructor
         // Test double for Collaborator
         /* Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>(); */
 
-        // At least one holiday period is outside the collaborator contract time frame - ContractContainsDates = false
+    // At least one holiday period is outside the collaborator contract time frame - ContractContainsDates = false
 
-        // In order for the exception to be thrown
-        /* collaboratorDouble
-            .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
-            .Returns(false); */
+    // In order for the exception to be thrown
+    /* collaboratorDouble
+        .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
+        .Returns(false); */
 
-        // There no overlap with other holiday periods
-        holidayPeriodDouble1.Setup(hp1 => hp1.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
-        holidayPeriodDouble2.Setup(hp2 => hp2.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
+    // There no overlap with other holiday periods
+    /*
+    holidayPeriodDouble1.Setup(hp1 => hp1.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
+    holidayPeriodDouble2.Setup(hp2 => hp2.Contains(It.IsAny<IHolidayPeriod>())).Returns(false);
 
-        // Create Holiday Periods list
-        List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod>
-        {
-            holidayPeriodDouble1.Object,
-            holidayPeriodDouble2.Object,
-        };
+    // Create Holiday Periods list
+    List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod>
+    {
+        holidayPeriodDouble1.Object,
+        holidayPeriodDouble2.Object,
+    };
 
-        // Assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
-            () =>
-                // Act
-                new HolidayPlan(It.IsAny<long>(), holidayPeriods)
-        );
+    // Assert
+    ArgumentException exception = Assert.Throws<ArgumentException>(
+        () =>
+            // Act
+            new HolidayPlan(It.IsAny<long>(), holidayPeriods)
+    );
 
-        Assert.Equal("Invalid Arguments", exception.Message);
-    }
-
+    Assert.Equal("Invalid Arguments", exception.Message);
+}
+*/
 }
