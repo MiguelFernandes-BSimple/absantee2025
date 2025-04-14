@@ -15,6 +15,6 @@ public class HolidayPlanDataModel
     {
         Id = holidayPlan.GetId();
         CollaboratorId = holidayPlan.GetCollaboratorId();
-        HolidayPeriods = holidayPlan.GetHolidayPeriods().Cast<IHolidayPeriod>().ToList();
+        HolidayPeriods = holidayPlan.GetHolidayPeriods().ToList();
     }
 }

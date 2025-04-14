@@ -4,7 +4,7 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Mapper;
 
-public class HolidayPlanMapper
+public class HolidayPlanMapper : IMapper<HolidayPlan, HolidayPlanDataModel>
 {
     public HolidayPlan ToDomain(HolidayPlanDataModel holidayPlanDM)
     {

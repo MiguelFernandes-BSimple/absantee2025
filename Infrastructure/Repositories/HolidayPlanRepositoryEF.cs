@@ -46,7 +46,6 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         if (canInsert)
         {
             await _context.Set<HolidayPlanDataModel>().AddAsync(_mapper.ToDataModel((HolidayPlan)holidayPlan));
-            await _context.SaveChangesAsync();
         }
 
         return canInsert;
