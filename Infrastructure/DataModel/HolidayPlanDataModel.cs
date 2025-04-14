@@ -9,12 +9,12 @@ public class HolidayPlanDataModel
 {
     public long Id { get; set; }
     public long CollaboratorId { get; set; }
-    public List<HolidayPeriod> HolidayPeriods { get; set; }
+    public List<IHolidayPeriod> HolidayPeriods { get; set; }
 
     public HolidayPlanDataModel(HolidayPlan holidayPlan)
     {
         Id = holidayPlan.GetId();
         CollaboratorId = holidayPlan.GetCollaboratorId();
-        HolidayPeriods = holidayPlan.GetHolidayPeriods().Cast<HolidayPeriod>().ToList();
+        HolidayPeriods = holidayPlan.GetHolidayPeriods().Cast<IHolidayPeriod>().ToList();
     }
 }
