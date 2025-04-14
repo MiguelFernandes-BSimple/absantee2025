@@ -1,8 +1,6 @@
 using Infrastructure.Repositories;
 using Domain.Interfaces;
-using Domain.IRepository;
 using Moq;
-using Domain.IRepository;
 using Domain.Visitor;
 using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
