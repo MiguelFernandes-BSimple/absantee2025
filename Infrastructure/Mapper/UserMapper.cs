@@ -13,7 +13,7 @@ namespace Infrastructure.Mapper
     {
         public User ToDomain(UserDataModel userDM)
         {
-            User user = new User(userDM.Names, userDM.Surnames, userDM.Email, userDM.PeriodDateTime._finalDate);
+            User user = new User(userDM.Names, userDM.Surnames, userDM.Email, userDM.PeriodDateTime.GetFinalDate());
 
             user.SetId(userDM.Id);
 

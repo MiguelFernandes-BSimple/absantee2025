@@ -21,7 +21,7 @@ public class HolidayPlanService
 
         int numberOfHolidayDays = 0;
 
-        var collaboratorHolidayPlan = _holidayPlanRepository.FindHolidayPlanByCollaborator(collaboratorId);
+        var collaboratorHolidayPlan = await _holidayPlanRepository.FindHolidayPlanByCollaboratorAsync(collaboratorId);
 
         if (collaboratorHolidayPlan == null)
         {
@@ -75,7 +75,7 @@ public class HolidayPlanService
 
         var collaboratorsIds = associations.Select(a => a.GetCollaboratorId());
 
-        return _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorsIds.ToList(), period);
+        return await _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorsIds.ToList(), period);
 
     }
 
