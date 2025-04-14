@@ -7,32 +7,34 @@ namespace Application.Tests.HolidayPlanServiceTests;
 public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
 {
     [Fact]
-    public void GetHolidayDaysForProjectCollaboratorBetweenDates_ReturnsCorrectDays()
+    public async Task GetHolidayDaysForProjectCollaboratorBetweenDates_ReturnsCorrectDays()
     {
         // Arrange
-        var mockProject = new Mock<IProject>();
         var mockAssociationRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var mockHolidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        var mockCollab1 = new Mock<ICollaborator>();
-        var mockCollab2 = new Mock<ICollaborator>();
-        var collabList = new List<ICollaborator>() { mockCollab1.Object, mockCollab2.Object };
+
+        var collabIdList = new List<long>() { 1, 2 };
+        
         var periodDouble = new Mock<IPeriodDate>();
 
         var mockAssociation1 = new Mock<IAssociationProjectCollaborator>();
+        mockAssociation1.Setup(a => a.GetCollaboratorId()).Returns(1);
+
         var mockAssociation2 = new Mock<IAssociationProjectCollaborator>();
+        mockAssociation2.Setup(a => a.GetCollaboratorId()).Returns(2);
+
         var mockHolidayPeriod1 = new Mock<IHolidayPeriod>();
+        mockHolidayPeriod1.Setup(h => h.GetDuration()).Returns(5);
         var mockHolidayPeriod2 = new Mock<IHolidayPeriod>();
+        mockHolidayPeriod2.Setup(h => h.GetDuration()).Returns(4);
 
         mockAssociationRepo
-            .Setup(repo => repo.FindAllByProject(mockProject.Object))
-            .Returns(new List<IAssociationProjectCollaborator> { mockAssociation1.Object, mockAssociation2.Object });
-
-        mockAssociation1.Setup(a => a.GetCollaborator()).Returns(mockCollab1.Object);
-        mockAssociation2.Setup(a => a.GetCollaborator()).Returns(mockCollab2.Object);
+            .Setup(repo => repo.FindAllByProjectAsync(It.IsAny<long>()))
+            .ReturnsAsync(new List<IAssociationProjectCollaborator> { mockAssociation1.Object, mockAssociation2.Object });
 
         mockHolidayPlanRepo
-            .Setup(repo => repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collabList, periodDouble.Object))
-            .Returns(new List<IHolidayPeriod> {
+            .Setup(repo => repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collabIdList, periodDouble.Object))
+            .ReturnsAsync(new List<IHolidayPeriod> {
                 mockHolidayPeriod1.Object,
                 mockHolidayPeriod2.Object
             });
@@ -43,62 +45,62 @@ public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
         var service = new HolidayPlanService(mockAssociationRepo.Object, mockHolidayPlanRepo.Object);
 
         // Act
-        var totalHolidayDays = service.GetHolidayDaysForProjectAllCollaboratorBetweenDates(mockProject.Object, periodDouble.Object);
+        var totalHolidayDays = await service.GetHolidayDaysForProjectAllCollaboratorBetweenDates(It.IsAny<long>(), periodDouble.Object);
 
         // Assert
         Assert.Equal(9, totalHolidayDays);
     }
 
     [Fact]
-    public void GetHolidayDaysForProjectWithNoAssociations_ReturnsZeroDays()
+    public async Task GetHolidayDaysForProjectWithNoAssociations_ReturnsZeroDays()
     {
         // Arrange
-        var mockProject = new Mock<IProject>();
         var mockAssociationRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var mockHolidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        var mockCollab = new Mock<ICollaborator>();
         var periodDouble = new Mock<IPeriodDate>();
 
         mockAssociationRepo
-            .Setup(repo => repo.FindAllByProject(mockProject.Object))
-            .Returns(new List<IAssociationProjectCollaborator>());
+            .Setup(repo => repo.FindAllByProjectAsync(It.IsAny<long>()))
+            .ReturnsAsync(new List<IAssociationProjectCollaborator>());
 
         var service = new HolidayPlanService(mockAssociationRepo.Object, mockHolidayPlanRepo.Object);
 
         // Act
-        var totalHolidayDays = service.GetHolidayDaysForProjectAllCollaboratorBetweenDates(mockProject.Object, periodDouble.Object);
+        var totalHolidayDays = await service.GetHolidayDaysForProjectAllCollaboratorBetweenDates(It.IsAny<long>(), periodDouble.Object);
 
         // Assert
         Assert.Equal(0, totalHolidayDays);
     }
 
     [Fact]
-    public void GetHolidayDaysForHolidayPlanWithNoPeriods_ReturnsZeroDays()
+    public async Task GetHolidayDaysForHolidayPlanWithNoPeriods_ReturnsZeroDays()
     {
         // Arrange
-        var mockProject = new Mock<IProject>();
         var mockAssociationRepo = new Mock<IAssociationProjectCollaboratorRepository>();
         var mockHolidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        var mockCollab = new Mock<ICollaborator>();
-        var collabList = new List<ICollaborator>() { mockCollab.Object };
+
+        var collabIdList = new List<long>() { 1, 2 };
+        
         var periodDouble = new Mock<IPeriodDate>();
 
         var mockAssociation = new Mock<IAssociationProjectCollaborator>();
+        mockAssociation.Setup(a => a.GetCollaboratorId()).Returns(1);
+
+        var mockHolidayPeriod = new Mock<IHolidayPeriod>();
+        mockHolidayPeriod.Setup(h => h.GetDuration()).Returns(0);
 
         mockAssociationRepo
-            .Setup(repo => repo.FindAllByProject(mockProject.Object))
-            .Returns(new List<IAssociationProjectCollaborator> { mockAssociation.Object });
-
-        mockAssociation.Setup(a => a.GetCollaborator()).Returns(mockCollab.Object);
+            .Setup(repo => repo.FindAllByProjectAsync(It.IsAny<long>()))
+            .ReturnsAsync(new List<IAssociationProjectCollaborator> { mockAssociation.Object });
 
         mockHolidayPlanRepo
-            .Setup(repo => repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDates(collabList, periodDouble.Object))
-            .Returns(new List<IHolidayPeriod>());
+            .Setup(repo => repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collabIdList, periodDouble.Object))
+            .ReturnsAsync(new List<IHolidayPeriod>() { mockHolidayPeriod.Object });
 
         var service = new HolidayPlanService(mockAssociationRepo.Object, mockHolidayPlanRepo.Object);
 
         // Act
-        var totalHolidayDays = service.GetHolidayDaysForProjectAllCollaboratorBetweenDates(mockProject.Object, periodDouble.Object);
+        var totalHolidayDays = await service.GetHolidayDaysForProjectAllCollaboratorBetweenDates(It.IsAny<long>(), periodDouble.Object);
 
         // Assert
         Assert.Equal(0, totalHolidayDays);

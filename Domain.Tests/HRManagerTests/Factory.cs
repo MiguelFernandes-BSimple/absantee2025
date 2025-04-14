@@ -16,18 +16,21 @@ public class Factory
     {
         //arrange
         var userDouble = new Mock<IUser>();
-            userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
-            userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
+        userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
+        userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-            var periodDateTimeDouble = new Mock<IPeriodDateTime>();
-            periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
+        var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+        periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
-            var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+        var userRepoDouble = new Mock<IUserRepository>();
+        userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
 
-            var hrFactory = new HRManagerFactory(userRepoDouble.Object);
+        var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
-            var result = hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
+        //act
+        var result = hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
+        //assert
+        Assert.NotNull(result);
     }
 
     [Fact]
