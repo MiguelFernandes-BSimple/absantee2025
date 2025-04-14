@@ -31,7 +31,7 @@ namespace Application.Tests.CollaboratorServiceTests
                 userDouble1.Object, userDouble2.Object
             };
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(u => u.GetBySurnames(It.IsAny<string>())).ReturnsAsync(userList);
+            userRepo.Setup(u => u.GetBySurnamesAsync(It.IsAny<string>())).ReturnsAsync(userList);
             userDouble1.Setup(u => u.GetId()).Returns(It.IsAny<long>());
             userDouble2.Setup(u => u.GetId()).Returns(It.IsAny<long>());
             var collabFactory = new Mock<ICollaboratorFactory>();
@@ -66,7 +66,7 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var userList = new List<IUser>();
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(u => u.GetBySurnames(It.IsAny<string>())).ReturnsAsync(userList);
+            userRepo.Setup(u => u.GetBySurnamesAsync(It.IsAny<string>())).ReturnsAsync(userList);
             var collabFactory = new Mock<ICollaboratorFactory>();
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
@@ -98,7 +98,7 @@ namespace Application.Tests.CollaboratorServiceTests
                 userDouble1.Object, userDouble2.Object
             };
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(u => u.GetBySurnames(It.IsAny<string>())).ReturnsAsync(userList);
+            userRepo.Setup(u => u.GetBySurnamesAsync(It.IsAny<string>())).ReturnsAsync(userList);
             userDouble1.Setup(u => u.GetId()).Returns(It.IsAny<long>());
             userDouble2.Setup(u => u.GetId()).Returns(It.IsAny<long>());
             var collabFactory = new Mock<ICollaboratorFactory>();

@@ -1,6 +1,7 @@
 using Domain.Interfaces;
 using Moq;
 using Infrastructure.Repositories;
+using Infrastructure.Mapper;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
@@ -17,10 +18,12 @@ public class AddHolidayPlan
         Mock<ICollaborator> doubleCollab = new Mock<ICollaborator>();
 
         // Collab has the holidayPlan
-        doubleHolidayPlan.Setup(hp => hp.GetCollaborator()).Returns(doubleCollab.Object);
+        doubleHolidayPlan.Setup(hp => hp.GetCollaboratorId()).Returns(It.IsAny<long>());
 
         // Instatiate repository
-        HolidayPlanRepository repo = new HolidayPlanRepository();
+        var context = new Mock<AbsanteeContext>();
+        var mapper = new Mock<HolidayPlanMapper>();
+        HolidayPlanRepositoryEF repo = new HolidayPlanRepositoryEF(context.Object, mapper.Object);
 
         // Act
         // add holiday plan to repository
@@ -48,7 +51,9 @@ public class AddHolidayPlan
         doubleHolidayPlanToAdd.Setup(hp => hp.HasCollaborator(It.IsAny<ICollaborator>())).Returns(true);
 
         // Instatiate repository
-        HolidayPlanRepository repo = new HolidayPlanRepository(new List<IHolidayPlan> { doubleHolidayPlan.Object });
+        var context = new Mock<AbsanteeContext>();
+        var mapper = new Mock<HolidayPlanMapper>();
+        HolidayPlanRepositoryEF repo = new HolidayPlanRepositoryEF(context.Object, mapper.Object);
 
         // Act
         // add holiday plan to repository
