@@ -35,20 +35,20 @@ public class FindHolidayPeriodsByCollaboratorBetweenDatesAsync
         holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(1);
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(2);
 
-        var expectedId = 1;
         var searchPeriod = new Mock<IPeriodDate>();
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
         holidayPeriodMock.Setup(hpd => hpd.Intersects(searchPeriod.Object)).Returns(true);
 
         var expectedPeriod = new List<IHolidayPeriod> { holidayPeriodMock.Object };
+        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(expectedPeriod);
 
         var mapperMock = new Mock<HolidayPlanMapper>();
 
         var holidayPlanRepoEF = new HolidayPlanRepositoryEF((AbsanteeContext)contextMock.Object, mapperMock.Object);
 
         // act
-        var result = await holidayPlanRepoEF.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(expectedId, searchPeriod.Object);
+        var result = await holidayPlanRepoEF.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(1, searchPeriod.Object);
 
         // assert
         Assert.Equal(result, expectedPeriod);
@@ -78,11 +78,10 @@ public class FindHolidayPeriodsByCollaboratorBetweenDatesAsync
         holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(1);
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(2);
 
-        var expectedId = 1;
         var searchPeriod = new Mock<IPeriodDate>();
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
-        holidayPeriodMock.Setup(hpd => hpd.Intersects(searchPeriod.Object)).Returns(false);
+        holidayPeriodMock.Setup(hpd => hpd.Intersects(searchPeriod.Object)).Returns(true);
 
         var expectedPeriod = new List<IHolidayPeriod>();
 
@@ -91,7 +90,7 @@ public class FindHolidayPeriodsByCollaboratorBetweenDatesAsync
         var holidayPlanRepoEF = new HolidayPlanRepositoryEF((AbsanteeContext)contextMock.Object, mapperMock.Object);
 
         // act
-        var result = await holidayPlanRepoEF.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(expectedId, searchPeriod.Object);
+        var result = await holidayPlanRepoEF.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(3, searchPeriod.Object);
 
         // assert
         Assert.Equal(result, expectedPeriod);
