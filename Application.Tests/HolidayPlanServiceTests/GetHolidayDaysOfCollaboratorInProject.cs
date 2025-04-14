@@ -2,13 +2,14 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
+using Xunit.Sdk;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 
 public class GetHolidayDaysOfCollaboratorInProject
 {
     [Fact]
-    public void WhenCalculatingHolidayDaysOfCollaboratorInAProject_ThenReturnCorrectValue()
+    public async Task WhenCalculatingHolidayDaysOfCollaboratorInAProject_ThenReturnCorrectValue()
     {
         //arrange
 
@@ -24,22 +25,22 @@ public class GetHolidayDaysOfCollaboratorInProject
         holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(periodDouble.Object)).Returns(5);
 
         Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorId)).Returns(holidayPlanDouble.Object);
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaboratorAsync(collaboratorId)).ReturnsAsync(holidayPlanDouble.Object);
 
         Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectId, collaboratorId)).Returns(associationDouble.Object);
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaboratorAsync(projectId, collaboratorId)).ReturnsAsync(associationDouble.Object);
 
         HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
 
         //act
-        int result = service.GetHolidayDaysOfCollaboratorInProject(projectId, collaboratorId);
+        int result = await service.GetHolidayDaysOfCollaboratorInProjectAsync(projectId, collaboratorId);
 
         //assert
         Assert.Equal(5, result);
     }
 
     [Fact]
-    public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectWithoutHolidayPlan_ThenReturnZero()
+    public async Task WhenCalculatingHolidayDaysOfCollaboratorInAProjectWithoutHolidayPlan_ThenReturnZero()
     {
         //arrange
         long projectId = 1;
@@ -48,22 +49,22 @@ public class GetHolidayDaysOfCollaboratorInProject
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
 
         Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaborator(collaboratorId)).Returns((IHolidayPlan?)null);
+        holidayPlanRepositoryDouble.Setup(hpr => hpr.FindHolidayPlanByCollaboratorAsync(collaboratorId)).ReturnsAsync((IHolidayPlan?)null);
 
         Mock<IAssociationProjectCollaboratorRepository> associationProjectCollaboratorRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaborator(projectId, collaboratorId)).Returns(associationDouble.Object);
+        associationProjectCollaboratorRepository.Setup(a => a.FindByProjectAndCollaboratorAsync(projectId, collaboratorId)).ReturnsAsync(associationDouble.Object);
 
         HolidayPlanService service = new HolidayPlanService(associationProjectCollaboratorRepository.Object, holidayPlanRepositoryDouble.Object);
 
         //act
-        int result = service.GetHolidayDaysOfCollaboratorInProject(projectId, collaboratorId);
+        int result = await service.GetHolidayDaysOfCollaboratorInProjectAsync(projectId, collaboratorId);
 
         //assert
         Assert.Equal(0, result);
     }
 
     [Fact]
-    public void WhenCalculatingHolidayDaysOfCollaboratorInAProjectAndAssocitionsAreNull_ThenThrowExcepection()
+    public async Task WhenCalculatingHolidayDaysOfCollaboratorInAProjectAndAssocitionsAreNull_ThenThrowExcepection()
     {
 
         //arrange
@@ -73,13 +74,13 @@ public class GetHolidayDaysOfCollaboratorInProject
         Mock<IAssociationProjectCollaboratorRepository> association = new Mock<IAssociationProjectCollaboratorRepository>();
         Mock<IHolidayPlanRepository> holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
 
-        association.Setup(hpr => hpr.FindByProjectAndCollaborator(projectId, collaboratorId)).Returns((IAssociationProjectCollaborator?)null);
+        association.Setup(hpr => hpr.FindByProjectAndCollaboratorAsync(projectId, collaboratorId)).ReturnsAsync((IAssociationProjectCollaborator?)null);
 
         HolidayPlanService service = new HolidayPlanService(association.Object, holidayPlanRepositoryDouble.Object);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() =>
-            service.GetHolidayDaysOfCollaboratorInProject(projectId, collaboratorId));
+        var exception = await Assert.ThrowsAsync<Exception>(() =>
+            service.GetHolidayDaysOfCollaboratorInProjectAsync(projectId, collaboratorId));
 
         Assert.Equal("A associação com os parâmetros fornecidos não existe.", exception.Message);
 
