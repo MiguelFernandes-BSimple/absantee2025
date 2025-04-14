@@ -122,9 +122,15 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         return _mapper.ToDomain(hpDm);
     }
 
-    public Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(IPeriodDate periodDate)
+    public async Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(IPeriodDate periodDate)
     {
-        throw new NotImplementedException();
+        var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
+                    .Where(hp => hp.HolidayPeriods
+                        .Any(hperiod => periodDate.GetInitDate() >= hperiod.GetPeriodDate().GetInitDate()
+                                    && periodDate.GetFinalDate() <= hperiod.GetPeriodDate().GetFinalDate()))
+                    .ToListAsync();
+
+        return _mapper.ToDomain(holidayPlansDMs);
     }
 
     public override async Task<IHolidayPlan?> GetByIdAsync(long id)
