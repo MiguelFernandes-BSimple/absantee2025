@@ -70,7 +70,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         return await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
             .SelectMany(hp => hp.HolidayPeriods)
-            .Where(h => periodDate.Contains(h.GetPeriodDate()))
+            .Where(hperiod => periodDate.GetInitDate() >= hperiod.GetPeriodDate().GetInitDate()
+                           && periodDate.GetFinalDate() <= hperiod.GetPeriodDate().GetFinalDate())
             .ToListAsync();
     }
 
