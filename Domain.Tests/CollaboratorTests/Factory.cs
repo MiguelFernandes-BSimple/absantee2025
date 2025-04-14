@@ -25,7 +25,7 @@ public class Factory
         userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
 
         var collabFactory = new CollaboratorFactory(collabRepo.Object, userRepo.Object);
-        
+
         //act
         var result = collabFactory.Create(It.IsAny<long>(), periodDateTime.Object);
 
@@ -114,9 +114,12 @@ public class Factory
     public async Task WhenCreatingCollaboratorWhereCollaboratorAlreadyExists_ThenShowThrowException()
     {
         //arrange
+        long userId = 1;
+
         Mock<IUser> user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
+        user.Setup(u => u.GetId()).Returns(userId);
 
         Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
@@ -124,14 +127,14 @@ public class Factory
         var collabRepo = new Mock<ICollaboratorRepository>();
         collabRepo.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(true);
         var userRepo = new Mock<IUserRepository>();
-        userRepo.Setup(u => u.GetById(It.IsAny<int>())).Returns(user.Object);
+        userRepo.Setup(u => u.GetById(userId)).Returns(user.Object);
 
         var collabFactory = new CollaboratorFactory(collabRepo.Object, userRepo.Object);
         //assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
-                collabFactory.Create(It.IsAny<long>(), periodDateTime.Object)
+                collabFactory.Create(userId, periodDateTime.Object)
         );
         Assert.Equal("Collaborator already exists", exception.Message);
     }
@@ -141,9 +144,9 @@ public class Factory
     {
         //arrange
         var visitor = new Mock<ICollaboratorVisitor>();
-        visitor.Setup(v => v.Id).Returns(It.IsAny<int>() );
-        visitor.Setup(v => v.UserID).Returns(It.IsAny<int>() );
-        visitor.Setup(v => v.PeriodDateTime).Returns(It.IsAny<PeriodDateTime>() );
+        visitor.Setup(v => v.Id).Returns(It.IsAny<int>());
+        visitor.Setup(v => v.UserID).Returns(It.IsAny<int>());
+        visitor.Setup(v => v.PeriodDateTime).Returns(It.IsAny<PeriodDateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
         var userRepo = new Mock<IUserRepository>();
