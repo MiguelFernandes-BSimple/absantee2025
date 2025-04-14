@@ -10,9 +10,10 @@ namespace Domain.IRepository
 {
     public interface IUserRepository : IGenericRepository<IUser, IUserVisitor>
     {
-        Task<IEnumerable<IUser>> GetByNames(string names);
-        Task<IEnumerable<IUser>> GetBySurnames(string names);
-        Task<IEnumerable<IUser>> GetByNamesAndSurnames(string names, string surnames);
+        Task<IEnumerable<IUser>> GetByNamesAsync(string names);
+        Task<IEnumerable<IUser>> GetBySurnamesAsync(string names);
+        Task<IEnumerable<IUser>> GetByNamesAndSurnamesAsync(string names, string surnames);
+        Task<IUser?> GetByEmailAsync(string email);
         IUser? GetById(long id);
         Task<IUser?> GetByIdAsync(long id);
     }
