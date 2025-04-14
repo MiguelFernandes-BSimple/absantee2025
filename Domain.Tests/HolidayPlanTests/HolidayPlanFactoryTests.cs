@@ -2,6 +2,7 @@ using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
+using Domain.Visitor;
 using Moq;
 
 public class HolidayPlanFactoryTests
@@ -75,5 +76,22 @@ public class HolidayPlanFactoryTests
 
         Assert.Equal("Collaborator doesn't exist.", exception.Message);
 
+    }
+
+    [Fact]
+    public void WhenPassingDataModel_ThenFactoryCreatesNewHolidayPlan()
+    {
+        //Arrange
+        var holidayPlanVisitorDouble = new Mock<IHolidayPlanVisitor>();
+
+        var collabRepoDouble = new Mock<ICollaboratorRepository>();
+
+        var holidayPlanFactory = new HolidayPlanFactory(collabRepoDouble.Object);
+
+        //Act
+        var result = holidayPlanFactory.Create(holidayPlanVisitorDouble.Object);
+
+        //Assert
+        Assert.NotNull(result);
     }
 }
