@@ -64,27 +64,27 @@ public class CollaboratorService
         {
             return false;
         }
-        
+
         return true;
     }
 
     public async Task<IEnumerable<ICollaborator>> GetByNames(string names)
     {
-        var users = await _userRepository.GetByNames(names);
+        var users = await _userRepository.GetByNamesAsync(names);
         var userIds = users.Select(u => u.GetId());
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetBySurnames(string surnames)
     {
-        var users = await _userRepository.GetBySurnames(surnames);
+        var users = await _userRepository.GetBySurnamesAsync(surnames);
         var userIds = users.Select(u => u.GetId());
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetByNamesAndSurnames(string names, string surnames)
     {
-        var users = await _userRepository.GetByNamesAndSurnames(names, surnames);
+        var users = await _userRepository.GetByNamesAndSurnamesAsync(names, surnames);
         var userIds = users.Select(u => u.GetId());
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
