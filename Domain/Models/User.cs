@@ -1,5 +1,3 @@
-using System.Net.Mail;
-using System.Text.RegularExpressions;
 using Domain.Interfaces;
 
 namespace Domain.Models;
@@ -16,38 +14,20 @@ public class User : IUser
     {
         deactivationDate ??= DateTime.MaxValue;
 
-        if (CheckInputValues(names, surnames, email, deactivationDate))
-        {
-            _names = names;
-            _surnames = surnames;
-            _email = email;
-            _periodDateTime = new PeriodDateTime(DateTime.Now, (DateTime)deactivationDate);
-        }
-        else
-            throw new ArgumentException("Invalid Arguments");
+        _names = names;
+        _surnames = surnames;
+        _email = email;
+        _periodDateTime = new PeriodDateTime(DateTime.Now, (DateTime)deactivationDate);
     }
 
-    private bool CheckInputValues(string names, string surnames, string email, DateTime? deactivationDate)
+    public User(long id, string names, string surnames, string email, IPeriodDateTime periodDateTime)
     {
-        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
+        _id = id;
+        _names = names;
+        _surnames = surnames;
+        _email = email;
+        _periodDateTime = periodDateTime;
 
-        if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
-            return false;
-
-        try
-        {
-            var emailValidator = new MailAddress(email);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-
-        // Date validation
-        if (DateTime.Now >= deactivationDate)
-            return false;
-
-        return true;
     }
 
     public long GetId()

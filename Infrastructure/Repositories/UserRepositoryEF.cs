@@ -14,7 +14,7 @@ public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRe
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<IUser>> GetByNames(string names)
+    public async Task<IEnumerable<IUser>> GetByNamesAsync(string names)
     {
         if (string.IsNullOrWhiteSpace(names))
             return new List<IUser>();
@@ -27,7 +27,7 @@ public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRe
         return users;
     }
 
-    public async Task<IEnumerable<IUser>> GetBySurnames(string surnames)
+    public async Task<IEnumerable<IUser>> GetBySurnamesAsync(string surnames)
     {
         if (string.IsNullOrWhiteSpace(surnames))
             return new List<IUser>();
@@ -40,7 +40,7 @@ public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRe
         return users;
     }
 
-    public async Task<IEnumerable<IUser>> GetByNamesAndSurnames(string names, string surnames)
+    public async Task<IEnumerable<IUser>> GetByNamesAndSurnamesAsync(string names, string surnames)
     {
         if (string.IsNullOrWhiteSpace(names) && string.IsNullOrWhiteSpace(surnames))
             return new List<IUser>();
@@ -52,6 +52,19 @@ public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRe
         var users = _mapper.ToDomain(usersDM);
 
         return users;
+    }
+
+    public async Task<IUser?> GetByEmailAsync(string email)
+    {
+        var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Email == email);
+
+        if (userDM == null)
+        {
+            return null;
+        }
+
+        var user = _mapper.ToDomain(userDM);
+        return user;
     }
 
     public override IUser? GetById(long id)
