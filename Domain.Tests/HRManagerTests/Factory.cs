@@ -59,7 +59,7 @@ public class Factory
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+        userRepoDouble.Setup(urd => urd.GetById(1)).Returns(userDouble.Object);
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
@@ -67,7 +67,7 @@ public class Factory
         ArgumentException exception = Assert.Throws<ArgumentException>(
         () =>
             //act
-            hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object)
+            hrFactory.Create(1, periodDateTimeDouble.Object)
         );
         Assert.Equal("Deactivation date is before init date", exception.Message);
     }

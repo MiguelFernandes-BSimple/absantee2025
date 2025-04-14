@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -15,9 +16,11 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPeriod Create(long holidayPlanId, PeriodDate periodDate)
+    public HolidayPeriod Create(long holidayPlanId, IPeriodDate periodDate)
     {
-        if (!_holidayPlanRepository.HolidayPeriodExists(holidayPlanId, periodDate))
+        HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
+
+        if (!_holidayPlanRepository.CanInsertHolidayPeriod(holidayPlanId, holidayPeriod))
             throw new ArgumentException("Holiday Period already exists for this Holiday Plan.");
 
         var holidayPlan = _holidayPlanRepository.GetById(holidayPlanId);
@@ -33,7 +36,7 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         if (!collaborator.ContractContainsDates(periodDateTime))
             throw new ArgumentException("Collaborator's contract out of bounds.");
 
-        return new HolidayPeriod(periodDate);
+        return holidayPeriod;
     }
 
     public HolidayPeriod Create(IHolidayPeriodVisitor visitor)

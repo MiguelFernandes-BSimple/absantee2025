@@ -25,10 +25,10 @@ namespace Domain.Factory
                 throw new ArgumentException("User dont exists");
 
             if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
-                throw new ArgumentException("Invalid Arguments");
+                throw new ArgumentException("User deactivation date is before collaborator contract end date.");
 
             if (user.IsDeactivated())
-                throw new ArgumentException("Invalid Arguments");
+                throw new ArgumentException("User is deactivated.");
 
             Collaborator collab = new Collaborator(userId, periodDateTime);
 
