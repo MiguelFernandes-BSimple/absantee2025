@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
@@ -73,7 +73,7 @@ public class FindAllCollaboratorsWithinHolidayPeriodsBetweenDates
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
-        collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(new List<ICollaborator> { collaboratorDouble1.Object, collaboratorDouble2.Object });
+        collabRepoDouble.Setup(c => c.GetByIdsAsync(new List<long> { 1, 2 })).ReturnsAsync(new List<ICollaborator> { collaboratorDouble1.Object, collaboratorDouble2.Object });
 
         var userRepo = new Mock<IUserRepository>();
         var collabFactory = new Mock<ICollaboratorFactory>();
@@ -106,7 +106,7 @@ public class FindAllCollaboratorsWithinHolidayPeriodsBetweenDates
         var apcDouble = new Mock<IAssociationProjectCollaboratorRepository>();
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
-        collabRepoDouble.Setup(c => c.Find(It.IsAny<Expression<Func<ICollaborator, bool>>>())).Returns(new List<ICollaborator>());
+        collabRepoDouble.Setup(c => c.GetByIdsAsync(new List<long> { 1 })).ReturnsAsync(new List<ICollaborator>());
 
         var userRepo = new Mock<IUserRepository>();
         var collabFactory = new Mock<ICollaboratorFactory>();
