@@ -1,46 +1,100 @@
 using Infrastructure.Repositories;
 using Domain.Interfaces;
 using Moq;
+using Infrastructure.DataModel;
+using Microsoft.EntityFrameworkCore;
+using Domain.Visitor;
+using Infrastructure.Mapper;
+using System.Diagnostics.CodeAnalysis;
+using Domain.IRepository;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
 public class FindHolidayPlanByCollaboratorAsync
 {
     [Fact]
-    public async Task WhenPassingValid
-
-    [Fact]
-    public async Task WhenFindingHolidayPlanByCollaboratorAsync_ThenReturnsCorrectCollaborator()
+    public async Task WhenPassingValidCollabId_ThenReturnsCorrectHolidayPlan()
     {
-        //arrange
-        var collaboratorDouble = new Mock<ICollaborator>();
+        // arrange
+        var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlanDM3 = new Mock<IHolidayPlanVisitor>();
 
-        var holidayPlanDouble1 = new Mock<IHolidayPlan>();
-        holidayPlanDouble1.Setup(hp => hp.HasCollaborator(collaboratorDouble.Object)).Returns(true);
+        var holidayPlans = new List<HolidayPlanDataModel>{
+            (HolidayPlanDataModel)holidayPlanDM1.Object,
+            (HolidayPlanDataModel)holidayPlanDM2.Object,
+            (HolidayPlanDataModel)holidayPlanDM3.Object
+        }.AsQueryable();
 
-        var holidayPlanDouble2 = new Mock<IHolidayPlan>();
+        var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Provider).Returns(holidayPlans.Provider);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Expression).Returns(holidayPlans.Expression);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.ElementType).Returns(holidayPlans.ElementType);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(() => holidayPlans.GetEnumerator());
 
-        var repo = new HolidayPlanRepository(new List<IHolidayPlan> { holidayPlanDouble1.Object, holidayPlanDouble2.Object });
+        var mockContext = new Mock<IAbsanteeContext>();
+        mockContext.Setup(mc => mc.HolidayPlans).Returns(mockSet.Object);
 
-        //act
-        var result = await repo.FindHolidayPlanByCollaboratorAsync(collaboratorDouble.Object);
+        holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(1);
+        holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(2);
+        holidayPlanDM3.Setup(hp => hp.CollaboratorId).Returns(3);
 
-        //assert
-        Assert.Equal(holidayPlanDouble1.Object, result);
+        var expectedId = 1;
+        var expected = new Mock<IHolidayPlan>();
+        expected.Setup(e => e.GetCollaboratorId()).Returns(expectedId);
+
+        var mapperDouble = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+        mapperDouble.Setup(md => md.ToDomain((HolidayPlanDataModel)holidayPlanDM1.Object)).Returns(expected.Object);
+
+        var holidayPlanRepoDouble = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object);
+
+        // act
+        var result = await holidayPlanRepoDouble.FindHolidayPlanByCollaboratorAsync(expectedId);
+
+        // assert
+        Assert.Equal(result, expected.Object);
     }
 
     [Fact]
-    public async Task WhenFindingHolidayPlanBCollaborator_ThenReturnsNull()
+    public async Task WhenPassingValidCollabId_ThenReturnsNull()
     {
-        //arrange
-        var collaboratorDouble1 = new Mock<ICollaborator>();
+        // arrange
+        var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlanDM3 = new Mock<IHolidayPlanVisitor>();
 
-        var repo = new HolidayPlanRepository();
+        var holidayPlans = new List<HolidayPlanDataModel>{
+            (HolidayPlanDataModel)holidayPlanDM1.Object,
+            (HolidayPlanDataModel)holidayPlanDM2.Object,
+            (HolidayPlanDataModel)holidayPlanDM3.Object
+        }.AsQueryable();
 
-        //act
-        var result = await repo.FindHolidayPlanByCollaboratorAsync(collaboratorDouble1.Object);
+        var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Provider).Returns(holidayPlans.Provider);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Expression).Returns(holidayPlans.Expression);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.ElementType).Returns(holidayPlans.ElementType);
+        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(() => holidayPlans.GetEnumerator());
 
-        //assert
+        var mockContext = new Mock<IAbsanteeContext>();
+        mockContext.Setup(mc => mc.HolidayPlans).Returns(mockSet.Object);
+
+        holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(1);
+        holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(2);
+        holidayPlanDM3.Setup(hp => hp.CollaboratorId).Returns(3);
+
+        var expectedId = 4;
+        var expected = new Mock<IHolidayPlan>();
+        expected.Setup(e => e.GetCollaboratorId()).Returns(expectedId);
+
+        var mapperDouble = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+
+        var holidayPlanRepoDouble = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object);
+
+        // act
+        var result = await holidayPlanRepoDouble.FindHolidayPlanByCollaboratorAsync(expectedId);
+
+        // assert
         Assert.Null(result);
     }
 }
