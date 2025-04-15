@@ -9,7 +9,7 @@ public class GetHolidayDaysForProjectCollaboratorBetweenDates
     [Fact]
     public async Task WhenNoAssociationForCollaborator_ThenThrowException()
     {
-        // Arrange
+        // Arrangew
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         associationRepoMock.Setup(a => a.FindByProjectAndCollaboratorAsync(It.IsAny<long>(), It.IsAny<long>())).ReturnsAsync((IAssociationProjectCollaborator?)null);
 

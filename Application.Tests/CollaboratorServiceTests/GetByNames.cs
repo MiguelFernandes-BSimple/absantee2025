@@ -37,7 +37,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(u => u.GetByNamesAsync(It.IsAny<string>())).ReturnsAsync(userList);
             userDouble1.Setup(u => u.GetId()).Returns(userIdsList[0]);
-            userDouble2.Setup(u => u.GetId()).Returns(userIdsList[0]);
+            userDouble2.Setup(u => u.GetId()).Returns(userIdsList[1]);
             var collabFactory = new Mock<ICollaboratorFactory>();
 
             var expected = new List<ICollaborator>()
