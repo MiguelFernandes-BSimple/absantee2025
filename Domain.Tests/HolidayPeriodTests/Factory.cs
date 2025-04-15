@@ -187,6 +187,7 @@ public class Factory
         var result = holidayPeriodFactory.Create(visitor.Object);
 
         //assert
+        Assert.NotNull(result);
     }
 }
 

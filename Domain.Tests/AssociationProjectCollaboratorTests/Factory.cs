@@ -345,7 +345,7 @@ public class Factory
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         // Contract doesn't contain the dates
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
         Mock<IAssociationProjectCollaborator> assoc = new Mock<IAssociationProjectCollaborator>();

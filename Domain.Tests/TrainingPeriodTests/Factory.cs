@@ -59,8 +59,9 @@ public class Constructor
         var factory = new TrainingPeriodFactory();
 
         //act
-        factory.Create(visitor.Object);
+        var result = factory.Create(visitor.Object);
 
         //assert
+        Assert.NotNull(result);
     }
 }

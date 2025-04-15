@@ -115,6 +115,7 @@ public class Factory
         var result = hrFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>());
 
         // assert
+        Assert.NotNull(result);
         }
 
 

@@ -138,9 +138,10 @@ public class Factory
         var userFactory = new UserFactory(userRepository.Object);
 
         //Act
-        userFactory.Create(userVisitor.Object);
+        var result = userFactory.Create(userVisitor.Object);
 
         //Assert
+        Assert.NotNull(result);
     }
 
 }

@@ -162,6 +162,7 @@ public class Factory
         var result = collabFactory.Create(visitor.Object);
 
         //assert
+        Assert.NotNull(result);
     }
 }
 
