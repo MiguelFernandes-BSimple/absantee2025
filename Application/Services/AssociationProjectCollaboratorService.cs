@@ -18,8 +18,7 @@ namespace Application.Services
         public async void Add(IPeriodDate periodDate, long collabId, long projectId)
         {
             var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
-            if (assoc != null)
-                await _assocRepository.AddAsync(assoc);
+            await _assocRepository.AddAsync(assoc);
         }
     }
 }
