@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
@@ -46,10 +47,10 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
 
             var expected = new Mock<Collaborator>().Object;
 
-            var collabMapper = new Mock<IMapper<Collaborator, CollaboratorDataModel>>();
+            var collabMapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
             collabMapper.Setup(cm => cm.ToDomain(userFiltered)).Returns(expected);
 
-            var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, (CollaboratorMapper)collabMapper.Object);
+            var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
             //Act 
             var result = await collaboratorRepository.GetByIdAsync(3);
 
@@ -88,9 +89,9 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
 
             var expected = new List<Collaborator>();
 
-            var collabMapper = new Mock<IMapper<Collaborator, CollaboratorDataModel>>();
+            var collabMapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
 
-            var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, (CollaboratorMapper)collabMapper.Object);
+            var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
             //Act 
             var result = await collaboratorRepository.GetByIdAsync(4);
 

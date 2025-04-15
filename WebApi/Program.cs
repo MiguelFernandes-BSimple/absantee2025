@@ -1,7 +1,9 @@
 using Domain.Factory;
 using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
+using Domain.Models;
 using Infrastructure;
+using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +31,7 @@ builder.Services.AddTransient<TrainingPeriodMapper>();
 builder.Services.AddTransient<UserMapper>();
 builder.Services.AddTransient<ProjectManagerMapper>();
 builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
+builder.Services.AddTransient<IMapper<Collaborator, CollaboratorDataModel> ,CollaboratorMapper>();
 
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();

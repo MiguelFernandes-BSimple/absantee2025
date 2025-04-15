@@ -60,7 +60,7 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             periodDateTime2.Setup(a => a.GetInitDate()).Returns(new DateTime(2020, 1, 1));
             periodDateTime2.Setup(a => a.GetFinalDate()).Returns(new DateTime(2021, 1, 1));
 
-            var collabMapper = new Mock<CollaboratorMapper>();
+            var collabMapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
 
             var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
             //Act 

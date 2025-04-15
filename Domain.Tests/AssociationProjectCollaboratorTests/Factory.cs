@@ -205,7 +205,7 @@ public class Factory
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
+        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         // Contract is finished
         project.Setup(p => p.IsFinished()).Returns(true);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
@@ -249,7 +249,7 @@ public class Factory
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
+        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         // Contract doesn't contain the dates
         collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
@@ -342,7 +342,7 @@ public class Factory
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
+        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         // Contract doesn't contain the dates
         collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
@@ -384,8 +384,9 @@ public class Factory
             new AssociationProjectCollaboratorFactory(collabRepo.Object, projectRepo.Object, assocRepo.Object);
 
         // Act
-        factory.Create(visitor.Object);
+        var result = factory.Create(visitor.Object);
 
         //Assert
+        Assert.NotNull(result);
     }
 }

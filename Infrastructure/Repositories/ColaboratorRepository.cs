@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.DataModel;
 using System.Threading.Tasks;
 using Infrastructure.Mapper;
+using Domain.Visitor;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepository : GenericRepository<ICollaborator, CollaboratorDataModel>, ICollaboratorRepository
+public class CollaboratorRepository : GenericRepository<ICollaborator, ICollaboratorVisitor>, ICollaboratorRepository
 {
-    private readonly CollaboratorMapper _mapper;
-    public CollaboratorRepository(AbsanteeContext context, CollaboratorMapper mapper) : base(context, (IMapper<ICollaborator, CollaboratorDataModel>)mapper)
+    private readonly IMapper<ICollaborator, ICollaboratorVisitor> _mapper;
+    public CollaboratorRepository(AbsanteeContext context, IMapper<ICollaborator, ICollaboratorVisitor> mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }
