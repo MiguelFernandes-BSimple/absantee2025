@@ -1,6 +1,7 @@
-using Infrastructure;
 using Infrastructure.Mapper;
 using Moq;
+
+namespace Infrastructure.Repositories.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class Constructor
 {
