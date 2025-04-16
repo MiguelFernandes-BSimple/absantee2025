@@ -15,13 +15,6 @@ public class ProjectFactory : IProjectFactory
     }
     public async Task<Project> Create(long id, string title, string acronym, IPeriodDate periodDate)
     {
-        Regex tituloRegex = new Regex(@"^.{1,50}$");
-        Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
-        if (!tituloRegex.IsMatch(title) || !siglaRegex.IsMatch(acronym))
-        {
-            throw new ArgumentException("Invalid Arguments");
-        }
-
         if (!await _projectRepository.CheckIfAcronymIsUnique(acronym))
             throw new ArgumentException("Invalid Arguments");
 
