@@ -3,7 +3,7 @@ using Domain.Models;
 using Moq;
 namespace Domain.Tests.ProjectTests;
 
-public class IsFinished
+public class ProjectIsFinishedTests
 {
     [Fact]
     public void WhenProjectIsFinished_ThenReturnTrue()

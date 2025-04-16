@@ -8,7 +8,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectTests
 {
-    public class GetPeriodDate
+    public class ProjectGetPeriodDateTests
     {
         [Fact]
         public void WhenCallingMethod_ThenReturnsPeriodDate()

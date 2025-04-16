@@ -1,11 +1,10 @@
-namespace Domain.Tests.HolidayPeriodTests;
-
 using Domain.Models;
-using Xunit;
 using Moq;
 using Domain.Interfaces;
 
-public class GetNumberOfCommonUtilDays
+namespace Domain.Tests.HolidayPeriodTests;
+
+public class HolidayPeriodGetNumberOfCommonUtilDaysTests
 {
 
     [Fact]

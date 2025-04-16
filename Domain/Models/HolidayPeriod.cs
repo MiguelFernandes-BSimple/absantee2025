@@ -95,13 +95,4 @@ public class HolidayPeriod : IHolidayPeriod
         return _periodDate.Intersects(holidayPeriod.GetPeriodDate());
     }
 
-    public IPeriodDate? GetIntersectionPeriod(IPeriodDate periodDate)
-    {
-        return periodDate.GetIntersection(_periodDate);
-    }
-
-    public IPeriodDate? GetIntersectionPeriod(IHolidayPeriod holidayPeriod)
-    {
-        return holidayPeriod.GetPeriodDate().GetIntersection(_periodDate);
-    }
 }

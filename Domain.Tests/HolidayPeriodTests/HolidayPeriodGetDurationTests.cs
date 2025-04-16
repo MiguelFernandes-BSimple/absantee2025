@@ -1,10 +1,10 @@
-namespace Domain.Tests.HolidayPeriodTests;
-
 using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
-public class GetDuration
+namespace Domain.Tests.HolidayPeriodTests;
+
+public class HolidayPeriodGetDurationTests
 {
     /**
     * Method to test the duration process

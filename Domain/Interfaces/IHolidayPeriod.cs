@@ -16,6 +16,4 @@ public interface IHolidayPeriod
     public bool IsLongerThan(int days);
     public bool Intersects(IPeriodDate periodDate);
     public bool Intersects(IHolidayPeriod holidayPeriod);
-    public IPeriodDate? GetIntersectionPeriod(IPeriodDate periodDate);
-    public IPeriodDate? GetIntersectionPeriod(IHolidayPeriod holidayPeriod);
 }

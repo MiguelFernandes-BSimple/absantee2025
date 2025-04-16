@@ -8,7 +8,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectTests
 {
-    public class Constructor
+    public class ProjectConstructorTests
     {
         [Fact]
         public void WhenPassingValidData_ThenCreatesProject()
