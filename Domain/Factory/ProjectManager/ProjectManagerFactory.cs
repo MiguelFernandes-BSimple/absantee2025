@@ -18,9 +18,9 @@ namespace Domain.Factory
             _userRepository = userRepository;
         }
 
-        public ProjectManager Create(long userId, IPeriodDateTime periodDateTime)
+        public async Task<ProjectManager> Create(long userId, IPeriodDateTime periodDateTime)
         {
-            var user = _userRepository.GetById(userId);
+            IUser? user = await _userRepository.GetByIdAsync(userId);
 
             if (user == null)
                 throw new ArgumentException("User does not exist");
@@ -30,24 +30,14 @@ namespace Domain.Factory
 
             else if (user.IsDeactivated())
                 throw new ArgumentException("User is deactivated");
-
-            else return new ProjectManager(userId, periodDateTime);
+            var ProjectManager = new ProjectManager(userId, periodDateTime);
+            return ProjectManager;
         }
 
-        public ProjectManager Create(long userId, DateTime initDate)
+        public async Task<ProjectManager> Create(long userId, DateTime initDate)
         {
-            var user = _userRepository.GetById(userId);
-
-            if (user == null)
-                throw new ArgumentException("User does not exist");
-
-            else if (user.DeactivationDateIsBefore(initDate))
-                throw new ArgumentException("Deactivation date is before init date");
-
-            else if (user.IsDeactivated())
-                throw new ArgumentException("User is deactivated");
-
-            else return new ProjectManager(userId, initDate);
+            var periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
+            return await Create(userId, periodDateTime);
         }
 
         public ProjectManager Create(IProjectManagerVisitor pmv)

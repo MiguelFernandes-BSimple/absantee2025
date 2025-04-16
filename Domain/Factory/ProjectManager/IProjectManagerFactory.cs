@@ -10,9 +10,9 @@ namespace Domain.Factory
 {
     public interface IProjectManagerFactory
     {
-        public ProjectManager Create(long userId, IPeriodDateTime periodDateTime);
+        Task<ProjectManager> Create(long userId, IPeriodDateTime periodDateTime);
 
-        public ProjectManager Create(long userId, DateTime initDate);
+        Task<ProjectManager> Create(long userId, DateTime initDate);
         public ProjectManager Create(IProjectManagerVisitor projectManagerVisitor);
     }
 }

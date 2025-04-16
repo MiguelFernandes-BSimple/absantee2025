@@ -14,10 +14,11 @@ public class ProjectManager : IProjectManager
         _periodDateTime = periodDateTime;
     }
 
-    public ProjectManager(long userId, DateTime initDate)
+    public ProjectManager(long id, long userId, IPeriodDateTime periodDateTime)
     {
+        _id = id;
         _userId = userId;
-        _periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
+        _periodDateTime = periodDateTime;
     }
 
     public long GetId()
