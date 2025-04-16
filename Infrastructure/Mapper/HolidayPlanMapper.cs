@@ -1,3 +1,4 @@
+using Domain.Factory;
 using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.DataModel;
@@ -6,12 +7,18 @@ namespace Infrastructure.Mapper;
 
 public class HolidayPlanMapper : IMapper<HolidayPlan, HolidayPlanDataModel>
 {
+    private readonly HolidayPlanFactory _holidayPlanFactory;
+    private readonly HolidayPeriodMapper _holidayPeriodMapper;
+
+    public HolidayPlanMapper(HolidayPlanFactory holidayPlanFactory, HolidayPeriodMapper holidayPeriodMapper)
+    {
+        _holidayPlanFactory = holidayPlanFactory;
+        _holidayPeriodMapper = holidayPeriodMapper;
+    }
+
     public HolidayPlan ToDomain(HolidayPlanDataModel holidayPlanDM)
     {
-        List<IHolidayPeriod> holidayPeriods = holidayPlanDM.HolidayPeriods;
-        HolidayPlan holidayPlan = new HolidayPlan(holidayPlanDM.CollaboratorId, holidayPeriods);
-
-        holidayPlan.SetId(holidayPlanDM.Id);
+        HolidayPlan holidayPlan = _holidayPlanFactory.Create(holidayPlanDM);
 
         return holidayPlan;
     }
@@ -23,7 +30,7 @@ public class HolidayPlanMapper : IMapper<HolidayPlan, HolidayPlanDataModel>
 
     public HolidayPlanDataModel ToDataModel(HolidayPlan holidayPlans)
     {
-        return new HolidayPlanDataModel(holidayPlans);
+        return new HolidayPlanDataModel(holidayPlans, _holidayPeriodMapper);
     }
 
     public IEnumerable<HolidayPlanDataModel> ToDataModel(IEnumerable<HolidayPlan> holidayPlans)

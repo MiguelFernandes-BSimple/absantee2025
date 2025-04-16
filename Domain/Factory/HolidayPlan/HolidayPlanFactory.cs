@@ -23,6 +23,6 @@ public class HolidayPlanFactory : IHolidayPlanFactory
 
     public HolidayPlan Create(IHolidayPlanVisitor visitor)
     {
-        return new HolidayPlan(visitor.Id, visitor.CollaboratorId, visitor.HolidayPeriods);
+        return new HolidayPlan(visitor.Id, visitor.CollaboratorId, visitor.GetHolidayPeriods());
     }
 }

@@ -24,7 +24,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public bool CanInsertHolidayPeriod(long holidayPlanId, IHolidayPeriod periodDate)
     {
         return _context.Set<HolidayPlanDataModel>().Any
-            (h => h.Id == holidayPlanId && h.HolidayPeriods.Any
+            (h => h.Id == holidayPlanId && h.GetHolidayPeriods().Any
                 (hp => hp.GetPeriodDate().GetInitDate() <= periodDate.GetPeriodDate().GetInitDate()
                     && hp.GetPeriodDate().GetFinalDate() >= periodDate.GetPeriodDate().GetFinalDate()));
     }
@@ -50,7 +50,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public async Task<IEnumerable<IHolidayPlan>> FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(IPeriodDate periodDate)
     {
         return await _context.Set<HolidayPlanDataModel>()
-            .Where(hp => hp.HolidayPeriods.Any(h => periodDate.Contains(h.GetPeriodDate())))
+            .Where(hp => hp.GetHolidayPeriods().Any(h => periodDate.Contains(h.GetPeriodDate())))
             .Select(hp => _mapper.ToDomain(hp))
             .ToListAsync();
     }
@@ -59,7 +59,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         return await _context.Set<HolidayPlanDataModel>()
             .Where(hp => collabIds.Contains(hp.CollaboratorId))
-            .SelectMany(hp => hp.HolidayPeriods)
+            .SelectMany(hp => hp.GetHolidayPeriods())
             .Where(hperiod => periodDate.GetInitDate() >= hperiod.GetPeriodDate().GetInitDate()
                      && periodDate.GetFinalDate() <= hperiod.GetPeriodDate().GetFinalDate())
             .ToListAsync();
@@ -69,7 +69,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         return await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
-            .SelectMany(hp => hp.HolidayPeriods)
+            .SelectMany(hp => hp.GetHolidayPeriods())
             .Where(hperiod => periodDate.GetInitDate() >= hperiod.GetPeriodDate().GetInitDate()
                            && periodDate.GetFinalDate() <= hperiod.GetPeriodDate().GetFinalDate())
             .ToListAsync();
@@ -87,7 +87,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
                 return new List<IHolidayPeriod>();
 
             List<IHolidayPeriod> result =
-                holidayPlan.HolidayPeriods.Where(h => periodDate.Contains(h.GetPeriodDate()) &&
+                holidayPlan.GetHolidayPeriods().Where(h => periodDate.Contains(h.GetPeriodDate()) &&
                                                 (periodDate.Duration() > days))
                                           .ToList();
 
@@ -102,7 +102,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public async Task<IEnumerable<IHolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days)
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
-            .Where(hp => hp.HolidayPeriods.Any(h => h.IsLongerThan(days)))
+            .Where(hp => hp.GetHolidayPeriods().Any(h => h.IsLongerThan(days)))
             .ToListAsync();
 
         return _mapper.ToDomain(hpDm);
@@ -116,14 +116,14 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         if (holidayPlans == null)
             return Enumerable.Empty<IHolidayPeriod>();
 
-        return holidayPlans.HolidayPeriods;
+        return holidayPlans.GetHolidayPeriods();
     }
 
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(long collaboratorId, IPeriodDate period)
     {
         return await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
-            .SelectMany(hp => hp.HolidayPeriods.Where(hp => hp.Intersects(period)))
+            .SelectMany(hp => hp.GetHolidayPeriods().Where(hp => hp.Intersects(period)))
             .ToListAsync();
     }
 
@@ -141,7 +141,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public async Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(IPeriodDate periodDate)
     {
         var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
-                    .Where(hp => hp.HolidayPeriods
+                    .Where(hp => hp.GetHolidayPeriods()
                         .Any(hperiod => periodDate.GetInitDate() >= hperiod.GetPeriodDate().GetInitDate()
                                     && periodDate.GetFinalDate() <= hperiod.GetPeriodDate().GetFinalDate()))
                     .ToListAsync();

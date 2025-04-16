@@ -44,7 +44,7 @@ public class FindHolidayPeriodsByCollaboratorAsync
             new Mock<IHolidayPeriod>().Object
         };
 
-        holidayPlanDM3.Setup(hp => hp.HolidayPeriods).Returns(expected);
+        holidayPlanDM3.Setup(hp => hp.GetHolidayPeriods()).Returns(expected);
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);

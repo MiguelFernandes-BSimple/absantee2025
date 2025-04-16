@@ -48,7 +48,7 @@ public class FindHolidayPlansWithinPeriod
             holidayPeriod.Object
         };
 
-        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods1);
+        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods1);
 
         var expected = new List<IHolidayPlan>
         {
@@ -104,7 +104,7 @@ public class FindHolidayPlansWithinPeriod
             holidayPeriod.Object
         };
 
-        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods1);
+        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods1);
 
         var expected = new List<IHolidayPlan>();
 

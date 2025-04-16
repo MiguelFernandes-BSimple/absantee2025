@@ -99,8 +99,8 @@ public class FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync
         // Setup both hoiday plans with the same holidayPeriod list
         List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod> { hp1Period.Object };
 
-        hpDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods);
-        hpDM2.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods);
+        hpDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods);
+        hpDM2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods);
 
         // Period to search
         Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();

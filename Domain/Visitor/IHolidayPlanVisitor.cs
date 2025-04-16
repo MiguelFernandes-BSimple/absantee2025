@@ -6,5 +6,5 @@ public interface IHolidayPlanVisitor
 {
     long Id { get; }
     long CollaboratorId { get; }
-    List<IHolidayPeriod> HolidayPeriods { get; }
+    List<IHolidayPeriod> GetHolidayPeriods();
 }

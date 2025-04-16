@@ -57,8 +57,8 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync
             holidayPeriod.Object
         };
 
-        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods1);
-        holidayPlanDM2.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods2);
+        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods1);
+        holidayPlanDM2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods2);
 
         var expected = new List<IHolidayPeriod>()
         {
@@ -124,8 +124,8 @@ public class FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync
             holidayPeriod.Object
         };
 
-        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods1);
-        holidayPlanDM2.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriods2);
+        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods1);
+        holidayPlanDM2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods2);
 
         var expected = new List<IHolidayPeriod>();
 

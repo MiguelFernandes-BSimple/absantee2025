@@ -15,10 +15,9 @@ public class ProjectManager : IProjectManager
     }
 
     public ProjectManager(long id, long userId, IPeriodDateTime periodDateTime)
+        : this(userId, periodDateTime)
     {
         _id = id;
-        _userId = userId;
-        _periodDateTime = periodDateTime;
     }
 
     public long GetId()

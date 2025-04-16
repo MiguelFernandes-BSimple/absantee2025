@@ -44,7 +44,7 @@ public class FindAllWithHolidayPeriodsLongerThanAsync
             holidayPeriodDouble1.Object, holidayPeriodDouble2.Object
         };
 
-        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(holidayPeriodsDouble);
+        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriodsDouble);
 
         var expected = new List<IHolidayPlan> { (HolidayPlan)holidayPlanDM1.Object };
 

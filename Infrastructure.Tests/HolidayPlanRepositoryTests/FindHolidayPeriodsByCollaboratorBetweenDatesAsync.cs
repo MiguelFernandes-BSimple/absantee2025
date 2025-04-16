@@ -41,7 +41,7 @@ public class FindHolidayPeriodsByCollaboratorBetweenDatesAsync
         holidayPeriodMock.Setup(hpd => hpd.Intersects(searchPeriod.Object)).Returns(true);
 
         var expectedPeriod = new List<IHolidayPeriod> { holidayPeriodMock.Object };
-        holidayPlanDM1.Setup(hp => hp.HolidayPeriods).Returns(expectedPeriod);
+        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(expectedPeriod);
 
         var mapperMock = new Mock<HolidayPlanMapper>();
 
