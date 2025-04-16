@@ -2,7 +2,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests;
 
-public class ContainsWeekend
+public class ContainsWeekendTests
 {
     public static IEnumerable<object[]> DatesThatContainWeekend()
     {

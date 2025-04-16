@@ -8,7 +8,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class Duration
+    public class DurationTests
     {
         [Fact]
         public void WhenDurationIsCalled_ThenReturnExpectedDurationInDays()
@@ -21,7 +21,7 @@ namespace Domain.Tests.PeriodDateTests
 
             //act
             var result = periodDate.Duration();
-            
+
             //assert
             Assert.Equal(10, result);
         }

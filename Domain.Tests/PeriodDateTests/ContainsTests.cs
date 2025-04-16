@@ -8,34 +8,33 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class Intersects
+    public class ContainsTests
     {
-        public static IEnumerable<object[]> IntersectionDates()
+        public static IEnumerable<object[]> ContainingPeriods()
         {
-            yield return new object[] { new PeriodDate(new DateOnly(2021, 1, 1), new DateOnly(2022, 1, 1)) };
-            yield return new object[] { new PeriodDate(new DateOnly(2019, 1, 1), new DateOnly(2020, 1, 1)) };
-            yield return new object[] { new PeriodDate(new DateOnly(2020, 1, 3), new DateOnly(2020, 1, 3)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2020, 1, 1), new DateOnly(2021, 1, 1)) };
+            yield return new object[] { new PeriodDate(new DateOnly(2020, 1, 2), new DateOnly(2020, 12, 31)) };
         }
 
 
         [Theory]
-        [MemberData(nameof(IntersectionDates))]
-        public void WhenPassingIntersectionPeriods_ThenReturnTrue(IPeriodDate intersectPeriod)
+        [MemberData(nameof(ContainingPeriods))]
+        public void WhenPassingContainingPeriods_ThenReturnTrue(IPeriodDate containedPeriod)
         {
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
-            
+
             //act
-            var result = periodDate.Intersects(intersectPeriod);
+            var result = periodDate.Contains(containedPeriod);
 
             //assert
             Assert.True(result);
         }
 
-        public static IEnumerable<object[]> NonIntersectionDates()
+        public static IEnumerable<object[]> NonContainingPeriods()
         {
             yield return new object[] { new PeriodDate(new DateOnly(2018, 1, 1), new DateOnly(2019, 1, 1)) };
             yield return new object[] { new PeriodDate(new DateOnly(2022, 1, 1), new DateOnly(2023, 1, 1)) };
@@ -43,8 +42,8 @@ namespace Domain.Tests.PeriodDateTests
 
 
         [Theory]
-        [MemberData(nameof(NonIntersectionDates))]
-        public void WhenPassingNonIntersectionPeriods_ThenReturnFalse(IPeriodDate intersectPeriod)
+        [MemberData(nameof(NonContainingPeriods))]
+        public void WhenPassingNonContainingPeriods_ThenReturnFalse(IPeriodDate nonContainedPeriod)
         {
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
@@ -53,7 +52,7 @@ namespace Domain.Tests.PeriodDateTests
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
-            var result = periodDate.Intersects(intersectPeriod);
+            var result = periodDate.Contains(nonContainedPeriod);
 
             //assert
             Assert.False(result);

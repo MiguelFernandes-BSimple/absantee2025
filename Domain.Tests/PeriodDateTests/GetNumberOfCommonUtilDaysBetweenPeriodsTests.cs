@@ -5,7 +5,7 @@ using Xunit;
 using Moq;
 using Domain.Interfaces;
 
-public class GetNumberOfCommonUtilDaysBetweenPeriods
+public class GetNumberOfCommonUtilDaysBetweenPeriodsTests
 {
     /**
     * Test method to get the number of weekdays in the intersecton between two period Dates

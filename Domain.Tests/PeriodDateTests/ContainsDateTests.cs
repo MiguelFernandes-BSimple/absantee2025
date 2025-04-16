@@ -9,7 +9,7 @@ using Domain.Tests.HolidayPeriodTests;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class ContainsDate
+    public class ContainsDateTests
     {
         public static IEnumerable<object[]> ContainingDate()
         {

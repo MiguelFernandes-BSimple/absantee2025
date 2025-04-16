@@ -9,14 +9,14 @@ using Moq;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class Constructor
+    public class ConstructorTests
     {
         [Fact]
         public void WhenCreatingWithValidDates_ThenPeriodDateIsCreated()
         {
             //arrange
-            DateOnly initDate = new DateOnly(2020,1,1);
-            DateOnly finalDate = new DateOnly(2021,1,1);
+            DateOnly initDate = new DateOnly(2020, 1, 1);
+            DateOnly finalDate = new DateOnly(2021, 1, 1);
 
             //act
             new PeriodDate(initDate, finalDate);

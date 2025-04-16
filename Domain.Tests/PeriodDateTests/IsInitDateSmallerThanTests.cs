@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class IsInitDateSmallerThan
+    public class IsInitDateSmallerThanTests
     {
 
         [Fact]

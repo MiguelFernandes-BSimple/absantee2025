@@ -8,7 +8,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class IsFinalDateSmallerThan
+    public class IsFinalDateSmallerThanTests
     {
 
         [Fact]
@@ -17,7 +17,7 @@ namespace Domain.Tests.PeriodDateTests
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
-            DateOnly date = new DateOnly(2022,1,1);
+            DateOnly date = new DateOnly(2022, 1, 1);
 
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 

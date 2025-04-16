@@ -8,7 +8,7 @@ using Moq;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class GetNumberOfCommonUtilDays
+    public class GetNumberOfCommonUtilDaysTests
     {
         [Fact]
         public void WhenPassingValidData_ThenRetunsNumberOfCommonUtilDays()
