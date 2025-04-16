@@ -9,7 +9,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectTests
 {
-    public class GetId
+    public class ProjectGetIdTests
     {
         [Fact]
         public void WhenCallingMethod_ThenReturnsId()

@@ -3,7 +3,7 @@ using Domain.Models;
 using Moq;
 namespace Domain.Tests.ProjectTests;
 
-public class ContainsDates
+public class ProjectContainsDatesTests
 {
     [Fact]
     public void WhenPassingValidData_ThenContainsDatesReturnTrue()

@@ -8,21 +8,20 @@ using Moq;
 
 namespace Domain.Tests.ProjectTests
 {
-    public class SetId
+    public class ProjectGetAcronymTests
     {
         [Fact]
-        public void WhenPassingCorrectValue_ThenSetsId()
+        public void WhenCallingMethod_ThenReturnsAcrynom()
         {
             // arrange
-            var id = 5;
-            var project = new Project(1, "Title", "TTL", It.IsAny<IPeriodDate>());
+            var acronym = "TTL";
+            var project = new Project(1, "title", acronym, It.IsAny<IPeriodDate>());
 
             // act
-            project.SetId(id);
-            var result = project.GetId();
+            var result = project.GetAcronym();
 
             // assert
-            Assert.Equal(result, id);
+            Assert.Equal(result, acronym);
         }
     }
 }

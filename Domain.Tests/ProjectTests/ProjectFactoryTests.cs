@@ -11,7 +11,7 @@ using Domain.IRepository;
 
 namespace Domain.Tests.ProjectTests;
 
-public class Factory
+public class ProjectFactoryTests
 {
     [Fact]
     public void WhenPassingVisitor_ThenProjectIsCreated()
