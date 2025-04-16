@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.AssociationProjectCollaboratorTests;
 
-public class Constructor
+public class AssociationProjectCollaboratorConstructorTests
 {
     [Fact]
     public void WhenPassingArguments_ThenClassIsInstatiated()
@@ -13,8 +13,9 @@ public class Constructor
         Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
 
         // Act
-        new AssociationProjectCollaborator(It.IsAny<long>(), It.IsAny<long>(), periodDate.Object);
+        var result = new AssociationProjectCollaborator(It.IsAny<long>(), It.IsAny<long>(), periodDate.Object);
 
         // Assert
+        Assert.NotNull(result);
     }
 }

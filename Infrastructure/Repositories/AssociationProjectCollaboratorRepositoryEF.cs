@@ -1,17 +1,18 @@
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Visitor;
 using Infrastructure;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>, IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>, IAssociationProjectCollaboratorRepository
 {
-    private readonly AssociationProjectCollaboratorMapper _associationProjectCollaboratorMapper;
+    private readonly IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor> _associationProjectCollaboratorMapper;
 
-    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, AssociationProjectCollaboratorMapper associationProjectCollaboratorMapper)
-        : base(context, (IMapper<IAssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>)associationProjectCollaboratorMapper)
+    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor> associationProjectCollaboratorMapper)
+        : base(context, associationProjectCollaboratorMapper)
     {
         _associationProjectCollaboratorMapper = associationProjectCollaboratorMapper;
     }
@@ -79,9 +80,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         try
         {
             AssociationProjectCollaboratorDataModel? assocDM =
-                await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == projectId && a.CollaboratorId == collaboratorId)
-                              .FirstOrDefaultAsync();
+                await FindByCollaboratorAndProject(collaboratorId, projectId).FirstOrDefaultAsync();
 
             if (assocDM == null)
                 return null;
@@ -101,9 +100,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         try
         {
             IEnumerable<AssociationProjectCollaboratorDataModel> assocsDM =
-                await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == projectId && a.CollaboratorId == collaboratorId)
-                              .ToListAsync();
+                await FindByCollaboratorAndProject(collaboratorId, projectId).ToListAsync();
 
 
             IEnumerable<IAssociationProjectCollaborator> result = _associationProjectCollaboratorMapper.ToDomain(assocsDM);
@@ -136,5 +133,31 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         {
             throw;
         }
+    }
+
+    public async Task<bool> CanInsert(IPeriodDate periodDate, long collaboratorId, long projectId)
+    {
+        try
+        {
+            var assocDMs = FindByCollaboratorAndProject(collaboratorId, projectId);
+
+            bool result = await assocDMs.Where(a => a.Period.GetInitDate() <= periodDate.GetFinalDate() &&
+                                                    a.Period.GetFinalDate() >= periodDate.GetInitDate())
+                                        .AnyAsync();
+
+            return result;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private IQueryable<AssociationProjectCollaboratorDataModel> FindByCollaboratorAndProject(long collabId, long projectId)
+    {
+        var result = _context.Set<AssociationProjectCollaboratorDataModel>()
+                             .Where(a => a.CollaboratorId == collabId && a.ProjectId == projectId);
+
+        return result;
     }
 }

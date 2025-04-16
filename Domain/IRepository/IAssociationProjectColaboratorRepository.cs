@@ -9,4 +9,5 @@ public interface IAssociationProjectCollaboratorRepository : IGenericRepository<
     public Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(long projectId, long collaboratorId);
     public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(long projectId, long collaboratorId);
     public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, IPeriodDate periodDate);
+    public Task<bool> CanInsert(IPeriodDate periodDate, long collaboratorId, long projectId);
 }

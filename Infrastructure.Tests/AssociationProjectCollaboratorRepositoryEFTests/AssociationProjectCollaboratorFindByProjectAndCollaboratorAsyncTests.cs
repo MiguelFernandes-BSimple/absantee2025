@@ -8,7 +8,7 @@ using Moq;
 
 namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
-public class FindByProjectAndCollaboratorAsync
+public class AssociationProjectCollaboratorFindByProjectAndCollaboratorAsyncTests
 {
     [Fact]
     public async Task WhenPassingExistingProjectAndCollaboratorIdCombo_ThenReturnAssociation()
@@ -64,7 +64,7 @@ public class FindByProjectAndCollaboratorAsync
         AssocDM2.Setup(a => a.ProjectId).Returns(project2Id);
         AssocDM3.Setup(a => a.ProjectId).Returns(project2Id);
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Convert to domain
         Mock<IAssociationProjectCollaborator> assoc3 = new Mock<IAssociationProjectCollaborator>();
@@ -74,7 +74,7 @@ public class FindByProjectAndCollaboratorAsync
 
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IAssociationProjectCollaborator? result = await assocRepo.FindByProjectAndCollaboratorAsync(project2Id, collab3Id);
@@ -137,11 +137,11 @@ public class FindByProjectAndCollaboratorAsync
         AssocDM2.Setup(a => a.ProjectId).Returns(project2Id);
         AssocDM3.Setup(a => a.ProjectId).Returns(project2Id);
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IAssociationProjectCollaborator? result = await assocRepo.FindByProjectAndCollaboratorAsync(project2Id, collab1Id);
@@ -207,11 +207,11 @@ public class FindByProjectAndCollaboratorAsync
         AssocDM2.Setup(a => a.ProjectId).Returns(project2Id);
         AssocDM3.Setup(a => a.ProjectId).Returns(project2Id);
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IAssociationProjectCollaborator? result = await assocRepo.FindByProjectAndCollaboratorAsync(newId, collab1Id);
@@ -277,11 +277,11 @@ public class FindByProjectAndCollaboratorAsync
         AssocDM2.Setup(a => a.ProjectId).Returns(project2Id);
         AssocDM3.Setup(a => a.ProjectId).Returns(project2Id);
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IAssociationProjectCollaborator? result = await assocRepo.FindByProjectAndCollaboratorAsync(project1Id, newId);

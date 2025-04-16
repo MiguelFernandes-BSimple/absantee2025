@@ -8,7 +8,7 @@ using Moq;
 
 namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
-public class FindAllByProjectAsync
+public class AssociationProjectCollaboratorFindAllByProjectAsyncTests
 {
     [Fact]
     public async Task WhenPassingExistingProjectId_ThenReturnRelatedAssociations()
@@ -58,7 +58,7 @@ public class FindAllByProjectAsync
         List<AssociationProjectCollaboratorDataModel> assocsFiltered =
             new List<AssociationProjectCollaboratorDataModel> { (AssociationProjectCollaboratorDataModel)AssocDM2.Object, (AssociationProjectCollaboratorDataModel)AssocDM3.Object };
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Convert to domain
         Mock<IAssociationProjectCollaborator> assoc2 = new Mock<IAssociationProjectCollaborator>();
@@ -70,7 +70,7 @@ public class FindAllByProjectAsync
 
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAsync(project2Id);

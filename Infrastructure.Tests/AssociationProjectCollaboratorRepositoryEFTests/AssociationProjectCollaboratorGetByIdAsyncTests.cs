@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
@@ -9,7 +8,7 @@ using Moq;
 
 namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
-public class GetByIdAsync
+public class AssociationProjectCollaboratorGetByIdAsyncTests
 {
     [Fact]
     public async Task WhenPassingExistingId_ThenReturnCorrectAssociation()
@@ -41,7 +40,7 @@ public class GetByIdAsync
         AssocDM1.Setup(a => a.Id).Returns(assocDM1Id);
         AssocDM2.Setup(a => a.Id).Returns(assocDM2Id);
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Convert to domain
         Mock<IAssociationProjectCollaborator> expected = new Mock<IAssociationProjectCollaborator>();
@@ -49,7 +48,7 @@ public class GetByIdAsync
         mapper.Setup(m => m.ToDomain((AssociationProjectCollaboratorDataModel)AssocDM2.Object)).Returns((AssociationProjectCollaborator)expected.Object);
 
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IAssociationProjectCollaborator? result = await assocRepo.GetByIdAsync(assocDM2Id);
@@ -90,10 +89,10 @@ public class GetByIdAsync
         AssocDM1.Setup(a => a.Id).Returns(assocDM1Id);
         AssocDM2.Setup(a => a.Id).Returns(assocDM2Id);
 
-        var mapper = new Mock<IMapper<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>>();
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, (AssociationProjectCollaboratorMapper)mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
 
         // Act
         IAssociationProjectCollaborator? result = await assocRepo.GetByIdAsync(newId);

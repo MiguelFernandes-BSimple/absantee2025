@@ -39,11 +39,10 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
 
         // Checking Association's unicity
         // There can't be two associations with the same collab and project 
-        // AND the periods intersect
-        IAssociationProjectCollaborator? sameCollabAndProject = await
-            _associationProjectRepository.FindByProjectAndCollaboratorAsync(projectId, collaboratorId);
+        // WHERE the periods intersect
+        bool canInsert = await _associationProjectRepository.CanInsert(periodDate, collaboratorId, projectId);
 
-        if (sameCollabAndProject != null && periodDate.Intersects(sameCollabAndProject.GetPeriodDate()))
+        if (!canInsert)
             throw new ArgumentException("Invalid arguments");
 
         return new AssociationProjectCollaborator(collaboratorId, projectId, periodDate);
