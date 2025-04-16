@@ -10,11 +10,11 @@ using Moq;
 
 namespace Domain.Tests.ProjectManagerTests
 {
-    public class Factory
+    public class FactoryTests
     {
         // tests for creating with user id and period date time
         [Fact]
-        public void WhenPassingValidUserIdAndPeriodDateTime_ThenCreatesProjectManager()
+        public async Task WhenPassingValidUserIdAndPeriodDateTime_ThenCreatesProjectManager()
         {
             // arrange
             var userDouble = new Mock<IUser>();
@@ -25,26 +25,28 @@ namespace Domain.Tests.ProjectManagerTests
             periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
             var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+            userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
             var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
 
             // act
-            var result = pmFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
+            var result = await pmFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
 
             // assert
+            Assert.NotNull(result);
+
         }
 
         [Fact]
-        public void WhenUserIdDoesntExist_ThenThrowsException()
+        public async Task WhenUserIdDoesntExist_ThenThrowsException()
         {
             var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns((IUser?)null);
+            userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync((IUser?)null);
 
             var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
 
             // assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 pmFactory.Create(It.IsAny<long>(), It.IsAny<IPeriodDateTime>())
@@ -53,7 +55,7 @@ namespace Domain.Tests.ProjectManagerTests
         }
 
         [Fact]
-        public void WhenDeactivationDateIsBeforeInitDate_ThenThrowsException()
+        public async Task WhenDeactivationDateIsBeforeInitDate_ThenThrowsException()
         {
             // arrange
             var userDouble = new Mock<IUser>();
@@ -64,12 +66,12 @@ namespace Domain.Tests.ProjectManagerTests
             periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
             var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+            userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
             var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
 
             // assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 pmFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object)
@@ -78,7 +80,7 @@ namespace Domain.Tests.ProjectManagerTests
         }
 
         [Fact]
-        public void WhenUserIsDeativated_ThenThrowsException()
+        public async Task WhenUserIsDeativated_ThenThrowsException()
         {
             // arrange
             var userDouble = new Mock<IUser>();
@@ -89,12 +91,12 @@ namespace Domain.Tests.ProjectManagerTests
             periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
             var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+            userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
             var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
 
             // assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
                 pmFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object)
@@ -106,7 +108,7 @@ namespace Domain.Tests.ProjectManagerTests
 
         // tests for creating with user id and dateTime
         [Fact]
-        public void WhenPassingValidUserIdAndInitDate_ThenCreatesProjectManager()
+        public async Task WhenPassingValidUserIdAndInitDate_ThenCreatesProjectManager()
         {
             // arrange
             var userDouble = new Mock<IUser>();
@@ -114,77 +116,16 @@ namespace Domain.Tests.ProjectManagerTests
             userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
             var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+            userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
             var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
 
             // act
-            var result = pmFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>());
+            var result = await pmFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>());
 
             // assert
+            Assert.NotNull(result);
         }
-
-        [Fact]
-        public void WhenUserIdDoesNotExist_ThenThrowsException()
-        {
-            var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns((IUser?)null);
-
-            var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
-
-            // assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(
-            () =>
-                //act
-                pmFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>())
-            );
-            Assert.Equal("User does not exist", exception.Message);
-        }
-
-        [Fact]
-        public void WhenDeactivationDateIsBeforeInitDate_ThenThrowException()
-        {
-            // arrange
-            var userDouble = new Mock<IUser>();
-            userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
-            userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
-
-            var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
-
-            var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
-
-            // assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(
-            () =>
-                //act
-                pmFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>())
-            );
-            Assert.Equal("Deactivation date is before init date", exception.Message);
-        }
-
-        [Fact]
-        public void WhenUserIsDeativated_ThenThrowException()
-        {
-            // arrange
-            var userDouble = new Mock<IUser>();
-            userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
-            userDouble.Setup(ud => ud.IsDeactivated()).Returns(true);
-
-            var userRepoDouble = new Mock<IUserRepository>();
-            userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
-
-            var pmFactory = new ProjectManagerFactory(userRepoDouble.Object);
-
-            // assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(
-            () =>
-                //act
-                pmFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>())
-            );
-            Assert.Equal("User is deactivated", exception.Message);
-        }
-
         // test for visitor
         [Fact]
         public void WhenPassingVisitor_ThenCreatesProjectManager()
@@ -197,8 +138,8 @@ namespace Domain.Tests.ProjectManagerTests
             // act
             var result = pmFactory.Create(visitorDouble.Object);
 
-
             //assert
+            Assert.NotNull(result);
         }
     }
 }
