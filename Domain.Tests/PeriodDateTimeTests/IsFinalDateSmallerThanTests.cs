@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTimeTests
 {
-    public class IsFinalDateSmallerThan
+    public class IsFinalDateSmallerThanTests
     {
 
         [Fact]
