@@ -1,11 +1,10 @@
-namespace Domain.Tests.HolidayPeriodTests;
-
 using Domain.Interfaces;
 using Domain.Models;
-using Xunit;
 using Moq;
 
-public class IsLongerThan
+namespace Domain.Tests.HolidayPeriodTests;
+
+public class HolidayPeriodIsLongerThanTests
 {
 
     /**

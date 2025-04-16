@@ -1,12 +1,9 @@
-namespace Domain.Tests.HolidayPeriodTests;
-
 using Domain.Models;
-using Xunit;
-using System;
 using Moq;
 using Domain.Interfaces;
+namespace Domain.Tests.HolidayPeriodTests;
 
-public class ContainsDate
+public class HolidayPeriodContainsDateTests
 {
     /**
     * Test to verify if date is contained in the holiday period

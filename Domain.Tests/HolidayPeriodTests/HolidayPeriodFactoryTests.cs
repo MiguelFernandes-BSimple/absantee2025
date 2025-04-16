@@ -6,7 +6,7 @@ using Domain.Visitor;
 using Moq;
 
 namespace Domain.Tests.HolidayPeriodTests;
-public class Factory
+public class HolidayPeriodFactoryTests
 {
     [Fact]
     public void WhenCreatingWithValidData_ThenObjectIsInstantiated()

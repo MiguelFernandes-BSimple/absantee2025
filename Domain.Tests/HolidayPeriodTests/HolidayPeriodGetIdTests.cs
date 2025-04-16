@@ -4,23 +4,35 @@ using Moq;
 
 namespace Domain.Tests.HolidayPeriodTests;
 
-public class SetId
+public class HolidayPeriodGetIdTests
 {
 
     [Fact]
-    public void WhenSettingId_ThenGetIdReturnsNewValue()
+    public void WhenGettingId_ThenReturnsTheId()
     {
+
+        var expected = 2;
+
+
         // Arrange
-        var initialId = 1L;
-        var newId = 2L;
+
         var mockPeriodDate = new Mock<IPeriodDate>();
-        var holidayPlan = new HolidayPeriod(initialId, mockPeriodDate.Object);
+
+
+        var holidayPlan = new HolidayPeriod(expected, mockPeriodDate.Object);
 
         // Act
-        holidayPlan.SetId(newId);
         var result = holidayPlan.GetId();
 
         // Assert
-        Assert.Equal(newId, result);
+
+        Assert.Equal(expected, result);
+
     }
+
+
+
+
+
+
 }

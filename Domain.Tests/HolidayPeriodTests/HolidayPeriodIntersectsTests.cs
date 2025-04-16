@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPeriodTests;
 
-public class Intersects
+public class HolidayPeriodIntersectsTests
 {
     [Fact]
     public void WhenPassingValidPeriodDate_ThenReturnsTrue()

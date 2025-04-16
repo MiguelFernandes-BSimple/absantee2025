@@ -1,10 +1,10 @@
-namespace Domain.Tests.HolidayPeriodTests;
-
 using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
-public class Constructor
+namespace Domain.Tests.HolidayPeriodTests;
+
+public class HolidayPeriodConstructorTests
 {
     /**
     * Test method for HolidayPeriod constructor.
@@ -17,9 +17,10 @@ public class Constructor
         Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
 
         // Act
-        new HolidayPeriod(doublePeriodDate.Object);
+        var result = new HolidayPeriod(doublePeriodDate.Object);
 
         // Assert
+        Assert.NotNull(result);
     }
 
 }

@@ -1,12 +1,10 @@
-namespace Domain.Tests.HolidayPeriodTests;
-
 using Domain.Models;
-using Xunit;
-using System;
 using Moq;
 using Domain.Interfaces;
 
-public class GetIntersectionDurationInDays
+namespace Domain.Tests.HolidayPeriodTests;
+
+public class HolidayPeriodGetIntersectionDurationInDaysTests
 {
     /**
     * Test method to get duration in days of an intersection - between two period dates

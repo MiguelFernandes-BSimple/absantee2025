@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPeriodTests;
 
-public class ContainsWeekend
+public class HolidayPeriodContainsWeekendTests
 {
     [Fact]
     public void WhenPassingPeriodThatContainsWeekend_ThenReturnTrue()
