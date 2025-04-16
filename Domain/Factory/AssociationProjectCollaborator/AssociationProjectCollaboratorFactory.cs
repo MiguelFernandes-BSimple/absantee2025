@@ -26,10 +26,10 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
         if (collaborator == null || project == null)
             throw new ArgumentException("Invalid arguments");
 
-        if (!project.ContainsDates(periodDate))
-            throw new ArgumentException("Invalid arguments");
-
         if (project.IsFinished())
+            throw new ArgumentException("Project is finished!");
+
+        if (!project.ContainsDates(periodDate))
             throw new ArgumentException("Invalid arguments");
 
         PeriodDateTime periodDateTime = new PeriodDateTime(periodDate);

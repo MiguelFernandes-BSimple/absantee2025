@@ -222,7 +222,7 @@ public class AssociationProjectCollaboratorFactoryTests
             factory.Create(periodDate.Object, collabId, projectId));
 
 
-        Assert.Equal("Invalid arguments", exception.Message);
+        Assert.Equal("Project is finished!", exception.Message);
     }
 
     [Fact]
