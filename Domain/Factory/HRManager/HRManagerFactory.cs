@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
@@ -15,9 +16,9 @@ public class HRManagerFactory : IHRManagerFactory
         _userRepository = userRepository;
     }
 
-    public HRManager Create(long userId, IPeriodDateTime periodDateTime)
+    public async Task<HRManager> Create(long userId, IPeriodDateTime periodDateTime)
     {
-        IUser? user = _userRepository.GetById(userId);
+        IUser? user = await _userRepository.GetByIdAsync(userId);
 
         if (user == null)
             throw new ArgumentException("User does not exist");
@@ -28,25 +29,16 @@ public class HRManagerFactory : IHRManagerFactory
         if (user.IsDeactivated())
             throw new ArgumentException("User is deactivated");
 
-        HRManager hRManager = new HRManager(userId, periodDateTime);
+        HRManager hrManager = new HRManager(userId, periodDateTime);
 
-        return hRManager;
+        return hrManager;
     }
 
-    public HRManager Create(long userId, DateTime initDate)
+    public async Task<HRManager> Create(long userId, DateTime initDate)
     {
-        var user = _userRepository.GetById(userId);
+        var periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
 
-        if (user == null)
-            throw new ArgumentException("User does not exist");
-
-        else if (user.DeactivationDateIsBefore(initDate))
-            throw new ArgumentException("Deactivation date is before init date");
-
-        else if (user.IsDeactivated())
-            throw new ArgumentException("User is deactivated");
-
-        else return new HRManager(userId, initDate);
+        return await Create(userId, periodDateTime);
     }
 
     public HRManager Create(IHRManagerVisitor visitor)

@@ -14,13 +14,6 @@ public class HRManager : IHRManager
         _userId = userId;
     }
 
-    public HRManager(long userId, DateTime initDate) 
-    {
-        
-        _userId = userId;
-        _periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
-    }
-
     public bool ContractContainsDates(IPeriodDateTime periodDateTime)
     {
         return _periodDateTime.Contains(periodDateTime);
@@ -39,20 +32,5 @@ public class HRManager : IHRManager
     public long GetUserId()
     {
         return _userId;
-    }
-
-     override public bool Equals(Object? obj)
-    {
-        if (obj == null) return false;
-
-        if (obj.GetType() == typeof(HRManager))
-        {
-            HRManager other = (HRManager)obj;
-            if (_userId.Equals(other._userId)
-                && _periodDateTime.Intersects(other._periodDateTime))
-                return true;
-        }
-
-        return false;
     }
 }

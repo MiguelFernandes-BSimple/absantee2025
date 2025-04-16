@@ -12,7 +12,7 @@ namespace Domain.Tests.HRManagerTests;
 public class Factory
 {
     [Fact]
-    public void WhenPassingValidUserIdAndPeriodDateTime_ThenCreatesHRManager()
+    public async Task WhenPassingValidUserIdAndPeriodDateTime_ThenCreatesHRManager()
     {
         //arrange
         var userDouble = new Mock<IUser>();
@@ -23,26 +23,26 @@ public class Factory
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+        userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         //act
-        var result = hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
+        var result = await hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
         //assert
         Assert.NotNull(result);
     }
 
     [Fact]
-    public void WhenUserIdDoesntExist_ThenThrowsException()
+    public async Task WhenUserIdDoesntExist_ThenThrowsException()
     {
         var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns((IUser?)null);
+        userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync((IUser?)null);
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         // assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
         () =>
             //act
             hrFactory.Create(It.IsAny<long>(), It.IsAny<IPeriodDateTime>())
@@ -51,7 +51,7 @@ public class Factory
     }
 
     [Fact]
-    public void WhenDeactivationDateIsBeforeInitDate_ThenThrowsException()
+    public async Task WhenDeactivationDateIsBeforeInitDate_ThenThrowsException()
     {
         // arrange
         var userDouble = new Mock<IUser>();
@@ -62,12 +62,12 @@ public class Factory
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetById(1)).Returns(userDouble.Object);
+        userRepoDouble.Setup(urd => urd.GetByIdAsync(1)).ReturnsAsync(userDouble.Object);
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         // assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
         () =>
             //act
             hrFactory.Create(1, periodDateTimeDouble.Object)
@@ -75,7 +75,7 @@ public class Factory
         Assert.Equal("Deactivation date is before init date", exception.Message);
     }
     [Fact]
-    public void WhenUserIsDeativated_ThenThrowsException()
+    public async Task WhenUserIsDeativated_ThenThrowsException()
     {
         // arrange
         var userDouble = new Mock<IUser>();
@@ -86,12 +86,12 @@ public class Factory
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+        userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         // assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
         () =>
             //act
             hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object)
@@ -99,7 +99,7 @@ public class Factory
         Assert.Equal("User is deactivated", exception.Message);
     }
     [Fact]
-    public void WhenPassingValidUserIdAndInitDate_ThenCreatesHRManager()
+    public async Task WhenPassingValidUserIdAndInitDate_ThenCreatesHRManager()
     {
         // arrange
         var userDouble = new Mock<IUser>();
@@ -107,12 +107,12 @@ public class Factory
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
         var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetById(It.IsAny<long>())).Returns(userDouble.Object);
+        userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         // act
-        var result = hrFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>());
+        var result = await hrFactory.Create(It.IsAny<long>(), It.IsAny<DateTime>());
 
         // assert
         Assert.NotNull(result);

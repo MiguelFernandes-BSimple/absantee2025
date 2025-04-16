@@ -6,7 +6,8 @@ namespace Domain.Factory
 {
     public interface IHRManagerFactory
     {
-        HRManager Create(long userId, IPeriodDateTime periodDateTime);
+        Task<HRManager> Create(long userId, IPeriodDateTime periodDateTime);
+        Task<HRManager> Create(long userId, DateTime initDate);
 
         HRManager Create(IHRManagerVisitor visitor);
     }
