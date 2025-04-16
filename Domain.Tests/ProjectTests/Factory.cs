@@ -17,15 +17,20 @@ public class Factory
     public void WhenPassingValidData_ThenProjectIsCreated()
     {
         //arrange
-        Mock<IProjectVisitor> projectVisitorMock = new Mock<IProjectVisitor>();
-        projectVisitorMock.Setup(v => v.Id).Returns(1);
-        projectVisitorMock.Setup(v => v.Title).Returns("Projeto A");
-        projectVisitorMock.Setup(v => v.Acronym).Returns("PA2024");
-        projectVisitorMock.Setup(v => v.PeriodDate).Returns(It.IsAny<PeriodDate>());
-        Mock<IProjectRepository> ProjectRepositoryMock = new Mock<IProjectRepository>();
-        var projectFactory = new ProjectFactory(ProjectRepositoryMock.Object);
+        Mock<IProjectVisitor> projectVisitorDouble = new Mock<IProjectVisitor>();
+        projectVisitorDouble.Setup(v => v.Id).Returns(1);
+        projectVisitorDouble.Setup(v => v.Title).Returns("Projeto A");
+        projectVisitorDouble.Setup(v => v.Acronym).Returns("PA2024");
+        projectVisitorDouble.Setup(v => v.PeriodDate).Returns(It.IsAny<PeriodDate>());
+
+        Mock<IProjectRepository> ProjectRepositoryDouble = new Mock<IProjectRepository>();
+        var projectFactory = new ProjectFactory(ProjectRepositoryDouble.Object);
+
         //act
-        projectFactory.Create(projectVisitorMock.Object);
+        var result = projectFactory.Create(projectVisitorDouble.Object);
+
+        // assert
+        Assert.NotNull(result);
     }
     public static IEnumerable<object[]> ProjectData_InvalidTitle()
     {
@@ -38,17 +43,17 @@ public class Factory
     public async Task WhenPassingInvalidTitle_ThenThrowException(string Title, string Acronym)
     {
         //arrange
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        Mock<IPeriodDate> periodDateDouble = new Mock<IPeriodDate>();
+        periodDateDouble.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDateDouble.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
-        Mock<IProjectRepository> ProjectRepositoryMock = new Mock<IProjectRepository>();
-        var projectFactory = new ProjectFactory(ProjectRepositoryMock.Object);
+        Mock<IProjectRepository> ProjectRepositoryDouble = new Mock<IProjectRepository>();
+        var projectFactory = new ProjectFactory(ProjectRepositoryDouble.Object);
 
         //assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
              //act
-             projectFactory.Create(1, Title, Acronym, periodDateMock.Object));
+             projectFactory.Create(1, Title, Acronym, periodDateDouble.Object));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
@@ -66,17 +71,34 @@ public class Factory
     public async Task WhenPassingInvalidAcronym_ThenThrowException(string Title, string Acronym)
     {
         //arrange
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>()); ;
-        Mock<IProjectRepository> ProjectRepositoryMock = new Mock<IProjectRepository>();
-        var projectFactory = new ProjectFactory(ProjectRepositoryMock.Object);
+        Mock<IPeriodDate> periodDateDouble = new Mock<IPeriodDate>();
+        periodDateDouble.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
+        periodDateDouble.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>()); ;
+        Mock<IProjectRepository> ProjectRepositoryDouble = new Mock<IProjectRepository>();
+        var projectFactory = new ProjectFactory(ProjectRepositoryDouble.Object);
 
 
         //assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
              //act
-             projectFactory.Create(1, Title, Acronym, periodDateMock.Object));
+             projectFactory.Create(1, Title, Acronym, periodDateDouble.Object));
+
+        Assert.Equal("Invalid Arguments", exception.Message);
+    }
+
+    [Fact]
+    public async Task WhenPassinSameAcronym_ThenThrowsArgumentException()
+    {
+        // arrange
+        var projectRepoDouble = new Mock<IProjectRepository>();
+        projectRepoDouble.Setup(prd => prd.CheckIfAcronymIsUnique(It.IsAny<string>()))
+                         .ReturnsAsync(false);
+
+        var projectFactory = new ProjectFactory(projectRepoDouble.Object);
+
+        // act & assert
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            projectFactory.Create(1, "Projeto Teste", "ABC123", It.IsAny<IPeriodDate>()));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }
