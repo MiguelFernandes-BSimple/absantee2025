@@ -2,6 +2,8 @@ namespace Domain.Interfaces;
 
 public interface IHolidayPeriod
 {
+    public long GetId();
+    public void SetId(long id);
     public IPeriodDate GetPeriodDate();
     public bool Contains(IHolidayPeriod holidayPeriod);
     public bool Contains(IPeriodDate periodDate);
