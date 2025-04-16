@@ -8,6 +8,9 @@ public class TrainingPeriod : ITrainingPeriod
 
     public TrainingPeriod(IPeriodDate periodDate)
     {
+        if (periodDate.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now)))
+            throw new ArgumentException("Period date cannot start in the past.");
+
         _periodDate = periodDate;
     }
 
@@ -20,10 +23,6 @@ public class TrainingPeriod : ITrainingPeriod
     public long GetId()
     {
         return _id;
-    }
-    public void SetId(long id)
-    {
-        _id = id;
     }
 
     public IPeriodDate GetPeriodDate()

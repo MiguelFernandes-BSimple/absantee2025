@@ -6,18 +6,12 @@ namespace Domain.Factory.TrainingPeriodFactory;
 
 public class TrainingPeriodFactory : ITrainingPeriodFactory
 {
-
     public TrainingPeriodFactory()
     {
-
     }
 
     public TrainingPeriod Create(IPeriodDate periodDate)
     {
-
-        if (periodDate.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now)))
-            throw new ArgumentException("Period date cannot start in the past.");
-
         return new TrainingPeriod(periodDate);
     }
 

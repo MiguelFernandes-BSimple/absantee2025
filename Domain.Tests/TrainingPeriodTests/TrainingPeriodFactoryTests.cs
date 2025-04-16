@@ -5,7 +5,7 @@ using Domain.Visitor;
 using Moq;
 namespace Domain.Tests.TrainingPeriodTests;
 
-public class Constructor
+public class TrainingPeriodFactoryTests
 {
     [Fact]
     public void WhenPassingValidDates_ThenCreateTrainingPeriod()
@@ -20,10 +20,10 @@ public class Constructor
         TrainingPeriodFactory factory = new TrainingPeriodFactory();
 
         //Act
-        factory.Create(periodDate.Object);
+        var result = factory.Create(periodDate.Object);
 
         //Assert
-
+        Assert.NotNull(result);
     }
 
     [Fact]
