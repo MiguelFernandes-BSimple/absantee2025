@@ -1,9 +1,10 @@
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
 using Domain.Visitor;
 using Moq;
+
+namespace Domain.Tests.HolidayPlanTests;
 
 public class HolidayPlanFactoryTests
 {

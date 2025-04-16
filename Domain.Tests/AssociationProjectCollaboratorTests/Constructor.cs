@@ -2,6 +2,8 @@ using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
+namespace Domain.Tests.AssociationProjectCollaboratorTests;
+
 public class Constructor
 {
     [Fact]
