@@ -1,4 +1,6 @@
 using Domain.Interfaces;
+using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace Domain.Models;
 
@@ -12,7 +14,25 @@ public class User : IUser
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
+
+        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
+
+        if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
+            throw new ArgumentException("Names or surnames are invalid.");
+
+        try
+        {
+            var emailValidator = new MailAddress(email);
+        }
+        catch (Exception)
+        {
+            throw new ArgumentException("Email is invalid.");
+        }
+
         deactivationDate ??= DateTime.MaxValue;
+
+        if (DateTime.Now >= deactivationDate)
+            throw new ArgumentException("Deactivaton date can't be in the past.");
 
         _names = names;
         _surnames = surnames;
