@@ -3,25 +3,34 @@ using Domain.Models;
 using Domain.Factory;
 using Domain.Interfaces;
 using Moq;
+using Domain.IRepository;
 
 namespace Application.Tests.AssociationProjectServiceTests;
 
 public class Add
 {
     [Fact]
-    public void WhenAddingValidAssociation_ThenItsAddedSuccessfully()
+    public async Task WhenAddingValidAssociation_ThenItsAddedSuccessfully()
     {
         // Arrange
-        Mock<IAssociationProjectCollaboratorFactory> apcFactory = new Mock<IAssociationProjectCollaboratorFactory>();
-        apcFactory.Setup(apcFactory => apcFactory.Create(It.IsAny<IPeriodDate>(), It.IsAny<long>(), It.IsAny<long>())).ReturnsAsync(It.IsAny<AssociationProjectCollaborator>());
+        var mockFactory = new Mock<IAssociationProjectCollaboratorFactory>();
+        var mockRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        AssociationProjectCollaboratorService service =
-            new AssociationProjectCollaboratorService(It.IsAny<AssociationProjectCollaboratorRepositoryEF>(), apcFactory.Object);
+        var periodDate = new Mock<IPeriodDate>();
+        long collabId = 1;
+        long projectId = 2;
+
+        mockFactory
+            .Setup(f => f.Create(periodDate.Object, collabId, projectId))
+            .ReturnsAsync(It.IsAny<AssociationProjectCollaborator>());
+
+        var service = new AssociationProjectCollaboratorService(mockRepository.Object, mockFactory.Object);
 
         // Act
-        service.Add(It.IsAny<IPeriodDate>(), It.IsAny<long>(), It.IsAny<long>());
+        await Task.Run(() => service.Add(periodDate.Object, collabId, projectId));
 
         // Assert
+        mockRepository.Verify(r => r.AddAsync(It.IsAny<AssociationProjectCollaborator>()), Times.Once);
     }
 
 }
