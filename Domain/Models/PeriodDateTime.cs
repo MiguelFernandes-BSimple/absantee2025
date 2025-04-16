@@ -4,7 +4,6 @@ namespace Domain.Models;
 
 public class PeriodDateTime : IPeriodDateTime
 {
-    private long _id;
     private DateTime _initDate;
     private DateTime _finalDate;
 
@@ -31,15 +30,6 @@ public class PeriodDateTime : IPeriodDateTime
             return false;
 
         return true;
-    }
-    public void SetId(long id)
-    {
-        _id = id;
-    }
-
-    public long GetId()
-    {
-        return _id;
     }
 
     public DateTime GetInitDate()
