@@ -9,6 +9,25 @@ namespace Domain.Tests.UserTests;
 
 public class Factory
 {
+
+    [Fact]
+    public async Task WhenCreatingUser_ThenUserIsCreated()
+    {
+        //arrange
+        string email = "test@email.com";
+
+        var userRepository = new Mock<IUserRepository>();
+        userRepository.Setup(repo => repo.GetByEmailAsync(email)).ReturnsAsync((IUser?)null);
+
+        var userFactory = new UserFactory(userRepository.Object);
+
+        //act
+        var result = await userFactory.Create("John", "Doe", email, DateTime.MaxValue);
+
+        Assert.NotNull(result);
+
+    }
+
     [Fact]
     public async Task WhenCreatingUserWithAnRepeatedEmail_ThenThrowsArgumentException()
     {
