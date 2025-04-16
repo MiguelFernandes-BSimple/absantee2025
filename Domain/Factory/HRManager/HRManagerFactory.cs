@@ -43,6 +43,6 @@ public class HRManagerFactory : IHRManagerFactory
 
     public HRManager Create(IHRManagerVisitor visitor)
     {
-        return new HRManager(visitor.UserId, visitor.PeriodDateTime);
+        return new HRManager(visitor.Id, visitor.UserId, visitor.PeriodDateTime);
     }
 }

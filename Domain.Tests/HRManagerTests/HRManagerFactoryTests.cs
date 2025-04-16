@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
+using Domain.Visitor;
 using Moq;
 
 namespace Domain.Tests.HRManagerTests;
 
-public class Factory
+public class HRManagerFactoryTests
 {
     [Fact]
     public async Task WhenPassingValidUserIdAndPeriodDateTime_ThenCreatesHRManager()
@@ -117,6 +119,27 @@ public class Factory
         // assert
         Assert.NotNull(result);
         }
+
+    [Fact]
+    public void WhenCreatingHRManagerWithIHRManagerVisitor_ThenCreatesHRManager()
+    {
+        //arrange
+        var hrManagerVisitor = new Mock<IHRManagerVisitor>();
+
+        hrManagerVisitor.Setup(hr => hr.Id).Returns(It.IsAny<long>());
+        hrManagerVisitor.Setup(hr => hr.UserId).Returns(It.IsAny<long>());
+        hrManagerVisitor.Setup(hr => hr.PeriodDateTime).Returns(It.IsAny<PeriodDateTime>());
+
+        var userRepoDouble = new Mock<IUserRepository>();
+
+        var hrFactory = new HRManagerFactory(userRepoDouble.Object);
+        
+        //act
+        var result = hrFactory.Create(hrManagerVisitor.Object);
+        
+        //assert
+        Assert.NotNull(result);
+    }
 
 
 

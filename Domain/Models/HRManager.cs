@@ -14,6 +14,13 @@ public class HRManager : IHRManager
         _userId = userId;
     }
 
+    public HRManager(long id, long userId, IPeriodDateTime periodDateTime)
+    {
+        _id = id;
+        _userId = userId;
+        _periodDateTime = periodDateTime;
+    }
+
     public bool ContractContainsDates(IPeriodDateTime periodDateTime)
     {
         return _periodDateTime.Contains(periodDateTime);
