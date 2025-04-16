@@ -20,11 +20,6 @@ public class Collaborator : ICollaborator
         _userId = userId;
         _periodDateTime = periodDateTime;
     }
-
-    public void SetId(long id)
-    {
-        _id = id;
-    }
     public long GetId()
     {
         return _id;

@@ -6,7 +6,7 @@ using Domain.Visitor;
 using Moq;
 
 namespace Domain.Tests.CollaboratorTests;
-public class Factory
+public class CollaboratorFactoryTests
 {
     [Fact]
     public void WhenCreatingCollaboratorWithValidPeriod_ThenCollaboratorIsCreatedCorrectly()
