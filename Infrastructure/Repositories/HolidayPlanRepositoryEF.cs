@@ -149,11 +149,11 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public async Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(PeriodDate periodDate)
     {
         var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
-                    .Where(hp => hp.GetHolidayPeriods()
-                        .Any(hperiod => periodDate._initDate >= hperiod._periodDate._initDate
-                                    && periodDate._finalDate <= hperiod._periodDate._finalDate))
+                    .Where(hp => hp.HolidayPeriodsDM
+                        .Any(hperiod => periodDate._initDate <= hperiod.PeriodDate._initDate
+                                    && periodDate._finalDate >= hperiod.PeriodDate._finalDate))
                     // include adicionado com o prof, sendo que hplan e hperiod são um agregado
-                    .Include(hp => hp.GetHolidayPeriods())
+                    .Include(hp => hp.HolidayPeriodsDM)
                     .ToListAsync();
 
         return _mapper.ToDomain(holidayPlansDMs);
