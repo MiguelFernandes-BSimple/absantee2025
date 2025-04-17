@@ -4,9 +4,9 @@ namespace Domain.Models;
 
 public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
-    private long _id;
-    private long _collaboratorId;
-    public long _projectId;
+    public long _id { get; set; }
+    public long _collaboratorId { get; set; }
+    public long _projectId { get; set; }
     public PeriodDate _periodDate { get; set; }
 
     public AssociationProjectCollaborator(long collaboratorId, long projectId, PeriodDate periodDate)
@@ -35,7 +35,6 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     {
         return _projectId;
     }
-
 
     public bool AssociationIntersectPeriod(PeriodDate periodDate)
     {

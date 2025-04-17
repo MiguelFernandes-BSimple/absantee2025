@@ -66,13 +66,13 @@ public class PeriodDateTimeConstructorTests
     public void WhenPassingPeriodDate_ThenObjectIsInstatiatedWithItsDates()
     {
         // Arrange
-        // double for periodDate interface
-        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
+        PeriodDate inPeriod = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Act
-        new PeriodDateTime(doublePeriodDate.Object);
+        PeriodDateTime periodDateTime = new PeriodDateTime(inPeriod);
 
         // Assert
+        Assert.NotNull(periodDateTime);
     }
 
 }

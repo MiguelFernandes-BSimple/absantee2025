@@ -9,70 +9,68 @@ public class HolidayPeriodIntersectsTests
     [Fact]
     public void WhenPassingValidPeriodDate_ThenReturnsTrue()
     {
-        //arrange
-        var periodDouble = new Mock<PeriodDate>();
-        periodDouble.Setup(pd => pd.Intersects(It.IsAny<PeriodDate>())).Returns(true);
+        // Arrange
+        var period1 = new PeriodDate(new DateOnly(2024, 4, 1), new DateOnly(2024, 4, 5));
+        var holidayPeriod = new HolidayPeriod(period1);
 
-        var holidayPeriod = new HolidayPeriod(periodDouble.Object);
+        var period2 = new PeriodDate(new DateOnly(2024, 4, 3), new DateOnly(2024, 4, 7));
+        var holidayPeriod2 = new HolidayPeriod(period2);
 
-        //act
-        var result = holidayPeriod.Intersects(periodDouble.Object);
+        // Act
+        var result = holidayPeriod.Intersects(holidayPeriod2);
 
-        //assert
+        // Assert
         Assert.True(result);
     }
 
     [Fact]
     public void WhenPassingValidIncorrectPeriodDate_ThenReturnsFalse()
     {
-        //arrange
-        var periodDouble = new Mock<PeriodDate>();
-        periodDouble.Setup(pd => pd.Intersects(It.IsAny<PeriodDate>())).Returns(false);
+        // Arrange
+        var period1 = new PeriodDate(new DateOnly(2024, 4, 1), new DateOnly(2024, 4, 5));
+        var holidayPeriod = new HolidayPeriod(period1);
 
-        var holidayPeriod = new HolidayPeriod(periodDouble.Object);
+        var period2 = new PeriodDate(new DateOnly(2024, 4, 6), new DateOnly(2024, 4, 10));
+        var holidayPeriod2 = new HolidayPeriod(period2);
 
-        //act
-        var result = holidayPeriod.Intersects(periodDouble.Object);
+        // Act
+        var result = holidayPeriod.Intersects(holidayPeriod2);
 
-        //assert
+        // Assert
         Assert.False(result);
     }
 
     [Fact]
     public void WhenPassingValidHolidayPeriod_ThenReturnsTrue()
     {
-        //arrange
-        var periodDate = new Mock<PeriodDate>();
-        var holidayPeriod = new HolidayPeriod(periodDate.Object);
+        // Arrange
+        var period1 = new PeriodDate(new DateOnly(2024, 4, 1), new DateOnly(2024, 4, 5));
+        var holidayPeriod1 = new HolidayPeriod(period1);
 
-        var periodDate2 = new Mock<PeriodDate>();
-        var holidayPeriod2 = new HolidayPeriod(periodDate2.Object);
+        var period2 = new PeriodDate(new DateOnly(2024, 4, 3), new DateOnly(2024, 4, 7));
+        var holidayPeriod2 = new HolidayPeriod(period2);
 
-        periodDate.Setup(pd => pd.Intersects(periodDate2.Object)).Returns(true);
+        // Act
+        var result = holidayPeriod1.Intersects(holidayPeriod2);
 
-        //act
-        var result = holidayPeriod.Intersects(holidayPeriod2);
-
-        //assert
+        // Assert
         Assert.True(result);
     }
 
     [Fact]
     public void WhenPassingValidIncorrectHolidayPeriod_ThenReturnsFalse()
     {
-        //arrange
-        var periodDate = new Mock<PeriodDate>();
-        var holidayPeriod = new HolidayPeriod(periodDate.Object);
+        // Arrange
+        var period1 = new PeriodDate(new DateOnly(2024, 4, 1), new DateOnly(2024, 4, 5));
+        var holidayPeriod1 = new HolidayPeriod(period1);
 
-        var periodDate2 = new Mock<PeriodDate>();
-        var holidayPeriod2 = new HolidayPeriod(periodDate2.Object);
+        var period2 = new PeriodDate(new DateOnly(2024, 4, 6), new DateOnly(2024, 4, 10));
+        var holidayPeriod2 = new HolidayPeriod(period2);
 
-        periodDate.Setup(pd => pd.Intersects(periodDate2.Object)).Returns(false);
+        // Act
+        var result = holidayPeriod1.Intersects(holidayPeriod2);
 
-        //act
-        var result = holidayPeriod.Intersects(holidayPeriod2);
-
-        //assert
+        // Assert
         Assert.False(result);
     }
 }

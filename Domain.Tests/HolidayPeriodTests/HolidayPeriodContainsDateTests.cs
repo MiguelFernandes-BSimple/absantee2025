@@ -9,22 +9,20 @@ public class HolidayPeriodContainsDateTests
     * Test to verify if date is contained in the holiday period
     * Its contained - true
     */
+    
     [Fact]
     public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
-
-        // Random date that should be contained in the Period
-        // for the context of the test -> value not important
         DateOnly dateToVerify = DateOnly.FromDateTime(DateTime.Now);
 
-        // Establish that the date must be contained in it
-        // Reference period CONTAINS date to Verify
-        doublePeriodDate.Setup(pd => pd.ContainsDate(dateToVerify)).Returns(true);
+        // Criar uma subclasse concreta de PeriodDate para o teste
+        var start = dateToVerify.AddDays(-1);
+        var end = dateToVerify.AddDays(1);
+        var period = new PeriodDate(start, end);
 
-        // Instatiate Holiday Period
-        HolidayPeriod hPeriod = new HolidayPeriod(doublePeriodDate.Object);
+        // Instanciar HolidayPeriod com esse período
+        var hPeriod = new HolidayPeriod(period);
 
         // Act
         bool result = hPeriod.ContainsDate(dateToVerify);
@@ -32,6 +30,7 @@ public class HolidayPeriodContainsDateTests
         // Assert
         Assert.True(result);
     }
+
 
     /**
     * Test to verify if date is contained in the holiday period
@@ -41,18 +40,16 @@ public class HolidayPeriodContainsDateTests
     public void WhenPeriodIsNotContained_ThenReturnsFalse()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
-
-        // Random date that should not be contained in the Period
-        // for the context of the test -> value not important
         DateOnly dateToVerify = DateOnly.FromDateTime(DateTime.Now);
 
-        // Establish that the date must be contained in it
-        // Reference period DOESN'T contain date to Verify
-        doublePeriodDate.Setup(pd => pd.ContainsDate(dateToVerify)).Returns(false);
+        // Criar um intervalo que NÃO contém a data
+        // Por exemplo, um intervalo no passado
+        var start = dateToVerify.AddDays(-10);
+        var end = dateToVerify.AddDays(-5);
+        var period = new PeriodDate(start, end);
 
-        // Instatiate Holiday Period
-        HolidayPeriod hPeriod = new HolidayPeriod(doublePeriodDate.Object);
+        // Instanciar HolidayPeriod com esse período
+        var hPeriod = new HolidayPeriod(period);
 
         // Act
         bool result = hPeriod.ContainsDate(dateToVerify);
@@ -60,4 +57,5 @@ public class HolidayPeriodContainsDateTests
         // Assert
         Assert.False(result);
     }
+
 }

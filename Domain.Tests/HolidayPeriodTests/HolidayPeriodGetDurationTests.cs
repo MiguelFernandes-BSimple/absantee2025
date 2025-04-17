@@ -13,18 +13,13 @@ public class HolidayPeriodGetDurationTests
     public void WhenQueried_ThenReturnLength()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
 
-        // Random int value
-        // for test context value is not important
-        Random rnd = new Random();
-        int expected = rnd.Next(10, 100);
+        int expected = (end.DayNumber - start.DayNumber) + 1;
 
-        // PeriodDate must get the expected duration
-        doublePeriodDate.Setup(pd => pd.Duration()).Returns(expected);
-
-        // Instatiate Holiday Period
-        HolidayPeriod holidayPeriod = new HolidayPeriod(doublePeriodDate.Object);
+        HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
 
         // Act
         int result = holidayPeriod.GetDuration();

@@ -13,13 +13,14 @@ public class HolidayPeriodGetIdTests
 
         var expected = 2;
 
-
         // Arrange
 
-        var mockPeriodDate = new Mock<PeriodDate>();
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
 
 
-        var holidayPlan = new HolidayPeriod(expected, mockPeriodDate.Object);
+        var holidayPlan = new HolidayPeriod(expected, periodDate);
 
         // Act
         var result = holidayPlan.GetId();

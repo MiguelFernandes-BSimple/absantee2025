@@ -6,18 +6,17 @@ namespace Domain.Tests.HolidayPeriodTests;
 
 public class HolidayPeriodConstructorTests
 {
-    /**
-    * Test method for HolidayPeriod constructor.
-    * It can only be instantiated with a PeriodDate (which is valid)
-    */
+
     [Fact]
     public void WhenConstructorIsCalled_ThenObjectIsInstantiated()
     {
-        // Arrange 
-        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
+         // Arrange 
+        var start = DateOnly.FromDateTime(DateTime.Now);
+        var end = start.AddDays(5);
+        var periodDate = new PeriodDate(start, end);
 
         // Act
-        var result = new HolidayPeriod(doublePeriodDate.Object);
+        var result = new HolidayPeriod(periodDate);
 
         // Assert
         Assert.NotNull(result);

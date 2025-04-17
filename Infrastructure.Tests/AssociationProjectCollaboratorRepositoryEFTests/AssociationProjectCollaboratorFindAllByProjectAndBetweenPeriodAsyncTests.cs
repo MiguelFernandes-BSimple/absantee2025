@@ -11,86 +11,121 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 public class AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsyncTests
 {
     [Fact]
-    public async Task WhenPassingExistingProjectId_ThenReturnRelatedAssociations()
+    public async Task WhenPassingExistingProjectIdAndPeriodContains_ThenReturnRelatedAssociations()
     {
         // Arrange
-        // Create mockSet
-        var AssocDM1 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var AssocDM2 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var AssocDM3 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var periodDate = new Mock<PeriodDate>();
+        // ------------ Setup test in-memory database ------------
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
 
-        periodDate.Setup(pd => pd.GetInitDate()).Returns(DateOnly.FromDateTime(DateTime.Now));
-        periodDate.Setup(pd => pd.GetFinalDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
+        using var context = new AbsanteeContext(options);
 
-        var users = new List<AssociationProjectCollaboratorDataModel>
-        {
-            (AssociationProjectCollaboratorDataModel)AssocDM1.Object,
-            (AssociationProjectCollaboratorDataModel)AssocDM2.Object,
-            (AssociationProjectCollaboratorDataModel)AssocDM3.Object
-        }.AsQueryable();
+        PeriodDate period =
+            new PeriodDate(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
 
-        var mockSet = new Mock<DbSet<AssociationProjectCollaboratorDataModel>>();
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.Provider).Returns(users.Provider);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.Expression).Returns(users.Expression);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.ElementType).Returns(users.ElementType);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
+        var assoc1 = new Mock<IAssociationProjectCollaborator>();
+        assoc1.Setup(a => a._projectId).Returns(1);
+        assoc1.Setup(a => a._collaboratorId).Returns(1);
+        assoc1.Setup(a => a._periodDate).Returns(period);
+        var assocDM1 = new AssociationProjectCollaboratorDataModel(assoc1.Object);
+        context.Associations.Add(assocDM1);
 
-        // Setup assoc id
-        long assocDM1Id = 1;
-        long assocDM2Id = 2;
-        long assocDM3Id = 3;
+        var assoc2 = new Mock<IAssociationProjectCollaborator>();
+        assoc2.Setup(a => a._projectId).Returns(2);
+        assoc2.Setup(a => a._collaboratorId).Returns(2);
+        assoc2.Setup(a => a._periodDate).Returns(period);
+        var assocDM2 = new AssociationProjectCollaboratorDataModel(assoc2.Object);
+        context.Associations.Add(assocDM2);
 
-        // Setup assoc project id
-        long project1Id = 1;
-        long project2Id = 2;
+        var assoc3 = new Mock<IAssociationProjectCollaborator>();
+        assoc3.Setup(a => a._projectId).Returns(2);
+        assoc3.Setup(a => a._collaboratorId).Returns(3);
+        assoc3.Setup(a => a._periodDate).Returns(period);
+        var assocDM3 = new AssociationProjectCollaboratorDataModel(assoc3.Object);
+        context.Associations.Add(assocDM3);
 
-        // Declare and set up context with associations
-        var mockContext = new Mock<IAbsanteeContext>();
-        mockContext.Setup(c => c.Associations).Returns(mockSet.Object);
+        await context.SaveChangesAsync();
 
-        // Association Ids
-        AssocDM1.Setup(a => a.Id).Returns(assocDM1Id);
-        AssocDM2.Setup(a => a.Id).Returns(assocDM2Id);
-        AssocDM3.Setup(a => a.Id).Returns(assocDM3Id);
+        // -----------------------------------------
 
-        // Project Ids
-        AssocDM2.Setup(a => a.ProjectId).Returns(project1Id);
-        AssocDM2.Setup(a => a.ProjectId).Returns(project2Id);
-        AssocDM3.Setup(a => a.ProjectId).Returns(project2Id);
+        long projectIdToSearch = 2;
+        PeriodDate periodToSearch =
+            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(3)));
 
-        // Setup association dates
-        AssocDM1.Setup(a => a.Period.GetInitDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddDays(2)));
-        AssocDM1.Setup(a => a.Period.GetFinalDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddDays(10)));
+        List<AssociationProjectCollaboratorDataModel> assocDMList =
+            new List<AssociationProjectCollaboratorDataModel> { assocDM2, assocDM3 };
 
-        AssocDM2.Setup(a => a.Period.GetInitDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddDays(2)));
-        AssocDM2.Setup(a => a.Period.GetFinalDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddDays(10)));
-
-        AssocDM3.Setup(a => a.Period.GetInitDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddDays(2)));
-        AssocDM3.Setup(a => a.Period.GetFinalDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddDays(10)));
-
-        // Filtered List - where period intersects
-        List<AssociationProjectCollaboratorDataModel> assocsFiltered =
-            new List<AssociationProjectCollaboratorDataModel> { (AssociationProjectCollaboratorDataModel)AssocDM2.Object, (AssociationProjectCollaboratorDataModel)AssocDM3.Object };
+        List<IAssociationProjectCollaborator> expected =
+            new List<IAssociationProjectCollaborator>();
 
         var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
         // Convert to domain
-        Mock<IAssociationProjectCollaborator> assoc2 = new Mock<IAssociationProjectCollaborator>();
-        Mock<IAssociationProjectCollaborator> assoc3 = new Mock<IAssociationProjectCollaborator>();
-        IEnumerable<AssociationProjectCollaborator> expected =
-            new List<AssociationProjectCollaborator> { (AssociationProjectCollaborator)assoc2.Object, (AssociationProjectCollaborator)assoc3.Object };
-
-        mapper.Setup(m => m.ToDomain(assocsFiltered)).Returns(expected);
+        mapper.Setup(m => m.ToDomain(assocDMList)).Returns(expected);
 
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
 
         // Act
-        IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndBetweenPeriodAsync(project2Id, periodDate.Object);
+        IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndBetweenPeriodAsync(projectIdToSearch, periodToSearch);
 
         // Assert
         Assert.True(expected.SequenceEqual(result));
+    }
+
+    [Fact]
+    public async Task WhenPassingNotExistingProjectId_ThenReturnEmpty()
+    {
+        // Arrange
+        // ------------ Setup test in-memory database ------------
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+
+        using var context = new AbsanteeContext(options);
+
+        PeriodDate period =
+            new PeriodDate(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
+
+        var assoc1 = new Mock<IAssociationProjectCollaborator>();
+        assoc1.Setup(a => a._projectId).Returns(1);
+        assoc1.Setup(a => a._collaboratorId).Returns(1);
+        assoc1.Setup(a => a._periodDate).Returns(period);
+        var assocDM1 = new AssociationProjectCollaboratorDataModel(assoc1.Object);
+        context.Associations.Add(assocDM1);
+
+        var assoc2 = new Mock<IAssociationProjectCollaborator>();
+        assoc2.Setup(a => a._projectId).Returns(2);
+        assoc2.Setup(a => a._collaboratorId).Returns(2);
+        assoc2.Setup(a => a._periodDate).Returns(period);
+        var assocDM2 = new AssociationProjectCollaboratorDataModel(assoc2.Object);
+        context.Associations.Add(assocDM2);
+
+        var assoc3 = new Mock<IAssociationProjectCollaborator>();
+        assoc3.Setup(a => a._projectId).Returns(2);
+        assoc3.Setup(a => a._collaboratorId).Returns(3);
+        assoc3.Setup(a => a._periodDate).Returns(period);
+        var assocDM3 = new AssociationProjectCollaboratorDataModel(assoc3.Object);
+        context.Associations.Add(assocDM3);
+
+        await context.SaveChangesAsync();
+
+        // -----------------------------------------
+
+        long projectIdToSearch = 4;
+
+        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
+
+        // Instatiate repository
+        var assocRepo =
+            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+
+        // Act
+        IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndBetweenPeriodAsync(projectIdToSearch, It.IsAny<PeriodDate>());
+
+        // Assert
+        Assert.Empty(result);
     }
 }
