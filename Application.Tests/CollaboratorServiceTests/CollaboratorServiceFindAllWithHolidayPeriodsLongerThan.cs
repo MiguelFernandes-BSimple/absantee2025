@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class FindAllWithHolidayPeriodsLongerThan
+    public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan
     {
         [Fact]
         public async Task WhenFindingAllCollaboratorsWithHolidayPeriodsLongerThan_ThenShouldReturnCorrectCollaborators()

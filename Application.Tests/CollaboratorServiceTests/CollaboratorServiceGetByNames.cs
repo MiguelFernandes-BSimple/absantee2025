@@ -12,7 +12,7 @@ using Moq;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class GetByNames
+    public class CollaboratorServiceGetByNames
     {
         [Fact]
         public async Task WhenSearchingByNamesThatExists_ThenReturnsExpectedResult()

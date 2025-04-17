@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Tests.CollaboratorServiceTests;
 
-public class FindAllCollaboratorsWithinHolidayPeriodsBetweenDates
+public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenDates
 {
     [Fact]
     public async Task WhenCollaboratorHasHolidayPeriodWithinDateRange_ThenReturnsCollaborator()

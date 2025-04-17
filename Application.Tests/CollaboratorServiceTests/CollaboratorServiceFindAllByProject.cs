@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class FindAllByProject
+    public class CollaboratorServiceFindAllByProject
     {
         [Fact]
         public async Task WhenFindingCollaboratorsByProject_ThenReturnAllAssociatedCollaborators()

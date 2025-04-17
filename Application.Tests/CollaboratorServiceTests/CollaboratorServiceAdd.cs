@@ -11,7 +11,7 @@ using Moq;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class Add
+    public class CollaboratorServiceAdd
     {
         [Fact]
         public async Task WhenAddingValidCollaborator_ThenShouldReturnTrue()

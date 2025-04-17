@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class FindAllByProjectAndBetweenPeriod
+    public class CollaboratorServiceFindAllByProjectAndBetweenPeriod
     {
         [Fact]
         public async Task WhenProjectHasCollaboratorsInPeriod_ThenReturnAllCollaborators()
@@ -49,7 +49,7 @@ namespace Application.Tests.CollaboratorServiceTests
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
-            
+
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
             var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
