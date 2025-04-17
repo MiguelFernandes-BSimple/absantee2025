@@ -1,6 +1,7 @@
-using Domain.Interfaces;
 using Domain.Models;
 using Moq;
+
+namespace Domain.Tests.UserTests;
 
 public class UserGetNamesTests
 {

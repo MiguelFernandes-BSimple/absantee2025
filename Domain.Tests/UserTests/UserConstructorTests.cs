@@ -1,5 +1,7 @@
-
 using Domain.Models;
+
+namespace Domain.Tests.UserTests;
+
 public class UserConstructorTests
 {
     public static IEnumerable<object[]> GetUserData_ValidFields()
