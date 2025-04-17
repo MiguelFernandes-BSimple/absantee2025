@@ -56,8 +56,9 @@ public class HolidayPlanRepositoryFindHolidayPlanByCollaboratorAsyncTests
 
         var mapperDouble = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
         mapperDouble.Setup(md => md.ToDomain((HolidayPlanDataModel)holidayPlanDM1.Object)).Returns(expected.Object);
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
 
-        var holidayPlanRepoDouble = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object);
+        var holidayPlanRepoDouble = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object, holidayPeriodMapper.Object);
 
         // act
         var result = await holidayPlanRepoDouble.FindHolidayPlanByCollaboratorAsync(expectedId);
@@ -98,8 +99,9 @@ public class HolidayPlanRepositoryFindHolidayPlanByCollaboratorAsyncTests
         expected.Setup(e => e.GetCollaboratorId()).Returns(expectedId);
 
         var mapperDouble = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
 
-        var holidayPlanRepoDouble = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object);
+        var holidayPlanRepoDouble = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object, holidayPeriodMapper.Object);
 
         // act
         var result = await holidayPlanRepoDouble.FindHolidayPlanByCollaboratorAsync(expectedId);

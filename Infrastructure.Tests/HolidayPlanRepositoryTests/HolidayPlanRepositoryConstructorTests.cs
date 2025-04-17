@@ -16,8 +16,10 @@ public class HolidayPlanRepositoryConstructorTests
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         var absanteeMock = new Mock<IAbsanteeContext>();
 
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
         //Act
-        new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
+        new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
 
         //Assert
     }
