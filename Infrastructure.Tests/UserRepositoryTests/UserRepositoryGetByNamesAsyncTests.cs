@@ -1,4 +1,5 @@
 using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
@@ -18,9 +19,7 @@ namespace Infrastructure.Tests.UserRepositoryTests
         {
 
             //Arrange
-            var periodDateTimeDouble1 = new Mock<PeriodDateTime>();
-            periodDateTimeDouble1.Setup(p => p.GetInitDate()).Returns(DateTime.Now);
-            periodDateTimeDouble1.Setup(p => p.GetFinalDate()).Returns(DateTime.MaxValue);
+            var periodDateTimeDouble1 = new PeriodDateTime(DateTime.Now, DateTime.MaxValue);
 
             var userDM1 = new Mock<IUserVisitor>();
             userDM1.Setup(u => u.Id).Returns(1);
