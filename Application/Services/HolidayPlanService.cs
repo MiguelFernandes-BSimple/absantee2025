@@ -30,7 +30,7 @@ public class HolidayPlanService
         }
 
         numberOfHolidayDays = collaboratorHolidayPlan.GetNumberOfHolidayDaysBetween(
-            association.GetPeriodDate()
+            association.AssociationIntersectPeriod
         );
 
         return numberOfHolidayDays;
