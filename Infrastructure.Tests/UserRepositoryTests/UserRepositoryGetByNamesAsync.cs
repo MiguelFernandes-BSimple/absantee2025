@@ -8,14 +8,13 @@ using Moq;
 
 namespace Infrastructure.Tests.UserRepositoryTests
 {
-    public class GetBySurnamesAsync
+    public class UserRepositoryGetByNamesAsync
     {
-
         [Theory]
-        [InlineData("Silva", "Silvana", 2)]
-        [InlineData("Silva", "Gomes", 1)]
-        [InlineData("Gomes", "Pereira", 0)]
-        public async Task WhenGettingBySurnamesAsync_ShouldReturnCorrectUsers(string surname1, string surname2, int expectedCount)
+        [InlineData("John", "Johnny", 2)]
+        [InlineData("Johnny", "Pedro", 1)]
+        [InlineData("Morgan", "Pedro", 0)]
+        public async Task WhenGettingByNamesAsync_ShouldReturnCorrectUsers(string name1, string name2, int expectedCount)
         {
 
             //Arrange
@@ -25,14 +24,14 @@ namespace Infrastructure.Tests.UserRepositoryTests
 
             var userDM1 = new Mock<IUserVisitor>();
             userDM1.Setup(u => u.Id).Returns(1);
-            userDM1.Setup(u => u.Names).Returns("Morgan");
-            userDM1.Setup(u => u.Surnames).Returns(surname1);
+            userDM1.Setup(u => u.Names).Returns(name1);
+            userDM1.Setup(u => u.Surnames).Returns("Doe");
             userDM1.Setup(u => u.Email).Returns("user1@gmail.com");
 
             var userDM2 = new Mock<IUserVisitor>();
             userDM2.Setup(u => u.Id).Returns(2);
-            userDM2.Setup(u => u.Names).Returns("Donald");
-            userDM2.Setup(u => u.Surnames).Returns(surname2);
+            userDM2.Setup(u => u.Names).Returns(name2);
+            userDM2.Setup(u => u.Surnames).Returns("Bravo");
             userDM2.Setup(u => u.Email).Returns("user2@gmail.com");
 
             var users = new List<UserDataModel>
@@ -57,7 +56,7 @@ namespace Infrastructure.Tests.UserRepositoryTests
                 {
                     var user = new Mock<IUser>();
                     user.Setup(u => u.GetId()).Returns(dm.Id);
-                    user.Setup(u => u.GetSurnames()).Returns(dm.Surnames);
+                    user.Setup(u => u.GetNames()).Returns(dm.Names);
                     return user.Object;
                 }).ToList();
             });
@@ -65,13 +64,13 @@ namespace Infrastructure.Tests.UserRepositoryTests
             var userRepository = new UserRepositoryEF((AbsanteeContext)absanteeMock.Object, (UserMapper)mapperDouble.Object);
 
             //Act
-            var result = await userRepository.GetBySurnamesAsync("Silva");
+            var result = await userRepository.GetByNamesAsync("John");
 
             //Assert
             Assert.Equal(expectedCount, result.Count());
             if (expectedCount > 0)
             {
-                Assert.All(result, u => Assert.Contains("Silva", u.GetSurnames(), StringComparison.OrdinalIgnoreCase));
+                Assert.All(result, u => Assert.Contains("John", u.GetNames(), StringComparison.OrdinalIgnoreCase));
             }
             else
             {
@@ -80,3 +79,4 @@ namespace Infrastructure.Tests.UserRepositoryTests
         }
     }
 }
+
