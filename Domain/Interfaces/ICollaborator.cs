@@ -9,10 +9,5 @@ public interface ICollaborator
     public long _id { get; set; }
     public long _userId { get; set; }
     public PeriodDateTime _periodDateTime { get; set; }
-
-
     public bool ContractContainsDates(PeriodDateTime periodDateTime);
-
-    public bool Equals(Object? obj);
-
 }
