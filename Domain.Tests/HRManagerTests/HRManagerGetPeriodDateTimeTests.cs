@@ -18,7 +18,7 @@ namespace Domain.Tests.HRManagerTests
             var periodDateTime = new Mock<PeriodDateTime>();
             var hrManager = new HRManager(It.IsAny<long>(), It.IsAny<long>(), periodDateTime.Object);
             //act
-            var hrPeriodDateTime = hrManager.GetPeriodDateTime();
+            var hrPeriodDateTime = hrManager._periodDateTime;
 
             //assert
             Assert.Equal(periodDateTime.Object, hrPeriodDateTime);
