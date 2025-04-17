@@ -15,7 +15,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
             1
         };
 
-        var periodDouble = new Mock<PeriodDate>();
+        var periodDouble = new Mock<IPeriodDate>();
 
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
@@ -59,7 +59,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
                 1
             };
 
-        var periodDouble = new Mock<PeriodDate>();
+        var periodDouble = new Mock<IPeriodDate>();
 
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();

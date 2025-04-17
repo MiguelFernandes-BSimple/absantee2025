@@ -15,7 +15,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
+        Mock<IPeriodDate> searchPeriodDate = new Mock<IPeriodDate>();
         searchPeriodDate.Setup(p => p.ContainsWeekend()).Returns(true);
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
@@ -42,7 +42,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
+        Mock<IPeriodDate> searchPeriodDate = new Mock<IPeriodDate>();
         searchPeriodDate.Setup(spd => spd.ContainsWeekend()).Returns(false);
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
@@ -68,7 +68,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
+        Mock<IPeriodDate> searchPeriodDate = new Mock<IPeriodDate>();
         searchPeriodDate.Setup(spd => spd.ContainsWeekend()).Returns(true);
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
@@ -94,7 +94,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
+        Mock<IPeriodDate> searchPeriodDate = new Mock<IPeriodDate>();
         searchPeriodDate.Setup(spd => spd.ContainsWeekend()).Returns(true);
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };

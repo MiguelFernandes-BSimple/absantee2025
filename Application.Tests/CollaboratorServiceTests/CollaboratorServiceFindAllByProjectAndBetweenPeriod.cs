@@ -5,6 +5,7 @@ using Moq;
 using System.Linq.Expressions;
 using Domain.Factory;
 using System.Threading.Tasks;
+using Domain.Models;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
@@ -15,7 +16,6 @@ namespace Application.Tests.CollaboratorServiceTests
         {
             // Arrange
             Mock<IProject> projectMock = new Mock<IProject>();
-            var periodDouble = new Mock<PeriodDate>();
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
@@ -45,7 +45,7 @@ namespace Application.Tests.CollaboratorServiceTests
                 collab2.Object
             };
 
-            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriodAsync(It.IsAny<long>(), periodDouble.Object)).ReturnsAsync(associations);
+            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriodAsync(It.IsAny<long>(), It.IsAny<PeriodDate>())).ReturnsAsync(associations);
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
@@ -55,7 +55,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
             // Act
-            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), periodDouble.Object);
+            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             // Assert
             Assert.True(expected.SequenceEqual(result));
@@ -66,15 +66,13 @@ namespace Application.Tests.CollaboratorServiceTests
         public async Task WhenProjectHasNoCollaboratorsInPeriod_ThenReturnEmptyList()
         {
             // Arrange
-            var periodDouble = new Mock<PeriodDate>();
-
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
 
             // No associations for the project in the period
             List<IAssociationProjectCollaborator> emptyAssociations = new List<IAssociationProjectCollaborator>();
 
-            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriodAsync(It.IsAny<long>(), periodDouble.Object)).ReturnsAsync(emptyAssociations);
+            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriodAsync(It.IsAny<long>(), It.IsAny<PeriodDate>())).ReturnsAsync(emptyAssociations);
 
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
 
@@ -83,7 +81,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
             // Act
-            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), periodDouble.Object);
+            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             // Assert
             Assert.Empty(result);

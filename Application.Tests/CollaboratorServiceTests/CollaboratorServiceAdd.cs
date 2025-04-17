@@ -7,6 +7,7 @@ using Application.Services;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Moq;
 
 namespace Application.Tests.CollaboratorServiceTests
@@ -50,8 +51,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             var holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
 
-            var periodDateTime = new Mock<PeriodDateTime>();
-            periodDateTime.Setup(pdt => pdt.GetFinalDate()).Returns(It.IsAny<DateTime>());
+            var periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
             var userDouble = new Mock<IUser>();
             var userRepo = new Mock<IUserRepository>();
@@ -62,12 +62,12 @@ namespace Application.Tests.CollaboratorServiceTests
             var collabRepository = new Mock<ICollaboratorRepository>();
 
             var collabFactory = new Mock<ICollaboratorFactory>();
-            collabFactory.Setup(cf => cf.Create(It.IsAny<long>(), periodDateTime.Object))
+            collabFactory.Setup(cf => cf.Create(It.IsAny<long>(), periodDateTime))
                     .ThrowsAsync(new ArgumentException("User deactivation date is before collaborator contract end date."));
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
             //act
-            var result = await collaboratorService.Add(It.IsAny<long>(), periodDateTime.Object);
+            var result = await collaboratorService.Add(It.IsAny<long>(), periodDateTime);
 
             //assert
             Assert.False(result);
