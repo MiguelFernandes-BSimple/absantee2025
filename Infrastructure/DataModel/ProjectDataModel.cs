@@ -23,5 +23,9 @@ namespace Infrastructure.DataModel
             Acronym = project.GetAcronym();
             PeriodDate = (PeriodDate)project.GetPeriodDate();
         }
+
+        public ProjectDataModel()
+        {
+        }
     }
 }

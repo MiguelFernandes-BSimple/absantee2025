@@ -4,9 +4,9 @@ namespace Domain.Models;
 
 public class Collaborator : ICollaborator
 {
-    private long _id;
-    private long _userId;
-    private IPeriodDateTime _periodDateTime;
+    public long _id { get; set; }
+    public long _userId { get; set; }
+    public IPeriodDateTime _periodDateTime { get; set; }
 
     public Collaborator(long userId, IPeriodDateTime periodDateTime)
     {

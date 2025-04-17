@@ -3,8 +3,8 @@
 namespace Domain.Models;
 public class PeriodDate : IPeriodDate
 {
-    private DateOnly _initDate;
-    private DateOnly _finalDate;
+    public DateOnly _initDate { get; set; }
+    public DateOnly _finalDate { get; set; }
 
     public PeriodDate(DateOnly initDate, DateOnly finalDate)
     {

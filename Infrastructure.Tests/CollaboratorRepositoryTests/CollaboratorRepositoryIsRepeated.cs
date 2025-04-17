@@ -29,44 +29,47 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             // Arrange
             var init1 = DateTime.Parse(init1Str);
             var final1 = DateTime.Parse(final1Str);
-            var collaboratorDM1 = new Mock<ICollaboratorVisitor>();
-            var collaboratorDM2 = new Mock<ICollaboratorVisitor>();
-            var users = new List<CollaboratorDataModel>
-            {
-                (CollaboratorDataModel)collaboratorDM1.Object,
-                (CollaboratorDataModel)collaboratorDM2.Object
-            }.AsQueryable();
 
-            var mockSet = new Mock<DbSet<CollaboratorDataModel>>();
-            mockSet.As<IQueryable<CollaboratorDataModel>>().Setup(m => m.Provider).Returns(users.Provider);
-            mockSet.As<IQueryable<CollaboratorDataModel>>().Setup(m => m.Expression).Returns(users.Expression);
-            mockSet.As<IQueryable<CollaboratorDataModel>>().Setup(m => m.ElementType).Returns(users.ElementType);
-            mockSet.As<IQueryable<CollaboratorDataModel>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
+            var options = new DbContextOptionsBuilder<AbsanteeContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
+                .Options;
 
-            var absanteeMock = new Mock<IAbsanteeContext>();
-            absanteeMock.Setup(a => a.Collaborators).Returns(mockSet.Object);
+            using var context = new AbsanteeContext(options);
 
-            collaboratorDM1.Setup(c => c.UserID).Returns(1);
+            var collaborator1 = new Mock<ICollaborator>();
+            collaborator1.Setup(c => c._userId).Returns(2);
+            //var periodDateTimeColab = new Mock<IPeriodDateTime>();
+            //periodDateTimeColab.Setup(pd => pd.GetInitDate()).Returns(init1);
+            //periodDateTimeColab.Setup(pd => pd.GetFinalDate()).Returns(final1);
+            var periodDateTimeColab = new PeriodDateTime(init1, final1);
+            collaborator1.Setup(c => c._periodDateTime).Returns(periodDateTimeColab);
+            context.Collaborators.Add(new CollaboratorDataModel(collaborator1.Object));
 
-            collaboratorDM2.Setup(c => c.UserID).Returns(2);
-            var periodDateTime1 = new Mock<IPeriodDateTime>();
-            periodDateTime1.Setup(a => a.GetInitDate()).Returns(init1);
-            periodDateTime1.Setup(a => a.GetFinalDate()).Returns(final1);
-            collaboratorDM2.Setup(c => c.PeriodDateTime).Returns((PeriodDateTime)periodDateTime1.Object);
+            var collaborator2 = new Mock<ICollaborator>();
+            collaborator2.Setup(c => c._userId).Returns(2);
+            //periodDateTimeColab.Setup(pd => pd.GetInitDate()).Returns(init1);
+            //periodDateTimeColab.Setup(pd => pd.GetFinalDate()).Returns(final1);
+            collaborator2.Setup(c => c._periodDateTime).Returns(periodDateTimeColab);
+            context.Collaborators.Add(new CollaboratorDataModel(collaborator2.Object));
+
+            await context.SaveChangesAsync();
+
+            var periodDateTime = new Mock<IPeriodDateTime>();
+            periodDateTime.Setup(p => p._initDate).Returns(new DateTime(2020, 1, 1));
+            periodDateTime.Setup(p => p._finalDate).Returns(new DateTime(2021, 1, 1));
 
             var collaborator = new Mock<ICollaborator>();
-            collaborator.Setup(c => c.GetUserId()).Returns(2);
-            var periodDateTime2 = new Mock<IPeriodDateTime>();
-            periodDateTime2.Setup(a => a.GetInitDate()).Returns(new DateTime(2020, 1, 1));
-            periodDateTime2.Setup(a => a.GetFinalDate()).Returns(new DateTime(2021, 1, 1));
+            collaborator.Setup(c => c._userId).Returns(2);
+            collaborator.Setup(c => c._periodDateTime).Returns(periodDateTime.Object);
 
-            var collabMapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
+            var mapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
 
-            var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
-            //Act 
-            var result = await collaboratorRepository.IsRepeated(collaborator.Object);
+            var repo = new CollaboratorRepository(context, mapper.Object);
 
-            //Assert
+            // Act
+            var result = await repo.IsRepeated(collaborator.Object);
+
+            // Assert
             Assert.Equal(expected, result);
         }
     }

@@ -11,12 +11,17 @@ namespace Infrastructure.DataModel
         public long ProjectId { get; set; }
         public PeriodDate Period { get; set; }
 
+
         public AssociationProjectCollaboratorDataModel(IAssociationProjectCollaborator apc)
         {
             Id = apc.GetId();
             CollaboratorId = apc.GetCollaboratorId();
             ProjectId = apc.GetProjectId();
             Period = (PeriodDate)apc.GetPeriodDate();
+        }
+
+        public AssociationProjectCollaboratorDataModel()
+        {
         }
     }
 }

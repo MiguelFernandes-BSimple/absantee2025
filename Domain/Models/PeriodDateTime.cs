@@ -4,8 +4,8 @@ namespace Domain.Models;
 
 public class PeriodDateTime : IPeriodDateTime
 {
-    private DateTime _initDate;
-    private DateTime _finalDate;
+    public DateTime _initDate { get; set; }
+    public DateTime _finalDate { get; set; }
 
     public PeriodDateTime(DateTime initDate, DateTime finalDate)
     {

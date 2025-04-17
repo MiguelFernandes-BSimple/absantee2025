@@ -21,9 +21,9 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
     public async Task<bool> IsRepeated(ICollaborator collaborator)
     {
         return await this._context.Set<CollaboratorDataModel>()
-                .AnyAsync(c => c.UserID == collaborator.GetUserId()
-                    && c.PeriodDateTime.GetInitDate() <= collaborator.GetPeriodDateTime().GetFinalDate()
-                    && collaborator.GetPeriodDateTime().GetInitDate() <= c.PeriodDateTime.GetFinalDate());
+                .AnyAsync(c => c.UserID == collaborator._userId
+                    && c.PeriodDateTime._initDate <= collaborator._periodDateTime._finalDate
+                    && collaborator._periodDateTime._initDate <= c.PeriodDateTime._finalDate);
     }
 
     public override ICollaborator? GetById(long id)

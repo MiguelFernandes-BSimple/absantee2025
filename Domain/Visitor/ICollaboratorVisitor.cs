@@ -1,4 +1,5 @@
 ﻿
+using Domain.Interfaces;
 using Domain.Models;
 
 namespace Domain.Visitor;

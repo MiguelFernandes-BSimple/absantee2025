@@ -9,5 +9,7 @@ public interface IPeriodDateTime
     public bool IsFinalDateSmallerThan(DateTime date);
     public bool Contains(IPeriodDateTime periodDateTime);
     public bool Intersects(IPeriodDateTime periodDateTime);
+    public DateTime _initDate { get; set; }
+    public DateTime _finalDate { get; set; }
 
 }

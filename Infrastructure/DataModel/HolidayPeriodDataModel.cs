@@ -16,4 +16,8 @@ public class HolidayPeriodDataModel : IHolidayPeriodVisitor
         Id = holidayPeriod.GetId();
         PeriodDate = (PeriodDate)holidayPeriod.GetPeriodDate();
     }
+
+    public HolidayPeriodDataModel()
+    {
+    }
 }

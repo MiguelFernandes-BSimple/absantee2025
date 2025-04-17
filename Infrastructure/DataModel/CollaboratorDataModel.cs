@@ -18,4 +18,8 @@ public class CollaboratorDataModel : ICollaboratorVisitor
         UserID = collaborator.GetUserId();
         PeriodDateTime = (PeriodDateTime)collaborator.GetPeriodDateTime();
     }
+
+    public CollaboratorDataModel()
+    {
+    }
 }

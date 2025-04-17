@@ -22,5 +22,9 @@ namespace Infrastructure.DataModel
             Email = user.GetEmail();
             PeriodDateTime = (PeriodDateTime)user.GetPeriodDateTime();
         }
+
+        public UserDataModel()
+        {
+        }
     }
 }

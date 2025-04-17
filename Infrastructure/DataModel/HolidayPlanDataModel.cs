@@ -26,4 +26,8 @@ public class HolidayPlanDataModel : IHolidayPlanVisitor
         CollaboratorId = holidayPlan.GetCollaboratorId();
         HolidayPeriodsDM = mapper.ToDataModel(holidayPlan.GetHolidayPeriods()).ToList();
     }
+
+    public HolidayPlanDataModel()
+    {
+    }
 }
