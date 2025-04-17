@@ -12,7 +12,7 @@ public class AssociationProjectCollaboratorSetIdTests
     {
         // Arrange
         // Association parameters
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
         long collabId = 1;
         long projectId = 1;
 
@@ -20,7 +20,7 @@ public class AssociationProjectCollaboratorSetIdTests
         long newAssocId = 2;
 
         AssociationProjectCollaborator assoc =
-            new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);
+            new AssociationProjectCollaborator(collabId, projectId, periodDate);
 
         // Act
         assoc.SetId(newAssocId);
