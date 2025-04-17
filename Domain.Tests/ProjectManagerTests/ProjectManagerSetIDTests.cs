@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Domain.Tests.ProjectManagerTests;
 
-public class SetIDTests
+public class ProjectManagerSetIDTests
 {
     [Fact]
     public void WhenSettingId_ThenIdIsUpdated()

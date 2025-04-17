@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectManagerTests;
 
-public class ConstructorTests
+public class ProjectManagerConstructorTests
 {
     [Fact]
     public void WhenCreatingProjectManagerWithValidPeriod_ThenProjectManagerIsCreatedCorrectly()

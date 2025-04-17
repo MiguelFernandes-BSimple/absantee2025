@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectManagerTests;
 
-public class GetUserIDTests
+public class ProjectManagerGetUserIDTests
 {
     [Fact]
     public void WhenGettingUserId_ThenReturnsUserId()

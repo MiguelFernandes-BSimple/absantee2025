@@ -10,7 +10,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectManagerTests
 {
-    public class FactoryTests
+    public class ProjectManagerFactoryTests
     {
         // tests for creating with user id and period date time
         [Fact]

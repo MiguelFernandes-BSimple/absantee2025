@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.ProjectManagerTests;
 
-public class GetPeriodDateTimeTests
+public class ProjectManagerGetPeriodDateTimeTests
 {
     [Fact]
     public void WhenGettingPeriodDateTime_ThenReturnsPeriodDateTime()
