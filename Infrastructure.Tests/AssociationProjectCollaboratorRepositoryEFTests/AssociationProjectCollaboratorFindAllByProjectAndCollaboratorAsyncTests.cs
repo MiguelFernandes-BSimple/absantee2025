@@ -14,76 +14,57 @@ public class AssociationProjectCollaboratorFindAllByProjectAndCollaboratorAsyncT
     public async Task WhenPassingExistingProjectAndCollaboratorIdCombo_ThenReturnAssociation()
     {
         // Arrange
+        // ------------ Setup test in-memory database ------------
         var options = new DbContextOptionsBuilder<AbsanteeContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
         using var context = new AbsanteeContext(options);
 
-        var mockDomain1 = new Mock<IAssociationProjectCollaborator>();
-        mockDomain1.Setup(x => x.GetId()).Returns(1);
-        mockDomain1.Setup(x => x.GetProjectId()).Returns(1);
-        mockDomain1.Setup(x => x.GetCollaboratorId()).Returns(1);
+        PeriodDate period =
+            new PeriodDate(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
 
-        var periodDate1 = new PeriodDate
-        (
-            new DateOnly(2023, 1, 1),
-            new DateOnly(2023, 12, 31)
-        );
-        mockDomain1.Setup(x => x._periodDate).Returns(periodDate1); 
+        var assoc1 = new Mock<IAssociationProjectCollaborator>();
+        assoc1.Setup(a => a._projectId).Returns(1);
+        assoc1.Setup(a => a._collaboratorId).Returns(1);
+        assoc1.Setup(a => a._periodDate).Returns(period);
+        var assocDM1 = new AssociationProjectCollaboratorDataModel(assoc1.Object);
+        context.Associations.Add(assocDM1);
 
-        var assoc1 = new AssociationProjectCollaboratorDataModel(mockDomain1.Object);
+        var assoc2 = new Mock<IAssociationProjectCollaborator>();
+        assoc2.Setup(a => a._projectId).Returns(2);
+        assoc2.Setup(a => a._collaboratorId).Returns(2);
+        assoc2.Setup(a => a._periodDate).Returns(period);
+        var assocDM2 = new AssociationProjectCollaboratorDataModel(assoc2.Object);
+        context.Associations.Add(assocDM2);
 
-        var mockDomain2 = new Mock<IAssociationProjectCollaborator>();
-        mockDomain2.Setup(x => x.GetId()).Returns(2);
-        mockDomain2.Setup(x => x.GetProjectId()).Returns(2);
-        mockDomain2.Setup(x => x.GetCollaboratorId()).Returns(2);
+        var assoc3 = new Mock<IAssociationProjectCollaborator>();
+        assoc3.Setup(a => a._projectId).Returns(2);
+        assoc3.Setup(a => a._collaboratorId).Returns(3);
+        assoc3.Setup(a => a._periodDate).Returns(period);
+        var assocDM3 = new AssociationProjectCollaboratorDataModel(assoc3.Object);
+        context.Associations.Add(assocDM3);
 
-        var periodDate2 = new PeriodDate
-        (
-            new DateOnly(2022, 1, 1),
-            new DateOnly(2023, 12, 31)
-        );
-        mockDomain2.Setup(x => x._periodDate).Returns(periodDate2); 
-    
+        await context.SaveChangesAsync();
 
-        var assoc2 = new AssociationProjectCollaboratorDataModel(mockDomain2.Object);
+        // -----------------------------------------
 
-        var mockDomain3 = new Mock<IAssociationProjectCollaborator>();
-        mockDomain3.Setup(x => x.GetId()).Returns(3);
-        mockDomain3.Setup(x => x.GetProjectId()).Returns(3);
-        mockDomain3.Setup(x => x.GetCollaboratorId()).Returns(3);
+        long collabId = 3;
+        long projectId = 3;
 
-        var mockPeriodDate3 = new Mock<PeriodDate>();
-        var periodDate3 = new PeriodDate
-        (
-            new DateOnly(2021, 1, 1),
-            new DateOnly(2022, 12, 31)
-        );
-        mockDomain3.Setup(x => x._periodDate).Returns(periodDate3); 
-        
+        var expected = new List<IAssociationProjectCollaborator>();
 
-        var assoc3 = new AssociationProjectCollaboratorDataModel(mockDomain3.Object);
+        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
+            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
 
-        context.Associations.AddRange(assoc1, assoc2, assoc3);
-        context.SaveChanges();
-
-        // Mock retorno do mapper
-        var domainAssoc2 = new Mock<IAssociationProjectCollaborator>();
-        var domainAssoc3 = new Mock<IAssociationProjectCollaborator>();
-        var expected = new List<IAssociationProjectCollaborator> { domainAssoc2.Object, domainAssoc3.Object };
-
-        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-        mapper.Setup(m => m.ToDomain(It.Is<List<AssociationProjectCollaboratorDataModel>>(list =>
-            list.Count == 2 && list.Any(x => x.Id == 2) && list.Any(x => x.Id == 3))))
-            .Returns(expected);
+        mapper.Setup(m => m.ToDomain(new List<AssociationProjectCollaboratorDataModel> { assocDM3 })).Returns(expected);
 
         var repo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
 
         // Act
-        var result = await repo.FindAllByProjectAndCollaboratorAsync(2, 2);
+        var result = await repo.FindAllByProjectAndCollaboratorAsync(projectId, collabId);
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.True(expected.SequenceEqual(result));
     }
 }
