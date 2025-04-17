@@ -10,92 +10,69 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class AssociationProjectCollaboratorGetByIdAsyncTests
 {
+    
     [Fact]
     public async Task WhenPassingExistingId_ThenReturnCorrectAssociation()
     {
         // Arrange
-        // Create mockSet
-        var AssocDM1 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var AssocDM2 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var users = new List<AssociationProjectCollaboratorDataModel>
-        {
-            (AssociationProjectCollaboratorDataModel)AssocDM1.Object,
-            (AssociationProjectCollaboratorDataModel)AssocDM2.Object
-        }.AsQueryable();
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
 
-        var mockSet = new Mock<DbSet<AssociationProjectCollaboratorDataModel>>();
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.Provider).Returns(users.Provider);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.Expression).Returns(users.Expression);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.ElementType).Returns(users.ElementType);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
+        using var context = new AbsanteeContext(options);
 
-        // Setup assoc id to be searched
         long assocDM1Id = 1;
         long assocDM2Id = 2;
 
-        // Declare and set up context with associations
-        var mockContext = new Mock<IAbsanteeContext>();
-        mockContext.Setup(c => c.Associations).Returns(mockSet.Object);
+        var assoc1 = new AssociationProjectCollaboratorDataModel { Id = assocDM1Id };
+        var assoc2 = new AssociationProjectCollaboratorDataModel { Id = assocDM2Id };
 
-        AssocDM1.Setup(a => a.Id).Returns(assocDM1Id);
-        AssocDM2.Setup(a => a.Id).Returns(assocDM2Id);
+        context.Associations.AddRange(assoc1, assoc2);
+        await context.SaveChangesAsync();
+
+        var expected = new Mock<IAssociationProjectCollaborator>();
+        expected.Setup(e => e._id).Returns(assocDM2Id);
 
         var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
+        mapper.Setup(m => m.ToDomain(assoc2))
+            .Returns(expected.Object);
 
-        // Convert to domain
-        Mock<IAssociationProjectCollaborator> expected = new Mock<IAssociationProjectCollaborator>();
-
-        mapper.Setup(m => m.ToDomain((AssociationProjectCollaboratorDataModel)AssocDM2.Object)).Returns((AssociationProjectCollaborator)expected.Object);
-
-        var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
+        var assocRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
 
         // Act
-        IAssociationProjectCollaborator? result = await assocRepo.GetByIdAsync(assocDM2Id);
+        var result = await assocRepo.GetByIdAsync(assocDM2Id);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expected.Object.GetId(), result.GetId());
+        Assert.Equal(expected.Object, result);
     }
 
+    
     [Fact]
     public async Task WhenPassingNewId_ThenReturnNull()
     {
         // Arrange
-        // Create mockSet
-        var AssocDM1 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var AssocDM2 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var users = new List<AssociationProjectCollaboratorDataModel>
-        {
-            (AssociationProjectCollaboratorDataModel)AssocDM1.Object,
-            (AssociationProjectCollaboratorDataModel)AssocDM2.Object
-        }.AsQueryable();
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
 
-        var mockSet = new Mock<DbSet<AssociationProjectCollaboratorDataModel>>();
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.Provider).Returns(users.Provider);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.Expression).Returns(users.Expression);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.ElementType).Returns(users.ElementType);
-        mockSet.As<IQueryable<AssociationProjectCollaboratorDataModel>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
+        using var context = new AbsanteeContext(options);
 
-        // Setup assoc id to be searched
         long assocDM1Id = 1;
         long assocDM2Id = 2;
-        long newId = 3;
+        long assocDM3Id = 3;
 
-        // Declare and set up context with associations
-        var mockContext = new Mock<IAbsanteeContext>();
-        mockContext.Setup(c => c.Associations).Returns(mockSet.Object);
+        var assoc1 = new AssociationProjectCollaboratorDataModel { Id = assocDM1Id };
+        var assoc2 = new AssociationProjectCollaboratorDataModel { Id = assocDM2Id };
 
-        AssocDM1.Setup(a => a.Id).Returns(assocDM1Id);
-        AssocDM2.Setup(a => a.Id).Returns(assocDM2Id);
+        context.Associations.AddRange(assoc1, assoc2);
+        await context.SaveChangesAsync();
 
         var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
-        var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF((AbsanteeContext)mockContext.Object, mapper.Object);
+   
+        var assocRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
 
         // Act
-        IAssociationProjectCollaborator? result = await assocRepo.GetByIdAsync(newId);
+        var result = await assocRepo.GetByIdAsync(assocDM3Id);
 
         // Assert
         Assert.Null(result);
