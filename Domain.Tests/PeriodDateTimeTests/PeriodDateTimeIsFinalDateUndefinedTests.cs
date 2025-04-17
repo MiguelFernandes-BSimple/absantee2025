@@ -2,7 +2,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTimeTests;
 
-public class IsFinalDateUndefinedTests
+public class PeriodDateTimeIsFinalDateUndefinedTests
 {
     /**
     * Test method to verify if the final date for a periodDateTime is defined

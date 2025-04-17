@@ -8,7 +8,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class ContainsTests
+    public class PeriodDateContainsTests
     {
         public static IEnumerable<object[]> ContainingPeriods()
         {

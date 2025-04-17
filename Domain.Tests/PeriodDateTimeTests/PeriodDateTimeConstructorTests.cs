@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.PeriodDateTimeTests;
 
-public class ConstructorTests
+public class PeriodDateTimeConstructorTests
 {
     /**
     * Test method for constructor that receives two DateOnly

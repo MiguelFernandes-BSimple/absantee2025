@@ -1,13 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class IsInitDateSmallerThanTests
+    public class PeriodDateIsFinalDateSmallerThanTests
     {
 
         [Fact]
-        public void WhenPassingDatesBiggerThanInitDate_ThenReturnFalse()
+        public void WhenPassingDatesBiggerThanFinalDate_ThenReturnFalse()
         {
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
@@ -17,22 +22,22 @@ namespace Domain.Tests.PeriodDateTests
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
-            var result = periodDate.IsInitDateSmallerThan(date);
+            var result = periodDate.IsFinalDateSmallerThan(date);
 
             //assert
             Assert.True(result);
         }
 
-        public static IEnumerable<object[]> DatesSmallerThanInitDate()
+        public static IEnumerable<object[]> DatesSmallerThanFinalDate()
         {
-            yield return new object[] { new DateOnly(2019, 1, 1) };
             yield return new object[] { new DateOnly(2020, 1, 1) };
+            yield return new object[] { new DateOnly(2021, 1, 1) };
         }
 
 
         [Theory]
-        [MemberData(nameof(DatesSmallerThanInitDate))]
-        public void WhenPassingDatesSmallerThanInitDate_ThenReturnFalse(DateOnly date)
+        [MemberData(nameof(DatesSmallerThanFinalDate))]
+        public void WhenPassingDatesSmallerThanFinalDate_ThenReturnFalse(DateOnly date)
         {
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
@@ -41,7 +46,7 @@ namespace Domain.Tests.PeriodDateTests
             IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
-            var result = periodDate.IsInitDateSmallerThan(date);
+            var result = periodDate.IsFinalDateSmallerThan(date);
 
             //assert
             Assert.False(result);
