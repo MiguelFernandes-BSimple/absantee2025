@@ -35,11 +35,10 @@ public class HolidayPlanGetNumberOfHolidayDaysBetweenTests
         // Arrange
         var holidayPeriods = new List<IHolidayPeriod>();
 
-        var periodDate1 = new Mock<PeriodDate>();
         foreach (var days in daysByPeriod)
         {
             var holidayPeriodDouble = new Mock<IHolidayPeriod>();
-            holidayPeriodDouble.Setup(hp => hp.GetPeriodDate()).Returns(periodDate1.Object);
+            holidayPeriodDouble.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
 
             holidayPeriodDouble
                 .Setup(p =>
@@ -54,10 +53,8 @@ public class HolidayPlanGetNumberOfHolidayDaysBetweenTests
 
         var holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
 
-        var periodDateDouble = new Mock<PeriodDate>();
-
         // Act
-        var result = holidayPlan.GetNumberOfHolidayDaysBetween(periodDateDouble.Object);
+        var result = holidayPlan.GetNumberOfHolidayDaysBetween(It.IsAny<PeriodDate>());
 
         // Assert
         Assert.Equal(expectedTotal, result);
