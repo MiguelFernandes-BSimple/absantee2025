@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
 
-public class Constructor
+public class HolidayPlanConstructorTests
 {
     // Happy Path - Testing constructor with Single HolidayPeriod
     // Can Instatiate a HolidayPlan Object successfuly

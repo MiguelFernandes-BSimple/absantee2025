@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
+﻿
 using Domain.Models;
 
-namespace Domain.Visitor
-{
+namespace Domain.Visitor;
+
     public interface ICollaboratorVisitor
     {
         long Id { get; }
@@ -15,4 +10,4 @@ namespace Domain.Visitor
         PeriodDateTime PeriodDateTime { get; }
 
     }
-}
+

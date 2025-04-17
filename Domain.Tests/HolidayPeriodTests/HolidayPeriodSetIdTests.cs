@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPeriodTests;
 
-public class SetId
+public class HolidayPeriodSetIdTests
 {
 
     [Fact]

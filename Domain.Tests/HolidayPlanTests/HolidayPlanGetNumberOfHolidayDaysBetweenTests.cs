@@ -4,7 +4,7 @@ using Moq;
 
 namespace Domain.Tests.HolidayPlanTests;
 
-public class GetNumberOfHolidayDaysBetween
+public class HolidayPlanGetNumberOfHolidayDaysBetweenTests
 {
     public static IEnumerable<object[]> GetHolidayDaysBetweenData()
     {

@@ -6,15 +6,14 @@ using Moq;
 namespace Domain.Tests.HolidayPlanTests;
 
 
-public class GetCollaboratorId{
-
+public class HolidayPlanGetIdTests{
 
     [Fact]
+    public void WhenGettingId_ThenReturnsTheId(){
 
-     public void WhenGettingCollaboratorId_ThenReturnsTheId(){
-
-        var id = 2;
-        var expected = 4;
+        var expected = 2;
+        var collabId = 4;
+        
 
         //arrange
 
@@ -27,14 +26,15 @@ public class GetCollaboratorId{
         };
 
         
-        var holidayPlan = new HolidayPlan(id,expected,list);
+        var holidayPlan = new HolidayPlan(expected,collabId,list);
         
         //act
-        var result = holidayPlan.GetCollaboratorId();
+        var result = holidayPlan.GetId();
 
         //Assert
 
         Assert.Equal(expected,result);
 
     }
+    
 }
