@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
+using Domain.Models;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 
@@ -18,7 +19,7 @@ public class HolidayPlanServiceGetHolidayDaysOfCollaboratorInProject
         Mock<PeriodDate> periodDouble = new Mock<PeriodDate>();
 
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
-        associationDouble.Setup(a => a.GetPeriodDate()).Returns(periodDouble.Object);
+        associationDouble.Setup(a => a._periodDate).Returns(periodDouble.Object);
 
         Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
         holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(periodDouble.Object)).Returns(5);

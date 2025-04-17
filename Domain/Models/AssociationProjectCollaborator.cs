@@ -7,7 +7,7 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     private long _id;
     private long _collaboratorId;
     public long _projectId;
-    public PeriodDate _periodDate;
+    public PeriodDate _periodDate { get; set; }
 
     public AssociationProjectCollaborator(long collaboratorId, long projectId, PeriodDate periodDate)
     {

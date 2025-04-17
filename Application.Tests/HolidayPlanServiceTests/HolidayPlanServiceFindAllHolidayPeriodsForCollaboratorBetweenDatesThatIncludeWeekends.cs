@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
+using Domain.Models;
 namespace Application.Tests.HolidayPlanServiceTests;
 
 public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends
@@ -15,18 +16,18 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
-        searchPeriodDate.Setup(p => p.ContainsWeekend()).Returns(true);
+        //contains a weeends
+        var searchPeriodDate = new PeriodDate(new DateOnly(2020,1,1), new DateOnly(2021,1,1));
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
 
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate.Object)).ReturnsAsync(holidayPeriodsList);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate)).ReturnsAsync(holidayPeriodsList);
         holidayPeriod.Setup(hp => hp.ContainsWeekend()).Returns(true);
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         // Act
-        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate.Object);
+        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate);
 
         // Assert
         Assert.True(result.SequenceEqual(holidayPeriodsList));
@@ -42,17 +43,17 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
-        searchPeriodDate.Setup(spd => spd.ContainsWeekend()).Returns(false);
+        //dont contains weekends
+        var searchPeriodDate = new PeriodDate(new DateOnly(2020, 1, 1), new DateOnly(2020, 1, 2));
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
 
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate.Object)).ReturnsAsync(holidayPeriodsList);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate)).ReturnsAsync(holidayPeriodsList);
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         // Act
-        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate.Object);
+        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate);
 
         // Assert
         Assert.Empty(result);
@@ -68,17 +69,17 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
-        searchPeriodDate.Setup(spd => spd.ContainsWeekend()).Returns(true);
+        //contains a weeends
+        var searchPeriodDate = new PeriodDate(new DateOnly(2020, 1, 1), new DateOnly(2021, 1, 1));
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
 
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate.Object)).ReturnsAsync(holidayPeriodsList);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate)).ReturnsAsync(holidayPeriodsList);
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         // Act
-        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate.Object);
+        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate);
 
         // Assert
         Assert.Empty(result);
@@ -94,17 +95,17 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesT
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        Mock<PeriodDate> searchPeriodDate = new Mock<PeriodDate>();
-        searchPeriodDate.Setup(spd => spd.ContainsWeekend()).Returns(true);
+        //contains a weeends
+        var searchPeriodDate = new PeriodDate(new DateOnly(2020, 1, 1), new DateOnly(2021, 1, 1));
 
         var holidayPeriodsList = new List<IHolidayPeriod> { holidayPeriod.Object };
 
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate.Object)).ReturnsAsync(new List<IHolidayPeriod>());
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), searchPeriodDate)).ReturnsAsync(new List<IHolidayPeriod>());
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         // Act
-        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate.Object);
+        var result = await service.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(It.IsAny<long>(), searchPeriodDate);
 
         // Assert
         Assert.Empty(result);
