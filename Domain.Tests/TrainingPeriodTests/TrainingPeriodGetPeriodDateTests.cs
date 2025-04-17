@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
 using Moq;
 
 namespace Domain.Tests.TrainingPeriodTests
@@ -15,14 +9,14 @@ namespace Domain.Tests.TrainingPeriodTests
         public void WhenGettingPeriodDate_ThenReturnsPeriodDate()
         {
             //Arrange
-            var periodDate = new Mock<PeriodDate>();
-            var trainingPeriod = new TrainingPeriod(It.IsAny<long>(), periodDate.Object);
+            PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+            var trainingPeriod = new TrainingPeriod(It.IsAny<long>(), periodDate);
 
             //Act
             var result = trainingPeriod.GetPeriodDate();
 
             //Assert
-            Assert.Equal(periodDate.Object, result);
+            Assert.Equal(periodDate, result);
         }
     }
 }
