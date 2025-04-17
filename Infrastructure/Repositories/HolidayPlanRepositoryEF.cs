@@ -14,11 +14,13 @@ using System.Linq.Expressions;
 namespace Infrastructure.Repositories;
 public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
 {
-    private HolidayPlanMapper _mapper;
+    private IMapper<IHolidayPlan, HolidayPlanDataModel> _mapper;
+    private IMapper<IHolidayPeriod, HolidayPeriodDataModel> _holidayPeriodMapper;
 
-    public HolidayPlanRepositoryEF(AbsanteeContext context, HolidayPlanMapper mapper) : base(context, mapper)
+    public HolidayPlanRepositoryEF(AbsanteeContext context, IMapper<IHolidayPlan, HolidayPlanDataModel> mapper, IMapper<IHolidayPeriod, HolidayPeriodDataModel> holidayPeriodMapper) : base(context, mapper)
     {
         _mapper = mapper;
+        _holidayPeriodMapper = holidayPeriodMapper;
     }
 
     public bool CanInsertHolidayPeriod(long holidayPlanId, IHolidayPeriod periodDate)
@@ -122,10 +124,14 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
 
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(long collaboratorId, PeriodDate period)
     {
-        return await _context.Set<HolidayPlanDataModel>()
+        var holidayPeriods =  await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
-            .SelectMany(hp => hp.GetHolidayPeriods().Where(hp => hp.Intersects(period)))
+            .SelectMany(hp => hp.HolidayPeriodsDM
+                                .Where(hp => hp.PeriodDate._initDate <= period._finalDate
+                                          && period._initDate <= hp.PeriodDate._finalDate))
             .ToListAsync();
+
+        return _holidayPeriodMapper.ToDomain(holidayPeriods);
     }
 
     public async Task<IHolidayPlan?> FindHolidayPlanByCollaboratorAsync(long collaboratorId)

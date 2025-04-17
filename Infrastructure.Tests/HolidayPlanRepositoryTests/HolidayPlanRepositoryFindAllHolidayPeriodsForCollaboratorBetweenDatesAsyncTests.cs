@@ -68,7 +68,9 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         holidayPlanMapperMock.Setup(hpMap => hpMap.ToDomain(holidayPlans));
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
+        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await holidayPlanRepo.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(1, periodDate.Object);
@@ -131,7 +133,10 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         holidayPlanMapperMock.Setup(hpMap => hpMap.ToDomain(holidayPlans));
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
+
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
+        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await holidayPlanRepo.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(1, periodDate.Object);
@@ -169,7 +174,10 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         holidayPlanMapperMock.Setup(hpMap => hpMap.ToDomain(holidayPlans));
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
+
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
+        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await holidayPlanRepo.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(2, It.IsAny<PeriodDate>());

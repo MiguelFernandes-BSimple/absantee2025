@@ -49,7 +49,8 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaborator
         hpDM2.Setup(hp => hp.CollaboratorId).Returns(collab2Id);
 
         // Instantiate repository
-        var hpRepo = new HolidayPlanRepositoryEF((AbsanteeContext)contextDouble.Object, (HolidayPlanMapper)mapper.Object);
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+        var hpRepo = new HolidayPlanRepositoryEF((AbsanteeContext)contextDouble.Object, (HolidayPlanMapper)mapper.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(toSearch, periodDate.Object, days);
@@ -111,8 +112,10 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaborator
         // It has to be bigger than days
         periodDate.Setup(pd => pd.Duration()).Returns(days);
 
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
         // Instantiate repository
-        var hpRepo = new HolidayPlanRepositoryEF((AbsanteeContext)contextDouble.Object, (HolidayPlanMapper)mapper.Object);
+        var hpRepo = new HolidayPlanRepositoryEF((AbsanteeContext)contextDouble.Object, (HolidayPlanMapper)mapper.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await hpRepo.FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(collab2Id, periodDate.Object, searchDays);

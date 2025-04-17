@@ -9,17 +9,17 @@ namespace Infrastructure.DataModel;
 [Table("HolidayPlan")]
 public class HolidayPlanDataModel : IHolidayPlanVisitor
 {
-    private HolidayPeriodMapper _mapper;
+    private IMapper<IHolidayPeriod, HolidayPeriodDataModel> _mapper;
     public long Id { get; set; }
     public long CollaboratorId { get; set; }
-    private List<HolidayPeriodDataModel> HolidayPeriodsDM;
+    public List<HolidayPeriodDataModel> HolidayPeriodsDM { get; set; }
 
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
         return _mapper.ToDomain(HolidayPeriodsDM).ToList();
     }
 
-    public HolidayPlanDataModel(IHolidayPlan holidayPlan, HolidayPeriodMapper mapper)
+    public HolidayPlanDataModel(IHolidayPlan holidayPlan, IMapper<IHolidayPeriod, HolidayPeriodDataModel> mapper)
     {
         _mapper = mapper;
         Id = holidayPlan.GetId();

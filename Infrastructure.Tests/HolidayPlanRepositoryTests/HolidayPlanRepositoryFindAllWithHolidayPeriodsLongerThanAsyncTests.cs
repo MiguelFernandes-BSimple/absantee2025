@@ -51,7 +51,9 @@ public class HolidayPlanRepositoryFindAllWithHolidayPeriodsLongerThanAsyncTests
         var mapperDouble = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
         mapperDouble.Setup(md => md.ToDomain(holidayPlans)).Returns(expected);
 
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object);
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
+        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object, holidayPeriodMapper.Object);
 
         // act
         var result = await holidayPlanRepo.FindAllWithHolidayPeriodsLongerThanAsync(days);

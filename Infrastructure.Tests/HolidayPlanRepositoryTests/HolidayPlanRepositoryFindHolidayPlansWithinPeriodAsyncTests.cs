@@ -57,7 +57,9 @@ public class HolidayPlanRepositoryFindHolidayPlansWithinPeriodTests
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         holidayPlanMapperMock.Setup(hpMap => hpMap.ToDomain(holidayPlans));
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
+        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await holidayPlanRepo.FindHolidayPlansWithinPeriodAsync(searchingPeriodDate.Object);
@@ -110,7 +112,9 @@ public class HolidayPlanRepositoryFindHolidayPlansWithinPeriodTests
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         holidayPlanMapperMock.Setup(hpMap => hpMap.ToDomain(holidayPlans));
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+
+        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
 
         // Act
         var result = await holidayPlanRepo.FindHolidayPlansWithinPeriodAsync(searchingPeriodDate.Object);

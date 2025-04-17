@@ -33,8 +33,9 @@ public class HolidayPlanRepositoryAddHolidayPlanAsyncTests
         Mock<HolidayPlanMapper> doubleHolidayPlanMapper = new Mock<HolidayPlanMapper>();
         doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel((HolidayPlan)doubleHolidayPlan.Object)).Returns((HolidayPlanDataModel)HolidayPlanDM1.Object);
 
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
 
-        HolidayPlanRepositoryEF HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF(context, doubleHolidayPlanMapper.Object);
+        HolidayPlanRepositoryEF HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF(context, doubleHolidayPlanMapper.Object, holidayPeriodMapper.Object);
         // Act
         bool result = await HolidayPlanRepositoryEF.AddHolidayPlanAsync(doubleHolidayPlan.Object);
         // Assert
@@ -74,8 +75,10 @@ public class HolidayPlanRepositoryAddHolidayPlanAsyncTests
         Mock<HolidayPlanMapper> doubleHolidayPlanMapper = new Mock<HolidayPlanMapper>();
         doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel((HolidayPlan)doubleHolidayPlan.Object)).Returns((HolidayPlanDataModel)HolidayPlanDM1.Object);
 
+        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
 
-        HolidayPlanRepositoryEF HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, doubleHolidayPlanMapper.Object);
+
+        HolidayPlanRepositoryEF HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, doubleHolidayPlanMapper.Object, holidayPeriodMapper.Object);
         // Act
         bool result = await HolidayPlanRepositoryEF.AddHolidayPlanAsync(doubleHolidayPlan.Object);
         // Assert
