@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Tests
 {
-    public class FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync
+    public class HolidayPlanRepositoryFindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync
     {
-        
+
     }
 }

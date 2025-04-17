@@ -9,7 +9,7 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindHolidayPeriodsByCollaboratorBetweenDatesAsync
+public class HolidayPlanRepositoryFindHolidayPeriodsByCollaboratorBetweenDatesAsync
 {
     [Fact]
     public async Task WhenPassingCorrectDataAsync_ThenReturnsPeriodsByCollaboratorBetweenDates()

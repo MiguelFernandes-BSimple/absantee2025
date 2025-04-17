@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces;
+using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
@@ -9,21 +9,23 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindHolidayPlansWithinPeriod
+public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync
 {
     [Theory]
-    [InlineData("2020-01-01", "2020-12-31")]   
-    [InlineData("2020-01-02", "2020-12-30")]   
-    public async Task WhenCollaboratorHasHolidayPeriodWithinDateRangeAsync_ThenReturnsHolidayPlan(string init1Str, string final1Str)
+    [InlineData("2020-01-01", "2020-12-31")]
+    [InlineData("2020-01-02", "2020-12-30")]
+    public async Task WhenPassingValidData_ThenReturnsAllHolidayPeriodsForAllCollaboratorsBetweenDates(string init1Str, string final1Str)
     {
         // Arrange
         var searchingPeriodDate = new Mock<IPeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
         var holidayPlans = new List<HolidayPlanDataModel>
             {
                 (HolidayPlanDataModel)holidayPlanDM1.Object,
+                (HolidayPlanDataModel)holidayPlanDM2.Object,
             }.AsQueryable();
 
         var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
@@ -34,6 +36,9 @@ public class FindHolidayPlansWithinPeriod
 
         var absanteeMock = new Mock<IAbsanteeContext>();
         absanteeMock.Setup(a => a.HolidayPlans).Returns(mockSet.Object);
+
+        holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(0);
+        holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         var periodDate = new Mock<IPeriodDate>();
@@ -47,12 +52,18 @@ public class FindHolidayPlansWithinPeriod
         {
             holidayPeriod.Object
         };
+        var holidayPeriods2 = new List<IHolidayPeriod>()
+        {
+            holidayPeriod.Object
+        };
 
         holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods1);
+        holidayPlanDM2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods2);
 
-        var expected = new List<IHolidayPlan>
+        var expected = new List<IHolidayPeriod>()
         {
-            new Mock<IHolidayPlan>().Object
+            holidayPeriod.Object,
+            holidayPeriod.Object
         };
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
@@ -60,7 +71,7 @@ public class FindHolidayPlansWithinPeriod
         var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
 
         // Act
-        var result = await holidayPlanRepo.FindHolidayPlansWithinPeriodAsync(searchingPeriodDate.Object);
+        var result = await holidayPlanRepo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync([0, 1], periodDate.Object);
 
         // Assert
         Assert.True(result.SequenceEqual(expected));
@@ -70,16 +81,18 @@ public class FindHolidayPlansWithinPeriod
     [InlineData("2019-01-01", "2020-12-31")]
     [InlineData("2020-01-01", "2021-12-31")]
     [InlineData("2019-01-02", "2021-12-30")]
-    public async Task WhenNoCollaboratorsHaveHolidayPeriodsInDateRangeAsync_ThenReturnsEmptyList(string init1Str, string final1Str)
+    public async Task WhenPassingDataOutOfRange_ThenReturnsEmptyList(string init1Str, string final1Str)
     {
         // Arrange
         var searchingPeriodDate = new Mock<IPeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
+        var holidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
         var holidayPlans = new List<HolidayPlanDataModel>
             {
                 (HolidayPlanDataModel)holidayPlanDM1.Object,
+                (HolidayPlanDataModel)holidayPlanDM2.Object,
             }.AsQueryable();
 
         var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
@@ -90,6 +103,9 @@ public class FindHolidayPlansWithinPeriod
 
         var absanteeMock = new Mock<IAbsanteeContext>();
         absanteeMock.Setup(a => a.HolidayPlans).Returns(mockSet.Object);
+
+        holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(0);
+        holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         var periodDate = new Mock<IPeriodDate>();
@@ -103,20 +119,23 @@ public class FindHolidayPlansWithinPeriod
         {
             holidayPeriod.Object
         };
+        var holidayPeriods2 = new List<IHolidayPeriod>()
+        {
+            holidayPeriod.Object
+        };
 
         holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods1);
+        holidayPlanDM2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods2);
 
-        var expected = new List<IHolidayPlan>();
+        var expected = new List<IHolidayPeriod>();
 
         var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
         holidayPlanMapperMock.Setup(hpMap => hpMap.ToDomain(holidayPlans));
         var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
 
         // Act
-        var result = await holidayPlanRepo.FindHolidayPlansWithinPeriodAsync(searchingPeriodDate.Object);
-
+        var result = await holidayPlanRepo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync([1], periodDate.Object);
         // Assert
         Assert.True(result.SequenceEqual(expected));
     }
 }
-

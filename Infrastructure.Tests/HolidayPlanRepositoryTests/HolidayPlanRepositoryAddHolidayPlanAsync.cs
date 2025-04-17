@@ -10,7 +10,7 @@ using Domain.Models;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class AddHolidayPlanAsync
+public class HolidayPlanRepositoryAddHolidayPlanAsync
 {
     [Fact]
     public async Task WhenAddingCorrectHolidayPlanToRepositoryAsync_ThenReturnTrue()

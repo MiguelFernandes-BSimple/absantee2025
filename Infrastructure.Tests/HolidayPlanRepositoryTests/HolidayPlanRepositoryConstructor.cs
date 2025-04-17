@@ -7,7 +7,7 @@ using Infrastructure.Mapper;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class Constructor
+public class HolidayPlanRepositoryConstructor
 {
     [Fact]
     public void WhenNotPassingAnyArguments_ThenObjectIsCreated()

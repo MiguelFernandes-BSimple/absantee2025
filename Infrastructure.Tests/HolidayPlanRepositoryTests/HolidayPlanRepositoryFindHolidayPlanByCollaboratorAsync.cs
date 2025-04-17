@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindHolidayPlanByCollaboratorAsync
+public class HolidayPlanRepositoryFindHolidayPlanByCollaboratorAsync
 {
     [Fact]
     public async Task WhenPassingValidCollabId_ThenReturnsCorrectHolidayPlan()

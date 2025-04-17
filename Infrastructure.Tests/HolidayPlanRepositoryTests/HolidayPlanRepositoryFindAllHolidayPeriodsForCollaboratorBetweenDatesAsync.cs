@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync
+public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDatesAsync
 {
     [Theory]
     [InlineData("2020-01-01", "2020-12-31")]
