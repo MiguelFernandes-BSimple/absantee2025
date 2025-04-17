@@ -22,7 +22,7 @@ public class PeriodDateGetNumberOfCommonUtilDaysBetweenPeriodsTests
     public void WhenPassingIntersectingPeriod_ThenNumberOfWeekdaysIsReturned(DateOnly dateInit, DateOnly finalDate, int expectedWeekdays)
     {
         // Arrange
-        IPeriodDate periodDate = new PeriodDate(dateInit, finalDate);
+        PeriodDate periodDate = new PeriodDate(dateInit, finalDate);
 
         // Act
         int result = periodDate.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate);

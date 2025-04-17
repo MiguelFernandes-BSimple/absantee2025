@@ -18,7 +18,7 @@ namespace Infrastructure.Tests.UserRepositoryTests
         {
 
             //Arrange
-            var periodDateTimeDouble1 = new Mock<IPeriodDateTime>();
+            var periodDateTimeDouble1 = new Mock<PeriodDateTime>();
             periodDateTimeDouble1.Setup(p => p.GetInitDate()).Returns(DateTime.Now);
             periodDateTimeDouble1.Setup(p => p.GetFinalDate()).Returns(DateTime.MaxValue);
 

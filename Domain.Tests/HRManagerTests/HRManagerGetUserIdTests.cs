@@ -16,7 +16,7 @@ namespace Domain.Tests.HRManagerTests
         {
             //arrange
             var userId = 1;
-            var hrManager = new HRManager(It.IsAny<long>(), userId, It.IsAny<IPeriodDateTime>());
+            var hrManager = new HRManager(It.IsAny<long>(), userId, It.IsAny<PeriodDateTime>());
             //act
             var hrUserId = hrManager.GetUserId();
 

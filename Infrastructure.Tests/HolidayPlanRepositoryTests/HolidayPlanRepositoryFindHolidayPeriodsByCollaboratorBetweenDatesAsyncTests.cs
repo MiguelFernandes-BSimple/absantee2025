@@ -35,7 +35,7 @@ public class HolidayPlanRepositoryFindHolidayPeriodsByCollaboratorBetweenDatesAs
         holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(1);
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(2);
 
-        var searchPeriod = new Mock<IPeriodDate>();
+        var searchPeriod = new Mock<PeriodDate>();
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
         holidayPeriodMock.Setup(hpd => hpd.Intersects(searchPeriod.Object)).Returns(true);
@@ -78,7 +78,7 @@ public class HolidayPlanRepositoryFindHolidayPeriodsByCollaboratorBetweenDatesAs
         holidayPlanDM1.Setup(hp => hp.CollaboratorId).Returns(1);
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(2);
 
-        var searchPeriod = new Mock<IPeriodDate>();
+        var searchPeriod = new Mock<PeriodDate>();
 
         var holidayPeriodMock = new Mock<IHolidayPeriod>();
         holidayPeriodMock.Setup(hpd => hpd.Intersects(searchPeriod.Object)).Returns(true);

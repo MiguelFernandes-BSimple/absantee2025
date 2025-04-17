@@ -34,7 +34,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaborator
         mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(holidayPlans.GetEnumerator());
 
         // Period to search
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         long collab1Id = 1;
         long collab2Id = 2;
@@ -92,7 +92,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaborator
         hpDM2.Setup(hp => hp.CollaboratorId).Returns(collab2Id);
 
         Mock<IHolidayPeriod> hp1Period = new Mock<IHolidayPeriod>();
-        Mock<IPeriodDate> hpPeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> hpPeriodDate = new Mock<PeriodDate>();
 
         hp1Period.Setup(hp => hp.GetPeriodDate()).Returns(hpPeriodDate.Object);
 
@@ -103,7 +103,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaborator
         hpDM2.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriods);
 
         // Period to search
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Restrictions
         periodDate.Setup(pd => pd.Contains(hpPeriodDate.Object)).Returns(true);

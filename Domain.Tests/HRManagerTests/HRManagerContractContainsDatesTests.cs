@@ -15,12 +15,12 @@ namespace Domain.Tests.HRManagerTests
         public void WhenPeriodDateTimeInsideContract_ThenReturnsTrue()
         {
             //arrange
-            Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-            periodDateTime.Setup(p => p.Contains(It.IsAny<IPeriodDateTime>())).Returns(true);
+            Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
+            periodDateTime.Setup(p => p.Contains(It.IsAny<PeriodDateTime>())).Returns(true);
 
             var hrManager = new HRManager(It.IsAny<long>(), periodDateTime.Object); 
             //act
-            var result = hrManager.ContractContainsDates(It.IsAny<IPeriodDateTime>());
+            var result = hrManager.ContractContainsDates(It.IsAny<PeriodDateTime>());
 
             //assert
             Assert.True(result);
@@ -30,12 +30,12 @@ namespace Domain.Tests.HRManagerTests
         public void WhenPeriodDateTimeNotInsideContract_ThenReturnsFalse()
         {
             //arrange
-            Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
-            periodDateTime.Setup(p => p.Contains(It.IsAny<IPeriodDateTime>())).Returns(false);
+            Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
+            periodDateTime.Setup(p => p.Contains(It.IsAny<PeriodDateTime>())).Returns(false);
 
             var hrManager = new HRManager(It.IsAny<long>(), periodDateTime.Object);
             //act
-            var result = hrManager.ContractContainsDates(It.IsAny<IPeriodDateTime>());
+            var result = hrManager.ContractContainsDates(It.IsAny<PeriodDateTime>());
 
             //assert
             Assert.False(result);

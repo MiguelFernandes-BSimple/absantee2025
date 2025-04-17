@@ -10,7 +10,7 @@ public class HolidayPeriodContainsWeekendTests
     public void WhenPassingPeriodThatContainsWeekend_ThenReturnTrue()
     {
         //arrange
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
         periodDate.Setup(pd => pd.ContainsWeekend()).Returns(true);
 
         HolidayPeriod holidayPlan = new HolidayPeriod(periodDate.Object);
@@ -26,7 +26,7 @@ public class HolidayPeriodContainsWeekendTests
     public void WhenPassingPeriodThatDontContainWeekend_ThenReturnFalse()
     {
         //arrange
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
         periodDate.Setup(pd => pd.ContainsWeekend()).Returns(false);
 
         HolidayPeriod holidayPlan = new HolidayPeriod(periodDate.Object);

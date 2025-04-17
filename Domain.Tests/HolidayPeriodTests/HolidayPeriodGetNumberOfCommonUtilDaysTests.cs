@@ -11,7 +11,7 @@ public class HolidayPeriodGetNumberOfCommonUtilDaysTests
     public void WhenPassingPeriod_ThenNumberOfWeekdaysIsReturned()
     {
         // Arrange
-        var mockPeriod = new Mock<IPeriodDate>();
+        var mockPeriod = new Mock<PeriodDate>();
 
         mockPeriod.Setup(p => p.GetNumberOfCommonUtilDays()).Returns(5);
 

@@ -11,7 +11,7 @@ public class TrainingPeriodFactoryTests
     public void WhenPassingValidDates_ThenCreateTrainingPeriod()
     {
         //Arrange
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Period init date has to be bigger than DateOnly(DateTime.Now)
         // It's in the future
@@ -30,7 +30,7 @@ public class TrainingPeriodFactoryTests
     public void WhenPassingDatesInThePast_ThenThrowsArgumentException()
     {
         // Arrange
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // when init date is smaller than DateOnly(DateTime.Now)
         periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(true);

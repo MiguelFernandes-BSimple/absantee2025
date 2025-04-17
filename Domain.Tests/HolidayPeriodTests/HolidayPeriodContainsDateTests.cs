@@ -13,7 +13,7 @@ public class HolidayPeriodContainsDateTests
     public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // Random date that should be contained in the Period
         // for the context of the test -> value not important
@@ -41,7 +41,7 @@ public class HolidayPeriodContainsDateTests
     public void WhenPeriodIsNotContained_ThenReturnsFalse()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // Random date that should not be contained in the Period
         // for the context of the test -> value not important

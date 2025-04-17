@@ -13,7 +13,7 @@ public class HolidayPeriodSetIdTests
         // Arrange
         var initialId = 1L;
         var newId = 2L;
-        var mockPeriodDate = new Mock<IPeriodDate>();
+        var mockPeriodDate = new Mock<PeriodDate>();
         var holidayPlan = new HolidayPeriod(initialId, mockPeriodDate.Object);
 
         // Act

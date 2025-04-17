@@ -10,7 +10,7 @@ namespace Domain.Tests.UserTests
         public void WhenGettingPeriodDateTime_ThenReturnsPeriodDateTime()
         {
             //arrange
-            var periodDateTime = new Mock<IPeriodDateTime>();
+            var periodDateTime = new Mock<PeriodDateTime>();
             var user = new User(It.IsAny<long>(), "John", "Doe", "john@email.com", periodDateTime.Object);
             //act
             var userPeriodDateTime = user.GetPeriodDateTime();

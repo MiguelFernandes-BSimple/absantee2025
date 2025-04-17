@@ -25,15 +25,15 @@ public class HolidayPlanServiceFindAllOverlappingHolidayPeriodsBetweenTwoCollabo
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(1, It.IsAny<IPeriodDate>())).ReturnsAsync(holidayPeriodsList1);
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(2, It.IsAny<IPeriodDate>())).ReturnsAsync(holidayPeriodsList2);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(1, It.IsAny<PeriodDate>())).ReturnsAsync(holidayPeriodsList1);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(2, It.IsAny<PeriodDate>())).ReturnsAsync(holidayPeriodsList2);
 
         var expected = new List<IHolidayPeriod>() { holidayPeriod1.Object, holidayPeriod2.Object };
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         //act
-        var result = await service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(1, 2, It.IsAny<IPeriodDate>());
+        var result = await service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(1, 2, It.IsAny<PeriodDate>());
 
         //assert
         Assert.True(expected.SequenceEqual(result));
@@ -56,13 +56,13 @@ public class HolidayPlanServiceFindAllOverlappingHolidayPeriodsBetweenTwoCollabo
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), It.IsAny<IPeriodDate>())).ReturnsAsync(holidayPeriodsList1);
-        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), It.IsAny<IPeriodDate>())).ReturnsAsync(holidayPeriodsList2);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), It.IsAny<PeriodDate>())).ReturnsAsync(holidayPeriodsList1);
+        holidayPlanRepository.Setup(r => r.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(It.IsAny<long>(), It.IsAny<PeriodDate>())).ReturnsAsync(holidayPeriodsList2);
 
         HolidayPlanService service = new HolidayPlanService(associationRepository.Object, holidayPlanRepository.Object);
 
         //act
-        var result = await service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<IPeriodDate>());
+        var result = await service.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDate>());
 
         //assert
         Assert.Empty(result);

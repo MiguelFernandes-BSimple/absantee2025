@@ -18,7 +18,7 @@ public class ProjectManagerSetIDTests
         var initialId = 1;
         var newId = 2;
         var userId = 4;
-        var projectManager = new ProjectManager(initialId, userId, It.IsAny<IPeriodDateTime>());
+        var projectManager = new ProjectManager(initialId, userId, It.IsAny<PeriodDateTime>());
 
         // act
         projectManager.SetId(newId);

@@ -8,13 +8,13 @@ public class HolidayPeriodConstructorTests
 {
     /**
     * Test method for HolidayPeriod constructor.
-    * It can only be instantiated with a IPeriodDate (which is valid)
+    * It can only be instantiated with a PeriodDate (which is valid)
     */
     [Fact]
     public void WhenConstructorIsCalled_ThenObjectIsInstantiated()
     {
         // Arrange 
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // Act
         var result = new HolidayPeriod(doublePeriodDate.Object);

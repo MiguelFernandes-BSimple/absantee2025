@@ -12,7 +12,7 @@ public class AssociationProjectCollaboratorGetProjectIdTests
     {
         // Arrange
         // Association parameters
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
         long collabId = 1;
         long projectId = 1;
 

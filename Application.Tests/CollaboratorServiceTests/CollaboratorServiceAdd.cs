@@ -35,7 +35,7 @@ namespace Application.Tests.CollaboratorServiceTests
             CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
 
             //act
-            var result = await collaboratorService.Add(It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+            var result = await collaboratorService.Add(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
 
             //assert
             Assert.True(result);
@@ -50,7 +50,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             var holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
 
-            var periodDateTime = new Mock<IPeriodDateTime>();
+            var periodDateTime = new Mock<PeriodDateTime>();
             periodDateTime.Setup(pdt => pdt.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
             var userDouble = new Mock<IUser>();

@@ -16,7 +16,7 @@ namespace Domain.Tests.TrainingPeriodTests
         public void WhenPassingValidDates_ThenTrainingPeriodIsCreated()
         {
             //Arrange
-            Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+            Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
             periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(false);
 
@@ -30,7 +30,7 @@ namespace Domain.Tests.TrainingPeriodTests
         public void WhenPassingDatesInThePast_ThenThrowsArgumentException()
         {
             // Arrange
-            Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+            Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
             periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(true);
 
@@ -52,7 +52,7 @@ namespace Domain.Tests.TrainingPeriodTests
             //Arrange
 
             //Act
-            new TrainingPeriod(It.IsAny<long>(), It.IsAny<IPeriodDate>());
+            new TrainingPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             //Assert
         }

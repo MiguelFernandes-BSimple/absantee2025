@@ -15,7 +15,7 @@ namespace Domain.Tests.PeriodDateTimeTests
 
         [Theory]
         [MemberData(nameof(IntersectionDates))]
-        public void WhenPassingIntersectionPeriods_ThenReturnTrue(IPeriodDateTime intersectPeriod)
+        public void WhenPassingIntersectionPeriods_ThenReturnTrue(PeriodDateTime intersectPeriod)
         {
             //arrange
             DateTime initDate = new DateTime(2020, 1, 1);
@@ -39,13 +39,13 @@ namespace Domain.Tests.PeriodDateTimeTests
 
         [Theory]
         [MemberData(nameof(NonIntersectionDates))]
-        public void WhenPassingNonIntersectionPeriods_ThenReturnFalse(IPeriodDateTime intersectPeriod)
+        public void WhenPassingNonIntersectionPeriods_ThenReturnFalse(PeriodDateTime intersectPeriod)
         {
             //arrange
             DateTime initDate = new DateTime(2020, 1, 1);
             DateTime finalDate = new DateTime(2021, 1, 1);
 
-            IPeriodDateTime periodDate = new PeriodDateTime(initDate, finalDate);
+            PeriodDateTime periodDate = new PeriodDateTime(initDate, finalDate);
 
             //act
             var result = periodDate.Intersects(intersectPeriod);

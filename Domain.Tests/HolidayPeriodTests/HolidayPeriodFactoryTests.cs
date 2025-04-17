@@ -12,7 +12,7 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithValidData_ThenObjectIsInstantiated()
     {
         // Arrange 
-        var periodDateMock = new Mock<IPeriodDate>();
+        var periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
         periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
@@ -23,7 +23,7 @@ public class HolidayPeriodFactoryTests
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
-        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
         collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
@@ -42,7 +42,7 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithExistingHolidayPeriod_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<IPeriodDate>();
+        var periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
         periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
@@ -53,7 +53,7 @@ public class HolidayPeriodFactoryTests
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
-        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
         collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
@@ -75,7 +75,7 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithoutHolidayPlan_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<IPeriodDate>();
+        var periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
         periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
@@ -86,7 +86,7 @@ public class HolidayPeriodFactoryTests
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns((HolidayPlan?)null);
 
         var collaboratorMock = new Mock<ICollaborator>();
-        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
         collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
@@ -108,7 +108,7 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithoutCollaborator_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<IPeriodDate>();
+        var periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
         periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
 
@@ -119,7 +119,7 @@ public class HolidayPeriodFactoryTests
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
-        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
         collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns((Collaborator?)null);
@@ -141,7 +141,7 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithOutOfBoundsCollaboratorContract_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<IPeriodDate>();
+        var periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
         periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
         var holidayPlanMock = new Mock<IHolidayPlan>();
@@ -151,7 +151,7 @@ public class HolidayPeriodFactoryTests
         holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
 
         var collaboratorMock = new Mock<ICollaborator>();
-        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
+        collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(false);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
         collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);

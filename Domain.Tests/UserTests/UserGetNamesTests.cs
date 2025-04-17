@@ -9,7 +9,7 @@ public class UserGetNamesTests
     {
         //arrange
         var name = "John";
-        var user = new User(1, name, "Doe", "john@email.com", It.IsAny<IPeriodDateTime>());
+        var user = new User(1, name, "Doe", "john@email.com", It.IsAny<PeriodDateTime>());
 
         //act
         var userName = user.GetNames();

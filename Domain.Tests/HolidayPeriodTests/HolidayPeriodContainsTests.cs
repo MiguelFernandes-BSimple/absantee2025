@@ -14,10 +14,10 @@ public class HolidayPeriodContainsTests
     public void WhenHolidayPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
 
-        // Establish that the other IPeriodDate must be contained in it
+        // Establish that the other PeriodDate must be contained in it
         // Reference period CONTAINS period to Verify
         doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(true);
 
@@ -40,10 +40,10 @@ public class HolidayPeriodContainsTests
     public void WhenHolidayPeriodIsNotFullyContained_ThenReturnsFalse()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
 
-        // Establish that the other IPeriodDate ISN'T contained in it
+        // Establish that the other PeriodDate ISN'T contained in it
         // Reference period DOESN'T contain period to Verify
         doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(false);
 
@@ -66,10 +66,10 @@ public class HolidayPeriodContainsTests
     public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
 
-        // Establish that the other IPeriodDate must be contained in it
+        // Establish that the other PeriodDate must be contained in it
         // Reference period CONTAINS period to Verify
         doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(true);
 
@@ -91,10 +91,10 @@ public class HolidayPeriodContainsTests
     public void WhenPeriodIsNotFullyContained_ThenReturnsFalse()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDateReference = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodDateToVerify = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
 
-        // Establish that the other IPeriodDate ISN'T contained in it
+        // Establish that the other PeriodDate ISN'T contained in it
         // Reference period DOESN'T contain period to Verify
         doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(false);
 

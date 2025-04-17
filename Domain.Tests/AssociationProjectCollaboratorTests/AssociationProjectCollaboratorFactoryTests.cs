@@ -21,7 +21,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -34,7 +34,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Class validations
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
@@ -63,7 +63,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -77,7 +77,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Project doesnt contain the dates
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
         project.Setup(p => p.IsFinished()).Returns(false);
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
@@ -106,7 +106,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -120,7 +120,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Project doesnt contain the dates
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
         project.Setup(p => p.IsFinished()).Returns(false);
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
@@ -149,7 +149,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -163,7 +163,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Project doesnt contain the dates
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
         project.Setup(p => p.IsFinished()).Returns(false);
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
@@ -193,7 +193,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -207,7 +207,7 @@ public class AssociationProjectCollaboratorFactoryTests
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         // Contract is finished
         project.Setup(p => p.IsFinished()).Returns(true);
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(false);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
@@ -237,7 +237,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -251,7 +251,7 @@ public class AssociationProjectCollaboratorFactoryTests
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         // Contract doesn't contain the dates
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(false);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(false);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
@@ -281,7 +281,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
 
         // Collab and Project ids
         long collabId = 1;
@@ -294,7 +294,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // All validations
         project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
-        collab.Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>())).Returns(true);
+        collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
         assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(false);

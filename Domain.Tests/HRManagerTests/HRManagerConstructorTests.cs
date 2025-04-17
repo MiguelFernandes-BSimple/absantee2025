@@ -13,7 +13,7 @@ public class HRManagerConstructorTests
         //arrange
 
         //act
-        new HRManager(It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+        new HRManager(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
         //assert
     }
 
@@ -23,7 +23,7 @@ public class HRManagerConstructorTests
         //arrange
 
         //act
-        new HRManager(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+        new HRManager(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
         //assert
     }
 }

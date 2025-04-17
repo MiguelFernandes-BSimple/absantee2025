@@ -9,7 +9,7 @@ public class UserGetEmailTests
     {
         //arrange
         var email = "john@email.com";
-        var user = new User(1, "John", "Doe", email, It.IsAny<IPeriodDateTime>());
+        var user = new User(1, "John", "Doe", email, It.IsAny<PeriodDateTime>());
 
         //act
         var userEmail = user.GetEmail();

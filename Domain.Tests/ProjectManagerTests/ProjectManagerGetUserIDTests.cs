@@ -11,7 +11,7 @@ public class ProjectManagerGetUserIDTests
     {
         //arrange
         var userId = 1;
-        var ProjectManager = new ProjectManager(It.IsAny<long>(), userId, It.IsAny<IPeriodDateTime>());
+        var ProjectManager = new ProjectManager(It.IsAny<long>(), userId, It.IsAny<PeriodDateTime>());
         //act
         var ProjectManagerUserId = ProjectManager.GetUserId();
 

@@ -14,7 +14,7 @@ public class HolidayPlanConstructorTests
         // Arrange
         // Test double for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble = new Mock<IHolidayPeriod>();
-        Mock<IPeriodDate> periodDateDouble = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateDouble = new Mock<PeriodDate>();
 
         holidayPeriodDouble.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
 
@@ -44,9 +44,9 @@ public class HolidayPlanConstructorTests
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
 
-        Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> periodDateDouble2 = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> periodDateDouble3 = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateDouble1 = new Mock<PeriodDate>();
+        Mock<PeriodDate> periodDateDouble2 = new Mock<PeriodDate>();
+        Mock<PeriodDate> periodDateDouble3 = new Mock<PeriodDate>();
 
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
@@ -62,7 +62,7 @@ public class HolidayPlanConstructorTests
         // Holiday period dates must be in the collaborator contract time frame
 
         //collaboratorDouble
-        //  .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
+        //  .Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
         //.Returns(true);
 
         // Can't overlap with any other holiday periods
@@ -99,7 +99,7 @@ public class HolidayPlanConstructorTests
         // Arrange
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
-        Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateDouble1 = new Mock<PeriodDate>();
 
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
@@ -111,7 +111,7 @@ public class HolidayPlanConstructorTests
         // Holiday period dates must be in the collaborator contract time frame
 
         //collaboratorDouble
-        //  .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
+        //  .Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
         // .Returns(true);
 
         // There is overlap with other holiday periods
@@ -142,8 +142,8 @@ public class HolidayPlanConstructorTests
         // Arrange
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
-        Mock<IPeriodDate> periodDateDouble1 = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> periodDateDouble2 = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateDouble1 = new Mock<PeriodDate>();
+        Mock<PeriodDate> periodDateDouble2 = new Mock<PeriodDate>();
 
         holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
 
@@ -157,7 +157,7 @@ public class HolidayPlanConstructorTests
 
     // In order for the exception to be thrown
     /* collaboratorDouble
-        .Setup(c => c.ContractContainsDates(It.IsAny<IPeriodDateTime>()))
+        .Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
         .Returns(false); */
 
     // There no overlap with other holiday periods

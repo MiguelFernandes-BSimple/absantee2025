@@ -13,7 +13,7 @@ public class HolidayPeriodGetDurationTests
     public void WhenQueried_ThenReturnLength()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // Random int value
         // for test context value is not important

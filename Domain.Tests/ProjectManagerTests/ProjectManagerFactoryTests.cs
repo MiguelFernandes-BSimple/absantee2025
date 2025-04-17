@@ -21,7 +21,7 @@ namespace Domain.Tests.ProjectManagerTests
             userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
             userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-            var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+            var periodDateTimeDouble = new Mock<PeriodDateTime>();
             periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
             var userRepoDouble = new Mock<IUserRepository>();
@@ -49,7 +49,7 @@ namespace Domain.Tests.ProjectManagerTests
             ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
-                pmFactory.Create(It.IsAny<long>(), It.IsAny<IPeriodDateTime>())
+                pmFactory.Create(It.IsAny<long>(), It.IsAny<PeriodDateTime>())
             );
             Assert.Equal("User does not exist", exception.Message);
         }
@@ -62,7 +62,7 @@ namespace Domain.Tests.ProjectManagerTests
             userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
             userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-            var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+            var periodDateTimeDouble = new Mock<PeriodDateTime>();
             periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
             var userRepoDouble = new Mock<IUserRepository>();
@@ -87,7 +87,7 @@ namespace Domain.Tests.ProjectManagerTests
             userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
             userDouble.Setup(ud => ud.IsDeactivated()).Returns(true);
 
-            var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+            var periodDateTimeDouble = new Mock<PeriodDateTime>();
             periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
             var userRepoDouble = new Mock<IUserRepository>();

@@ -45,11 +45,11 @@ public class AssociationProjectCollaboratorCanInsertTests
         long project2Id = 2;
 
         // Periods for each association
-        Mock<IPeriodDate> periodDate1 = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> periodDate2 = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate1 = new Mock<PeriodDate>();
+        Mock<PeriodDate> periodDate2 = new Mock<PeriodDate>();
 
         // New association period - to search
-        Mock<IPeriodDate> periodToSearch = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodToSearch = new Mock<PeriodDate>();
 
         // Declare and set up context with associations
         var mockContext = new Mock<IAbsanteeContext>();
@@ -127,8 +127,8 @@ public class AssociationProjectCollaboratorCanInsertTests
         long project2Id = 2;
 
         // Periods for each association
-        Mock<IPeriodDate> periodDate1 = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> periodDate2 = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate1 = new Mock<PeriodDate>();
+        Mock<PeriodDate> periodDate2 = new Mock<PeriodDate>();
 
         // Declare and set up context with associations
         var mockContext = new Mock<IAbsanteeContext>();

@@ -27,7 +27,7 @@ namespace Domain.Tests.PeriodDateTests
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.ContainsDate(containedDate);
@@ -51,7 +51,7 @@ namespace Domain.Tests.PeriodDateTests
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.ContainsDate(nonContainedDate);

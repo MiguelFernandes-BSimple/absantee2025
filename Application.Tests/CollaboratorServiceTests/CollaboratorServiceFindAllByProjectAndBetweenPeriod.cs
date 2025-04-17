@@ -15,7 +15,7 @@ namespace Application.Tests.CollaboratorServiceTests
         {
             // Arrange
             Mock<IProject> projectMock = new Mock<IProject>();
-            var periodDouble = new Mock<IPeriodDate>();
+            var periodDouble = new Mock<PeriodDate>();
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
@@ -66,7 +66,7 @@ namespace Application.Tests.CollaboratorServiceTests
         public async Task WhenProjectHasNoCollaboratorsInPeriod_ThenReturnEmptyList()
         {
             // Arrange
-            var periodDouble = new Mock<IPeriodDate>();
+            var periodDouble = new Mock<PeriodDate>();
 
             Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
             Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();

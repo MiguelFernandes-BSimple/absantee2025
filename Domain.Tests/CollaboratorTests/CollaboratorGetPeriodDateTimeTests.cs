@@ -15,7 +15,7 @@ namespace Domain.Tests.CollaboratorTests
         public void WhenGettingId_ThenReturnsId()
         {
             // Arrange
-            var periodDateTime = new Mock<IPeriodDateTime>();
+            var periodDateTime = new Mock<PeriodDateTime>();
             var collaborator = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), periodDateTime.Object);
 
             // Act

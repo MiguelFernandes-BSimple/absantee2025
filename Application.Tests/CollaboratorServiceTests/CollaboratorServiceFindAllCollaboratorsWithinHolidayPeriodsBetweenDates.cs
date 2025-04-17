@@ -18,7 +18,7 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
         collaboratorDouble.Setup(c => c.GetId()).Returns(1);
         var collabsIds = new List<long>() { 1 };
 
-        var periodDateDouble = new Mock<IPeriodDate>();
+        var periodDateDouble = new Mock<PeriodDate>();
 
         var holidayPlanDouble = new Mock<IHolidayPlan>();
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
@@ -59,7 +59,7 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
         var collaboratorDouble2 = new Mock<ICollaborator>();
         collaboratorDouble2.Setup(c => c.GetId()).Returns(1);
 
-        var periodDateDouble = new Mock<IPeriodDate>();
+        var periodDateDouble = new Mock<PeriodDate>();
 
         var holidayPlanDouble1 = new Mock<IHolidayPlan>();
         holidayPlanDouble1.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
@@ -95,7 +95,7 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
         var collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble.Setup(c => c.GetId()).Returns(1);
 
-        var periodDateDouble = new Mock<IPeriodDate>();
+        var periodDateDouble = new Mock<PeriodDate>();
 
         var holidayPlanDouble = new Mock<IHolidayPlan>();
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);

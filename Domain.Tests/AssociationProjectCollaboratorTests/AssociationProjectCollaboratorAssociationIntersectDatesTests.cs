@@ -12,12 +12,12 @@ public class AssociationProjectCollaboratorAssociationIntersectDatesTests
     {
         // Arrange
         // Association parameters
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
         long collabId = 1;
         long projectId = 1;
 
         // PeriodDAte to intersect
-        Mock<IPeriodDate> periodDateToIntersect = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateToIntersect = new Mock<PeriodDate>();
 
         AssociationProjectCollaborator assoc =
             new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);
@@ -36,12 +36,12 @@ public class AssociationProjectCollaboratorAssociationIntersectDatesTests
     {
         // Arrange
         // Association parameters
-        Mock<IPeriodDate> periodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
         long collabId = 1;
         long projectId = 1;
 
         // PeriodDAte to intersect
-        Mock<IPeriodDate> periodDateToIntersect = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateToIntersect = new Mock<PeriodDate>();
 
         AssociationProjectCollaborator assoc =
             new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);

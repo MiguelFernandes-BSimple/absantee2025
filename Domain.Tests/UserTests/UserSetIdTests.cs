@@ -11,7 +11,7 @@ namespace Domain.Tests.UserTests
         {
             // arrange
             var id = 5;
-            var user = new User(1, "John", "Doe", "john@email.com ", It.IsAny<IPeriodDateTime>());
+            var user = new User(1, "John", "Doe", "john@email.com ", It.IsAny<PeriodDateTime>());
 
             // act
             user.SetId(id);

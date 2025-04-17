@@ -12,7 +12,7 @@ public class ProjectManagerConstructorTests
         //arrange
 
         //act
-        new ProjectManager(It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+        new ProjectManager(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
         //assert
     }
 
@@ -22,7 +22,7 @@ public class ProjectManagerConstructorTests
         //arrange
 
         //act
-        var ProjectManager = new ProjectManager(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+        var ProjectManager = new ProjectManager(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
         //assert
         Assert.NotNull(ProjectManager);
     }

@@ -10,8 +10,8 @@ public class HolidayPeriodIntersectsTests
     public void WhenPassingValidPeriodDate_ThenReturnsTrue()
     {
         //arrange
-        var periodDouble = new Mock<IPeriodDate>();
-        periodDouble.Setup(pd => pd.Intersects(It.IsAny<IPeriodDate>())).Returns(true);
+        var periodDouble = new Mock<PeriodDate>();
+        periodDouble.Setup(pd => pd.Intersects(It.IsAny<PeriodDate>())).Returns(true);
 
         var holidayPeriod = new HolidayPeriod(periodDouble.Object);
 
@@ -26,8 +26,8 @@ public class HolidayPeriodIntersectsTests
     public void WhenPassingValidIncorrectPeriodDate_ThenReturnsFalse()
     {
         //arrange
-        var periodDouble = new Mock<IPeriodDate>();
-        periodDouble.Setup(pd => pd.Intersects(It.IsAny<IPeriodDate>())).Returns(false);
+        var periodDouble = new Mock<PeriodDate>();
+        periodDouble.Setup(pd => pd.Intersects(It.IsAny<PeriodDate>())).Returns(false);
 
         var holidayPeriod = new HolidayPeriod(periodDouble.Object);
 
@@ -42,10 +42,10 @@ public class HolidayPeriodIntersectsTests
     public void WhenPassingValidHolidayPeriod_ThenReturnsTrue()
     {
         //arrange
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         var holidayPeriod = new HolidayPeriod(periodDate.Object);
 
-        var periodDate2 = new Mock<IPeriodDate>();
+        var periodDate2 = new Mock<PeriodDate>();
         var holidayPeriod2 = new HolidayPeriod(periodDate2.Object);
 
         periodDate.Setup(pd => pd.Intersects(periodDate2.Object)).Returns(true);
@@ -61,10 +61,10 @@ public class HolidayPeriodIntersectsTests
     public void WhenPassingValidIncorrectHolidayPeriod_ThenReturnsFalse()
     {
         //arrange
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         var holidayPeriod = new HolidayPeriod(periodDate.Object);
 
-        var periodDate2 = new Mock<IPeriodDate>();
+        var periodDate2 = new Mock<PeriodDate>();
         var holidayPeriod2 = new HolidayPeriod(periodDate2.Object);
 
         periodDate.Setup(pd => pd.Intersects(periodDate2.Object)).Returns(false);

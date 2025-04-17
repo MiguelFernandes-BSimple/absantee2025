@@ -16,7 +16,7 @@ public class HolidayPeriodGetIdTests
 
         // Arrange
 
-        var mockPeriodDate = new Mock<IPeriodDate>();
+        var mockPeriodDate = new Mock<PeriodDate>();
 
 
         var holidayPlan = new HolidayPeriod(expected, mockPeriodDate.Object);

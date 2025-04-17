@@ -13,7 +13,7 @@ namespace Domain.Tests.ProjectTests
         [Fact]
         public void WhenPassingValidData_ThenCreatesProject()
         {
-            new Project(1, "Title", "TTL", It.IsAny<IPeriodDate>());
+            new Project(1, "Title", "TTL", It.IsAny<PeriodDate>());
         }
 
         [Theory]
@@ -23,7 +23,7 @@ namespace Domain.Tests.ProjectTests
         {
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 //act
-                new Project(1, title, "PJT", It.IsAny<IPeriodDate>())
+                new Project(1, title, "PJT", It.IsAny<PeriodDate>())
             );
 
             Assert.Equal("Invalid Arguments", exception.Message);
@@ -38,7 +38,7 @@ namespace Domain.Tests.ProjectTests
         {
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 //act
-                new Project(1, "Title", acronym, It.IsAny<IPeriodDate>())
+                new Project(1, "Title", acronym, It.IsAny<PeriodDate>())
             );
 
             Assert.Equal("Invalid Arguments", exception.Message);

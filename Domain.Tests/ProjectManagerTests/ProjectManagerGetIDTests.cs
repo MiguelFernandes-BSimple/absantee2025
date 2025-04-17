@@ -12,7 +12,7 @@ public class ProjectManagerGetIDTests
         //arrange
         var id = 1;
 
-        var ProjectManager = new ProjectManager(id, It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+        var ProjectManager = new ProjectManager(id, It.IsAny<long>(), It.IsAny<PeriodDateTime>());
         //act
         var ProjectManagerID = ProjectManager.GetId();
 

@@ -16,7 +16,7 @@ public class AssociationProjectCollaboratorServiceAdd
         var mockFactory = new Mock<IAssociationProjectCollaboratorFactory>();
         var mockRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         long collabId = 1;
         long projectId = 2;
 

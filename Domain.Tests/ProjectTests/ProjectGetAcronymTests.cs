@@ -15,7 +15,7 @@ namespace Domain.Tests.ProjectTests
         {
             // arrange
             var acronym = "TTL";
-            var project = new Project(1, "title", acronym, It.IsAny<IPeriodDate>());
+            var project = new Project(1, "title", acronym, It.IsAny<PeriodDate>());
 
             // act
             var result = project.GetAcronym();

@@ -17,7 +17,7 @@ namespace Domain.Tests.PeriodDateTests
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2020, 1, 10);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.Duration();

@@ -9,10 +9,10 @@ public class ProjectContainsDatesTests
     public void WhenPassingValidData_ThenContainsDatesReturnTrue()
     {
         //arrange
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
         Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
-        Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
+        Mock<PeriodDate> searchPeriodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(true);
 
         //act
@@ -26,10 +26,10 @@ public class ProjectContainsDatesTests
     public void WhenPassingInvalidData_ThenContainsDatesReturnFalse()
     {
         //arrange
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
         Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
-        Mock<IPeriodDate> searchPeriodDateMock = new Mock<IPeriodDate>();
+        Mock<PeriodDate> searchPeriodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(false);
 
         //act

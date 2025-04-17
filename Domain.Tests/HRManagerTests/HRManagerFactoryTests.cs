@@ -21,7 +21,7 @@ public class HRManagerFactoryTests
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-        var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+        var periodDateTimeDouble = new Mock<PeriodDateTime>();
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
@@ -47,7 +47,7 @@ public class HRManagerFactoryTests
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
         () =>
             //act
-            hrFactory.Create(It.IsAny<long>(), It.IsAny<IPeriodDateTime>())
+            hrFactory.Create(It.IsAny<long>(), It.IsAny<PeriodDateTime>())
         );
         Assert.Equal("User does not exist", exception.Message);
     }
@@ -60,7 +60,7 @@ public class HRManagerFactoryTests
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-        var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+        var periodDateTimeDouble = new Mock<PeriodDateTime>();
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
@@ -84,7 +84,7 @@ public class HRManagerFactoryTests
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(true);
 
-        var periodDateTimeDouble = new Mock<IPeriodDateTime>();
+        var periodDateTimeDouble = new Mock<PeriodDateTime>();
         periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();

@@ -18,7 +18,7 @@ public class AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsync
         var AssocDM1 = new Mock<IAssociationProjectCollaboratorVisitor>();
         var AssocDM2 = new Mock<IAssociationProjectCollaboratorVisitor>();
         var AssocDM3 = new Mock<IAssociationProjectCollaboratorVisitor>();
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
 
         periodDate.Setup(pd => pd.GetInitDate()).Returns(DateOnly.FromDateTime(DateTime.Now));
         periodDate.Setup(pd => pd.GetFinalDate()).Returns(DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));

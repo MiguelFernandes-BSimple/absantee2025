@@ -12,7 +12,7 @@ public class ProjectIsFinishedTests
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
         DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
 
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.IsFinalDateSmallerThan(It.IsAny<DateOnly>())).Returns(true);
         Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
 
@@ -27,7 +27,7 @@ public class ProjectIsFinishedTests
     {
         //arrange
         DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
-        Mock<IPeriodDate> periodDateMock = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
         periodDateMock.Setup(p => p.IsFinalDateSmallerThan(It.IsAny<DateOnly>())).Returns(false);
 
         Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);

@@ -18,7 +18,7 @@ public class HolidayPeriodIsLongerThanTests
     public void WhenPeriodDurationIsGreaterThanLimit_ThenShouldReturnTrue(int days)
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // For test -> duration = 20 day
         // Inputed days have to be < 20
@@ -42,7 +42,7 @@ public class HolidayPeriodIsLongerThanTests
     public void WhenPeriodDurationIsLessOrEqualThanLimit_ThenShouldReturnFalse(int days)
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // For test -> duration = 10 day
         // Inputed days have to be > 10

@@ -9,7 +9,7 @@ public class UserGetIdTests
     {
         //arrange
         var id = 1;
-        var user = new User(id, "John", "Doe", "john@email.com", It.IsAny<IPeriodDateTime>());
+        var user = new User(id, "John", "Doe", "john@email.com", It.IsAny<PeriodDateTime>());
 
         //act
         var userId = user.GetId();

@@ -9,7 +9,7 @@ public class UserGetSurnamesTests
     {
         //arrange
         var surname = "Doe";
-        var user = new User(1, "John", surname, "john@email.com", It.IsAny<IPeriodDateTime>());
+        var user = new User(1, "John", surname, "john@email.com", It.IsAny<PeriodDateTime>());
 
         //act
         var userSurname = user.GetSurnames();

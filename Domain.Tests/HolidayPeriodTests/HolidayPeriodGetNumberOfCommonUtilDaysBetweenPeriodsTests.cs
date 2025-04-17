@@ -11,8 +11,8 @@ public class HolidayPeriodGetNumberOfCommonUtilDaysBetweenPeriodsTests
     public void WhenPassingIntersectingPeriod_ThenNumberOfWeekdaysIsReturned()
     {
         // Arrange
-        var mockPeriod = new Mock<IPeriodDate>();
-        var searchingPeriod = new Mock<IPeriodDate>();
+        var mockPeriod = new Mock<PeriodDate>();
+        var searchingPeriod = new Mock<PeriodDate>();
 
         mockPeriod.Setup(p => p.GetNumberOfCommonUtilDaysBetweenPeriods(searchingPeriod.Object)).Returns(5);
 

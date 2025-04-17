@@ -11,8 +11,8 @@ public class CollaboratorContractContainsDatesTests
     public void WhenPassingValidDatesToContainsDates_ThenResultIsTrue()
     {
         // Arrange
-        Mock<IPeriodDateTime> searchPeriodDateTime = new Mock<IPeriodDateTime>();
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> searchPeriodDateTime = new Mock<PeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(pd => pd.Contains(searchPeriodDateTime.Object)).Returns(true);
 
         Collaborator collaborator = new Collaborator(It.IsAny<long>(), periodDateTime.Object);        
@@ -29,11 +29,11 @@ public class CollaboratorContractContainsDatesTests
     public void WhenPassingInvalidDatesToContainsDates_ThenResultIsFalse()
     {
         // Arrange
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
 
         Collaborator collaborator = new Collaborator(It.IsAny<long>(), periodDateTime.Object);
 
-        Mock<IPeriodDateTime> searchPeriodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> searchPeriodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(pd => pd.Contains(searchPeriodDateTime.Object)).Returns(false);
 
         // Act

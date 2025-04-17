@@ -16,7 +16,7 @@ public class CollaboratorFactoryTests
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
@@ -43,7 +43,7 @@ public class CollaboratorFactoryTests
         user.Setup(u => u.IsDeactivated()).Returns(false);
         user.Setup(u => u.GetId()).Returns(userId);
 
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
@@ -72,7 +72,7 @@ public class CollaboratorFactoryTests
         user.Setup(u => u.IsDeactivated()).Returns(true);
         user.Setup(u => u.GetId()).Returns(userId);
 
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
@@ -98,7 +98,7 @@ public class CollaboratorFactoryTests
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();
@@ -127,7 +127,7 @@ public class CollaboratorFactoryTests
         user.Setup(u => u.IsDeactivated()).Returns(false);
         user.Setup(u => u.GetId()).Returns(userId);
 
-        Mock<IPeriodDateTime> periodDateTime = new Mock<IPeriodDateTime>();
+        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
         periodDateTime.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();

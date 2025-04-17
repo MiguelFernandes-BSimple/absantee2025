@@ -17,7 +17,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
     public async Task WhenPassinValidDatesAsync_ThenReturnsCorrectPeriod(string init1Str, string final1Str)
     {
         // Arrange
-        var searchingPeriodDate = new Mock<IPeriodDate>();
+        var searchingPeriodDate = new Mock<PeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
@@ -41,7 +41,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         holidayPeriod.Setup(hperiod => hperiod.GetPeriodDate()).Returns(periodDate.Object);
 
         var init1 = DateOnly.Parse(init1Str);
@@ -84,7 +84,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
     public async Task WhenHolidayPeriodIsOutOfRangeThanTheOneBeingSearchedForAsync_ThenReturnsEmptyList(string init1Str, string final1Str)
     {
         // Arrange
-        var searchingPeriodDate = new Mock<IPeriodDate>();
+        var searchingPeriodDate = new Mock<PeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
@@ -108,7 +108,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         holidayPeriod.Setup(hperiod => hperiod.GetPeriodDate()).Returns(periodDate.Object);
 
         var init1 = DateOnly.Parse(init1Str);
@@ -144,7 +144,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
     public async Task WhenCollaboratorHasNoHolidayPlansAsync_ThenReturnsEmptyList()
     {
         // Arrange
-        var searchingPeriodDate = new Mock<IPeriodDate>();
+        var searchingPeriodDate = new Mock<PeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
@@ -172,7 +172,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
         var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object);
 
         // Act
-        var result = await holidayPlanRepo.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(2, It.IsAny<IPeriodDate>());
+        var result = await holidayPlanRepo.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(2, It.IsAny<PeriodDate>());
 
         // Assert
         Assert.Empty(result);

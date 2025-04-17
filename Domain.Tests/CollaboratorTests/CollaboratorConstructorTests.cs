@@ -19,7 +19,7 @@ namespace Domain.Tests.CollaboratorTests
             //arrange
 
             //act
-            new Collaborator(It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+            new Collaborator(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
 
             //assert
         }
@@ -30,7 +30,7 @@ namespace Domain.Tests.CollaboratorTests
             //arrange
 
             //act
-            new Collaborator(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+            new Collaborator(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
 
             //assert
         }

@@ -15,7 +15,7 @@ namespace Domain.Tests.ProjectTests
         {
             // arrange
             var title = "Title";
-            var project = new Project(1, title, "TTL", It.IsAny<IPeriodDate>());
+            var project = new Project(1, title, "TTL", It.IsAny<PeriodDate>());
 
             // act
             var result = project.GetTitle();

@@ -16,7 +16,7 @@ namespace Domain.Tests.TrainingPeriodTests
         {
             //Arrange
             var id = 1;
-            var trainingPeriod = new TrainingPeriod(id, It.IsAny<IPeriodDate>());
+            var trainingPeriod = new TrainingPeriod(id, It.IsAny<PeriodDate>());
 
             //Act
             var result = trainingPeriod.GetId();

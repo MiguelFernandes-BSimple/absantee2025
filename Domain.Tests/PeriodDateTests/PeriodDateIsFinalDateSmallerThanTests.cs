@@ -19,7 +19,7 @@ namespace Domain.Tests.PeriodDateTests
             DateOnly finalDate = new DateOnly(2021, 1, 1);
             DateOnly date = new DateOnly(2022, 1, 1);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.IsFinalDateSmallerThan(date);
@@ -43,7 +43,7 @@ namespace Domain.Tests.PeriodDateTests
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.IsFinalDateSmallerThan(date);

@@ -19,13 +19,13 @@ namespace Domain.Tests.PeriodDateTests
 
         [Theory]
         [MemberData(nameof(ContainingPeriods))]
-        public void WhenPassingContainingPeriods_ThenReturnTrue(IPeriodDate containedPeriod)
+        public void WhenPassingContainingPeriods_ThenReturnTrue(PeriodDate containedPeriod)
         {
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.Contains(containedPeriod);
@@ -43,13 +43,13 @@ namespace Domain.Tests.PeriodDateTests
 
         [Theory]
         [MemberData(nameof(NonContainingPeriods))]
-        public void WhenPassingNonContainingPeriods_ThenReturnFalse(IPeriodDate nonContainedPeriod)
+        public void WhenPassingNonContainingPeriods_ThenReturnFalse(PeriodDate nonContainedPeriod)
         {
             //arrange
             DateOnly initDate = new DateOnly(2020, 1, 1);
             DateOnly finalDate = new DateOnly(2021, 1, 1);
 
-            IPeriodDate periodDate = new PeriodDate(initDate, finalDate);
+            PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 
             //act
             var result = periodDate.Contains(nonContainedPeriod);

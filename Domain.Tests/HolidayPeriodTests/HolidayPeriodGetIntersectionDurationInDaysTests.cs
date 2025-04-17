@@ -14,9 +14,9 @@ public class HolidayPeriodGetIntersectionDurationInDaysTests
     public void WhenPassingIntersectingPeriod_ReturnIntersectionDuration()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodReference = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodInputed = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodIntersectionResult = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodReference = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodInputed = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodIntersectionResult = new Mock<PeriodDate>();
 
         // Establish that they intersect and return a new PeriodDate with the intersection
         doublePeriodReference.Setup(pd => pd.GetIntersection(doublePeriodInputed.Object))
@@ -46,13 +46,13 @@ public class HolidayPeriodGetIntersectionDurationInDaysTests
     public void WhenPassingNotIntersectingPeriod_ReturnZero()
     {
         // Arrange
-        Mock<IPeriodDate> doublePeriodReference = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodInputed = new Mock<IPeriodDate>();
-        Mock<IPeriodDate> doublePeriodIntersectionResult = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodReference = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodInputed = new Mock<PeriodDate>();
+        Mock<PeriodDate> doublePeriodIntersectionResult = new Mock<PeriodDate>();
 
         // Establish that they DON'T intersect and return null
         doublePeriodReference.Setup(pd => pd.GetIntersection(doublePeriodInputed.Object))
-                             .Returns((IPeriodDate?)null);
+                             .Returns((PeriodDate?)null);
 
         // The expected duration is going to be 0
         int expected = 0;

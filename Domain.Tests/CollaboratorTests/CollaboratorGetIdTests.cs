@@ -16,7 +16,7 @@ namespace Domain.Tests.CollaboratorTests
         {
             // Arrange
             var id = 1;
-            var collaborator = new Collaborator(id, It.IsAny<long>(), It.IsAny<IPeriodDateTime>());
+            var collaborator = new Collaborator(id, It.IsAny<long>(), It.IsAny<PeriodDateTime>());
 
             // Act
             var result = collaborator.GetId();

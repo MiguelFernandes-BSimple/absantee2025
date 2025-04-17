@@ -113,7 +113,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, IPeriodDate periodDate)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, PeriodDate periodDate)
     {
         try
         {
@@ -135,7 +135,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<bool> CanInsert(IPeriodDate periodDate, long collaboratorId, long projectId)
+    public async Task<bool> CanInsert(PeriodDate periodDate, long collaboratorId, long projectId)
     {
         try
         {

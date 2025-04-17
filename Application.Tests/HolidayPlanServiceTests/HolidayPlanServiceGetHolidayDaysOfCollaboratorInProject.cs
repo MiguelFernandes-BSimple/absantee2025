@@ -15,7 +15,7 @@ public class HolidayPlanServiceGetHolidayDaysOfCollaboratorInProject
         long projectId = 1;
         long collaboratorId = 1;
 
-        Mock<IPeriodDate> periodDouble = new Mock<IPeriodDate>();
+        Mock<PeriodDate> periodDouble = new Mock<PeriodDate>();
 
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
         associationDouble.Setup(a => a.GetPeriodDate()).Returns(periodDouble.Object);

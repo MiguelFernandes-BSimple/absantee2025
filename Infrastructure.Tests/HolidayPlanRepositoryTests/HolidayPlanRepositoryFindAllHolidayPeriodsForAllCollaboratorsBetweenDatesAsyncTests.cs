@@ -17,7 +17,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
     public async Task WhenPassingValidData_ThenReturnsAllHolidayPeriodsForAllCollaboratorsBetweenDates(string init1Str, string final1Str)
     {
         // Arrange
-        var searchingPeriodDate = new Mock<IPeriodDate>();
+        var searchingPeriodDate = new Mock<PeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
@@ -41,7 +41,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         holidayPeriod.Setup(hperiod => hperiod.GetPeriodDate()).Returns(periodDate.Object);
 
         var init1 = DateOnly.Parse(init1Str);
@@ -84,7 +84,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
     public async Task WhenPassingDataOutOfRange_ThenReturnsEmptyList(string init1Str, string final1Str)
     {
         // Arrange
-        var searchingPeriodDate = new Mock<IPeriodDate>();
+        var searchingPeriodDate = new Mock<PeriodDate>();
         searchingPeriodDate.Setup(pd => pd.GetInitDate()).Returns(new DateOnly(2020, 1, 1));
         searchingPeriodDate.Setup(pd => pd.GetFinalDate()).Returns(new DateOnly(2020, 12, 31));
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
@@ -108,7 +108,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
         holidayPlanDM2.Setup(hp => hp.CollaboratorId).Returns(1);
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
-        var periodDate = new Mock<IPeriodDate>();
+        var periodDate = new Mock<PeriodDate>();
         holidayPeriod.Setup(hperiod => hperiod.GetPeriodDate()).Returns(periodDate.Object);
 
         var init1 = DateOnly.Parse(init1Str);

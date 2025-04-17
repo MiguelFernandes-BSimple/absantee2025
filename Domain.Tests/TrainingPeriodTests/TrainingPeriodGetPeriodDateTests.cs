@@ -15,7 +15,7 @@ namespace Domain.Tests.TrainingPeriodTests
         public void WhenGettingPeriodDate_ThenReturnsPeriodDate()
         {
             //Arrange
-            var periodDate = new Mock<IPeriodDate>();
+            var periodDate = new Mock<PeriodDate>();
             var trainingPeriod = new TrainingPeriod(It.IsAny<long>(), periodDate.Object);
 
             //Act

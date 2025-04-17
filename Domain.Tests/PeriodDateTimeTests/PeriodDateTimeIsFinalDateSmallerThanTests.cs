@@ -14,7 +14,7 @@ namespace Domain.Tests.PeriodDateTimeTests
             DateTime finalDate = new DateTime(2021, 1, 1);
             DateTime date = new DateTime(2022, 1, 1);
 
-            IPeriodDateTime periodDateTime = new PeriodDateTime(initDate, finalDate);
+            PeriodDateTime periodDateTime = new PeriodDateTime(initDate, finalDate);
 
             //Act
             var result = periodDateTime.IsFinalDateSmallerThan(date);
@@ -38,7 +38,7 @@ namespace Domain.Tests.PeriodDateTimeTests
             DateTime initDate = new DateTime(2020, 1, 1);
             DateTime finalDate = new DateTime(2021, 1, 1);
 
-            IPeriodDateTime periodDateTime = new PeriodDateTime(initDate, finalDate);
+            PeriodDateTime periodDateTime = new PeriodDateTime(initDate, finalDate);
 
             //Act
             var result = periodDateTime.IsFinalDateSmallerThan(date);

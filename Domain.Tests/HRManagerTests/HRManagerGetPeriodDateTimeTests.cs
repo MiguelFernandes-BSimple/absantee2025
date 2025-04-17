@@ -15,7 +15,7 @@ namespace Domain.Tests.HRManagerTests
         public void WhenGettingPeriodDateTime_ThenReturnsPeriodDateTime()
         {
             //arrange
-            var periodDateTime = new Mock<IPeriodDateTime>();
+            var periodDateTime = new Mock<PeriodDateTime>();
             var hrManager = new HRManager(It.IsAny<long>(), It.IsAny<long>(), periodDateTime.Object);
             //act
             var hrPeriodDateTime = hrManager.GetPeriodDateTime();

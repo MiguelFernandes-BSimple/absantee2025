@@ -67,7 +67,7 @@ public class PeriodDateTimeConstructorTests
     {
         // Arrange
         // double for periodDate interface
-        Mock<IPeriodDate> doublePeriodDate = new Mock<IPeriodDate>();
+        Mock<PeriodDate> doublePeriodDate = new Mock<PeriodDate>();
 
         // Act
         new PeriodDateTime(doublePeriodDate.Object);

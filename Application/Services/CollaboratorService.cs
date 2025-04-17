@@ -1,6 +1,7 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Factory;
+using Domain.Models;
 using System.Threading.Tasks;
 
 namespace Application.Services;
@@ -31,7 +32,7 @@ public class CollaboratorService
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-    public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsBetweenDates(IPeriodDate periodDate)
+    public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsBetweenDates(PeriodDate periodDate)
     {
         var holidayPlans = await _holidayPlanRepository.FindHolidayPlansWithinPeriodAsync(periodDate);
         var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
@@ -45,14 +46,14 @@ public class CollaboratorService
         return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
 
-    public async Task<IEnumerable<ICollaborator>> FindAllByProjectAndBetweenPeriod(long projectId, IPeriodDate periodDate)
+    public async Task<IEnumerable<ICollaborator>> FindAllByProjectAndBetweenPeriod(long projectId, PeriodDate periodDate)
     {
         var collabs = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, periodDate);
         var collabsIds = collabs.Select(c => c.GetCollaboratorId());
         return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
 
-    public async Task<bool> Add(long userId, IPeriodDateTime periodDateTime)
+    public async Task<bool> Add(long userId, PeriodDateTime periodDateTime)
     {
         ICollaborator colab;
         try

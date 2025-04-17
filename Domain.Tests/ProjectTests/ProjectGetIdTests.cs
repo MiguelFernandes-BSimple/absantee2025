@@ -16,7 +16,7 @@ namespace Domain.Tests.ProjectTests
         {
             // arrange
             var id = 1;
-            var project = new Project(id, "Title", "TTL", It.IsAny<IPeriodDate>());
+            var project = new Project(id, "Title", "TTL", It.IsAny<PeriodDate>());
 
             // act
             var result = project.GetId();
