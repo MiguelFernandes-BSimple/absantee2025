@@ -7,7 +7,7 @@ using Domain.IRepository;
 
 namespace Application.Tests.AssociationProjectServiceTests;
 
-public class Add
+public class AssociationProjectCollaboratorServiceAdd
 {
     [Fact]
     public async Task WhenAddingValidAssociation_ThenItsAddedSuccessfully()
