@@ -12,16 +12,16 @@ namespace Infrastructure.DataModel
         public PeriodDate Period { get; set; }
 
 
-        public AssociationProjectCollaboratorDataModel(IAssociationProjectCollaborator apc)
-        {
-            Id = apc.GetId();
-            CollaboratorId = apc.GetCollaboratorId();
-            ProjectId = apc.GetProjectId();
-            Period = apc._periodDate;
-        }
-
         public AssociationProjectCollaboratorDataModel()
         {
+        }
+
+        public AssociationProjectCollaboratorDataModel(IAssociationProjectCollaborator apc)
+        {
+            Id = apc._id;
+            CollaboratorId = apc._collaboratorId;
+            ProjectId = apc._projectId;
+            Period = apc._periodDate;
         }
     }
 }
