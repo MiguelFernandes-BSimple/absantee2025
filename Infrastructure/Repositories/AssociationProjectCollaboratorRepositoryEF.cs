@@ -1,5 +1,6 @@
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure;
 using Infrastructure.DataModel;

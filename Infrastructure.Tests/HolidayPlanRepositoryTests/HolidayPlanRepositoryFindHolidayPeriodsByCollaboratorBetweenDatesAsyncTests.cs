@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;

@@ -20,7 +20,7 @@ public class AssociationProjectCollaboratorGetPeriodDateTests
             new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);
 
         // Act
-        var result = assoc.GetPeriodDate();
+        var result = assoc._periodDate;
 
         // Assert
         Assert.Equal(periodDate.Object, result);

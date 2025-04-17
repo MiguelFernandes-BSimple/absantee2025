@@ -42,7 +42,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         var periodDate = new Mock<PeriodDate>();
-        holidayPeriod.Setup(hperiod => hperiod.GetPeriodDate()).Returns(periodDate.Object);
+        holidayPeriod.Setup(hperiod => hperiod._periodDate).Returns(periodDate.Object);
 
         var init1 = DateOnly.Parse(init1Str);
         var final1 = DateOnly.Parse(final1Str);
@@ -109,7 +109,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForCollaboratorBetweenDat
 
         var holidayPeriod = new Mock<IHolidayPeriod>();
         var periodDate = new Mock<PeriodDate>();
-        holidayPeriod.Setup(hperiod => hperiod.GetPeriodDate()).Returns(periodDate.Object);
+        holidayPeriod.Setup(hperiod => hperiod._periodDate).Returns(periodDate.Object);
 
         var init1 = DateOnly.Parse(init1Str);
         var final1 = DateOnly.Parse(final1Str);

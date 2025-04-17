@@ -5,6 +5,7 @@ using Infrastructure.Mapper;
 using Infrastructure.DataModel;
 using Domain.Visitor;
 using Microsoft.EntityFrameworkCore;
+using Domain.Models;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
@@ -94,7 +95,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaborator
         Mock<IHolidayPeriod> hp1Period = new Mock<IHolidayPeriod>();
         Mock<PeriodDate> hpPeriodDate = new Mock<PeriodDate>();
 
-        hp1Period.Setup(hp => hp.GetPeriodDate()).Returns(hpPeriodDate.Object);
+        hp1Period.Setup(hp => hp._periodDate).Returns(hpPeriodDate.Object);
 
         // Setup both hoiday plans with the same holidayPeriod list
         List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod> { hp1Period.Object };

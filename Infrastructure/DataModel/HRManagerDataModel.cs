@@ -15,7 +15,7 @@ namespace Infrastructure.DataModel
         {
             Id = hRManager.GetId();
             UserId = hRManager.GetUserId();
-            PeriodDateTime = (PeriodDateTime)hRManager.GetPeriodDateTime();
+            PeriodDateTime = hRManager._periodDateTime;
         }
     }
 }
