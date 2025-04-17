@@ -7,9 +7,9 @@ public class Project : IProject
     private long _id;
     private string _title;
     private string _acronym;
-    private IPeriodDate _periodDate;
+    private PeriodDate _periodDate;
 
-    public Project(long id, string title, string acronym, IPeriodDate periodDate)
+    public Project(long id, string title, string acronym, PeriodDate periodDate)
     {
         Regex tituloRegex = new Regex(@"^.{1,50}$");
         Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
@@ -44,12 +44,12 @@ public class Project : IProject
         return _acronym;
     }
 
-    public IPeriodDate GetPeriodDate()
+    public PeriodDate GetPeriodDate()
     {
         return _periodDate;
     }
 
-    public bool ContainsDates(IPeriodDate periodDate)
+    public bool ContainsDates(PeriodDate periodDate)
     {
         return _periodDate.Contains(periodDate);
     }

@@ -1,3 +1,5 @@
+using Domain.Models;
+
 namespace Domain.Interfaces;
 
 public interface IHolidayPlan
@@ -5,5 +7,5 @@ public interface IHolidayPlan
     long GetId();
     List<IHolidayPeriod> GetHolidayPeriods();
     long GetCollaboratorId();
-    int GetNumberOfHolidayDaysBetween(IPeriodDate periodDate);
+    int GetNumberOfHolidayDaysBetween(PeriodDate periodDate);
 }

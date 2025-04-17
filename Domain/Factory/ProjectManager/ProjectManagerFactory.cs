@@ -18,7 +18,7 @@ namespace Domain.Factory
             _userRepository = userRepository;
         }
 
-        public async Task<ProjectManager> Create(long userId, IPeriodDateTime periodDateTime)
+        public async Task<ProjectManager> Create(long userId, PeriodDateTime periodDateTime)
         {
             IUser? user = await _userRepository.GetByIdAsync(userId);
 

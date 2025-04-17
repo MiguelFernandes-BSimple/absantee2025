@@ -1,7 +1,7 @@
 ﻿using Domain.Interfaces;
 
 namespace Domain.Models;
-public class PeriodDate : IPeriodDate
+public class PeriodDate
 {
     public DateOnly _initDate { get; set; }
     public DateOnly _finalDate { get; set; }
@@ -34,12 +34,12 @@ public class PeriodDate : IPeriodDate
         return date > _initDate;
     }
 
-    public bool Intersects(IPeriodDate periodDate)
+    public bool Intersects(PeriodDate periodDate)
     {
         return _initDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= _finalDate;
     }
 
-    public IPeriodDate? GetIntersection(IPeriodDate periodDate)
+    public PeriodDate? GetIntersection(PeriodDate periodDate)
     {
         DateOnly effectiveStart = _initDate > periodDate.GetInitDate() ? _initDate : periodDate.GetInitDate();
         DateOnly effectiveEnd = _finalDate < periodDate.GetFinalDate() ? _finalDate : periodDate.GetFinalDate();
@@ -57,7 +57,7 @@ public class PeriodDate : IPeriodDate
         return _finalDate.DayNumber - _initDate.DayNumber + 1;
     }
 
-    public bool Contains(IPeriodDate periodDate)
+    public bool Contains(PeriodDate periodDate)
     {
         return _initDate <= periodDate.GetInitDate()
         && _finalDate >= periodDate.GetFinalDate();
@@ -81,9 +81,9 @@ public class PeriodDate : IPeriodDate
         return false;
     }
 
-    public int GetNumberOfCommonUtilDaysBetweenPeriods(IPeriodDate periodDate)
+    public int GetNumberOfCommonUtilDaysBetweenPeriods(PeriodDate periodDate)
     {
-        IPeriodDate? interceptionPeriod = GetIntersection(periodDate);
+        PeriodDate? interceptionPeriod = GetIntersection(periodDate);
 
         if (interceptionPeriod != null)
         {

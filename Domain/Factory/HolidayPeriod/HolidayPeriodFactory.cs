@@ -16,7 +16,7 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPeriod Create(long holidayPlanId, IPeriodDate periodDate)
+    public HolidayPeriod Create(long holidayPlanId, PeriodDate periodDate)
     {
         HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
 

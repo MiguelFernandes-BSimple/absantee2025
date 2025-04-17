@@ -38,29 +38,22 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
 
             var collaborator1 = new Mock<ICollaborator>();
             collaborator1.Setup(c => c._userId).Returns(2);
-            //var periodDateTimeColab = new Mock<IPeriodDateTime>();
-            //periodDateTimeColab.Setup(pd => pd.GetInitDate()).Returns(init1);
-            //periodDateTimeColab.Setup(pd => pd.GetFinalDate()).Returns(final1);
             var periodDateTimeColab = new PeriodDateTime(init1, final1);
             collaborator1.Setup(c => c._periodDateTime).Returns(periodDateTimeColab);
             context.Collaborators.Add(new CollaboratorDataModel(collaborator1.Object));
 
             var collaborator2 = new Mock<ICollaborator>();
             collaborator2.Setup(c => c._userId).Returns(2);
-            //periodDateTimeColab.Setup(pd => pd.GetInitDate()).Returns(init1);
-            //periodDateTimeColab.Setup(pd => pd.GetFinalDate()).Returns(final1);
             collaborator2.Setup(c => c._periodDateTime).Returns(periodDateTimeColab);
             context.Collaborators.Add(new CollaboratorDataModel(collaborator2.Object));
 
             await context.SaveChangesAsync();
 
-            var periodDateTime = new Mock<IPeriodDateTime>();
-            periodDateTime.Setup(p => p._initDate).Returns(new DateTime(2020, 1, 1));
-            periodDateTime.Setup(p => p._finalDate).Returns(new DateTime(2021, 1, 1));
+            var periodDateTime = new PeriodDateTime(new DateTime(2020, 1, 1), new DateTime(2021, 1, 1));
 
             var collaborator = new Mock<ICollaborator>();
             collaborator.Setup(c => c._userId).Returns(2);
-            collaborator.Setup(c => c._periodDateTime).Returns(periodDateTime.Object);
+            collaborator.Setup(c => c._periodDateTime).Returns(periodDateTime);
 
             var mapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
 

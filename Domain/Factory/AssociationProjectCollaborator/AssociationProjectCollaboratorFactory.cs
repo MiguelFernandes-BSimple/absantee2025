@@ -17,7 +17,7 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
         _associationProjectRepository = associationProjectCollaboratorRepository;
     }
 
-    public async Task<AssociationProjectCollaborator> Create(IPeriodDate periodDate, long collaboratorId, long projectId)
+    public async Task<AssociationProjectCollaborator> Create(PeriodDate periodDate, long collaboratorId, long projectId)
     {
         // Checking if input values are valid
         ICollaborator? collaborator = _collaboratorRepository.GetById(collaboratorId);

@@ -9,6 +9,6 @@ namespace Domain.Factory;
 
 public interface IProjectFactory
 {
-    Task<Project> Create(long id, string title, string acronym, IPeriodDate periodDate);
+    Task<Project> Create(long id, string title, string acronym, PeriodDate periodDate);
     Project Create(IProjectVisitor visitor);
 }

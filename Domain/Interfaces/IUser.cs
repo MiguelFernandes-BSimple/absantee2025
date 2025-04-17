@@ -29,5 +29,5 @@ public interface IUser
     public string GetNames();
     public string GetSurnames();
     public string GetEmail();
-    public IPeriodDateTime GetPeriodDateTime();
+    public PeriodDateTime GetPeriodDateTime();
 }

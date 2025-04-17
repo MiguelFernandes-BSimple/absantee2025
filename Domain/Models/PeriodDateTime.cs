@@ -2,7 +2,7 @@
 
 namespace Domain.Models;
 
-public class PeriodDateTime : IPeriodDateTime
+public class PeriodDateTime
 {
     public DateTime _initDate { get; set; }
     public DateTime _finalDate { get; set; }
@@ -18,7 +18,7 @@ public class PeriodDateTime : IPeriodDateTime
             throw new ArgumentException("Invalid Arguments");
     }
 
-    public PeriodDateTime(IPeriodDate periodDate) : this(
+    public PeriodDateTime(PeriodDate periodDate) : this(
         periodDate.GetInitDate().ToDateTime(TimeOnly.MinValue),
         periodDate.GetFinalDate().ToDateTime(TimeOnly.MinValue))
     {
@@ -56,13 +56,13 @@ public class PeriodDateTime : IPeriodDateTime
         return date > _finalDate;
     }
 
-    public bool Contains(IPeriodDateTime periodDateTime)
+    public bool Contains(PeriodDateTime periodDateTime)
     {
         return _initDate <= periodDateTime.GetInitDate()
             && _finalDate >= periodDateTime.GetFinalDate();
     }
 
-    public bool Intersects(IPeriodDateTime periodDateTime)
+    public bool Intersects(PeriodDateTime periodDateTime)
     {
         return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _finalDate;
     }

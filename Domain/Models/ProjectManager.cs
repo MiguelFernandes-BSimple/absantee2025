@@ -6,15 +6,15 @@ public class ProjectManager : IProjectManager
 {
     private long _id;
     private long _userId;
-    private IPeriodDateTime _periodDateTime;
+    private PeriodDateTime _periodDateTime;
 
-    public ProjectManager(long userId, IPeriodDateTime periodDateTime)
+    public ProjectManager(long userId, PeriodDateTime periodDateTime)
     {
         _userId = userId;
         _periodDateTime = periodDateTime;
     }
 
-    public ProjectManager(long id, long userId, IPeriodDateTime periodDateTime)
+    public ProjectManager(long id, long userId, PeriodDateTime periodDateTime)
         : this(userId, periodDateTime)
     {
         _id = id;
@@ -34,7 +34,7 @@ public class ProjectManager : IProjectManager
         return _userId;
     }
 
-    public IPeriodDateTime GetPeriodDateTime()
+    public PeriodDateTime GetPeriodDateTime()
     {
         return _periodDateTime;
     }

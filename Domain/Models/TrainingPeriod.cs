@@ -4,9 +4,9 @@ namespace Domain.Models;
 public class TrainingPeriod : ITrainingPeriod
 {
     private long _id;
-    private IPeriodDate _periodDate;
+    private PeriodDate _periodDate;
 
-    public TrainingPeriod(IPeriodDate periodDate)
+    public TrainingPeriod(PeriodDate periodDate)
     {
         if (periodDate.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now)))
             throw new ArgumentException("Period date cannot start in the past.");
@@ -14,7 +14,7 @@ public class TrainingPeriod : ITrainingPeriod
         _periodDate = periodDate;
     }
 
-    public TrainingPeriod(long id, IPeriodDate periodDate)
+    public TrainingPeriod(long id, PeriodDate periodDate)
     {
         _id = id;
         _periodDate = periodDate;
@@ -25,7 +25,7 @@ public class TrainingPeriod : ITrainingPeriod
         return _id;
     }
 
-    public IPeriodDate GetPeriodDate()
+    public PeriodDate GetPeriodDate()
     {
         return _periodDate;
     }

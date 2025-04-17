@@ -10,7 +10,7 @@ public class User : IUser
     private string _names;
     private string _surnames;
     private string _email;
-    private IPeriodDateTime _periodDateTime;
+    private PeriodDateTime _periodDateTime;
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
@@ -40,7 +40,7 @@ public class User : IUser
         _periodDateTime = new PeriodDateTime(DateTime.Now, (DateTime)deactivationDate);
     }
 
-    public User(long id, string names, string surnames, string email, IPeriodDateTime periodDateTime)
+    public User(long id, string names, string surnames, string email, PeriodDateTime periodDateTime)
     {
         _id = id;
         _names = names;
@@ -75,7 +75,7 @@ public class User : IUser
         return _email;
     }
 
-    public IPeriodDateTime GetPeriodDateTime()
+    public PeriodDateTime GetPeriodDateTime()
     {
         return _periodDateTime;
     }

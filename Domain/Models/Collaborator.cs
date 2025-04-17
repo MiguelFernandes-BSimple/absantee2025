@@ -6,15 +6,15 @@ public class Collaborator : ICollaborator
 {
     public long _id { get; set; }
     public long _userId { get; set; }
-    public IPeriodDateTime _periodDateTime { get; set; }
+    public PeriodDateTime _periodDateTime { get; set; }
 
-    public Collaborator(long userId, IPeriodDateTime periodDateTime)
+    public Collaborator(long userId, PeriodDateTime periodDateTime)
     {
         _periodDateTime = periodDateTime;
         _userId = userId;
     }
 
-    public Collaborator(long id, long userId, IPeriodDateTime periodDateTime)
+    public Collaborator(long id, long userId, PeriodDateTime periodDateTime)
     {
         _id = id;
         _userId = userId;
@@ -28,12 +28,8 @@ public class Collaborator : ICollaborator
     {
         return _userId;
     }
-    public IPeriodDateTime GetPeriodDateTime()
-    {
-        return _periodDateTime;
-    }
 
-    public bool ContractContainsDates(IPeriodDateTime periodDateTime)
+    public bool ContractContainsDates(PeriodDateTime periodDateTime)
     {
         return _periodDateTime.Contains(periodDateTime);
     }

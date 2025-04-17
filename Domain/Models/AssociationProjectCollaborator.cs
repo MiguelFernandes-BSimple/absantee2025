@@ -7,9 +7,9 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
     private long _id;
     private long _collaboratorId;
     public long _projectId;
-    private IPeriodDate _periodDate;
+    private PeriodDate _periodDate;
 
-    public AssociationProjectCollaborator(long collaboratorId, long projectId, IPeriodDate periodDate)
+    public AssociationProjectCollaborator(long collaboratorId, long projectId, PeriodDate periodDate)
     {
         _collaboratorId = collaboratorId;
         _projectId = projectId;
@@ -36,12 +36,8 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         return _projectId;
     }
 
-    public IPeriodDate GetPeriodDate()
-    {
-        return _periodDate;
-    }
 
-    public bool AssociationIntersectPeriod(IPeriodDate periodDate)
+    public bool AssociationIntersectPeriod(PeriodDate periodDate)
     {
         return _periodDate.Intersects(periodDate);
     }

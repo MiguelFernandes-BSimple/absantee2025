@@ -6,21 +6,21 @@ public class HRManager : IHRManager
 {
     private long _id;
     private long _userId;
-    private IPeriodDateTime _periodDateTime;
+    public PeriodDateTime _periodDateTime { get; set; }
 
-    public HRManager(long userId, IPeriodDateTime periodDateTime)
+    public HRManager(long userId, PeriodDateTime periodDateTime)
     {
         _periodDateTime = periodDateTime;
         _userId = userId;
     }
 
-    public HRManager(long id, long userId, IPeriodDateTime periodDateTime)
+    public HRManager(long id, long userId, PeriodDateTime periodDateTime)
         : this(userId, periodDateTime)
     {
         _id = id;
     }
 
-    public bool ContractContainsDates(IPeriodDateTime periodDateTime)
+    public bool ContractContainsDates(PeriodDateTime periodDateTime)
     {
         return _periodDateTime.Contains(periodDateTime);
     }
@@ -28,11 +28,6 @@ public class HRManager : IHRManager
     public long GetId()
     {
         return _id;
-    }
-
-    public IPeriodDateTime GetPeriodDateTime()
-    {
-        return _periodDateTime;
     }
 
     public long GetUserId()
