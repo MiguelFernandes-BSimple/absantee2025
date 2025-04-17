@@ -11,17 +11,21 @@ public class HolidayPeriodGetNumberOfCommonUtilDaysBetweenPeriodsTests
     public void WhenPassingIntersectingPeriod_ThenNumberOfWeekdaysIsReturned()
     {
         // Arrange
-        var mockPeriod = new Mock<PeriodDate>();
-        var searchingPeriod = new Mock<PeriodDate>();
+        var startReference = new DateOnly(2024, 4, 1);
+        var endReference = new DateOnly(2024, 4, 20); // Reference period (20 days)
+        var startInputed = new DateOnly(2024, 4, 10);
+        var endInputed = new DateOnly(2024, 4, 25); // Inputed period (15 days)
 
-        mockPeriod.Setup(p => p.GetNumberOfCommonUtilDaysBetweenPeriods(searchingPeriod.Object)).Returns(5);
+        var period = new PeriodDate(startReference,endReference);
+        var searchingPeriod = new PeriodDate(startInputed,endInputed);
 
-        IHolidayPeriod holidayPeriod = new HolidayPeriod(mockPeriod.Object);
+
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(period);
 
         // Act
-        int result = holidayPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(searchingPeriod.Object);
+        int result = holidayPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(searchingPeriod);
 
         // Assert
-        Assert.Equal(5, result);
+        Assert.Equal(8, result);
     }
 }

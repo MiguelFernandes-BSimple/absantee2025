@@ -11,10 +11,10 @@ public class HolidayPeriodFactoryTests
     [Fact]
     public void WhenCreatingWithValidData_ThenObjectIsInstantiated()
     {
-        // Arrange 
-        var periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        // Arrange
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
 
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
@@ -28,23 +28,21 @@ public class HolidayPeriodFactoryTests
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
         collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
 
-
-        var holidayPeriodFactory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
+        var factory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
 
         // Act
-        holidayPeriodFactory.Create(It.IsAny<long>(), periodDateMock.Object);
+        var result = factory.Create(123L, periodDate);
 
         // Assert
-
+        Assert.NotNull(result);
     }
 
     [Fact]
     public void WhenCreatingWithExistingHolidayPeriod_ThenThrowsException()
     {
-        // Arrange 
-        var periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
 
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
@@ -65,7 +63,7 @@ public class HolidayPeriodFactoryTests
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDateMock.Object)
+                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
 
         );
         Assert.Equal("Holiday Period already exists for this Holiday Plan.", exception.Message);
@@ -75,9 +73,9 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithoutHolidayPlan_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
 
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
@@ -98,7 +96,7 @@ public class HolidayPeriodFactoryTests
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDateMock.Object)
+                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
 
         );
         Assert.Equal("Holiday Plan doesn't exist.", exception.Message);
@@ -108,9 +106,9 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithoutCollaborator_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
 
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
@@ -131,7 +129,7 @@ public class HolidayPeriodFactoryTests
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDateMock.Object)
+                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
 
         );
         Assert.Equal("Collaborator doesn't exist.", exception.Message);
@@ -141,9 +139,9 @@ public class HolidayPeriodFactoryTests
     public void WhenCreatingWithOutOfBoundsCollaboratorContract_ThenThrowsException()
     {
         // Arrange 
-        var periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.GetInitDate()).Returns(It.IsAny<DateOnly>());
-        periodDateMock.Setup(p => p.GetFinalDate()).Returns(It.IsAny<DateOnly>());
+        var start = new DateOnly(2024, 4, 10);
+        var end = new DateOnly(2024, 4, 15);
+        var periodDate = new PeriodDate(start, end);
         var holidayPlanMock = new Mock<IHolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
@@ -163,7 +161,7 @@ public class HolidayPeriodFactoryTests
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDateMock.Object)
+                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
 
         );
         Assert.Equal("Collaborator's contract out of bounds.", exception.Message);

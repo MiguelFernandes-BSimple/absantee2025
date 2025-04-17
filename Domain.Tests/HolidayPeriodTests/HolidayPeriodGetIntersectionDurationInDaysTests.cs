@@ -14,28 +14,29 @@ public class HolidayPeriodGetIntersectionDurationInDaysTests
     public void WhenPassingIntersectingPeriod_ReturnIntersectionDuration()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodReference = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodInputed = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodIntersectionResult = new Mock<PeriodDate>();
+        var startReference = new DateOnly(2024, 4, 1);
+        var endReference = new DateOnly(2024, 4, 20); // Reference period (20 days)
+        var startInputed = new DateOnly(2024, 4, 10);
+        var endInputed = new DateOnly(2024, 4, 25); // Inputed period (15 days)
 
-        // Establish that they intersect and return a new PeriodDate with the intersection
-        doublePeriodReference.Setup(pd => pd.GetIntersection(doublePeriodInputed.Object))
-                             .Returns(doublePeriodIntersectionResult.Object);
+        var periodReference = new PeriodDate(startReference, endReference);
+        var periodInputed = new PeriodDate(startInputed, endInputed);
 
-        Random rnd = new Random();
-        int expected = rnd.Next(10, 100);
+        // Calculate intersection
+        var intersectionStart = startInputed > startReference ? startInputed : startReference;
+        var intersectionEnd = endInputed < endReference ? endInputed : endReference;
 
-        // Establish the expected duration of period
-        doublePeriodIntersectionResult.Setup(pd => pd.Duration()).Returns(expected);
+        // Duration of the intersection should be 10 days
+        int expectedIntersectionDuration = intersectionEnd.DayNumber - intersectionStart.DayNumber + 1;
 
         // Instatiate HolidayPeriod
-        HolidayPeriod holidayPeriod = new HolidayPeriod(doublePeriodReference.Object);
+        HolidayPeriod holidayPeriod = new HolidayPeriod(periodReference);
 
         // Act
-        int result = holidayPeriod.GetInterceptionDurationInDays(doublePeriodInputed.Object);
+        int result = holidayPeriod.GetInterceptionDurationInDays(periodInputed);
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equal(expectedIntersectionDuration, result);
     }
 
     /**
@@ -46,25 +47,23 @@ public class HolidayPeriodGetIntersectionDurationInDaysTests
     public void WhenPassingNotIntersectingPeriod_ReturnZero()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodReference = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodInputed = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodIntersectionResult = new Mock<PeriodDate>();
+        var startReference = new DateOnly(2024, 4, 1);
+        var endReference = new DateOnly(2024, 4, 10); // Reference period (10 days)
+        var startInputed = new DateOnly(2024, 4, 15);
+        var endInputed = new DateOnly(2024, 4, 20); // Inputed period (5 days)
 
-        // Establish that they DON'T intersect and return null
-        doublePeriodReference.Setup(pd => pd.GetIntersection(doublePeriodInputed.Object))
-                             .Returns((PeriodDate?)null);
-
-        // The expected duration is going to be 0
-        int expected = 0;
+        var periodReference = new PeriodDate(startReference, endReference);
+        var periodInputed = new PeriodDate(startInputed, endInputed);
 
         // Instatiate HolidayPeriod
-        HolidayPeriod holidayPeriod = new HolidayPeriod(doublePeriodReference.Object);
+        HolidayPeriod holidayPeriod = new HolidayPeriod(periodReference);
 
         // Act
-        int result = holidayPeriod.GetInterceptionDurationInDays(doublePeriodInputed.Object);
+        int result = holidayPeriod.GetInterceptionDurationInDays(periodInputed);
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equal(0, result); // No intersection
     }
-
 }
+
+

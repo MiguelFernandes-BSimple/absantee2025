@@ -11,16 +11,21 @@ public class HolidayPeriodGetNumberOfCommonUtilDaysTests
     public void WhenPassingPeriod_ThenNumberOfWeekdaysIsReturned()
     {
         // Arrange
-        var mockPeriod = new Mock<PeriodDate>();
+        
 
-        mockPeriod.Setup(p => p.GetNumberOfCommonUtilDays()).Returns(5);
+        var startReference = new DateOnly(2024, 4, 1);
+        var endReference = new DateOnly(2024, 4, 20); // Reference period (20 days)
+       
 
-        IHolidayPeriod holidayPeriod = new HolidayPeriod(mockPeriod.Object);
+        var period = new PeriodDate(startReference,endReference);
+
+
+        IHolidayPeriod holidayPeriod = new HolidayPeriod(period);
 
         // Act
         int result = holidayPeriod.GetNumberOfCommonUtilDays();
 
         // Assert
-        Assert.Equal(5, result);
+        Assert.Equal(15, result);
     }
 }

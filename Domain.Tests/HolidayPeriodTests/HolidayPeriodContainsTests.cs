@@ -6,24 +6,20 @@ namespace Domain.Tests.HolidayPeriodTests;
 
 public class HolidayPeriodContainsTests
 {
-    /**
-    * Test method to verify if Holiday Period is contained in another Holiday Period
-    * Happy Path
-    */
     [Fact]
     public void WhenHolidayPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
+        var referenceStart = DateOnly.FromDateTime(DateTime.Now);
+        var referenceEnd = referenceStart.AddDays(10);
+        var innerStart = referenceStart.AddDays(2);
+        var innerEnd = referenceStart.AddDays(5);
 
-        // Establish that the other PeriodDate must be contained in it
-        // Reference period CONTAINS period to Verify
-        doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(true);
+        var referencePeriod = new PeriodDate(referenceStart, referenceEnd);
+        var innerPeriod = new PeriodDate(innerStart, innerEnd);
 
-        // Instatiate both Holiday Periods
-        HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
-        HolidayPeriod toVerifyHPeriod = new HolidayPeriod(doublePeriodDateToVerify.Object);
+        var referenceHPeriod = new HolidayPeriod(referencePeriod);
+        var toVerifyHPeriod = new HolidayPeriod(innerPeriod);
 
         // Act
         bool result = referenceHPeriod.Contains(toVerifyHPeriod);
@@ -32,24 +28,20 @@ public class HolidayPeriodContainsTests
         Assert.True(result);
     }
 
-    /**
-    * Test method to verify if Holiday Period is contained in another Holiday Period
-    * It's not contained
-    */
     [Fact]
     public void WhenHolidayPeriodIsNotFullyContained_ThenReturnsFalse()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
+        var referenceStart = DateOnly.FromDateTime(DateTime.Now);
+        var referenceEnd = referenceStart.AddDays(5);
+        var outerStart = referenceEnd.AddDays(1);
+        var outerEnd = referenceEnd.AddDays(5);
 
-        // Establish that the other PeriodDate ISN'T contained in it
-        // Reference period DOESN'T contain period to Verify
-        doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(false);
+        var referencePeriod = new PeriodDate(referenceStart, referenceEnd);
+        var outerPeriod = new PeriodDate(outerStart, outerEnd);
 
-        // Instatiate both Holiday Periods
-        HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
-        HolidayPeriod toVerifyHPeriod = new HolidayPeriod(doublePeriodDateToVerify.Object);
+        var referenceHPeriod = new HolidayPeriod(referencePeriod);
+        var toVerifyHPeriod = new HolidayPeriod(outerPeriod);
 
         // Act
         bool result = referenceHPeriod.Contains(toVerifyHPeriod);
@@ -58,55 +50,39 @@ public class HolidayPeriodContainsTests
         Assert.False(result);
     }
 
-    /**
-    * Test method to verify if PeriodDate is contained in another Holiday Period's period
-    * Happy Path
-    */
     [Fact]
     public void WhenPeriodIsFullyContained_ThenReturnsTrue()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
+        var start = DateOnly.FromDateTime(DateTime.Now);
+        var end = start.AddDays(5);
+        var innerDate = start.AddDays(2);
 
-        // Establish that the other PeriodDate must be contained in it
-        // Reference period CONTAINS period to Verify
-        doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(true);
-
-        // Instatiate both Holiday Periods
-        HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
+        var period = new PeriodDate(start, end);
+        var holidayPeriod = new HolidayPeriod(period);
 
         // Act
-        bool result = referenceHPeriod.Contains(doublePeriodDateToVerify.Object);
+        bool result = holidayPeriod.ContainsDate(innerDate);
 
         // Assert
         Assert.True(result);
     }
 
-    /**
-    * Test method to verify if Holiday Period is contained in another Holiday Period
-    * It's not contained
-    */
     [Fact]
     public void WhenPeriodIsNotFullyContained_ThenReturnsFalse()
     {
         // Arrange
-        Mock<PeriodDate> doublePeriodDateReference = new Mock<PeriodDate>();
-        Mock<PeriodDate> doublePeriodDateToVerify = new Mock<PeriodDate>();
+        var start = DateOnly.FromDateTime(DateTime.Now);
+        var end = start.AddDays(5);
+        var outsideDate = end.AddDays(1);
 
-        // Establish that the other PeriodDate ISN'T contained in it
-        // Reference period DOESN'T contain period to Verify
-        doublePeriodDateReference.Setup(pd => pd.Contains(doublePeriodDateToVerify.Object)).Returns(false);
-
-        // Instatiate both Holiday Periods
-        HolidayPeriod referenceHPeriod = new HolidayPeriod(doublePeriodDateReference.Object);
+        var period = new PeriodDate(start, end);
+        var holidayPeriod = new HolidayPeriod(period);
 
         // Act
-        bool result = referenceHPeriod.Contains(doublePeriodDateToVerify.Object);
+        bool result = holidayPeriod.ContainsDate(outsideDate);
 
         // Assert
         Assert.False(result);
     }
-
-
 }

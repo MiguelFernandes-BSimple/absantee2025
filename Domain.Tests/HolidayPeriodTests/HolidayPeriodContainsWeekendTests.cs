@@ -9,32 +9,38 @@ public class HolidayPeriodContainsWeekendTests
     [Fact]
     public void WhenPassingPeriodThatContainsWeekend_ThenReturnTrue()
     {
-        //arrange
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
-        periodDate.Setup(pd => pd.ContainsWeekend()).Returns(true);
+        // Arrange
+        // Sexta a Segunda → contém sábado e domingo
+        var start = new DateOnly(2024, 4, 12); // Sexta
+        var end = new DateOnly(2024, 4, 15);   // Segunda
 
-        HolidayPeriod holidayPlan = new HolidayPeriod(periodDate.Object);
+        var periodDate = new PeriodDate(start, end);
+        var holidayPlan = new HolidayPeriod(periodDate);
 
-        //act
+        // Act
         bool result = holidayPlan.ContainsWeekend();
 
-        //assert
+        // Assert
         Assert.True(result);
     }
+
 
     [Fact]
     public void WhenPassingPeriodThatDontContainWeekend_ThenReturnFalse()
     {
-        //arrange
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
-        periodDate.Setup(pd => pd.ContainsWeekend()).Returns(false);
+        // Arrange
+        // Segunda a Sexta → não contém sábado nem domingo
+        var start = new DateOnly(2024, 4, 8); // Segunda
+        var end = new DateOnly(2024, 4, 12);  // Sexta
 
-        HolidayPeriod holidayPlan = new HolidayPeriod(periodDate.Object);
+        var periodDate = new PeriodDate(start, end);
+        var holidayPlan = new HolidayPeriod(periodDate);
 
-        //act
+        // Act
         bool result = holidayPlan.ContainsWeekend();
 
-        //assert
+        // Assert
         Assert.False(result);
     }
+
 }
