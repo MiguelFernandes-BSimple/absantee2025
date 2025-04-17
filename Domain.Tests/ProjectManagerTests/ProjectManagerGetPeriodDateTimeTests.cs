@@ -10,12 +10,13 @@ public class ProjectManagerGetPeriodDateTimeTests
     public void WhenGettingPeriodDateTime_ThenReturnsPeriodDateTime()
     {
         //arrange
-        var periodDateTime = new Mock<PeriodDateTime>();
-        var ProjectManager = new ProjectManager(It.IsAny<long>(), It.IsAny<long>(), periodDateTime.Object);
+        PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
+
+        var ProjectManager = new ProjectManager(It.IsAny<long>(), It.IsAny<long>(), periodDateTime);
         //act
         var ProjectManagerPeriodDateTime = ProjectManager.GetPeriodDateTime();
 
         //assert
-        Assert.Equal(periodDateTime.Object, ProjectManagerPeriodDateTime);
+        Assert.Equal(periodDateTime, ProjectManagerPeriodDateTime);
     }
 }
