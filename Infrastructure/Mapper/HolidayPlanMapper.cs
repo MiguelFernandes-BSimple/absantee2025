@@ -5,7 +5,7 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Mapper;
 
-public class HolidayPlanMapper : IMapper<HolidayPlan, HolidayPlanDataModel>
+public class HolidayPlanMapper : IMapper<IHolidayPlan, HolidayPlanDataModel>
 {
     private readonly HolidayPlanFactory _holidayPlanFactory;
     private readonly HolidayPeriodMapper _holidayPeriodMapper;
@@ -16,24 +16,24 @@ public class HolidayPlanMapper : IMapper<HolidayPlan, HolidayPlanDataModel>
         _holidayPeriodMapper = holidayPeriodMapper;
     }
 
-    public HolidayPlan ToDomain(HolidayPlanDataModel holidayPlanDM)
+    public IHolidayPlan ToDomain(HolidayPlanDataModel holidayPlanDM)
     {
         HolidayPlan holidayPlan = _holidayPlanFactory.Create(holidayPlanDM);
 
         return holidayPlan;
     }
 
-    public IEnumerable<HolidayPlan> ToDomain(IEnumerable<HolidayPlanDataModel> holidayPeriodsDM)
+    public IEnumerable<IHolidayPlan> ToDomain(IEnumerable<HolidayPlanDataModel> holidayPeriodsDM)
     {
         return holidayPeriodsDM.Select(ToDomain);
     }
 
-    public HolidayPlanDataModel ToDataModel(HolidayPlan holidayPlans)
+    public HolidayPlanDataModel ToDataModel(IHolidayPlan holidayPlans)
     {
         return new HolidayPlanDataModel(holidayPlans, _holidayPeriodMapper);
     }
 
-    public IEnumerable<HolidayPlanDataModel> ToDataModel(IEnumerable<HolidayPlan> holidayPlans)
+    public IEnumerable<HolidayPlanDataModel> ToDataModel(IEnumerable<IHolidayPlan> holidayPlans)
     {
         return holidayPlans.Select(ToDataModel);
     }

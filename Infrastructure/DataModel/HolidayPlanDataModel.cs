@@ -13,13 +13,13 @@ public class HolidayPlanDataModel : IHolidayPlanVisitor
     public long Id { get; set; }
     public long CollaboratorId { get; set; }
     private List<HolidayPeriodDataModel> HolidayPeriodsDM;
-    
+
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
         return _mapper.ToDomain(HolidayPeriodsDM).ToList();
     }
 
-    public HolidayPlanDataModel(HolidayPlan holidayPlan, HolidayPeriodMapper mapper)
+    public HolidayPlanDataModel(IHolidayPlan holidayPlan, HolidayPeriodMapper mapper)
     {
         _mapper = mapper;
         Id = holidayPlan.GetId();
