@@ -14,10 +14,10 @@ using Moq;
 
 namespace Infrastructure.Tests.CollaboratorRepositoryTests
 {
-    public class GetByUsersIdsAsync
+    public class CollaboratorRepositoryGetByIdsAsync
     {
         [Fact]
-        public async Task WhenSearchingByUserId_ThenReturnsAllCollaboratorsWithUserId()
+        public async Task WhenSearchingById_ThenReturnsAllCollaboratorsWithId()
         {
             // Arrange
             var collaboratorDM1 = new Mock<ICollaboratorVisitor>();
@@ -39,9 +39,9 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             var absanteeMock = new Mock<IAbsanteeContext>();
             absanteeMock.Setup(a => a.Collaborators).Returns(mockSet.Object);
 
-            collaboratorDM1.Setup(c => c.UserID).Returns(1);
-            collaboratorDM2.Setup(c => c.UserID).Returns(2);
-            collaboratorDM3.Setup(c => c.UserID).Returns(3);
+            collaboratorDM1.Setup(c => c.Id).Returns(1);
+            collaboratorDM2.Setup(c => c.Id).Returns(2);
+            collaboratorDM3.Setup(c => c.Id).Returns(3);
 
             var userFiltered = new List<CollaboratorDataModel>
             {
@@ -67,7 +67,7 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
         }
 
         [Fact]
-        public async Task WhenSearchingByUserIdWithNoCollaborators_ThenReturnsEmptyList()
+        public async Task WhenSearchingByIdWithNoCollaborators_ThenReturnsEmptyList()
         {
             // Arrange
             var collaboratorDM1 = new Mock<ICollaboratorVisitor>();
@@ -89,9 +89,9 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             var absanteeMock = new Mock<IAbsanteeContext>();
             absanteeMock.Setup(a => a.Collaborators).Returns(mockSet.Object);
 
-            collaboratorDM1.Setup(c => c.UserID).Returns(1);
-            collaboratorDM2.Setup(c => c.UserID).Returns(2);
-            collaboratorDM3.Setup(c => c.UserID).Returns(3);
+            collaboratorDM1.Setup(c => c.Id).Returns(1);
+            collaboratorDM2.Setup(c => c.Id).Returns(2);
+            collaboratorDM3.Setup(c => c.Id).Returns(3);
 
             var userFiltered = new List<CollaboratorDataModel>();
 
