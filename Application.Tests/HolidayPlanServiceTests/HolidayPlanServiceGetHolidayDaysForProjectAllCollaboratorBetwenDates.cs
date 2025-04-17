@@ -4,7 +4,7 @@ using Application.Services;
 using Moq;
 namespace Application.Tests.HolidayPlanServiceTests;
 
-public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
+public class HolidayPlanServiceGetHolidayDaysForProjectAllCollaboratorBetwenDates
 {
     [Fact]
     public async Task GetHolidayDaysForProjectCollaboratorBetweenDates_ReturnsCorrectDays()
@@ -14,7 +14,7 @@ public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
         var mockHolidayPlanRepo = new Mock<IHolidayPlanRepository>();
 
         var collabIdList = new List<long>() { 1, 2 };
-        
+
         var periodDouble = new Mock<IPeriodDate>();
 
         var mockAssociation1 = new Mock<IAssociationProjectCollaborator>();
@@ -80,7 +80,7 @@ public class GetHolidayDaysForProjectAllCollaboratorBetwenDates
         var mockHolidayPlanRepo = new Mock<IHolidayPlanRepository>();
 
         var collabIdList = new List<long>() { 1, 2 };
-        
+
         var periodDouble = new Mock<IPeriodDate>();
 
         var mockAssociation = new Mock<IAssociationProjectCollaborator>();

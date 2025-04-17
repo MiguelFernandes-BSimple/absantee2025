@@ -4,7 +4,7 @@ using Application.Services;
 using Moq;
 namespace Application.Tests.HolidayPlanServiceTests;
 
-public class FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends
+public class HolidayPlanServiceFindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends
 {
     [Fact]
     public async Task WhenRetrievingAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekends_ThenReturnSucessfully()

@@ -4,7 +4,7 @@ using Application.Services;
 using Moq;
 namespace Application.Tests.HolidayPlanServiceTests;
 
-public class GetHolidayDaysForProjectCollaboratorBetweenDates
+public class HolidayPlanServiceGetHolidayDaysForProjectCollaboratorBetweenDates
 {
     [Fact]
     public async Task WhenNoAssociationForCollaborator_ThenThrowException()

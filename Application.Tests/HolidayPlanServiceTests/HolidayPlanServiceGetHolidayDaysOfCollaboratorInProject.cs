@@ -2,11 +2,10 @@ using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
-using Xunit.Sdk;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 
-public class GetHolidayDaysOfCollaboratorInProject
+public class HolidayPlanServiceGetHolidayDaysOfCollaboratorInProject
 {
     [Fact]
     public async Task WhenCalculatingHolidayDaysOfCollaboratorInAProject_ThenReturnCorrectValue()

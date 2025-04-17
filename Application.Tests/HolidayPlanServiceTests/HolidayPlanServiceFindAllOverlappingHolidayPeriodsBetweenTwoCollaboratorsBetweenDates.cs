@@ -4,7 +4,7 @@ using Application.Services;
 using Moq;
 namespace Application.Tests.HolidayPlanServiceTests;
 
-public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
+public class HolidayPlanServiceFindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
 {
     //UC20 
     [Fact]
@@ -21,7 +21,7 @@ public class FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates
         var holidayPeriodsList2 = new List<IHolidayPeriod> { holidayPeriod2.Object };
 
         holidayPeriod1.Setup(hp => hp.Intersects(holidayPeriod2.Object)).Returns(true);
-        holidayPeriod2.Setup(hp => hp.Intersects(holidayPeriod1.Object)).Returns(true);        
+        holidayPeriod2.Setup(hp => hp.Intersects(holidayPeriod1.Object)).Returns(true);
 
         Mock<IHolidayPlanRepository> holidayPlanRepository = new Mock<IHolidayPlanRepository>();
         Mock<IAssociationProjectCollaboratorRepository> associationRepository = new Mock<IAssociationProjectCollaboratorRepository>();

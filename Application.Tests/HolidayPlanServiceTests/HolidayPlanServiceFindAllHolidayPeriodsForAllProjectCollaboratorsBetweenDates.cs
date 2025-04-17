@@ -5,7 +5,7 @@ using Moq;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 
-public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
+public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
 {
     [Fact]
     public async Task WhenFindingHolidayPeriodsForProjectCollaborators_ThenReturnCorrectPeriods()
@@ -22,7 +22,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         var associationsList = new List<IAssociationProjectCollaborator> {
             associationMock.Object
         };
-        
+
         associationRepoMock
             .Setup(a =>
                 a.FindAllByProjectAndBetweenPeriodAsync(
@@ -81,7 +81,7 @@ public class FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDates
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
         holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorIdList, periodDouble.Object))
                                     .ReturnsAsync(expected);
-        
+
         var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
         // Act
         var result = await holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(
