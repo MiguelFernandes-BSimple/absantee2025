@@ -11,21 +11,18 @@ public class AssociationProjectCollaboratorAssociationIntersectDatesTests
     public void WhenAssociationIntersectDatesReceivesIntersectingDate_ThenReturnTrue()
     {
         // Arrange
-        // Association parameters
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        var periodDate = new PeriodDate(new DateOnly(2024, 10, 10), new DateOnly(2024, 10, 20));
         long collabId = 1;
         long projectId = 1;
 
         // PeriodDAte to intersect
-        Mock<PeriodDate> periodDateToIntersect = new Mock<PeriodDate>();
+        var periodDateToIntersect = new PeriodDate(new DateOnly(2024, 10, 15), new DateOnly(2024, 10, 25));
 
         AssociationProjectCollaborator assoc =
-            new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);
-
-        periodDate.Setup(pd => pd.Intersects(periodDateToIntersect.Object)).Returns(true);
+            new AssociationProjectCollaborator(collabId, projectId, periodDate);
 
         //Act
-        bool result = assoc.AssociationIntersectPeriod(periodDateToIntersect.Object);
+        bool result = assoc.AssociationIntersectPeriod(periodDateToIntersect);
 
         //Assert
         Assert.True(result);
@@ -36,20 +33,18 @@ public class AssociationProjectCollaboratorAssociationIntersectDatesTests
     {
         // Arrange
         // Association parameters
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        var periodDate = new PeriodDate(new DateOnly(2024, 10, 10), new DateOnly(2024, 10, 20));
         long collabId = 1;
         long projectId = 1;
 
         // PeriodDAte to intersect
-        Mock<PeriodDate> periodDateToIntersect = new Mock<PeriodDate>();
+        var periodDateToIntersect = new PeriodDate(new DateOnly(2024, 10, 25), new DateOnly(2024, 10, 29));
 
         AssociationProjectCollaborator assoc =
-            new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);
-
-        periodDate.Setup(pd => pd.Intersects(periodDateToIntersect.Object)).Returns(false);
+            new AssociationProjectCollaborator(collabId, projectId, periodDate);
 
         //Act
-        bool result = assoc.AssociationIntersectPeriod(periodDateToIntersect.Object);
+        bool result = assoc.AssociationIntersectPeriod(periodDateToIntersect);
 
         //Assert
         Assert.False(result);

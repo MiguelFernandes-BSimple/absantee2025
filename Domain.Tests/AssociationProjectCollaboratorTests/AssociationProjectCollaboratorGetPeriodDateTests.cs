@@ -12,17 +12,17 @@ public class AssociationProjectCollaboratorGetPeriodDateTests
     {
         // Arrange
         // Association parameters
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
         long collabId = 1;
         long projectId = 1;
 
         AssociationProjectCollaborator assoc =
-            new AssociationProjectCollaborator(collabId, projectId, periodDate.Object);
+            new AssociationProjectCollaborator(collabId, projectId, periodDate);
 
         // Act
         var result = assoc._periodDate;
 
         // Assert
-        Assert.Equal(periodDate.Object, result);
+        Assert.Equal(periodDate, result);
     }
 }

@@ -1,5 +1,4 @@
 using Domain.Factory.TrainingPeriodFactory;
-using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Moq;
@@ -10,19 +9,16 @@ public class TrainingPeriodFactoryTests
     [Fact]
     public void WhenPassingValidDates_ThenCreateTrainingPeriod()
     {
-        //Arrange
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
-
-        // Period init date has to be bigger than DateOnly(DateTime.Now)
-        // It's in the future
-        periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(false);
+        // Arrange
+        PeriodDate periodDate =
+            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
 
         TrainingPeriodFactory factory = new TrainingPeriodFactory();
 
-        //Act
-        var result = factory.Create(periodDate.Object);
+        // Act
+        var result = factory.Create(periodDate);
 
-        //Assert
+        // Assert
         Assert.NotNull(result);
     }
 
@@ -30,19 +26,16 @@ public class TrainingPeriodFactoryTests
     public void WhenPassingDatesInThePast_ThenThrowsArgumentException()
     {
         // Arrange
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
-
-        // when init date is smaller than DateOnly(DateTime.Now)
-        periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(true);
+        PeriodDate periodDate =
+            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
 
         TrainingPeriodFactory factory = new TrainingPeriodFactory();
-
 
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
-                //act
-                factory.Create(periodDate.Object)
+                // Act
+                factory.Create(periodDate)
 
         );
 
@@ -52,16 +45,16 @@ public class TrainingPeriodFactoryTests
     [Fact]
     public void WhenPassingVisitor_ThenCreateTrainingPeriod()
     {
-        //arrange
+        // Arrange
         var visitor = new Mock<ITrainingPeriodVisitor>();
         visitor.Setup(v => v.PeriodDate).Returns(It.IsAny<PeriodDate>());
 
         var factory = new TrainingPeriodFactory();
 
-        //act
+        // Act
         var result = factory.Create(visitor.Object);
 
-        //assert
+        // Assert
         Assert.NotNull(result);
     }
 }

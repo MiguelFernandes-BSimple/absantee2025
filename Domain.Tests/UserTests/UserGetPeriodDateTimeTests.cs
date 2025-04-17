@@ -10,13 +10,13 @@ namespace Domain.Tests.UserTests
         public void WhenGettingPeriodDateTime_ThenReturnsPeriodDateTime()
         {
             //arrange
-            var periodDateTime = new Mock<PeriodDateTime>();
-            var user = new User(It.IsAny<long>(), "John", "Doe", "john@email.com", periodDateTime.Object);
+            PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            var user = new User(It.IsAny<long>(), "John", "Doe", "john@email.com", periodDateTime);
             //act
-            var userPeriodDateTime = user.GetPeriodDateTime();
+            var userPeriodDateTime = user._periodDateTime;
 
             //assert
-            Assert.Equal(periodDateTime.Object, userPeriodDateTime);
+            Assert.Equal(periodDateTime, userPeriodDateTime);
         }
     }
 }

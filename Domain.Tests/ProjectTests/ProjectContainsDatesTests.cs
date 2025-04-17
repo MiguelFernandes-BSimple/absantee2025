@@ -9,14 +9,17 @@ public class ProjectContainsDatesTests
     public void WhenPassingValidData_ThenContainsDatesReturnTrue()
     {
         //arrange
-        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
-        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
+        var initDate = new DateOnly(2025, 4, 1);
+        var endDate = new DateOnly(2025, 4, 15);
+        var periodDate = new PeriodDate(initDate, endDate);
+        var project = new Project(1, "Titulo 1", "T1", periodDate);
 
-        Mock<PeriodDate> searchPeriodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(true);
+        var initDateExpected = new DateOnly(2025, 4, 5);
+        var endDateExpected = new DateOnly(2025, 4, 10);
+        var periodDateExpected = new PeriodDate(initDateExpected, endDateExpected);
 
         //act
-        bool result = project.ContainsDates(searchPeriodDateMock.Object);
+        bool result = project.ContainsDates(periodDateExpected);
 
         //assert
         Assert.True(result);
@@ -26,14 +29,17 @@ public class ProjectContainsDatesTests
     public void WhenPassingInvalidData_ThenContainsDatesReturnFalse()
     {
         //arrange
-        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
-        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
+        var initDate = new DateOnly(2025, 4, 1);
+        var endDate = new DateOnly(2025, 4, 15);
+        var periodDate = new PeriodDate(initDate, endDate);
+        var project = new Project(1, "Titulo 1", "T1", periodDate);
 
-        Mock<PeriodDate> searchPeriodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(pd => pd.Contains(searchPeriodDateMock.Object)).Returns(false);
+        var initDateExpected = new DateOnly(2025, 5, 5);
+        var endDateExpected = new DateOnly(2025, 5, 10);
+        var periodDateExpected = new PeriodDate(initDateExpected, endDateExpected);
 
         //act
-        bool result = project.ContainsDates(searchPeriodDateMock.Object);
+        bool result = project.ContainsDates(periodDateExpected);
 
         //assert
         Assert.False(result);

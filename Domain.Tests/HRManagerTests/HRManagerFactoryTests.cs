@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -21,8 +17,7 @@ public class HRManagerFactoryTests
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-        var periodDateTimeDouble = new Mock<PeriodDateTime>();
-        periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
+        PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
         userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
@@ -30,7 +25,7 @@ public class HRManagerFactoryTests
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         //act
-        var result = await hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object);
+        var result = await hrFactory.Create(It.IsAny<long>(), periodDateTime);
         //assert
         Assert.NotNull(result);
     }
@@ -60,8 +55,7 @@ public class HRManagerFactoryTests
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
-        var periodDateTimeDouble = new Mock<PeriodDateTime>();
-        periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
+        PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
         userRepoDouble.Setup(urd => urd.GetByIdAsync(1)).ReturnsAsync(userDouble.Object);
@@ -72,7 +66,7 @@ public class HRManagerFactoryTests
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
         () =>
             //act
-            hrFactory.Create(1, periodDateTimeDouble.Object)
+            hrFactory.Create(1, periodDateTime)
         );
         Assert.Equal("Deactivation date is before init date", exception.Message);
     }
@@ -84,8 +78,7 @@ public class HRManagerFactoryTests
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(true);
 
-        var periodDateTimeDouble = new Mock<PeriodDateTime>();
-        periodDateTimeDouble.Setup(pdtd => pdtd.GetInitDate()).Returns(It.IsAny<DateTime>());
+        PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
         var userRepoDouble = new Mock<IUserRepository>();
         userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(userDouble.Object);
@@ -96,7 +89,7 @@ public class HRManagerFactoryTests
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
         () =>
             //act
-            hrFactory.Create(It.IsAny<long>(), periodDateTimeDouble.Object)
+            hrFactory.Create(It.IsAny<long>(), periodDateTime)
         );
         Assert.Equal("User is deactivated", exception.Message);
     }
@@ -118,7 +111,7 @@ public class HRManagerFactoryTests
 
         // assert
         Assert.NotNull(result);
-        }
+    }
 
     [Fact]
     public void WhenCreatingHRManagerWithIHRManagerVisitor_ThenCreatesHRManager()
@@ -133,10 +126,10 @@ public class HRManagerFactoryTests
         var userRepoDouble = new Mock<IUserRepository>();
 
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
-        
+
         //act
         var result = hrFactory.Create(hrManagerVisitor.Object);
-        
+
         //assert
         Assert.NotNull(result);
     }

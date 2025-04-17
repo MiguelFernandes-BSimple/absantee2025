@@ -1,5 +1,4 @@
 ﻿using Moq;
-using Domain.Interfaces;
 using Domain.Models;
 
 namespace Domain.Tests.CollaboratorTests;
@@ -11,15 +10,14 @@ public class CollaboratorContractContainsDatesTests
     public void WhenPassingValidDatesToContainsDates_ThenResultIsTrue()
     {
         // Arrange
-        Mock<PeriodDateTime> searchPeriodDateTime = new Mock<PeriodDateTime>();
-        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
-        periodDateTime.Setup(pd => pd.Contains(searchPeriodDateTime.Object)).Returns(true);
+        PeriodDateTime collabPeriod = new PeriodDateTime(DateTime.Now, DateTime.Now.AddMonths(2));
+        PeriodDateTime inPeriod = new PeriodDateTime(DateTime.Now.AddDays(1), DateTime.Now.AddDays(10));
 
-        Collaborator collaborator = new Collaborator(It.IsAny<long>(), periodDateTime.Object);        
+        Collaborator collaborator = new Collaborator(It.IsAny<long>(), collabPeriod);
 
         // Act
-        bool result = collaborator.ContractContainsDates(searchPeriodDateTime.Object);
-        
+        bool result = collaborator.ContractContainsDates(inPeriod);
+
         // Assert
         Assert.True(result);
     }
@@ -29,15 +27,14 @@ public class CollaboratorContractContainsDatesTests
     public void WhenPassingInvalidDatesToContainsDates_ThenResultIsFalse()
     {
         // Arrange
-        Mock<PeriodDateTime> periodDateTime = new Mock<PeriodDateTime>();
+        PeriodDateTime collabPeriod = new PeriodDateTime(DateTime.Now, DateTime.Now.AddMonths(2));
+        PeriodDateTime inPeriod = new PeriodDateTime(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(3));
 
-        Collaborator collaborator = new Collaborator(It.IsAny<long>(), periodDateTime.Object);
-
-        Mock<PeriodDateTime> searchPeriodDateTime = new Mock<PeriodDateTime>();
-        periodDateTime.Setup(pd => pd.Contains(searchPeriodDateTime.Object)).Returns(false);
+        Collaborator collaborator = new Collaborator(It.IsAny<long>(), collabPeriod);
 
         // Act
-        bool result = collaborator.ContractContainsDates(searchPeriodDateTime.Object);
+        bool result = collaborator.ContractContainsDates(inPeriod);
+
         // Assert
         Assert.False(result);
     }

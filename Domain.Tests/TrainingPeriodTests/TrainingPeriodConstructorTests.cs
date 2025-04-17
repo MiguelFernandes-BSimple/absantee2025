@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Factory.TrainingPeriodFactory;
-using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
 using Moq;
 
 namespace Domain.Tests.TrainingPeriodTests
@@ -16,30 +9,26 @@ namespace Domain.Tests.TrainingPeriodTests
         public void WhenPassingValidDates_ThenTrainingPeriodIsCreated()
         {
             //Arrange
-            Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
-
-            periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(false);
+            PeriodDate periodDate = new PeriodDate(new DateOnly(2025, 06, 05), new DateOnly(2025, 06, 10));
 
             //Act
-            new TrainingPeriod(periodDate.Object);
+            TrainingPeriod tperiod = new TrainingPeriod(periodDate);
 
             //Assert
+            Assert.NotNull(tperiod);
         }
 
         [Fact]
         public void WhenPassingDatesInThePast_ThenThrowsArgumentException()
         {
             // Arrange
-            Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
-
-            periodDate.Setup(pd => pd.IsInitDateSmallerThan(DateOnly.FromDateTime(DateTime.Now))).Returns(true);
-
+            PeriodDate periodDate = new PeriodDate(new DateOnly(2024, 06, 05), new DateOnly(2024, 06, 10));
 
             // Assert
             ArgumentException exception = Assert.Throws<ArgumentException>(
                 () =>
-                    //act
-                    new TrainingPeriod(periodDate.Object)
+                     //act
+                     new TrainingPeriod(periodDate)
 
             );
 
@@ -52,9 +41,10 @@ namespace Domain.Tests.TrainingPeriodTests
             //Arrange
 
             //Act
-            new TrainingPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
+            TrainingPeriod tperiod = new TrainingPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             //Assert
+            Assert.NotNull(tperiod);
         }
     }
 }
