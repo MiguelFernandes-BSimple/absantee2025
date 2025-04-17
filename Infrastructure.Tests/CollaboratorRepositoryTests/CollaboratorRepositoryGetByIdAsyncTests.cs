@@ -14,10 +14,10 @@ using Moq;
 
 namespace Infrastructure.Tests.CollaboratorRepositoryTests
 {
-    public class CollaboratorRepositoryGetByUsersIdsAsync
+    public class CollaboratorRepositoryGetByIdAsyncTests
     {
         [Fact]
-        public async Task WhenSearchingByUserId_ThenReturnsAllCollaboratorsWithUserId()
+        public async Task WhenSearchingById_ThenReturnsCollaboratorWithId()
         {
             // Arrange
             var collaboratorDM1 = new Mock<ICollaboratorVisitor>();
@@ -39,35 +39,27 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             var absanteeMock = new Mock<IAbsanteeContext>();
             absanteeMock.Setup(a => a.Collaborators).Returns(mockSet.Object);
 
-            collaboratorDM1.Setup(c => c.UserID).Returns(1);
-            collaboratorDM2.Setup(c => c.UserID).Returns(2);
-            collaboratorDM3.Setup(c => c.UserID).Returns(3);
+            collaboratorDM1.Setup(c => c.Id).Returns(1);
+            collaboratorDM2.Setup(c => c.Id).Returns(2);
+            collaboratorDM3.Setup(c => c.Id).Returns(3);
 
-            var userFiltered = new List<CollaboratorDataModel>
-            {
-                (CollaboratorDataModel)collaboratorDM1.Object,
-                (CollaboratorDataModel)collaboratorDM3.Object
-            };
+            var userFiltered = (CollaboratorDataModel)collaboratorDM1.Object;
 
-            var expected = new List<Collaborator>
-            {
-                new Mock<Collaborator>().Object,
-                new Mock<Collaborator>().Object
-            };
+            var expected = new Mock<Collaborator>().Object;
 
             var collabMapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
             collabMapper.Setup(cm => cm.ToDomain(userFiltered)).Returns(expected);
 
             var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
             //Act 
-            var result = await collaboratorRepository.GetByIdsAsync([1, 3]);
+            var result = await collaboratorRepository.GetByIdAsync(3);
 
             //Assert
-            Assert.True(expected.SequenceEqual(result));
+            Assert.Equal(expected, result);
         }
 
         [Fact]
-        public async Task WhenSearchingByUserIdWithNoCollaborators_ThenReturnsEmptyList()
+        public async Task WhenSearchingByIdWithNoCollaborators_ThenReturnsNull()
         {
             // Arrange
             var collaboratorDM1 = new Mock<ICollaboratorVisitor>();
@@ -89,23 +81,22 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             var absanteeMock = new Mock<IAbsanteeContext>();
             absanteeMock.Setup(a => a.Collaborators).Returns(mockSet.Object);
 
-            collaboratorDM1.Setup(c => c.UserID).Returns(1);
-            collaboratorDM2.Setup(c => c.UserID).Returns(2);
-            collaboratorDM3.Setup(c => c.UserID).Returns(3);
+            collaboratorDM1.Setup(c => c.Id).Returns(1);
+            collaboratorDM2.Setup(c => c.Id).Returns(2);
+            collaboratorDM3.Setup(c => c.Id).Returns(3);
 
             var userFiltered = new List<CollaboratorDataModel>();
 
             var expected = new List<Collaborator>();
 
             var collabMapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
-            collabMapper.Setup(cm => cm.ToDomain(userFiltered)).Returns(expected);
 
             var collaboratorRepository = new CollaboratorRepository((AbsanteeContext)absanteeMock.Object, collabMapper.Object);
             //Act 
-            var result = await collaboratorRepository.GetByIdsAsync([4, 5]);
+            var result = await collaboratorRepository.GetByIdAsync(4);
 
             //Assert
-            Assert.Empty(result);
+            Assert.Null(result);
         }
     }
 }
