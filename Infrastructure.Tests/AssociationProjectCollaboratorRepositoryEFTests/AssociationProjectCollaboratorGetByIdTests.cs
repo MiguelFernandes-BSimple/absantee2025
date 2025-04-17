@@ -40,9 +40,11 @@ public class AssociationProjectCollaboratorGetByIdTests
 
         context.SaveChangesAsync();
 
+        var expected = new Mock<IAssociationProjectCollaborator>().Object;
+
         Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
             new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-        mapper.Setup(m => m.ToDomain(assocDM2)).Returns(assoc2.Object);
+        mapper.Setup(m => m.ToDomain(assocDM2)).Returns(expected);
 
         var associationRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
 
@@ -50,7 +52,7 @@ public class AssociationProjectCollaboratorGetByIdTests
         var result = associationRepo.GetById(2);
 
         // assert
-        Assert.Equal(result, assoc2.Object);
+        Assert.Equal(result, expected);
     }
 
 
