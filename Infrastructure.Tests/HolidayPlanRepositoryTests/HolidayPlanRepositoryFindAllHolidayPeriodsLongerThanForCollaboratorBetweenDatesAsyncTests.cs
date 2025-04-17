@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync
+public class HolidayPlanRepositoryFindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsyncTests
 {
     [Fact]
     public async Task WhenGivenBadCollaboratorAndDatesAndLengthAsync_ThenReturnEmptyLists()

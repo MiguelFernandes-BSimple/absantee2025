@@ -9,7 +9,7 @@ using Domain.Models;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class HolidayPlanRepositoryFindAllWithHolidayPeriodsLongerThanAsync
+public class HolidayPlanRepositoryFindAllWithHolidayPeriodsLongerThanAsyncTests
 {
     [Fact]
     public async Task WhenFindingHolidayPlansWithPeriodsLongerThanAsync_ReturnsCorrectList()
