@@ -8,7 +8,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class DurationTests
+    public class PeriodDateDurationTests
     {
         [Fact]
         public void WhenDurationIsCalled_ThenReturnExpectedDurationInDays()

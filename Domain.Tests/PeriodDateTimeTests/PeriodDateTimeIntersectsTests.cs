@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTimeTests
 {
-    public class IntersectsTests
+    public class PeriodDateTimeIntersectsTests
     {
         public static IEnumerable<object[]> IntersectionDates()
         {

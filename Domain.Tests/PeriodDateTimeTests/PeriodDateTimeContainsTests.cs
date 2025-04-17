@@ -2,7 +2,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTimeTests;
 
-public class ContainsTests
+public class PeriodDateTimeContainsTests
 {
     public static IEnumerable<object[]> GetPeriodDates_ValidFields()
     {

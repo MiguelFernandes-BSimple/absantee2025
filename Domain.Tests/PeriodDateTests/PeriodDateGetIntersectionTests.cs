@@ -8,7 +8,7 @@ using Domain.Models;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class GetIntersectionTests
+    public class PeriodDateGetIntersectionTests
     {
         public static IEnumerable<object[]> PeriodsThatIntersect()
         {

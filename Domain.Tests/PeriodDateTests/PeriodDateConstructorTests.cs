@@ -9,7 +9,7 @@ using Moq;
 
 namespace Domain.Tests.PeriodDateTests
 {
-    public class ConstructorTests
+    public class PeriodDateConstructorTests
     {
         [Fact]
         public void WhenCreatingWithValidDates_ThenPeriodDateIsCreated()
