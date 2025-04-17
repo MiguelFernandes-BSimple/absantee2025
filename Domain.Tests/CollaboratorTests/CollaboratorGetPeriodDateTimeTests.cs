@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
 using Moq;
 
 namespace Domain.Tests.CollaboratorTests
@@ -15,14 +9,14 @@ namespace Domain.Tests.CollaboratorTests
         public void WhenGettingId_ThenReturnsId()
         {
             // Arrange
-            var periodDateTime = new Mock<PeriodDateTime>();
-            var collaborator = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), periodDateTime.Object);
+            PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            Collaborator collaborator = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), periodDateTime);
 
             // Act
             var result = collaborator._periodDateTime;
 
             // Assert
-            Assert.Equal(periodDateTime.Object, result);
+            Assert.Equal(periodDateTime, result);
         }
     }
 }

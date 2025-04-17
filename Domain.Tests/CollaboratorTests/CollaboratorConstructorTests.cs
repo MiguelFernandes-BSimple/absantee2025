@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Factory;
-using Domain.Interfaces;
-using Domain.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
 using Moq;
 
 namespace Domain.Tests.CollaboratorTests
@@ -16,23 +8,25 @@ namespace Domain.Tests.CollaboratorTests
         [Fact]
         public void WhenCreatingCollaboratorWithValidUserIdAndPeriod_ThenCollaboratorIsCreatedCorrectly()
         {
-            //arrange
+            // Arrange
 
-            //act
-            new Collaborator(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
+            // Act
+            Collaborator collab = new Collaborator(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
 
-            //assert
+            // Assert
+            Assert.NotNull(collab);
         }
 
         [Fact]
         public void WhenCreatingCollaboratorWithValidIdAndUserIdAndPeriod_ThenCollaboratorIsCreatedCorrectly()
         {
-            //arrange
+            // Arrange
 
-            //act
-            new Collaborator(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
+            // Act
+            Collaborator collab = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
 
-            //assert
+            // Assert
+            Assert.NotNull(collab);
         }
     }
 }

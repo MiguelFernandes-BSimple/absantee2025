@@ -10,10 +10,10 @@ public class AssociationProjectCollaboratorConstructorTests
     public void WhenPassingArguments_ThenClassIsInstatiated()
     {
         // Arrange
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Act
-        var result = new AssociationProjectCollaborator(It.IsAny<long>(), It.IsAny<long>(), periodDate.Object);
+        var result = new AssociationProjectCollaborator(It.IsAny<long>(), It.IsAny<long>(), periodDate);
 
         // Assert
         Assert.NotNull(result);

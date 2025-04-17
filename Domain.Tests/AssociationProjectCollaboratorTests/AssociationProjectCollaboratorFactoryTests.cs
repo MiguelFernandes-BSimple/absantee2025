@@ -21,7 +21,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -32,12 +32,12 @@ public class AssociationProjectCollaboratorFactoryTests
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // Class validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(true);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -45,7 +45,7 @@ public class AssociationProjectCollaboratorFactoryTests
 
         // Act
         AssociationProjectCollaborator? result =
-            await factory.Create(periodDate.Object, collabId, projectId);
+            await factory.Create(periodDate, collabId, projectId);
 
         // Assert
         Assert.NotNull(result);
@@ -63,7 +63,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -75,12 +75,12 @@ public class AssociationProjectCollaboratorFactoryTests
 
         // All validations
         // Project doesnt contain the dates
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(false);
         project.Setup(p => p.IsFinished()).Returns(false);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(true);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -89,7 +89,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             // Act
-            factory.Create(periodDate.Object, collabId, projectId));
+            factory.Create(periodDate, collabId, projectId));
 
         Assert.Equal("Invalid arguments", exception.Message);
     }
@@ -106,7 +106,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -118,12 +118,12 @@ public class AssociationProjectCollaboratorFactoryTests
 
         // All validations
         // Project doesnt contain the dates
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(false);
         project.Setup(p => p.IsFinished()).Returns(false);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(true);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -132,7 +132,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             // Act
-            factory.Create(periodDate.Object, collabId, projectId));
+            factory.Create(periodDate, collabId, projectId));
 
         Assert.Equal("Invalid arguments", exception.Message);
     }
@@ -149,7 +149,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -161,12 +161,12 @@ public class AssociationProjectCollaboratorFactoryTests
 
         // All validations
         // Project doesnt contain the dates
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(false);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(false);
         project.Setup(p => p.IsFinished()).Returns(false);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(true);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -175,7 +175,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             // Act
-            factory.Create(periodDate.Object, collabId, projectId));
+            factory.Create(periodDate, collabId, projectId));
 
         Assert.Equal("Invalid arguments", exception.Message);
     }
@@ -193,7 +193,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -204,13 +204,13 @@ public class AssociationProjectCollaboratorFactoryTests
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(true);
         // Contract is finished
         project.Setup(p => p.IsFinished()).Returns(true);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(false);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(true);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -219,7 +219,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             // Act
-            factory.Create(periodDate.Object, collabId, projectId));
+            factory.Create(periodDate, collabId, projectId));
 
 
         Assert.Equal("Project is finished!", exception.Message);
@@ -237,7 +237,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -248,13 +248,13 @@ public class AssociationProjectCollaboratorFactoryTests
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         // Contract doesn't contain the dates
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(false);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(true);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(true);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -263,7 +263,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             // Act
-            factory.Create(periodDate.Object, collabId, projectId));
+            factory.Create(periodDate, collabId, projectId));
 
 
         Assert.Equal("Invalid arguments", exception.Message);
@@ -281,7 +281,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Collaborator and Project stubs
         Mock<ICollaborator> collab = new Mock<ICollaborator>();
         Mock<IProject> project = new Mock<IProject>();
-        Mock<PeriodDate> periodDate = new Mock<PeriodDate>();
+        PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
         long collabId = 1;
@@ -292,12 +292,12 @@ public class AssociationProjectCollaboratorFactoryTests
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
-        project.Setup(p => p.ContainsDates(periodDate.Object)).Returns(true);
+        project.Setup(p => p.ContainsDates(periodDate)).Returns(true);
         project.Setup(p => p.IsFinished()).Returns(false);
         collab.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         // Unicity validaiton
-        assocRepo.Setup(ar => ar.CanInsert(periodDate.Object, collabId, projectId)).ReturnsAsync(false);
+        assocRepo.Setup(ar => ar.CanInsert(periodDate, collabId, projectId)).ReturnsAsync(false);
 
         // Instatiate Factory
         IAssociationProjectCollaboratorFactory factory =
@@ -306,7 +306,7 @@ public class AssociationProjectCollaboratorFactoryTests
         // Assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             // Act
-            factory.Create(periodDate.Object, collabId, projectId));
+            factory.Create(periodDate, collabId, projectId));
 
 
         Assert.Equal("Invalid arguments", exception.Message);

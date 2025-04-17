@@ -16,11 +16,9 @@ namespace Domain.Tests.ProjectTests
             // arrange
             var startDate = new DateOnly(2025, 1, 1);
             var endDate = new DateOnly(2025, 1, 15);
-            var periodDouble = new Mock<PeriodDate>();
-            periodDouble.Setup(pd => pd.GetInitDate()).Returns(startDate);
-            periodDouble.Setup(pd => pd.GetFinalDate()).Returns(endDate);
+            var periodDate = new PeriodDate(startDate, endDate);
 
-            var project = new Project(1, "title", "TTL", periodDouble.Object);
+            var project = new Project(1, "title", "TTL", periodDate);
 
             // act
             var result = project.GetPeriodDate();

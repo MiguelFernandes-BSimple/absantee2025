@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
 using Moq;
 
 namespace Domain.Tests.HRManagerTests
@@ -15,13 +9,13 @@ namespace Domain.Tests.HRManagerTests
         public void WhenGettingPeriodDateTime_ThenReturnsPeriodDateTime()
         {
             //arrange
-            var periodDateTime = new Mock<PeriodDateTime>();
-            var hrManager = new HRManager(It.IsAny<long>(), It.IsAny<long>(), periodDateTime.Object);
+            PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            var hrManager = new HRManager(It.IsAny<long>(), It.IsAny<long>(), periodDateTime);
             //act
             var hrPeriodDateTime = hrManager._periodDateTime;
 
             //assert
-            Assert.Equal(periodDateTime.Object, hrPeriodDateTime);
+            Assert.Equal(periodDateTime, hrPeriodDateTime);
         }
     }
 }

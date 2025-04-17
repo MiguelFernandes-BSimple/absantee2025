@@ -9,12 +9,11 @@ public class ProjectIsFinishedTests
     public void WhenProjectIsFinished_ThenReturnTrue()
     {
         //arrange
-        DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
-        DateOnly ProjectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
+        var projectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
+        var projectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
+        var periodDate = new PeriodDate(projectInitDate, projectFinalDate);
 
-        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.IsFinalDateSmallerThan(It.IsAny<DateOnly>())).Returns(true);
-        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
+        var project = new Project(1, "Titulo 1", "T1", periodDate);
 
         //act
         bool result = project.IsFinished();
@@ -22,15 +21,16 @@ public class ProjectIsFinishedTests
         //assert
         Assert.True(result);
     }
+
     [Fact]
     public void WhenProjectIsNotFinished_ThenReturnFalse()
     {
         //arrange
-        DateOnly ProjectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
-        Mock<PeriodDate> periodDateMock = new Mock<PeriodDate>();
-        periodDateMock.Setup(p => p.IsFinalDateSmallerThan(It.IsAny<DateOnly>())).Returns(false);
+        var projectInitDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1);
+        var projectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(10));
+        var periodDate = new PeriodDate(projectInitDate, projectFinalDate);
 
-        Project project = new Project(1, "Titulo 1", "T1", periodDateMock.Object);
+        var project = new Project(1, "Titulo 1", "T1", periodDate);
 
         //act
         bool result = project.IsFinished();
