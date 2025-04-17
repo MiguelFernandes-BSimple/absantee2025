@@ -16,6 +16,16 @@ public class HolidayPlanRepositoryFindHolidayPlanByCollaboratorAsyncTests
     [Fact]
     public async Task WhenPassingValidCollabId_ThenReturnsCorrectHolidayPlan()
     {
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(databaseName: "TestDb")
+            .Options;
+
+        using var context = new AbsanteeContext(options);
+    }
+
+    [Fact]
+    public async Task WhenPassingValidCollabIsdfsdd_ThenReturnsCorrectHolidayPlan()
+    {
         // arrange
         var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
         var holidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
