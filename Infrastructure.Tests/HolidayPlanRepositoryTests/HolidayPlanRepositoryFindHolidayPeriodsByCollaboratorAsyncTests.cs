@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class HolidayPlanRepositoryFindHolidayPeriodsByCollaboratorAsync
+public class HolidayPlanRepositoryFindHolidayPeriodsByCollaboratorAsyncTests
 {
     [Fact]
     public async Task WhenFindingHolidayPeriodsByCollaboratorAsync_ThenReturnsCorrectPeriods()

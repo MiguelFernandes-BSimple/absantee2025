@@ -9,7 +9,7 @@ using Moq;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
-public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync
+public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsyncTests
 {
     [Theory]
     [InlineData("2020-01-01", "2020-12-31")]

@@ -15,7 +15,7 @@ using Infrastructure.Repositories;
 
 namespace Infrastructure.Tests.CollaboratorRepositoryTests
 {
-    public class CollaboratorRepositoryIsRepeated
+    public class CollaboratorRepositoryIsRepeatedTests
     {
         [Theory]
         [InlineData("2019-12-01", "2020-01-01", true)]   // overlap at start
