@@ -12,9 +12,10 @@ namespace Domain.Tests.TrainingPeriodTests
             PeriodDate periodDate = new PeriodDate(new DateOnly(2025, 06, 05), new DateOnly(2025, 06, 10));
 
             //Act
-            new TrainingPeriod(periodDate);
+            TrainingPeriod tperiod = new TrainingPeriod(periodDate);
 
             //Assert
+            Assert.NotNull(tperiod);
         }
 
         [Fact]
@@ -26,8 +27,8 @@ namespace Domain.Tests.TrainingPeriodTests
             // Assert
             ArgumentException exception = Assert.Throws<ArgumentException>(
                 () =>
-                    //act
-                    new TrainingPeriod(periodDate)
+                     //act
+                     new TrainingPeriod(periodDate)
 
             );
 
@@ -40,9 +41,10 @@ namespace Domain.Tests.TrainingPeriodTests
             //Arrange
 
             //Act
-            new TrainingPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
+            TrainingPeriod tperiod = new TrainingPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             //Assert
+            Assert.NotNull(tperiod);
         }
     }
 }
