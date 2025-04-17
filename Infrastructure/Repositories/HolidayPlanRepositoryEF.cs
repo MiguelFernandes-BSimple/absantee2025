@@ -103,6 +103,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.GetHolidayPeriods().Any(h => h.IsLongerThan(days)))
+            .Include(hp => hp.GetHolidayPeriods())
             .ToListAsync();
 
         return _mapper.ToDomain(hpDm);
@@ -131,6 +132,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
+            .Include(hp => hp.GetHolidayPeriods())
             .SingleOrDefaultAsync();
 
         if (hpDm == null) return null;
@@ -144,6 +146,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
                     .Where(hp => hp.GetHolidayPeriods()
                         .Any(hperiod => periodDate._initDate >= hperiod._periodDate._initDate
                                     && periodDate._finalDate <= hperiod._periodDate._finalDate))
+                    // include adicionado com o prof, sendo que hplan e hperiod são um agregado
+                    .Include(hp => hp.GetHolidayPeriods())
                     .ToListAsync();
 
         return _mapper.ToDomain(holidayPlansDMs);

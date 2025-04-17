@@ -14,9 +14,8 @@ public class HolidayPlanConstructorTests
         // Arrange
         // Test double for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble = new Mock<IHolidayPeriod>();
-        Mock<PeriodDate> periodDateDouble = new Mock<PeriodDate>();
 
-        holidayPeriodDouble.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble.Object);
+        holidayPeriodDouble.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
 
         // Test double for Collaborator
         //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -44,17 +43,13 @@ public class HolidayPlanConstructorTests
         // Test doubles for Holiday Period
         Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
 
-        Mock<PeriodDate> periodDateDouble1 = new Mock<PeriodDate>();
-        Mock<PeriodDate> periodDateDouble2 = new Mock<PeriodDate>();
-        Mock<PeriodDate> periodDateDouble3 = new Mock<PeriodDate>();
-
-        holidayPeriodDouble1.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble1.Object);
+        holidayPeriodDouble1.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
 
         Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
-        holidayPeriodDouble2.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
+        holidayPeriodDouble2.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
 
         Mock<IHolidayPeriod> holidayPeriodDouble3 = new Mock<IHolidayPeriod>();
-        holidayPeriodDouble3.Setup(hp => hp.GetPeriodDate()).Returns(periodDateDouble2.Object);
+        holidayPeriodDouble3.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
 
         // Test double for Collaborator
         //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
