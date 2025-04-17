@@ -10,7 +10,7 @@ public class User : IUser
     private string _names;
     private string _surnames;
     private string _email;
-    private PeriodDateTime _periodDateTime;
+    public PeriodDateTime _periodDateTime;
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {

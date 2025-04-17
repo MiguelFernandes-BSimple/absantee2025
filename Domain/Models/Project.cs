@@ -7,7 +7,7 @@ public class Project : IProject
     private long _id;
     private string _title;
     private string _acronym;
-    private PeriodDate _periodDate;
+    public PeriodDate _periodDate;
 
     public Project(long id, string title, string acronym, PeriodDate periodDate)
     {

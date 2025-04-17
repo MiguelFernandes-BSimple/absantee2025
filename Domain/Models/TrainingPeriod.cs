@@ -4,7 +4,7 @@ namespace Domain.Models;
 public class TrainingPeriod : ITrainingPeriod
 {
     private long _id;
-    private PeriodDate _periodDate;
+    public PeriodDate _periodDate;
 
     public TrainingPeriod(PeriodDate periodDate)
     {

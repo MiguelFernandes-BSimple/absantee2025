@@ -6,7 +6,7 @@ public class ProjectManager : IProjectManager
 {
     private long _id;
     private long _userId;
-    private PeriodDateTime _periodDateTime;
+    public PeriodDateTime _periodDateTime;
 
     public ProjectManager(long userId, PeriodDateTime periodDateTime)
     {
