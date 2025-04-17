@@ -16,18 +16,17 @@ public class AssociationProjectCollaboratorServiceAdd
         var mockFactory = new Mock<IAssociationProjectCollaboratorFactory>();
         var mockRepository = new Mock<IAssociationProjectCollaboratorRepository>();
 
-        var periodDate = new Mock<PeriodDate>();
         long collabId = 1;
         long projectId = 2;
 
         mockFactory
-            .Setup(f => f.Create(periodDate.Object, collabId, projectId))
+            .Setup(f => f.Create(It.IsAny<PeriodDate>(), collabId, projectId))
             .ReturnsAsync(It.IsAny<AssociationProjectCollaborator>());
 
         var service = new AssociationProjectCollaboratorService(mockRepository.Object, mockFactory.Object);
 
         // Act
-        await Task.Run(() => service.Add(periodDate.Object, collabId, projectId));
+        await Task.Run(() => service.Add(It.IsAny<PeriodDate>(), collabId, projectId));
 
         // Assert
         mockRepository.Verify(r => r.AddAsync(It.IsAny<AssociationProjectCollaborator>()), Times.Once);
