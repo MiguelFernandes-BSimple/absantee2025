@@ -138,7 +138,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
-            .Include(hp => hp.GetHolidayPeriods())
+            .Include(hp => hp.HolidayPeriodsDM)
             .SingleOrDefaultAsync();
 
         if (hpDm == null) return null;
