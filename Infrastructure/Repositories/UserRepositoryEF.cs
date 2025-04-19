@@ -1,15 +1,16 @@
 ﻿using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Visitor;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepositoryEF : GenericRepository<IUser, UserDataModel>, IUserRepository
+public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRepository
 {
-    private UserMapper _mapper;
-    public UserRepositoryEF(AbsanteeContext context, UserMapper mapper) : base(context, (IMapper<IUser, UserDataModel>)mapper)
+    private readonly IMapper<IUser,IUserVisitor> _mapper;
+    public UserRepositoryEF(AbsanteeContext context, IMapper<IUser,IUserVisitor> mapper) : base(context,mapper)
     {
         _mapper = mapper;
     }
