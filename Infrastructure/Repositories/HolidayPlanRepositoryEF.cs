@@ -104,8 +104,9 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     public async Task<IEnumerable<IHolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days)
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
-            .Where(hp => hp.GetHolidayPeriods().Any(h => h.IsLongerThan(days)))
-            .Include(hp => hp.GetHolidayPeriods())
+            .Where(hp => hp.HolidayPeriodsDM
+                .Any(h => (h.PeriodDate._finalDate.DayNumber - h.PeriodDate._initDate.DayNumber + 1) > days))
+            .Include(hp => hp.HolidayPeriodsDM)
             .ToListAsync();
 
         return _mapper.ToDomain(hpDm);

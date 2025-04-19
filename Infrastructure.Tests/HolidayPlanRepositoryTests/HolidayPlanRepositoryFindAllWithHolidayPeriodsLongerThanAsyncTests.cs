@@ -14,51 +14,53 @@ public class HolidayPlanRepositoryFindAllWithHolidayPeriodsLongerThanAsyncTests
     [Fact]
     public async Task WhenFindingHolidayPlansWithPeriodsLongerThanAsync_ReturnsCorrectList()
     {
-        // arrange
-        var holidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
-        var holidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
-        var holidayPlanDM3 = new Mock<IHolidayPlanVisitor>();
+        // Arrange
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
+            .Options;
 
-        var holidayPlans = new List<HolidayPlanDataModel>{
-            (HolidayPlanDataModel)holidayPlanDM1.Object,
-            (HolidayPlanDataModel)holidayPlanDM2.Object,
-            (HolidayPlanDataModel)holidayPlanDM3.Object
-        }.AsQueryable();
+        using var context = new AbsanteeContext(options);
 
-        var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Provider).Returns(holidayPlans.Provider);
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Expression).Returns(holidayPlans.Expression);
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.ElementType).Returns(holidayPlans.ElementType);
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(() => holidayPlans.GetEnumerator());
+        var mapper = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+        var hmapper = new Mock<IMapper<IHolidayPeriod, HolidayPeriodDataModel>>();
 
-        var mockContext = new Mock<IAbsanteeContext>();
-        mockContext.Setup(mc => mc.HolidayPlans).Returns(mockSet.Object);
+        var hperiod1 = new Mock<IHolidayPeriod>();
+        var periodDate1 = new PeriodDate(new DateOnly(2000, 1, 1), new DateOnly(2000, 1, 7));
+        hperiod1.Setup(h => h._periodDate).Returns(periodDate1);
 
-        var days = 5;
-        var holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
-        holidayPeriodDouble1.Setup(hpd => hpd.IsLongerThan(days)).Returns(true);
-        var holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
-        holidayPeriodDouble2.Setup(hpd => hpd.IsLongerThan(days)).Returns(true);
+        var hperiod2 = new Mock<IHolidayPeriod>();
+        var periodDate2 = new PeriodDate(new DateOnly(2000, 1, 1), new DateOnly(2000, 1, 4));
+        hperiod2.Setup(h => h._periodDate).Returns(periodDate2);
 
-        var holidayPeriodsDouble = new List<IHolidayPeriod>(){
-            holidayPeriodDouble1.Object, holidayPeriodDouble2.Object
+        var hplan = new Mock<IHolidayPlan>();
+        hplan.Setup(hp => hp.GetHolidayPeriods()).Returns(
+            new List<IHolidayPeriod> {
+                hperiod1.Object, hperiod2.Object
+            }
+        );
+
+        var hperiods = new List<HolidayPeriodDataModel> { 
+            new HolidayPeriodDataModel(hperiod1.Object),
+            new HolidayPeriodDataModel(hperiod2.Object)
         };
+        
+        hmapper.Setup(m => m.ToDataModel(hplan.Object.GetHolidayPeriods())).Returns(hperiods);
+    
+        var hpdm = new HolidayPlanDataModel(hplan.Object, hmapper.Object);
 
-        holidayPlanDM1.Setup(hp => hp.GetHolidayPeriods()).Returns(holidayPeriodsDouble);
+        mapper.Setup(m => m.ToDomain(new List<HolidayPlanDataModel> {hpdm})).Returns(new List<IHolidayPlan> {hplan.Object});
 
-        var expected = new List<IHolidayPlan> { (HolidayPlan)holidayPlanDM1.Object };
+        context.Add(hpdm);
+        await context.SaveChangesAsync();
 
-        var mapperDouble = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
-        mapperDouble.Setup(md => md.ToDomain(holidayPlans)).Returns(expected);
+        var expected = new List<IHolidayPlan> {hplan.Object};
 
-        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+        var repo = new HolidayPlanRepositoryEF(context, mapper.Object, hmapper.Object);        
 
-        var holidayPlanRepo = new HolidayPlanRepositoryEF((AbsanteeContext)mockContext.Object, (HolidayPlanMapper)mapperDouble.Object, holidayPeriodMapper.Object);
+        // Act
+        var result = await repo.FindAllWithHolidayPeriodsLongerThanAsync(5);
 
-        // act
-        var result = await holidayPlanRepo.FindAllWithHolidayPeriodsLongerThanAsync(days);
-
-        // assert
-        Assert.Equal(result, expected);
+        // Assert
+        Assert.Equal(expected, result);
     }
 }
