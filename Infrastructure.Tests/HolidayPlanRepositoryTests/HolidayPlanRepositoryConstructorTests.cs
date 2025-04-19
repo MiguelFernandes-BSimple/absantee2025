@@ -1,9 +1,11 @@
 using Infrastructure.Repositories;
-using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Domain.Models;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
+using Domain.Interfaces;
+using Domain.Visitor;
 
 namespace Infrastructure.Tests.HolidayPlanRepositoryTests;
 
@@ -13,13 +15,13 @@ public class HolidayPlanRepositoryConstructorTests
     public void WhenNotPassingAnyArguments_ThenObjectIsCreated()
     {
         //Arrange
-        var holidayPlanMapperMock = new Mock<IMapper<HolidayPlan, HolidayPlanDataModel>>();
-        var absanteeMock = new Mock<IAbsanteeContext>();
-
-        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+        DbContextOptions<AbsanteeContext> options = new DbContextOptions<AbsanteeContext>();
+        Mock<AbsanteeContext> contextDouble = new Mock<AbsanteeContext>(options);
+        Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>> holidayPlanMapperMock = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+        Mock<IMapper<IHolidayPeriod, HolidayPeriodDataModel>> holidayPeriodMapperMock = new Mock<IMapper<IHolidayPeriod, HolidayPeriodDataModel>>();
 
         //Act
-        new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, (HolidayPlanMapper)holidayPlanMapperMock.Object, holidayPeriodMapper.Object);
+        new HolidayPlanRepositoryEF(contextDouble.Object, holidayPlanMapperMock.Object, holidayPeriodMapperMock.Object);
 
         //Assert
     }
