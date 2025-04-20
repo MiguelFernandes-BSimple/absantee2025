@@ -19,6 +19,7 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
     [InlineData("2020-01-02", "2020-12-30")]
     public async Task WhenPassingValidData_ThenReturnsAllHolidayPeriodsForAllCollaboratorsBetweenDates(string init1Str, string final1Str)
     {
+        //arrange
         var options = new DbContextOptionsBuilder<AbsanteeContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
@@ -80,8 +81,10 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
 
         var repo = new HolidayPlanRepositoryEF(context, mapperMock.Object, holidayPeriodMapper.Object);
 
+        //act
         var result = await repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync([1, 2], searchPeriod);
 
+        //assert
         Assert.Equal(expected, result);
     }
 
@@ -159,8 +162,10 @@ public class HolidayPlanRepositoryFindAllHolidayPeriodsForAllCollaboratorsBetwee
 
         var repo = new HolidayPlanRepositoryEF(context, mapperMock.Object, holidayPeriodMapper.Object);
 
+        //act
         var result = await repo.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync([1, 2], searchPeriod);
 
+        //assert
         Assert.Equal(expected, result);
     }
 }
