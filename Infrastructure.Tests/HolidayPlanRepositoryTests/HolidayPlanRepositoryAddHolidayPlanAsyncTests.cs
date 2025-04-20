@@ -15,29 +15,30 @@ public class HolidayPlanRepositoryAddHolidayPlanAsyncTests
     [Fact]
     public async Task WhenAddingCorrectHolidayPlanToRepositoryAsync_ThenReturnTrue()
     {
-        // Arrange 
-        long collabId = 1;
-        var HolidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
-        var HolidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
-
+        // Arrange
         var options = new DbContextOptionsBuilder<AbsanteeContext>()
-                        .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
-                        .Options;
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
+            .Options;
+
         using var context = new AbsanteeContext(options);
-        Mock<IHolidayPlan> doubleHolidayPlan = new Mock<IHolidayPlan>();
+        
+        var doubleHolidayPlanMapper = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+        var holidayPeriodMapper = new Mock<IMapper<IHolidayPeriod, HolidayPeriodDataModel>>();
 
+        long collabId = 1;
+        
+        var doubleHolidayPlan = new Mock<IHolidayPlan>();
         doubleHolidayPlan.Setup(hp => hp.GetCollaboratorId()).Returns(collabId);
-        HolidayPlanDM1.Setup(hp => hp.Id).Returns(2);
-        HolidayPlanDM2.Setup(hp => hp.Id).Returns(collabId);
 
-        Mock<HolidayPlanMapper> doubleHolidayPlanMapper = new Mock<HolidayPlanMapper>();
-        doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel((HolidayPlan)doubleHolidayPlan.Object)).Returns((HolidayPlanDataModel)HolidayPlanDM1.Object);
+        var HolidayPlanDM = new HolidayPlanDataModel(doubleHolidayPlan.Object, holidayPeriodMapper.Object);
 
-        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
+        doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel(doubleHolidayPlan.Object)).Returns(HolidayPlanDM);
 
-        HolidayPlanRepositoryEF HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF(context, doubleHolidayPlanMapper.Object, holidayPeriodMapper.Object);
+        var HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF(context, doubleHolidayPlanMapper.Object, holidayPeriodMapper.Object);
+
         // Act
         bool result = await HolidayPlanRepositoryEF.AddHolidayPlanAsync(doubleHolidayPlan.Object);
+
         // Assert
         Assert.True(result);
     }
@@ -45,44 +46,42 @@ public class HolidayPlanRepositoryAddHolidayPlanAsyncTests
     [Fact]
     public async Task WhenAddingHolidayPlanWithRepeatedCollaboratorToRepositoryAsync_ThenReturnFalse()
     {
-        // Arrange 
-        Mock<ICollaborator> doubleCollab = new Mock<ICollaborator>();
-        long collabId = 1;
-        var HolidayPlanDM1 = new Mock<IHolidayPlanVisitor>();
-        var HolidayPlanDM2 = new Mock<IHolidayPlanVisitor>();
-        var HolidayPlanDM3 = new Mock<IHolidayPlanVisitor>();
+        // Arrange
+        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
+            .Options;
 
-        var holidayPlanDataModels = new List<HolidayPlanDataModel>
-            {
-                (HolidayPlanDataModel)HolidayPlanDM1.Object,
-                (HolidayPlanDataModel)HolidayPlanDM2.Object,
-                (HolidayPlanDataModel)HolidayPlanDM3.Object,
+        using var context = new AbsanteeContext(options);
+        
+        var doubleHolidayPlanMapper = new Mock<IMapper<IHolidayPlan, HolidayPlanDataModel>>();
+        var holidayPeriodMapper = new Mock<IMapper<IHolidayPeriod, HolidayPeriodDataModel>>();
 
-            }.AsQueryable();
-        Mock<IHolidayPlan> doubleHolidayPlan = new Mock<IHolidayPlan>(); doubleHolidayPlan.Setup(hp => hp.GetCollaboratorId()).Returns(collabId);
-        HolidayPlanDM1.Setup(hp => hp.Id).Returns(2);
-        HolidayPlanDM2.Setup(hp => hp.Id).Returns(2);
-        HolidayPlanDM3.Setup(hp => hp.Id).Returns(2);
+        
+        var hplan1 = new Mock<IHolidayPlan>();
+        hplan1.Setup(hp => hp.GetCollaboratorId()).Returns(1);
+        var hpdm1 = new HolidayPlanDataModel(hplan1.Object, holidayPeriodMapper.Object);
+        doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel(hplan1.Object)).Returns(hpdm1);
+        
+        var hplan2 = new Mock<IHolidayPlan>();
+        hplan2.Setup(hp => hp.GetCollaboratorId()).Returns(2);
+        var hpdm2 = new HolidayPlanDataModel(hplan2.Object, holidayPeriodMapper.Object);
+        doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel(hplan2.Object)).Returns(hpdm2);
+        
+        var hplan3 = new Mock<IHolidayPlan>();
+        hplan3.Setup(hp => hp.GetCollaboratorId()).Returns(1);
+        var hpdm3 = new HolidayPlanDataModel(hplan3.Object, holidayPeriodMapper.Object);
+        doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel(hplan3.Object)).Returns(hpdm3);
 
-        var mockSet = new Mock<DbSet<HolidayPlanDataModel>>();
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Provider).Returns(holidayPlanDataModels.Provider);
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.Expression).Returns(holidayPlanDataModels.Expression);
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.ElementType).Returns(holidayPlanDataModels.ElementType);
-        mockSet.As<IQueryable<HolidayPlanDataModel>>().Setup(m => m.GetEnumerator()).Returns(holidayPlanDataModels.GetEnumerator());
+        context.HolidayPlans.Add(hpdm1);
+        context.HolidayPlans.Add(hpdm2);
+        await context.SaveChangesAsync();
 
-        var absanteeMock = new Mock<IAbsanteeContext>();
-        absanteeMock.Setup(a => a.HolidayPlans).Returns(mockSet.Object);
-        Mock<HolidayPlanMapper> doubleHolidayPlanMapper = new Mock<HolidayPlanMapper>();
-        doubleHolidayPlanMapper.Setup(hpm => hpm.ToDataModel((HolidayPlan)doubleHolidayPlan.Object)).Returns((HolidayPlanDataModel)HolidayPlanDM1.Object);
+        var HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF(context, doubleHolidayPlanMapper.Object, holidayPeriodMapper.Object);
 
-        var holidayPeriodMapper = new Mock<HolidayPeriodMapper>();
-
-
-        HolidayPlanRepositoryEF HolidayPlanRepositoryEF = new HolidayPlanRepositoryEF((AbsanteeContext)absanteeMock.Object, doubleHolidayPlanMapper.Object, holidayPeriodMapper.Object);
         // Act
-        bool result = await HolidayPlanRepositoryEF.AddHolidayPlanAsync(doubleHolidayPlan.Object);
+        bool result = await HolidayPlanRepositoryEF.AddHolidayPlanAsync(hplan3.Object);
+
         // Assert
         Assert.False(result);
-
     }
 }
