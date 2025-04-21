@@ -14,9 +14,17 @@ namespace Domain.Factory
         private readonly ICollaboratorRepository _collabRepository;
         private readonly IAssociationCollabTrainingModuleRepository _associationRepository;
 
+        public AssociationCollabTrainingModuleFactory(ITrainingModuleRepository trainigModuleRepository, ICollaboratorRepository collabRepository, IAssociationCollabTrainingModuleRepository associationRepository)
+        {
+            _trainigModuleRepository = trainigModuleRepository;
+            _collabRepository = collabRepository;
+            _associationRepository = associationRepository;
+        }
+
         public AssociationCollabTrainingModule Create(long collabId, long trainingModuleId)
         {
-            if(_collabRepository.GetById(collabId) == null) 
+            var collabExists = _collabRepository.GetById(collabId);
+            if(collabExists == null) 
                 throw new ArgumentException("Collaborator does not exist");
 
             if(_trainigModuleRepository.GetById(trainingModuleId) == null) 
