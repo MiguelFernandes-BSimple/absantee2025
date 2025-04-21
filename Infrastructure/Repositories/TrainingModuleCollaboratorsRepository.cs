@@ -22,12 +22,24 @@ namespace Infrastructure.Repositories
 
         public override ITrainingModuleCollaborators? GetById(long id)
         {
-            throw new NotImplementedException();
+            var trainingModuleCollabDM = _context.Set<TrainingModuleCollaboratorDataModel>()
+                                    .FirstOrDefault(t => t.Id == id);
+
+            if (trainingModuleCollabDM == null)
+                return null;
+
+            return _mapper.ToDomain(trainingModuleCollabDM);
         }
 
-        public override Task<ITrainingModuleCollaborators?> GetByIdAsync(long id)
+        public override async Task<ITrainingModuleCollaborators?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var trainingModuleCollabDM = await _context.Set<TrainingModuleCollaboratorDataModel>()
+                                    .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (trainingModuleCollabDM == null)
+                return null;
+
+            return _mapper.ToDomain(trainingModuleCollabDM);
         }
 
         public async Task<IEnumerable<ITrainingModuleCollaborators>> GetByTrainingModuleIds(IEnumerable<long> trainingModuleIds)
