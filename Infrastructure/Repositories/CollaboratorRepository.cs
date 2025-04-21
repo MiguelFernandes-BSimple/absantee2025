@@ -18,6 +18,26 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         _mapper = mapper;
     }
 
+    public async Task<bool> AddToTrainingModule(long collabId, long tmId)
+    {
+        var collabDM = _context.Set<CollaboratorDataModel>().FirstOrDefault(c => c.Id == collabId);
+
+        if (collabDM == null)
+        {
+            throw new ArgumentException("Collabortor does not exist");
+        }
+
+        var collab = _mapper.ToDomain(collabDM);
+
+        if (collab.IsAlreadyOnTraining(tmId)) return false;
+
+        collab.AddTrainingModule(tmId);
+
+        _context.Add(_mapper.ToDataModel(collab));
+        _context.SaveChanges();
+        return true;
+    }
+
     public async Task<bool> IsRepeated(ICollaborator collaborator)
     {
         return await this._context.Set<CollaboratorDataModel>()
