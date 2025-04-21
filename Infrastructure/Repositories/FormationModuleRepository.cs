@@ -54,4 +54,12 @@ public class FormationModuleRepository : GenericRepository<IFormationModule, IFo
         var module = _mapper.ToDomain(moduleDM);
         return module;
     }
+
+    public bool CanInsertHolidayPeriod(long formationModuleId, IFormationPeriod periodDate)
+    {
+        return _context.Set<FormationModuleDataModel>().Any
+            (f => f.Id == formationModuleId && f.GetFormationPeriods().Any
+                (fp => fp._periodDate._initDate <= periodDate._periodDate._initDate
+                    && fp._periodDate._finalDate >= periodDate._periodDate._finalDate));
+    }
 }

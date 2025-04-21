@@ -6,6 +6,6 @@ namespace Domain.Factory.FormationPeriodFactory;
 
 public interface IFormationPeriodFactory
 {
-    public FormationPeriod Create(PeriodDate periodDate);
+    public FormationPeriod Create(long formationModuleId, PeriodDate periodDate);
     public FormationPeriod Create(IFormationPeriodVisitor formationPeriodVisitor);
 }

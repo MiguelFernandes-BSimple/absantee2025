@@ -6,5 +6,6 @@ namespace Domain.IRepository;
 public interface IFormationModuleRepository : IGenericRepository<IFormationModule, IFormationModuleVisitor>
 {
     public Task<IFormationModule?> GetBySubjectId(long subjectId);
+    public bool CanInsertHolidayPeriod(long formationModuleId, IFormationPeriod periodDate);
 
 }
