@@ -12,25 +12,29 @@ namespace Infrastructure.Mapper
     {
         private readonly TrainingModuleFactory _tmFactory;
 
-
-        public TraningModuleDataModel ToDataModel(TrainingModule domainEntity)
+        public TrainingModuleMapper(TrainingModuleFactory tmFactory)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TraningModuleDataModel> ToDataModel(IEnumerable<TrainingModule> dataModels)
-        {
-            throw new NotImplementedException();
+            _tmFactory = tmFactory;
         }
 
         public TrainingModule ToDomain(TraningModuleDataModel dataModel)
         {
-            throw new NotImplementedException();
+            return _tmFactory.Create(dataModel);
         }
 
         public IEnumerable<TrainingModule> ToDomain(IEnumerable<TraningModuleDataModel> dataModels)
         {
-            throw new NotImplementedException();
+            return dataModels.Select(tm => ToDomain(tm));
+        }
+
+        public TraningModuleDataModel ToDataModel(TrainingModule domainEntity)
+        {
+            return new TraningModuleDataModel(domainEntity);
+        }
+
+        public IEnumerable<TraningModuleDataModel> ToDataModel(IEnumerable<TrainingModule> dataModels)
+        {
+            return dataModels.Select(tm => ToDataModel(tm));
         }
     }
 }

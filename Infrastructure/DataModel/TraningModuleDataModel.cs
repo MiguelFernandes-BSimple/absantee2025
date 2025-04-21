@@ -17,7 +17,7 @@ namespace Infrastructure.DataModel
 
         public List<PeriodDateTime> periodsList { get; set; }
 
-        public TraningModuleDataModel(ITrainingModule tm)
+        public TraningModuleDataModel(TrainingModule tm)
         {
             id = tm.GetId();
             subjectId = tm.GetSubjectId();

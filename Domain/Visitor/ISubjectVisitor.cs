@@ -10,5 +10,5 @@ namespace Domain.Visitor
         long _id { get; }
         string _title { get; }
         string _description { get; }
-    }
+    } 
 }

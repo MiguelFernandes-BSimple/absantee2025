@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
+using Domain.Visitor;
 
 namespace Domain.Interfaces
 {
-    public interface ITrainingModule
-    {
-
-        public long GetId();
-        public long GetSubjectId();
-        public List<PeriodDateTime> GetPeriodsList();
-
-    }
+    public interface ITrainingModule {}
+    
 }

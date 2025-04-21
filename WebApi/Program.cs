@@ -26,6 +26,8 @@ builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddTransient<ISubjectRepository, SubjectRepository>();
+builder.Services.AddTransient<IAssociationCollabTrainingModuleRepository, AssociationCollabTrainingModuleRepository>();
+
 
 //Mappers
 builder.Services.AddTransient<ProjectMapper>();

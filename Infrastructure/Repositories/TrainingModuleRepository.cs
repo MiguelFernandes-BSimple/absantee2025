@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories
 {
     public class TrainingModuleRepository : GenericRepository<ITrainingModule, TraningModuleDataModel>, ITrainingModuleRepository
     {
-        private IMapper<ITrainingModule, TraningModuleDataModel> _mapper;
+        private readonly TrainingModuleMapper _mapper;
 
         public TrainingModuleRepository(AbsanteeContext context, TrainingModuleMapper mapper) : base(context, (IMapper<ITrainingModule, TraningModuleDataModel>)mapper)
         {
@@ -17,12 +17,22 @@ namespace Infrastructure.Repositories
 
         public override ITrainingModule? GetById(long id)
         {
-            throw new NotImplementedException();
+            var tmDm = _context.Set<TraningModuleDataModel>().FirstOrDefault(tm => tm.id == id);
+
+            if(tmDm == null) return null;
+
+            var trainingModule = _mapper.ToDomain(tmDm);
+            return trainingModule;
         }
 
-        public override Task<ITrainingModule?> GetByIdAsync(long id)
+        public override async Task<ITrainingModule?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var tmDm = await _context.Set<TraningModuleDataModel>().FirstOrDefaultAsync(tm => tm.id == id);
+
+            if(tmDm == null) return null;
+
+            var trainingModule = _mapper.ToDomain(tmDm);
+            return trainingModule;
         }
     }
 }

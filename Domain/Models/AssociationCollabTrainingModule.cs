@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
 namespace Domain.Models
 {
-    public class AssociationCollabTrainingModule
+    public class AssociationCollabTrainingModule : IAssociationCollabTrainingModule
     {
         public long _id { get; set; }
         public long _collaboratorId { get; set; }
@@ -15,6 +16,12 @@ namespace Domain.Models
         public AssociationCollabTrainingModule(long id, long collaboratorId, long trainingModuleId)
         {
             _id = id;
+            _collaboratorId = collaboratorId;
+            _trainingModuleId = trainingModuleId;
+        }
+
+        public AssociationCollabTrainingModule(long collaboratorId, long trainingModuleId)
+        {
             _collaboratorId = collaboratorId;
             _trainingModuleId = trainingModuleId;
         }
