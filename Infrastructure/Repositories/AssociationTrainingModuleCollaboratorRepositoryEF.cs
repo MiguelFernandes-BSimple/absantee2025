@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.Factory;
-using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Interfaces;
 using Domain.Models;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.DataModel;
+using System.Threading.Tasks;
+using Infrastructure.Mapper;
 using Domain.Visitor;
 
 namespace Infrastructure.Repositories;
@@ -13,7 +13,7 @@ namespace Infrastructure.Repositories;
 public class AssociationTrainingModuleCollaboratorRepositoryEF : GenericRepository<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor>, IAssociationTrainingModuleCollaboratorRepository
 {
     private readonly IMapper<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor> _mapper;
-    public TrainingModuleCollaboratorsRepository(DbContext context, IMapper<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor> mapper) : base(context, mapper)
+    public AssociationTrainingModuleCollaboratorRepositoryEF(AbsanteeContext context, IMapper<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor> mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }
@@ -30,12 +30,12 @@ public class AssociationTrainingModuleCollaboratorRepositoryEF : GenericReposito
 
     public async Task<IEnumerable<IAssociationTrainingModuleCollaborator>> GetByTrainingModuleIds(IEnumerable<long> trainingModuleIds)
     {
-        var trainingModuleCollaboratorsDMs = await _context.Set<TrainingModuleCollaboratorDataModel>()
+        var associationTrainingModuleCollaboratorDataModels = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
                                             .Where(t => trainingModuleIds.Contains(t.TrainingModuleId))
                                             .ToListAsync();
 
-        var trainingModuleCollaborators = _mapper.ToDomain(trainingModuleCollaboratorsDMs);
+        var associationTrainingModuleCollaborators = _mapper.ToDomain(associationTrainingModuleCollaboratorDataModels);
 
-        return trainingModuleCollaborators;
+        return associationTrainingModuleCollaborators;
     }
 }
