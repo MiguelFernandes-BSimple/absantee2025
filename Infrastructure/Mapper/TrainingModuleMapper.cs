@@ -8,12 +8,12 @@ namespace Infrastructure.Mapper;
 public class TrainingModuleMapper : IMapper<ITrainingModule, TrainingModuleDataModel>
 {
     private readonly TrainingModuleFactory _trainingModuleFactory;
-    private readonly TrainingPeriodMapper _trainingPeriodMapper;
+    private readonly PeriodDateTime _periodDateTime;
 
-    public TrainingModuleMapper(TrainingModuleFactory trainingModuleFactory, TrainingPeriodMapper trainingPeriodMapper)
+    public TrainingModuleMapper(TrainingModuleFactory trainingModuleFactory, PeriodDateTime periodDateTime)
     {
         _trainingModuleFactory = trainingModuleFactory;
-        _trainingPeriodMapper = trainingPeriodMapper;
+        _periodDateTime = periodDateTime;
     }
 
     public ITrainingModule ToDomain(TrainingModuleDataModel trainingModuleDM)
@@ -30,7 +30,7 @@ public class TrainingModuleMapper : IMapper<ITrainingModule, TrainingModuleDataM
 
     public TrainingModuleDataModel ToDataModel(ITrainingModule trainingModules)
     {
-        return new TrainingModuleDataModel(trainingModules, _trainingPeriodMapper);
+        return new TrainingModuleDataModel(trainingModules);
 
     }
 

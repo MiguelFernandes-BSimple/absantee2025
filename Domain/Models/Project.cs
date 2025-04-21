@@ -17,10 +17,10 @@ public class Project : IProject
         {
             throw new ArgumentException("Invalid Arguments");
         }
-        this._id = id;
-        this._title = title;
-        this._acronym = acronym;
-        this._periodDate = periodDate;
+        _id = id;
+        _title = title;
+        _acronym = acronym;
+        _periodDate = periodDate;
     }
 
 

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories;
+
+public class TrainingModuleRepositoryEF
 {
-    public class TrainingModuleRepositoryEF
-    {
-        
-    }
+
 }

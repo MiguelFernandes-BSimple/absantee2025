@@ -7,19 +7,19 @@ public class TrainingModule : ITrainingModule
 {
     private long _id;
     private long _SubjectID;
-    private List<ITrainingPeriod> _TrainingPeriods;
+    private List<PeriodDateTime> _periodDateTime;
 
-    public TrainingModule(long SubjectID, List<ITrainingPeriod> TrainingPeriods)
+    public TrainingModule(long SubjectID, List<PeriodDateTime> periodDateTime)
     {
-        this._SubjectID = SubjectID;
-        this._TrainingPeriods = TrainingPeriods;
+        _SubjectID = SubjectID;
+        _periodDateTime = periodDateTime;
     }
 
-    public TrainingModule(long id, long SubjectID, List<ITrainingPeriod> TrainingPeriods)
+    public TrainingModule(long id, long SubjectID, List<PeriodDateTime> periodDateTime)
     {
-        this._id = id;
-        this._SubjectID = SubjectID;
-        this._TrainingPeriods = TrainingPeriods;
+        _id = id;
+        _SubjectID = SubjectID;
+        this._periodDateTime = periodDateTime;
 
     }
 
@@ -33,9 +33,9 @@ public class TrainingModule : ITrainingModule
         return _SubjectID;
     }
 
-    public List<ITrainingPeriod> GetTrainingPeriods()
+    public List<PeriodDateTime> GetPeriodDateTimes()
     {
-        return new List<ITrainingPeriod>(_TrainingPeriods);
+        return new List<PeriodDateTime>(_periodDateTime);
     }
 
 
