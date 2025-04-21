@@ -6,15 +6,15 @@ namespace Domain.Models
     {
         private long _id;
         private long _formationSubjectId;
-        private List<PeriodDateTime> _formationPeriods;
+        private List<IFormationPeriod> _formationPeriods;
 
-        public FormationModule(long formationSubjectId, List<PeriodDateTime> formationPeriods)
+        public FormationModule(long formationSubjectId, List<IFormationPeriod> formationPeriods)
         {
             _formationSubjectId = formationSubjectId;
             _formationPeriods = formationPeriods;
         }
 
-        public FormationModule(long id, long formationSubjectId, List<PeriodDateTime> formationPeriods)
+        public FormationModule(long id, long formationSubjectId, List<IFormationPeriod> formationPeriods)
         {
             _id = id;
             _formationSubjectId = formationSubjectId;
@@ -31,9 +31,9 @@ namespace Domain.Models
             return _formationSubjectId;
         }
 
-        public List<PeriodDateTime> GetFormationPeriods()
+        public List<IFormationPeriod> GetFormationPeriods()
         {
-            return new List<PeriodDateTime>(_formationPeriods);
+            return new List<IFormationPeriod>(_formationPeriods);
         }
 
     }

@@ -22,6 +22,9 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             var holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+            var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+            var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+            var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
 
             var userDouble = new Mock<IUser>();
             var userRepo = new Mock<IUserRepository>();
@@ -33,7 +36,7 @@ namespace Application.Tests.CollaboratorServiceTests
             collabRepository.Setup(c => c.IsRepeated(It.IsAny<ICollaborator>())).ReturnsAsync(false);
 
             var collabFactory = new Mock<ICollaboratorFactory>();
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
 
             //act
             var result = await collaboratorService.Add(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
@@ -50,6 +53,9 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
             var holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
+            var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+            var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+            var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
 
             var periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
@@ -64,7 +70,7 @@ namespace Application.Tests.CollaboratorServiceTests
             var collabFactory = new Mock<ICollaboratorFactory>();
             collabFactory.Setup(cf => cf.Create(It.IsAny<long>(), periodDateTime))
                     .ThrowsAsync(new ArgumentException("User deactivation date is before collaborator contract end date."));
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
 
             //act
             var result = await collaboratorService.Add(It.IsAny<long>(), periodDateTime);

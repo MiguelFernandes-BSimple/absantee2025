@@ -23,6 +23,9 @@ namespace Infrastructure
             modelBuilder.Entity<HolidayPeriodDataModel>()
                 .OwnsOne(h => h.PeriodDate);
 
+            modelBuilder.Entity<FormationPeriodDataModel>()
+                .OwnsOne(f => f.PeriodDate);
+
             modelBuilder.Entity<AssociationProjectCollaboratorDataModel>()
                 .OwnsOne(a => a.Period);
 

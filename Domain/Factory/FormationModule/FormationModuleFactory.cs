@@ -13,7 +13,7 @@ public class FormationModuleFactory : IFormationModuleFactory
     {
         _formationSubjectRepository = formationSubjectRepository;
     }
-    public FormationModule Create(long formationSubjectId, List<PeriodDateTime> formationPeriods)
+    public FormationModule Create(long formationSubjectId, List<IFormationPeriod> formationPeriods)
     {
         if (_formationSubjectRepository.GetById(formationSubjectId) == null)
             throw new ArgumentException("Formation subject does not exist.");

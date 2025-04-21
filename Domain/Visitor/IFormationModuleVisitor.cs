@@ -7,5 +7,5 @@ public interface IFormationModuleVisitor
 {
     long Id { get; }
     long FormationSubjectId { get; }
-    List<PeriodDateTime> GetFormationPeriods();
+    List<IFormationPeriod> GetFormationPeriods();
 }

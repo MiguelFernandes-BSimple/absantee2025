@@ -17,13 +17,16 @@ public class CollaboratorService
     private IFormationModuleRepository _formationModuleRepository;
     private IAssociationFormationModuleCollaboratorRepository _associationFormationModuleCollaboratorRepository;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IFormationModuleRepository formationModuleRepository, IFormationSubjectRepository formationSubjectRepository, IAssociationFormationModuleCollaboratorRepository associationFormationModuleCollaboratorRepository)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
         _collaboratorFactory = checkCollaboratorFactory;
+        _formationModuleRepository = formationModuleRepository;
+        _formationSubjectRepository = formationSubjectRepository;
+        _associationFormationModuleCollaboratorRepository = associationFormationModuleCollaboratorRepository;
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
@@ -93,7 +96,7 @@ public class CollaboratorService
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetActiveUsersWithoutFormationIn(string formationModuleTitle)
+    public async Task<IEnumerable<ICollaborator>> GetActiveCollaboratorsWithoutFormationIn(string formationModuleTitle)
     {
         var formationSubject = await _formationSubjectRepository.GetByTitleAsync(formationModuleTitle);
 
@@ -109,10 +112,18 @@ public class CollaboratorService
             throw new ArgumentException("There is no formation module with given subject.");
         }
 
-        var associations = _associationFormationModuleCollaboratorRepository.FindAllByFormationModuleAsync(formationModule.GetId());
+        var associations = await _associationFormationModuleCollaboratorRepository.FindAllByFormationModuleAsync(formationModule.GetId());
 
-        throw new NotImplementedException("");
+        var collabIdsWithModule = associations
+            .Select(a => a.GetCollaboratorId())
+            .ToList();
 
+        var activeCollaborators = await _collaboratorRepository.GetActiveCollaboratorsAsync();
+
+        var collaboratorWithoutFormation = activeCollaborators
+                .Where(c => !collabIdsWithModule.Contains(c.GetId()));
+
+        return collaboratorWithoutFormation;
     }
 
 }

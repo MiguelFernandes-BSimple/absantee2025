@@ -31,7 +31,7 @@ builder.Services.AddTransient<TrainingPeriodMapper>();
 builder.Services.AddTransient<UserMapper>();
 builder.Services.AddTransient<ProjectManagerMapper>();
 builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
-builder.Services.AddTransient<IMapper<Collaborator, CollaboratorDataModel> ,CollaboratorMapper>();
+builder.Services.AddTransient<IMapper<Collaborator, CollaboratorDataModel>, CollaboratorMapper>();
 
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();

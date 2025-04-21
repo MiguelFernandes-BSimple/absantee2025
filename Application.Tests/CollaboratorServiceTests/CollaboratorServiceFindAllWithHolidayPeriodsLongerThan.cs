@@ -44,8 +44,10 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
-
+            var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+            var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+            var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
             //act
             var result = await collaboratorService.FindAllWithHolidayPeriodsLongerThan(days);
 
@@ -67,10 +69,12 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
-            CollaboratorService service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
-
+            var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+            var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+            var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
             //act
-            var result = await service.FindAllWithHolidayPeriodsLongerThan(days);
+            var result = await collaboratorService.FindAllWithHolidayPeriodsLongerThan(days);
 
             //assert
             Assert.Empty(result);

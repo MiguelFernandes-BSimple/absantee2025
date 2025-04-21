@@ -52,10 +52,13 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
-            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+            var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+            var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
 
             // Act
-            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
+            var result = await collaboratorService.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             // Assert
             Assert.True(expected.SequenceEqual(result));
@@ -78,10 +81,13 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
-            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+            var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+            var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
 
             // Act
-            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
+            var result = await collaboratorService.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
 
             // Assert
             Assert.Empty(result);

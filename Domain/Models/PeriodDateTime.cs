@@ -7,6 +7,9 @@ public class PeriodDateTime
     public DateTime _initDate { get; set; }
     public DateTime _finalDate { get; set; }
 
+    public PeriodDateTime() { }
+
+
     public PeriodDateTime(DateTime initDate, DateTime finalDate)
     {
         if (CheckInputFields(initDate, finalDate))
@@ -65,6 +68,11 @@ public class PeriodDateTime
     public bool Intersects(PeriodDateTime periodDateTime)
     {
         return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _finalDate;
+    }
+
+    public bool IsOnGoing()
+    {
+        return _initDate <= DateTime.Now && _finalDate >= DateTime.Now;
     }
 }
 

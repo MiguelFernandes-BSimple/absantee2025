@@ -1,4 +1,3 @@
-using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 

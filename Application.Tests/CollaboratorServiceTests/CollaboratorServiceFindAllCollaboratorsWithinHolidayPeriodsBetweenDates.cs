@@ -35,10 +35,12 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
 
         var userRepo = new Mock<IUserRepository>();
         var collabFactory = new Mock<ICollaboratorFactory>();
-        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object);
-
+        var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+        var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+        var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+        CollaboratorService collaboratorService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
         // act  
-        var result = await colabService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
+        var result = await collaboratorService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
 
         // assert
         Assert.Single(result);
@@ -74,10 +76,12 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
 
         var userRepo = new Mock<IUserRepository>();
         var collabFactory = new Mock<ICollaboratorFactory>();
-        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object);
-
+        var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+        var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+        var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+        CollaboratorService collaboratorService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
         // act  
-        var result = await colabService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
+        var result = await collaboratorService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
 
         // assert
         Assert.Equal(2, result.Count());
@@ -91,7 +95,7 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
         // arrange
         var collaboratorDouble = new Mock<ICollaborator>();
         collaboratorDouble.Setup(c => c.GetId()).Returns(1);
-        
+
         var holidayPlanDouble = new Mock<IHolidayPlan>();
         holidayPlanDouble.Setup(hpd => hpd.GetCollaboratorId()).Returns(1);
 
@@ -105,10 +109,12 @@ public class CollaboratorServiceFindAllCollaboratorsWithinHolidayPeriodsBetweenD
 
         var userRepo = new Mock<IUserRepository>();
         var collabFactory = new Mock<ICollaboratorFactory>();
-        var colabService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object);
-
+        var assocFormationCollaboratorRepoDouble = new Mock<IAssociationFormationModuleCollaboratorRepository>();
+        var formationModuleRepoDouble = new Mock<IFormationModuleRepository>();
+        var formationSubjectRepoDouble = new Mock<IFormationSubjectRepository>();
+        CollaboratorService collaboratorService = new CollaboratorService(apcDouble.Object, holidayPlanRepoDouble.Object, collabRepoDouble.Object, userRepo.Object, collabFactory.Object, formationModuleRepoDouble.Object, formationSubjectRepoDouble.Object, assocFormationCollaboratorRepoDouble.Object);
         // act  
-        var result = await colabService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
+        var result = await collaboratorService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
 
         // assert
         Assert.Empty(result);

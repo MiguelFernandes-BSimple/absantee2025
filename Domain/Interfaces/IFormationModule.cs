@@ -5,6 +5,6 @@ namespace Domain.Interfaces;
 public interface IFormationModule
 {
     public long GetId();
-    public List<PeriodDateTime> GetFormationPeriods();
+    public List<IFormationPeriod> GetFormationPeriods();
     long GetFormationSubjectId();
 }
