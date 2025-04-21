@@ -3,6 +3,7 @@ using Domain.Interfaces;
 using Domain.Factory;
 using Domain.Models;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace Application.Services;
 
@@ -124,6 +125,33 @@ public class CollaboratorService
                 .Where(c => !collabIdsWithModule.Contains(c.GetId()));
 
         return collaboratorWithoutFormation;
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetCollaboratorsWithFinishedFormationOfSubjectAfter(string formationModuleTitle, DateOnly date)
+    {
+        var formationSubject = await _formationSubjectRepository.GetByTitleAsync(formationModuleTitle);
+
+        if (formationSubject == null)
+        {
+            throw new ArgumentException("Given subject does not exist.");
+        }
+
+        var formationModule = await _formationModuleRepository.GetBySubjectId(formationSubject.GetId());
+
+        if (formationModule == null)
+        {
+            throw new ArgumentException("There is no formation module with given subject.");
+        }
+
+        var associations = await _associationFormationModuleCollaboratorRepository.FindAllByFormationModuleAsync(formationModule.GetId());
+
+        var associationsFinishedAfter = associations.Where(a => a._periodDate.GetFinalDate() > date);
+
+        var collaboratorIds = associationsFinishedAfter.Select(a => a.GetCollaboratorId()).Distinct();
+
+        var collaborators = await _collaboratorRepository.GetByIdsAsync(collaboratorIds);
+
+        return collaborators;
     }
 
 }
