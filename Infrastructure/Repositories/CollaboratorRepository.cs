@@ -71,4 +71,15 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
 
         return collabs;
     }
+
+    public async Task<IEnumerable<ICollaborator>> GetActiveCollaborators()
+    {
+        var collabsDm = await _context.Set<CollaboratorDataModel>()
+                            .Where(c => c.PeriodDateTime._finalDate > DateTime.Now)
+                            .ToListAsync();
+
+        var collabs = _mapper.ToDomain(collabsDm);
+
+        return collabs;
+    }
 }

@@ -10,5 +10,6 @@ namespace Domain.IRepository
 {
     public interface ITrainingModuleCollaboratorsRepository : IGenericRepository<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor>
     {
+        Task<IEnumerable<ITrainingModuleCollaborators>> GetByTrainingModuleIds(IEnumerable<long> trainingModuleIds);
     }
 }
