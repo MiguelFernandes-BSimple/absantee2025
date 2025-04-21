@@ -6,32 +6,33 @@ using Domain.Interfaces;
 
 namespace Infrastructure.Mapper
 {
-    public class TrainingPeriodMapper : IMapper<TrainingPeriod, TrainingPeriodDataModel>
+    public class TrainingPeriodMapper : IMapper<ITrainingPeriod, TrainingPeriodDataModel>
     {
 
         private ITrainingPeriodFactory _trainingPeriodFactory;
 
-        public TrainingPeriodMapper(ITrainingPeriodFactory trainingPeriodFactory)
+        public TrainingPeriodMapper(TrainingPeriodFactory trainingPeriodFactory)
         {
             _trainingPeriodFactory = trainingPeriodFactory;
         }
 
-        public TrainingPeriod ToDomain(TrainingPeriodDataModel trainingPeriodDataModel)
+        public ITrainingPeriod ToDomain(TrainingPeriodDataModel trainingPeriodDataModel)
         {
-            return _trainingPeriodFactory.Create(trainingPeriodDataModel);
+            TrainingPeriod trainingPeriod = _trainingPeriodFactory.Create(trainingPeriodDataModel);
+            return trainingPeriod;
         }
 
-        public IEnumerable<TrainingPeriod> ToDomain(IEnumerable<TrainingPeriodDataModel> trainingPeriodDataModels)
+        public IEnumerable<ITrainingPeriod> ToDomain(IEnumerable<TrainingPeriodDataModel> trainingPeriodDataModels)
         {
             return trainingPeriodDataModels.Select(ToDomain);
         }
 
-        public TrainingPeriodDataModel ToDataModel(TrainingPeriod trainingPeriod)
+        public TrainingPeriodDataModel ToDataModel(ITrainingPeriod trainingPeriod)
         {
             return new TrainingPeriodDataModel(trainingPeriod);
         }
 
-        public IEnumerable<TrainingPeriodDataModel> ToDataModel(IEnumerable<TrainingPeriod> trainingPeriods)
+        public IEnumerable<TrainingPeriodDataModel> ToDataModel(IEnumerable<ITrainingPeriod> trainingPeriods)
         {
             return trainingPeriods.Select(ToDataModel);
         }

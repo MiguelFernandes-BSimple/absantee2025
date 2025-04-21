@@ -15,5 +15,7 @@ namespace Infrastructure
         DbSet<HolidayPlanDataModel> HolidayPlans { get; set; }
         DbSet<ProjectDataModel> Projects { get; set; }
         DbSet<UserDataModel> Users { get; set; }
+        DbSet<TrainingManagerDataModel> TrainingManagers { get; set; }
+
     }
 }
