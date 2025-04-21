@@ -13,12 +13,12 @@ public class TrainingSubject : ITrainingSubject
     public TrainingSubject(string title, string description)
     {
         if (string.IsNullOrWhiteSpace(title) ||
-            title.Count() < 20 ||
+            title.Count() > 20 ||
             Regex.IsMatch(title, @"^[a-zA-Z0-9]+$"))
             throw new ArgumentException("Invalid input");
 
         if (string.IsNullOrWhiteSpace(description) ||
-            description.Count() < 100 ||
+            description.Count() > 100 ||
             Regex.IsMatch(title, @"^[a-zA-Z0-9]+$"))
             throw new ArgumentException("Invalid input");
 
