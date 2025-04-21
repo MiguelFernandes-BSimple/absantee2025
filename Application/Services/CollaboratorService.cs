@@ -13,6 +13,9 @@ public class CollaboratorService
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
     private ICollaboratorFactory _collaboratorFactory;
+    private IFormationSubjectRepository _formationSubjectRepository;
+    private IFormationModuleRepository _formationModuleRepository;
+    private IAssociationFormationModuleCollaboratorRepository _associationFormationModuleCollaboratorRepository;
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
     {
@@ -89,4 +92,33 @@ public class CollaboratorService
         var userIds = users.Select(u => u.GetId());
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
+
+    public async Task<IEnumerable<ICollaborator>> GetActiveUsersWithoutFormationIn(string formationModuleTitle)
+    {
+        var formationSubject = await _formationSubjectRepository.GetByTitleAsync(formationModuleTitle);
+
+        if (formationSubject == null)
+        {
+            throw new ArgumentException("Given subject does not exist.");
+        }
+
+        var formationModule = await _formationModuleRepository.GetBySubjectId(formationSubject.GetId());
+
+        if (formationModule == null)
+        {
+            throw new ArgumentException("There is no formation module with given subject.");
+        }
+
+        var associations = _associationFormationModuleCollaboratorRepository.FindAllByFormationModuleAsync(formationModule.GetId());
+
+        throw new NotImplementedException("");
+
+    }
+
 }
+
+
+
+
+
+
