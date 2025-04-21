@@ -38,5 +38,12 @@ namespace Domain.Models
             TrainingSubjectId = trainingSubjectId;
             Periods = periods;
         }
+
+        public TrainingModule(long id, long trainingSubjectId, List<PeriodDateTime> periods)
+        {
+            Id = id;
+            TrainingSubjectId = trainingSubjectId;
+            Periods = periods;
+        }
     }
 }

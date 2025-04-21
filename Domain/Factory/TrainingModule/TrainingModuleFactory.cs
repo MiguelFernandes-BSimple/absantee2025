@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
+using Domain.Visitor;
 
 namespace Domain.Factory
 {
-    public class TrainingModuleFactory
+    public class TrainingModuleFactory : ITrainingModuleFactory
     {
         private readonly ITrainingSubjectRepository _subjectRepository;
 
@@ -26,6 +27,11 @@ namespace Domain.Factory
                 throw new ArgumentException("Training Subject must exists");
 
             return new TrainingModule(traingSubjectId, periods);
+        }
+
+        public TrainingModule Create(ITrainingModuleVisitor trainingModuleVisitor)
+        {
+            return new TrainingModule(trainingModuleVisitor.Id, trainingModuleVisitor.TrainingSubjectId, trainingModuleVisitor.Periods);
         }
     }
 }

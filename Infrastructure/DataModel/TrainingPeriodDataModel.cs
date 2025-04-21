@@ -5,7 +5,7 @@ namespace Infrastructure.DataModel
     public class TrainingPeriodDataModel : ITrainingPeriodVisitor
     {
         public long Id { get; set; }
-        public PeriodDateTime PeriodDate { get; set; }
+        public PeriodDate PeriodDate { get; set; }
 
         public TrainingPeriodDataModel()
         {

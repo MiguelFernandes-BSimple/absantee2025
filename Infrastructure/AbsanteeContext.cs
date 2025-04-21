@@ -12,7 +12,7 @@ namespace Infrastructure
         public virtual DbSet<ProjectDataModel> Projects { get; set; }
         public virtual DbSet<UserDataModel> Users { get; set; }
         public virtual DbSet<TrainingSubjectDataModel> TrainingSubjects { get; set; }
-        public virtual DbSet<>
+        public virtual DbSet<TrainingModuleCollaboratorDataModel> TrainingModuleCollaboratorDataModels { get; set; }
 
         public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
@@ -14,8 +15,10 @@ namespace Infrastructure.Repositories
 {
     public class TrainingModuleRepository : GenericRepository<ITrainingModule, ITrainingModuleVisitor>, ITrainingModuleRepository
     {
+        private readonly IMapper<ITrainingModule, ITrainingModuleVisitor> _mapper;
         public TrainingModuleRepository(DbContext context, IMapper<ITrainingModule, ITrainingModuleVisitor> mapper) : base(context, mapper)
         {
+            _mapper = mapper;
         }
 
         public override ITrainingModule? GetById(long id)
@@ -28,13 +31,16 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(long subjectId)
+        public async Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(long subjectId, DateTime date)
         {
-            var trainingModuleDMs = _context.Set<TrainingModuleDataModel>()
+            var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
                                             .Where(t => t.TrainingSubjectId == subjectId
-                                                    && !t.Periods.Any(p => DateTime.Now > p._finalDate));
+                                                    && !t.Periods.Any(p => date > p._finalDate))
+                                            .ToListAsync();
 
-            throw new NotImplementedException();
+            var trainingModules = _mapper.ToDomain(trainingModulesDMs);
+
+            return trainingModules;
         }
     }
 }

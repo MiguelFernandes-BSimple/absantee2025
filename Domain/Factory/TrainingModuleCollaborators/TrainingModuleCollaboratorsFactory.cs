@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.IRepository;
 using Domain.Models;
+using Domain.Visitor;
 
 namespace Domain.Factory
 {
-    public class TrainingModuleCollaboratorsFactory
+    public class TrainingModuleCollaboratorsFactory : ITrainingModuleCollaboratorsFactory
     {
         private readonly ICollaboratorRepository _collaboratorRepository;
         private readonly ITrainingModuleRepository _trainingModuleRepository;
@@ -34,5 +35,9 @@ namespace Domain.Factory
             return new TrainingModuleCollaborators(trainingModuleId, collaboratorId);
         }
 
+        public TrainingModuleCollaborators Create(ITrainingModuleCollaboratorsVisitor visitor)
+        {
+            return new TrainingModuleCollaborators(visitor.TrainingModuleId, visitor.CollaboratorId);
+        }
     }
 }

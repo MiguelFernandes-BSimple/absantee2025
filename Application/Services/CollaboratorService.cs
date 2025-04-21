@@ -26,6 +26,12 @@ public class CollaboratorService
         _collaboratorFactory = checkCollaboratorFactory;
     }
 
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, ITrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory)
+    {
+        _trainingModuleCollaboratorsRepository = trainingModuleCollaboratorsRepository;
+        _trainingModuleRepository = trainingModuleRepository;
+    }
+
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
     {
@@ -93,7 +99,7 @@ public class CollaboratorService
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
-    public async Task<ICollection<ICollaborator>> GetActiveUsersWithNoTrainingModuleFinishedInSubject(long subjectId)
+    public async Task<ICollection<ICollaborator>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(long subjectId)
     {
         // Step 1: Get all active collaborators
         var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
@@ -101,7 +107,7 @@ public class CollaboratorService
 
         // Step 2: Get training modules that are finished for the subject
         var finishedTrainingModules = await _trainingModuleRepository
-            .GetBySubjectIdAndFinished(subjectId); 
+            .GetBySubjectIdAndFinished(subjectId, DateTime.Now); 
 
         var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
 
@@ -120,5 +126,24 @@ public class CollaboratorService
             .ToList();
 
         return result;
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(long subjectId, DateTime date)
+    {
+        // Step 1: Get training modules that are finished for the subject
+        var finishedTrainingModules = await _trainingModuleRepository
+            .GetBySubjectIdAndFinished(subjectId, date);
+
+        var trainingModulesIds = finishedTrainingModules.Select(t => t.Id).ToList();
+
+        // Step 2: Get collaborator-module links for those finished modules
+        var trainingModuleCollaborators = await _trainingModuleCollaboratorsRepository.GetByTrainingModuleIds(trainingModulesIds);
+
+        var collabsIds = trainingModuleCollaborators.Select(t => t.CollaboratorId).ToList();
+
+        // Step 3: Get collaborators
+        var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
+
+        return collabs;
     }
 }
