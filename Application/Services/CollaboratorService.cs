@@ -12,14 +12,20 @@ public class CollaboratorService
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
+    private ITrainingSubjectRepository _trainingSubjectRepository;
+    private ITrainingModuleRepository _trainingModuleRepository;
+    private IAssociationTrainingModuleCollaboratorRepository _assocTCRepository;
     private ICollaboratorFactory _collaboratorFactory;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ITrainingSubjectRepository trainingSubjectRepository, ITrainingModuleRepository trainingModuleRepository, IAssociationTrainingModuleCollaboratorRepository assocTCRepository, ICollaboratorFactory checkCollaboratorFactory)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
+        _trainingSubjectRepository = trainingSubjectRepository;
+        _trainingModuleRepository = trainingModuleRepository;
+        _assocTCRepository = assocTCRepository;
         _collaboratorFactory = checkCollaboratorFactory;
     }
 
@@ -88,5 +94,61 @@ public class CollaboratorService
         var users = await _userRepository.GetByNamesAndSurnamesAsync(names, surnames);
         var userIds = users.Select(u => u.GetId());
         return await _collaboratorRepository.GetByIdsAsync(userIds);
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetActiveCollabsWithNoTrainingModuleDoneOnSubject(string subject)
+    {
+        ITrainingSubject? ts = await _trainingSubjectRepository.FindByTitle(subject);
+
+        if (ts == null)
+            throw new ArgumentException("Invalid Arguments");
+
+        IEnumerable<ITrainingModule> tms = await _trainingModuleRepository.FindAllBySubjectAndCompleted(ts.Id);
+        List<ITrainingModule> tmsList = tms.ToList();
+
+        if (tms.Count() == 0)
+            throw new ArgumentException("Invalid Arguments");
+
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocsResult = new List<IAssociationTrainingModuleCollaborator>();
+
+        for (int tm = 0; tm < tms.Count(); tm++)
+        {
+            IEnumerable<IAssociationTrainingModuleCollaborator> assocs =
+                await _assocTCRepository.FindAllCollaboratorsByTrainingModule(tmsList[tm].Id);
+
+            assocsResult = assocsResult.Concat(assocs);
+        }
+
+        var result = await _collaboratorRepository.GetAllCollaboratorsNotOnList(assocsResult.Select(a => a.CollaboratorId));
+
+        return result;
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetActiveCollabsWithNoTrainingModuleDoneOnSubjectAfterPeriod(string subject, PeriodDateTime period)
+    {
+        ITrainingSubject? ts = await _trainingSubjectRepository.FindByTitle(subject);
+
+        if (ts == null)
+            throw new ArgumentException("Invalid Arguments");
+
+        IEnumerable<ITrainingModule> tms = await _trainingModuleRepository.FindAllBySubjectAndAfterPeriod(ts.Id, period);
+        List<ITrainingModule> tmsList = tms.ToList();
+
+        if (tms.Count() == 0)
+            throw new ArgumentException("Invalid Arguments");
+
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocsResult = new List<IAssociationTrainingModuleCollaborator>();
+
+        for (int tm = 0; tm < tms.Count(); tm++)
+        {
+            IEnumerable<IAssociationTrainingModuleCollaborator> assocs =
+                await _assocTCRepository.FindAllCollaboratorsByTrainingModule(tmsList[tm].Id);
+
+            assocsResult = assocsResult.Concat(assocs);
+        }
+
+        var result = await _collaboratorRepository.GetAllCollaboratorsNotOnList(assocsResult.Select(a => a.CollaboratorId));
+
+        return result;
     }
 }

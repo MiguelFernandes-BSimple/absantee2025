@@ -71,4 +71,15 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
 
         return collabs;
     }
+
+    public async Task<IEnumerable<ICollaborator>> GetAllCollaboratorsNotOnList(IEnumerable<long> collabs)
+    {
+        var result = await _context.Set<CollaboratorDataModel>()
+                                   .Where(c => collabs.Any(c2 => c2 == c.Id))
+                                   .ToListAsync();
+
+        var toDomain = _mapper.ToDomain(result);
+
+        return toDomain;
+    }
 }
