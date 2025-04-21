@@ -19,7 +19,7 @@ public class TrainingModule : ITrainingModule
         for (int p = 0; p < periods.Count(); p++)
         {
             PeriodDateTime currPeriod = periods[p];
-            if (currPeriod._finalDate < DateTime.Now)
+            if (currPeriod._initDate < DateTime.Now)
                 throw new ArgumentException("Invalid input");
 
             bool intersects = periods.Skip(p + 1).Any(currPeriod.Intersects);

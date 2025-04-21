@@ -1,6 +1,6 @@
 namespace Domain.Interfaces;
 
-public class IAssociationTrainingModuleCollaborator
+public interface IAssociationTrainingModuleCollaborator
 {
     public long Id { get; }
     public long TrainingModuleId { get; }

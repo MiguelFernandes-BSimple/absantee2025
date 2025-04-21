@@ -21,19 +21,20 @@ public class TrainingModuleFactory : ITrainingModuleFactory
         // Modules for same subject cant have overlapping periods
         ITrainingSubject? ts = await _trainingSubjectRepository.GetByIdAsync(trainingSubjectId);
 
+        if (ts == null)
+            throw new ArgumentException("Invalid inputs");
+
         IEnumerable<ITrainingModule> tms = await _trainingModuleRepository.FindAllBySubject(trainingSubjectId);
         List<ITrainingModule> tmsList = tms.ToList();
 
-        if (ts != null)
+        for (int tm = 0; tm < tms.Count(); tm++)
         {
-            for (int tm = 0; tm < tms.Count(); tm++)
-            {
-                bool intersect = periods.Any(p => tmsList[tm].Periods.Any(p2 => p.Intersects(p2)));
+            bool intersect = periods.Any(p => tmsList[tm].Periods.Any(p2 => p.Intersects(p2)));
 
-                if (intersect)
-                    throw new ArgumentException("Invalid inputs");
-            }
+            if (intersect)
+                throw new ArgumentException("Invalid inputs");
         }
+
 
         return new TrainingModule(trainingSubjectId, periods);
     }
