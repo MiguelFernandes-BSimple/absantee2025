@@ -23,19 +23,31 @@ namespace Infrastructure.Repositories
 
         public override ITrainingModule? GetById(long id)
         {
-            throw new NotImplementedException();
+            var trainingModuleDM = _context.Set<TrainingModuleDataModel>()
+                                        .FirstOrDefault(t => t.Id == id);
+
+            if (trainingModuleDM == null) 
+                return null;
+
+            return _mapper.ToDomain(trainingModuleDM);
         }
 
-        public override Task<ITrainingModule?> GetByIdAsync(long id)
+        public override async Task<ITrainingModule?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var trainingModuleDM = await _context.Set<TrainingModuleDataModel>()
+                                        .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (trainingModuleDM == null)
+                return null;
+
+            return _mapper.ToDomain(trainingModuleDM);
         }
 
         public async Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(long subjectId, DateTime date)
         {
             var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
                                             .Where(t => t.TrainingSubjectId == subjectId
-                                                    && !t.Periods.Any(p => date > p._finalDate))
+                                                    && t.Periods.All( p => p._finalDate >= date))
                                             .ToListAsync();
 
             var trainingModules = _mapper.ToDomain(trainingModulesDMs);

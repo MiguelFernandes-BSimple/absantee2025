@@ -9,6 +9,7 @@ namespace Domain.Models
 {
     public class TrainingModuleCollaborators : ITrainingModuleCollaborators
     {
+        public long Id { get; set; }
         public long TrainingModuleId { get; }
         public long CollaboratorId { get; }
 

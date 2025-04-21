@@ -8,6 +8,7 @@ namespace Domain.Visitor
 {
     public interface ITrainingModuleCollaboratorsVisitor
     {
+        long Id { get; }
         long TrainingModuleId { get; }
         long CollaboratorId { get; }
     }

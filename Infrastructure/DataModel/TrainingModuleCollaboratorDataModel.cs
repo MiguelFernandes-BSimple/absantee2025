@@ -10,6 +10,7 @@ namespace Infrastructure.DataModel
 {
     public class TrainingModuleCollaboratorDataModel : ITrainingModuleCollaboratorsVisitor
     {
+        public long Id { get; set; }
         public long TrainingModuleId {  get; set; }
         public long CollaboratorId {  get; set; }
 
@@ -19,6 +20,7 @@ namespace Infrastructure.DataModel
 
         public TrainingModuleCollaboratorDataModel(ITrainingModuleCollaborators trainingModuleCollaborators)
         {
+            Id = trainingModuleCollaborators.Id;
             TrainingModuleId = trainingModuleCollaborators.TrainingModuleId;
             CollaboratorId = trainingModuleCollaborators.CollaboratorId;
         }

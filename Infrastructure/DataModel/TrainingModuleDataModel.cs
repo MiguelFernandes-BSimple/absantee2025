@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ namespace Infrastructure.DataModel
 {
     public class TrainingModuleDataModel : ITrainingModuleVisitor
     {
-        public long Id { get; }
-        public long TrainingSubjectId { get; }
-        public List<PeriodDateTime> Periods { get; }
+        public long Id { get; set; }
+        public long TrainingSubjectId { get; set; }
+        public List<PeriodDateTime> Periods { get; set; }
 
         public TrainingModuleDataModel()
         {
