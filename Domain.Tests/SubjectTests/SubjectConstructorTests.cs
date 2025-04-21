@@ -11,7 +11,7 @@ public class SubjectConstructorTests
         // Arrange
 
         // Act
-        var result = new Subject(It.IsAny<string>(), It.IsAny<string>());
+        var result = new Subject("qwe", "rty");
 
         // Assert
         Assert.NotNull(result);
@@ -27,7 +27,7 @@ public class SubjectConstructorTests
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             // Act
-            new Subject(title, It.IsAny<string>()));
+            new Subject(title, "qwe"));
 
         Assert.Equal("Invalid title.", exception.Message);
     }
@@ -42,7 +42,7 @@ public class SubjectConstructorTests
         // Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             // Act
-            new Subject(It.IsAny<string>(), description));
+            new Subject("qwe", description));
 
         Assert.Equal("Invalid description.", exception.Message);
     }
