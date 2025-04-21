@@ -11,5 +11,11 @@ namespace Domain.Models
     {
         public long TrainingModuleId { get; }
         public long CollaboratorId { get; }
+
+        public TrainingModuleCollaborators(long trainingModuleId, long collaboratorId)
+        {
+            TrainingModuleId = trainingModuleId;
+            CollaboratorId = collaboratorId;
+        }
     }
 }
