@@ -6,15 +6,11 @@ using Domain.Models;
 
 namespace Domain.Interfaces
 {
-    public interface ITraningModule
+    public interface ITrainingModule
     {
 
         public long GetId();
-
-
         public long GetSubjectId();
-
-
         public List<PeriodDateTime> GetPeriodsList();
 
     }

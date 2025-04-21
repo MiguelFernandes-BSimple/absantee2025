@@ -1,42 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Domain.Interfaces;
 
-namespace Domain.Models
+namespace Domain.Models;
+
+public class TrainingModule : ITrainingModule
 {
-    public class TrainingModule
+    private long _id;
+    private long _subjectId;
+    private List<PeriodDateTime> _periodsList;
+
+    public TrainingModule(long id, long subjectId, List<PeriodDateTime> periodsList)
     {
-        private long _id;
-        private long _subjectId;
-        private List<PeriodDateTime> _periodsList;
+        _id = id;
+        _subjectId = subjectId;
+        _periodsList = periodsList;
+    }
 
-        public TrainingModule(long id, long subjectId, List<PeriodDateTime> periodsList)
-        {
-            _id = id;
-            _subjectId = subjectId;
-            _periodsList = periodsList;
-        }
+    public TrainingModule(long subjectId, List<PeriodDateTime> periodsList)
+    {
+        _subjectId = subjectId;
+        _periodsList = periodsList;
+    }
 
-        public TrainingModule(long subjectId, List<PeriodDateTime> periodsList)
-        {
-            _subjectId = subjectId;
-            _periodsList = periodsList;
-        }
+    public long GetId()
+    {
+        return _id;
+    }
 
-        public long GetId()
-        {
-            return _id;
-        }
+    public long GetSubjectId()
+    {
+        return _subjectId;
+    }
 
-        public long GetSubjectId()
-        {
-            return _subjectId;
-        }
-
-        public List<PeriodDateTime> GetPeriodsList()
-        {
-            return _periodsList;
-        }
+    public List<PeriodDateTime> GetPeriodsList()
+    {
+        return _periodsList;
     }
 }

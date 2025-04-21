@@ -14,6 +14,17 @@ namespace Domain.Tests.SubjectTests
             // arrange 
 
             // act
+            new Subject("A Title", "A subject description");
+
+            // assert
+        }
+
+        [Fact]
+        public void WhenPassingValidDataAndId_ThenCreatesSubject()
+        {
+            // arrange 
+
+            // act
             new Subject(1, "Title", "A subject description");
 
             // assert
@@ -28,7 +39,7 @@ namespace Domain.Tests.SubjectTests
 
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 //act
-                new Subject(1, title, "Description")
+                new Subject(title, "Description")
             );
 
             Assert.Equal("Invalid Arguments", exception.Message);
@@ -43,7 +54,7 @@ namespace Domain.Tests.SubjectTests
 
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 //act
-                new Subject(1, "title", description)
+                new Subject("title", description)
             );
 
             Assert.Equal("Invalid Arguments", exception.Message);

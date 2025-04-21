@@ -11,7 +11,8 @@ namespace Infrastructure
         public virtual DbSet<HolidayPlanDataModel> HolidayPlans { get; set; }
         public virtual DbSet<ProjectDataModel> Projects { get; set; }
         public virtual DbSet<UserDataModel> Users { get; set; }
-        public virtual DbSet<TraningModuleDataModel> TrainingModule { get; set; }
+        //public virtual DbSet<TraningModuleDataModel> TrainingModule { get; set; }
+        public virtual DbSet<SubjectDataModel> Subjec { get; set; }
 
         public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options)
         {

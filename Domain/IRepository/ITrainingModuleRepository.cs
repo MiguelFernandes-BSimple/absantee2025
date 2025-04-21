@@ -7,7 +7,7 @@ using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface ITrainingModuleRepository : IGenericRepository<ITraningModule, ITrainingModuleVisitor>
+    public interface ITrainingModuleRepository : IGenericRepository<ITrainingModule, ITrainingModuleVisitor>
     {
     }
 }

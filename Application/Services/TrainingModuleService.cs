@@ -9,7 +9,7 @@ namespace Application.Services
 {
     public class TrainingModuleService
     {
-        private ICollaboratorRepository _collabRepo;
+        /* private ICollaboratorRepository _collabRepo;
         private ISubjectRepository _subjectRepo;
         private ITrainingModuleRepository _trainingModuleRepo;
 
@@ -38,9 +38,9 @@ namespace Application.Services
             }
         }
 
-        public async Task<IEnumerable<ICollaborator>> FindAllActiveCollaboratorWithoutFinishedTrainingInSubject()
+        public async Task<IEnumerable<ICollaborator>> FindAllActiveCollaboratorWithoutFinishedTrainingInSubject(long subjectId)
         {
 
-        }
+        } */
     }
 }

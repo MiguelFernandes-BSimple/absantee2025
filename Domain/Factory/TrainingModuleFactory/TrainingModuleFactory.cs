@@ -6,19 +6,19 @@ using Domain.Visitor;
 namespace Domain.Factory;
 public class TrainingModuleFactory : ITrainingModuleFactory
 {
-    private readonly ISubjectRepository _srepo;
+    private readonly ISubjectRepository _subjectRepo;
 
     public TrainingModuleFactory(ISubjectRepository srepo)
     {
-        _srepo = srepo;
+        _subjectRepo = srepo;
     }
 
     public TrainingModule Create(long subjectId, List<PeriodDateTime> periodsList)
     {
-        /* if (_srepo.GetById(subjectId) == null)
+        if (_subjectRepo.GetById(subjectId) == null)
         {
             throw new ArgumentException("Subject does not exist");
-        } */
+        }
 
         return new TrainingModule(subjectId, periodsList);
     }
