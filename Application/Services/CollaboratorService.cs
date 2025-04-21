@@ -9,14 +9,16 @@ namespace Application.Services;
 public class CollaboratorService
 {
     private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
+    private IAssociationTrainingModuleCollaboratorRepository _associationTrainingModuleCollaboratorRepository;
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
     private ICollaboratorFactory _collaboratorFactory;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IAssociationTrainingModuleCollaboratorRepository associationTrainingModuleCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
+        _associationTrainingModuleCollaboratorRepository = associationTrainingModuleCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
@@ -52,6 +54,28 @@ public class CollaboratorService
         var collabsIds = collabs.Select(c => c.GetCollaboratorId());
         return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
+
+    public async Task<IEnumerable<ICollaborator>> FindAllByTrainingModule(long trainingModuleId)
+    {
+        var assocs = await _associationTrainingModuleCollaboratorRepository.FindAllByTrainingModuleAsync(trainingModuleId);
+        var collabsIds = assocs.Select(c => c.CollaboratorId);
+        return await _collaboratorRepository.GetByIdsAsync(collabsIds);
+    }
+
+    public async Task<IEnumerable<ICollaborator>> FindAllWithoutTrainingModule(long trainingModuleId)
+    {
+        var allCollabsWithTrainingModule = await FindAllByTrainingModule(trainingModuleId);
+        var allCollabs = await _collaboratorRepository.GetAllAsync();
+        return allCollabs.Except(allCollabsWithTrainingModule);
+    }
+
+    public async Task<IEnumerable<ICollaborator>> FindAllByTrainingModulAfterDate(long trainingModuleId, DateTime dateTime)
+    {
+        var assocs = await _associationTrainingModuleCollaboratorRepository.FindAllByTrainingModuleAfterDateAsync(trainingModuleId, dateTime);
+        var collabsIds = assocs.Select(c => c.CollaboratorId);
+        return await _collaboratorRepository.GetByIdsAsync(collabsIds);
+    }
+
 
     public async Task<bool> Add(long userId, PeriodDateTime periodDateTime)
     {
