@@ -1,5 +1,6 @@
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
@@ -16,11 +17,25 @@ public class TrainingSubjectRepository : GenericRepository<ITrainingSubject, ITr
 
     public override ITrainingSubject? GetById(long id)
     {
-        throw new NotImplementedException();
+        var subjectDM = _context.Set<TrainingSubjectDataModel>()
+            .FirstOrDefault(ts => ts.Id == id);
+
+        if(subjectDM == null)
+            return null;
+        
+        var subject = _mapper.ToDomain(subjectDM);
+        return subject;
     }
 
-    public override Task<ITrainingSubject?> GetByIdAsync(long id)
+    public override async Task<ITrainingSubject?> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var subjectDM = await _context.Set<TrainingSubjectDataModel>()
+            .FirstOrDefaultAsync(ts => ts.Id == id);
+
+        if(subjectDM == null)
+            return null;
+        
+        var subject = _mapper.ToDomain(subjectDM);
+        return subject;
     }
 }

@@ -3,6 +3,7 @@ using Domain.Interfaces;
 using Domain.Factory;
 using Domain.Models;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Application.Services;
 
@@ -12,15 +13,23 @@ public class CollaboratorService
     private IHolidayPlanRepository _holidayPlanRepository;
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
+    private ITrainingModuleRepository _tmRepository;
+    private ITrainingSubjectRepository _tsRepository;
+    private IAssociationTrainingModuleCollaboratorRepository _amcRepository;
     private ICollaboratorFactory _collaboratorFactory;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, 
+        ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, ITrainingModuleRepository tmRepository,
+        ITrainingSubjectRepository tsRepository, IAssociationTrainingModuleCollaboratorRepository amcRepository)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
         _collaboratorFactory = checkCollaboratorFactory;
+        _tmRepository = tmRepository;
+        _tsRepository = tsRepository;
+        _amcRepository = amcRepository;
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
@@ -52,6 +61,13 @@ public class CollaboratorService
         var collabsIds = collabs.Select(c => c.GetCollaboratorId());
         return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
+
+    /*public async Task<IEnumerable<ICollaborator>> FindAllWithoutTrainingInSubject(long subjectId) {
+        var modules = await _tmRepository.GetAllAsync();
+        var moduleIds = modules.Where(tm => tm.GetSubjectId() == subjectId).Select(tm => tm.GetId());
+        //var collabIds = await _amcRepository.FindAllByModuleIdAsync()
+        //return await _collaboratorRepository.GetByIdsAsync(collabsIds);
+    }*/
 
     public async Task<bool> Add(long userId, PeriodDateTime periodDateTime)
     {

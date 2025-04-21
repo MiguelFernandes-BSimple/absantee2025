@@ -13,6 +13,12 @@ public class AssociationTrainingModuleCollaborator : IAssociationTrainingModuleC
         _trainingModuleId = module;
     }
 
+    public AssociationTrainingModuleCollaborator(long id, long collab, long module) {
+        _id = id;
+        _collaboratorId = collab;
+        _trainingModuleId = module;
+    }
+
     public long GetId()
     {
         return _id;

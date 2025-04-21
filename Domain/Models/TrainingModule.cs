@@ -10,6 +10,12 @@ public class TrainingModule {
         _periods = periods;
     }
 
+    public TrainingModule(long id, long subjectId, List<PeriodDateTime> periods) {
+        _id = id;
+        _subjectId = subjectId;
+        _periods = periods;
+    }
+
     public long GetId() {
         return _id;
     }

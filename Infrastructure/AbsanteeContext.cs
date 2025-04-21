@@ -11,6 +11,7 @@ namespace Infrastructure
         public virtual DbSet<HolidayPlanDataModel> HolidayPlans { get; set; }
         public virtual DbSet<ProjectDataModel> Projects { get; set; }
         public virtual DbSet<UserDataModel> Users { get; set; }
+        public virtual DbSet<TrainingSubjectDataModel> TrainingSubjects {get; set;}
 
         public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options)
         {
@@ -36,6 +37,13 @@ namespace Infrastructure
 
             modelBuilder.Entity<UserDataModel>()
                 .OwnsOne(a => a.PeriodDateTime);
+
+            modelBuilder.Entity<TrainingSubjectDataModel>();
+
+            modelBuilder.Entity<TrainingModuleDataModel>()
+                .OwnsMany(a => a.Periods);
+            
+            modelBuilder.Entity<AssociationTrainingModuleCollaboratorDataModel>();
 
             base.OnModelCreating(modelBuilder);
         }

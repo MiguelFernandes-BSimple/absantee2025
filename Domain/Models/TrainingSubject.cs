@@ -14,6 +14,13 @@ public class TrainingSubject : ITrainingSubject {
         _description = Desc;
     }
 
+    public TrainingSubject(long Id, string Title, string Desc)
+    {
+        _id = Id;
+        _title = Title;
+        _description = Desc;
+    }
+
     public long GetId() {
         return _id;
     }
