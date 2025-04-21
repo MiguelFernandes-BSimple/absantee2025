@@ -1,4 +1,4 @@
-using Domain.Factory.TrainingModuleFactory;
+using Domain.Factory;
 using Domain.Models;
 using Infrastructure.DataModel;
 
@@ -6,9 +6,9 @@ namespace Infrastructure.Mapper;
 
 public class TrainingModuleMapper : IMapper<TrainingModule, TrainingModuleDataModel>
 {
-    private TrainingModuleFactory _factory;
+    private ITrainingModuleFactory _factory;
 
-    public TrainingModuleMapper(TrainingModuleFactory factory)
+    public TrainingModuleMapper(ITrainingModuleFactory factory)
     {
         _factory = factory;
     }

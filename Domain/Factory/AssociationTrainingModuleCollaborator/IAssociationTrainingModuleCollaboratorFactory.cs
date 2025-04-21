@@ -5,6 +5,6 @@ namespace Domain.Factory;
 
 public interface IAssociationTrainingModuleCollaboratorFactory
 {
-    public AssociationTrainingModuleCollaborator Create(long trainingModuleId, long collaboratorId);
+    public Task<AssociationTrainingModuleCollaborator> Create(long trainingModuleId, long collaboratorId);
     public AssociationTrainingModuleCollaborator Create(IAssociationTrainingModuleCollaboratorVisitor associationTrainingModuleCollaboratorVisitor);
 }

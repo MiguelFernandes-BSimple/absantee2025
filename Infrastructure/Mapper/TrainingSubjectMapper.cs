@@ -1,5 +1,5 @@
+using Domain.Factory;
 using Domain.Models;
-using Domain.Factory.TrainingSubjectFactory;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 

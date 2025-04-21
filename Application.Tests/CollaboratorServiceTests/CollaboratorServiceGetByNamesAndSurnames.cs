@@ -40,7 +40,10 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(expected);
 
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            var tsRepo = new Mock<ITrainingSubjectRepository>();
+            var tmRepo = new Mock<ITrainingModuleRepository>();
+            var assocRepo = new Mock<IAssociationTrainingModuleCollaboratorRepository>();
+            var collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, tsRepo.Object, tmRepo.Object, assocRepo.Object, collabFactory.Object);
 
             //act
             var result = await collaboratorService.GetByNamesAndSurnames(It.IsAny<string>(), It.IsAny<string>());
@@ -67,7 +70,10 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(new List<ICollaborator>());
 
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            var tsRepo = new Mock<ITrainingSubjectRepository>();
+            var tmRepo = new Mock<ITrainingModuleRepository>();
+            var assocRepo = new Mock<IAssociationTrainingModuleCollaboratorRepository>();
+            var collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, tsRepo.Object, tmRepo.Object, assocRepo.Object, collabFactory.Object);
 
             //act
             var result = await collaboratorService.GetByNamesAndSurnames(It.IsAny<string>(), It.IsAny<string>());
@@ -103,7 +109,10 @@ namespace Application.Tests.CollaboratorServiceTests
             Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
             collabRepository.Setup(c => c.GetByIdsAsync(It.IsAny<IEnumerable<long>>())).ReturnsAsync(expected);
 
-            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            var tsRepo = new Mock<ITrainingSubjectRepository>();
+            var tmRepo = new Mock<ITrainingModuleRepository>();
+            var assocRepo = new Mock<IAssociationTrainingModuleCollaboratorRepository>();
+            var collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, collabRepository.Object, userRepo.Object, tsRepo.Object, tmRepo.Object, assocRepo.Object, collabFactory.Object);
 
             //act
             var result = await collaboratorService.GetByNamesAndSurnames(It.IsAny<string>(), It.IsAny<string>());

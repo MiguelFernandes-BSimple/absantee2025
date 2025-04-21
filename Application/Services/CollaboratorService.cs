@@ -2,7 +2,6 @@ using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Factory;
 using Domain.Models;
-using System.Threading.Tasks;
 
 namespace Application.Services;
 
@@ -103,7 +102,7 @@ public class CollaboratorService
         if (ts == null)
             throw new ArgumentException("Invalid Arguments");
 
-        IEnumerable<ITrainingModule> tms = await _trainingModuleRepository.FindAllBySubjectAndCompleted(ts.Id);
+        IEnumerable<ITrainingModule> tms = await _trainingModuleRepository.FindAllBySubjectAndAfterPeriod(ts.Id, DateTime.Now);
         List<ITrainingModule> tmsList = tms.ToList();
 
         if (tms.Count() == 0)
@@ -119,12 +118,12 @@ public class CollaboratorService
             assocsResult = assocsResult.Concat(assocs);
         }
 
-        var result = await _collaboratorRepository.GetAllCollaboratorsNotOnList(assocsResult.Select(a => a.CollaboratorId));
+        var result = await _collaboratorRepository.GetAllActiveCollaboratorsNotOnList(assocsResult.Select(a => a.CollaboratorId));
 
         return result;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetActiveCollabsWithNoTrainingModuleDoneOnSubjectAfterPeriod(string subject, PeriodDateTime period)
+    public async Task<IEnumerable<ICollaborator>> GetCollabsWithTrainingModuleDoneOnSubjectAfterPeriod(string subject, DateTime period)
     {
         ITrainingSubject? ts = await _trainingSubjectRepository.FindByTitle(subject);
 
@@ -147,8 +146,19 @@ public class CollaboratorService
             assocsResult = assocsResult.Concat(assocs);
         }
 
-        var result = await _collaboratorRepository.GetAllCollaboratorsNotOnList(assocsResult.Select(a => a.CollaboratorId));
+        List<IAssociationTrainingModuleCollaborator> assocsList = assocsResult.ToList();
+        List<ICollaborator> resultList = new List<ICollaborator>();
 
-        return result;
+        for (int i = 0; i < assocsResult.Count(); i++)
+        {
+            ICollaborator? curr = await _collaboratorRepository.GetByIdAsync(assocsList[i].CollaboratorId);
+
+            if (curr == null)
+                throw new Exception("Invalid id");
+
+            resultList.Add(curr);
+        }
+
+        return resultList;
     }
 }

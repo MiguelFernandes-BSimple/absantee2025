@@ -27,7 +27,8 @@ namespace Application.Services
             if (tm == null || collab == null)
                 throw new ArgumentException("Invalid arguments");
 
-            var assoc = _assocTCFactory.Create(trainingModuleId, collaboratorId);
+            var assoc = await _assocTCFactory.Create(trainingModuleId, collaboratorId);
+
             await _assocTCRepository.AddAsync(assoc);
         }
     }

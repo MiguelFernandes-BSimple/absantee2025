@@ -27,7 +27,7 @@ namespace Application.Services
             if (ts == null)
                 throw new ArgumentException("Invalid inputs");
 
-            var tm = _trainingModuleFactory.Create(trainingSubjectId, periods);
+            var tm = await _trainingModuleFactory.Create(trainingSubjectId, periods);
             await _trainingModuleRepository.AddAsync(tm);
         }
     }

@@ -34,7 +34,8 @@ public class TrainingModuleFactory : ITrainingModuleFactory
                     throw new ArgumentException("Invalid inputs");
             }
         }
-        return null;
+
+        return new TrainingModule(trainingSubjectId, periods);
     }
 
     public TrainingModule Create(ITrainingModuleVisitor trainingModuleVisitor)

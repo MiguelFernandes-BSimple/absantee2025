@@ -1,6 +1,5 @@
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
 using Domain.Visitor;
 using Infrastructure;
 using Infrastructure.DataModel;
@@ -8,12 +7,24 @@ using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class AssociationTrainingModuleCollaborator : GenericRepository<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor>, IAssociationTrainingModuleCollaboratorRepository
+public class AssociationTrainingModuleCollaboratorRepositoryEF : GenericRepository<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor>, IAssociationTrainingModuleCollaboratorRepository
 {
     private readonly IMapper<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor> _mapper;
-    public AssociationTrainingModuleCollaborator(AbsanteeContext context, IMapper<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor> mapper) : base(context, mapper)
+    public AssociationTrainingModuleCollaboratorRepositoryEF(AbsanteeContext context, IMapper<IAssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor> mapper) : base(context, mapper)
     {
         _mapper = mapper;
+    }
+
+    public async Task<IAssociationTrainingModuleCollaborator?> FindByCollaborator(long collabId)
+    {
+        var result = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                   .FirstOrDefaultAsync(a => a.CollaboratorId == collabId);
+
+        if (result == null) return null;
+
+        var toDomain = _mapper.ToDomain(result);
+
+        return toDomain;
     }
 
     public async Task<IEnumerable<IAssociationTrainingModuleCollaborator>> FindAllCollaboratorsByTrainingModule(long tmId)

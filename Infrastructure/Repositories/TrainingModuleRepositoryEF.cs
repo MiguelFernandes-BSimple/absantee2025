@@ -27,13 +27,13 @@ public class TrainingModuleRepositoryEF : GenericRepository<ITrainingModule, ITr
         return tms;
     }
 
-    public async Task<IEnumerable<ITrainingModule>> FindAllBySubjectAndAfterPeriod(long trainingSubjectId, PeriodDateTime period)
+    public async Task<IEnumerable<ITrainingModule>> FindAllBySubjectAndAfterPeriod(long trainingSubjectId, DateTime period)
     {
         var bySubjectId = await _context.Set<TrainingModuleDataModel>()
                                    .Where(tm => tm.TrainingSubjectId == trainingSubjectId)
                                    .ToListAsync();
 
-        var result = bySubjectId.Where(tms => tms.Periods.All(p => p._finalDate > period._finalDate)).ToList();
+        var result = bySubjectId.Where(tms => tms.Periods.All(p => p._finalDate > period)).ToList();
 
         var tms = _mapper.ToDomain(result);
 

@@ -1,5 +1,4 @@
 using Domain.Interfaces;
-using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.IRepository;
@@ -9,6 +8,6 @@ public interface ICollaboratorRepository : IGenericRepository<ICollaborator, ICo
     Task<bool> IsRepeated(ICollaborator collaborator);
     Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<long> ids);
     Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<long> ids);
-    public Task<IEnumerable<ICollaborator>> GetAllCollaboratorsNotOnList(IEnumerable<long> collabs);
+    public Task<IEnumerable<ICollaborator>> GetAllActiveCollaboratorsNotOnList(IEnumerable<long> collabs);
 
 }

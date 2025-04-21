@@ -49,11 +49,15 @@ namespace Application.Tests.CollaboratorServiceTests
             collabRepository.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
 
             var userRepo = new Mock<IUserRepository>();
+            var tsRepo = new Mock<ITrainingSubjectRepository>();
+            var tmRepo = new Mock<ITrainingModuleRepository>();
+            var assocRepo = new Mock<IAssociationTrainingModuleCollaboratorRepository>();
+
             var collabFactory = new Mock<ICollaboratorFactory>();
-            var collabService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, tsRepo.Object, tmRepo.Object, assocRepo.Object, collabFactory.Object);
 
             //act
-            var result = await collabService.FindAllByProject(It.IsAny<long>());
+            var result = await collaboratorService.FindAllByProject(It.IsAny<long>());
 
             //assert
             Assert.True(expected.SequenceEqual(result));
@@ -73,11 +77,15 @@ namespace Application.Tests.CollaboratorServiceTests
             assocRepoMock.Setup(a => a.FindAllByProjectAsync(It.IsAny<long>())).ReturnsAsync(emptyAssociations);
 
             var userRepo = new Mock<IUserRepository>();
+            var tsRepo = new Mock<ITrainingSubjectRepository>();
+            var tmRepo = new Mock<ITrainingModuleRepository>();
+            var assocRepo = new Mock<IAssociationTrainingModuleCollaboratorRepository>();
+
             var collabFactory = new Mock<ICollaboratorFactory>();
-            var collabService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            CollaboratorService collaboratorService = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, tsRepo.Object, tmRepo.Object, assocRepo.Object, collabFactory.Object);
 
             // Act
-            var result = await collabService.FindAllByProject(It.IsAny<long>());
+            var result = await collaboratorService.FindAllByProject(It.IsAny<long>());
 
             // Assert
             Assert.Empty(result);

@@ -16,7 +16,7 @@ namespace Application.Services
 
         public async Task Add(string title, string description)
         {
-            var ts = _trainingSubjectFactory.Create(title, description);
+            var ts = await _trainingSubjectFactory.Create(title, description);
             await _trainingSubjectRepository.AddAsync(ts);
         }
     }

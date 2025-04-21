@@ -16,16 +16,13 @@ public class TrainingModule : ITrainingModule
 
     public TrainingModule(long trainingSubjectId, List<PeriodDateTime> periods) : this(trainingSubjectId)
     {
-        bool isNotInFuture =
-            periods.Any(p => p._initDate < DateTime.Now);
-
-        if (isNotInFuture)
-            throw new ArgumentException("Invalid inputs");
-
         for (int p = 0; p < periods.Count(); p++)
         {
             PeriodDateTime currPeriod = periods[p];
-            bool intersects = periods.Any(p2 => currPeriod.Intersects(p2));
+            if (currPeriod._finalDate < DateTime.Now)
+                throw new ArgumentException("Invalid input");
+
+            bool intersects = periods.Skip(p + 1).Any(currPeriod.Intersects);
 
             if (intersects)
                 throw new ArgumentException("Invalid inputs");
