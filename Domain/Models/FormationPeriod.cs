@@ -24,4 +24,9 @@ public class FormationPeriod : IFormationPeriod
     {
         return _id;
     }
+
+    public bool Contains(IFormationPeriod formationPeriod)
+    {
+        return _periodDate.Contains(formationPeriod._periodDate);
+    }
 }
