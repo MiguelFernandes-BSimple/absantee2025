@@ -13,7 +13,7 @@ public class TrainingModuleDataModel : ITrainingModuleVisitor
 {
     public long Id { get; set; }
 
-    public Subject Assunto { get; set; }
+    public long subjectId { get; set; }
 
     public List<PeriodDateTime> Periodos { get; set; }
 
@@ -21,7 +21,7 @@ public class TrainingModuleDataModel : ITrainingModuleVisitor
     public TrainingModuleDataModel(ITrainingModule trainingModule)
     {
         Id = trainingModule.GetId();
-        Assunto = trainingModule.GetAssunto();
+        subjectId = trainingModule.GetSubjectId();
         Periodos = trainingModule.GetPeriodos();
     }
 

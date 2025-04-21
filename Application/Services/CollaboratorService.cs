@@ -13,14 +13,18 @@ public class CollaboratorService
     private ICollaboratorRepository _collaboratorRepository;
     private IUserRepository _userRepository;
     private ICollaboratorFactory _collaboratorFactory;
+    private IAssociationCollaboratorTrainingModuleFactory _assocCollaboratorTrainingModuleRepository;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
+    private ISubjectRepository _subjectRepository;
+
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IAssociationCollaboratorTrainingModuleFactory assocCollaboratorTrainingModuleRepository)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
         _collaboratorFactory = checkCollaboratorFactory;
+        _assocCollaboratorTrainingModuleRepository = _assocCollaboratorTrainingModuleRepository;
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
@@ -89,4 +93,8 @@ public class CollaboratorService
         var userIds = users.Select(u => u.GetId());
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
+
+    
+
+    
 }

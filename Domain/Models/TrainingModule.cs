@@ -7,17 +7,17 @@ namespace Domain.Models
     public class TrainingModule : ITrainingModule
     {
         private long _id;
-        private Subject _assunto;
+        private  long _subjectId;
         private List<PeriodDateTime> _periodos;
 
-        public TrainingModule(Subject assunto, List<PeriodDateTime> periodos)
+        public TrainingModule(long subjectId, List<PeriodDateTime> periodos)
         {
-            _assunto = assunto;
+            _subjectId = subjectId;
             _periodos = periodos;
         }
 
-        public TrainingModule(long id, Subject assunto, List<PeriodDateTime> periodos)
-            : this(assunto, periodos){
+        public TrainingModule(long id, long subjectId, List<PeriodDateTime> periodos)
+            : this(subjectId, periodos){
                 _id = id;
 
             }
@@ -32,9 +32,9 @@ namespace Domain.Models
             _id = id;
         }
 
-        public Subject GetAssunto()
+        public long GetSubjectId()
         {
-            return _assunto;
+            return _subjectId;
         }
 
         public List<PeriodDateTime> GetPeriodos()

@@ -18,15 +18,15 @@ public class TrainingModuleFactory : ITrainingModuleFactory
     public TrainingModuleFactory(ITrainingModuleRepository trainingModuleRepository){
         _trainingModuleRepository = trainingModuleRepository;
     }
-    public TrainingModule Create(Subject assunto, List<PeriodDateTime> periodos)
+    public TrainingModule Create(long subjectId, List<PeriodDateTime> periodos)
     {
-        TrainingModule trainingModule = new TrainingModule(assunto,periodos);
+        TrainingModule trainingModule = new TrainingModule(subjectId,periodos);
 
         return trainingModule;
     }
 
     public TrainingModule Create(ITrainingModuleVisitor trainingModuleVisitor)
     {
-         return new TrainingModule(trainingModuleVisitor.Id,trainingModuleVisitor.Assunto,trainingModuleVisitor.Periodos);
+         return new TrainingModule(trainingModuleVisitor.Id,trainingModuleVisitor.subjectId,trainingModuleVisitor.Periodos);
     }
 }

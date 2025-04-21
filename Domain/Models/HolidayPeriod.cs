@@ -18,6 +18,9 @@ public class HolidayPeriod : IHolidayPeriod
         _periodDate = periodDate;
     }
 
+
+    
+
     public long GetId()
     {
         return _id;

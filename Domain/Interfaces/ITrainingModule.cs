@@ -8,7 +8,7 @@ public interface ITrainingModule
 {
     long GetId();
     void SetId(long id);
-    Subject GetAssunto();
+    long GetSubjectId();
     List<PeriodDateTime> GetPeriodos();
     void SetPeriodos(List<PeriodDateTime> periodos);
 }

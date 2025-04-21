@@ -12,6 +12,8 @@ namespace Infrastructure
         public virtual DbSet<ProjectDataModel> Projects { get; set; }
         public virtual DbSet<UserDataModel> Users { get; set; }
 
+        public virtual DbSet <AssociationCollaboratorTrainingModuleDataModel> AssociationCollaboratorTrainingModuleDataModels { get; set; }
+
         public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options)
         {
         }
@@ -36,6 +38,9 @@ namespace Infrastructure
 
             modelBuilder.Entity<UserDataModel>()
                 .OwnsOne(a => a.PeriodDateTime);
+
+            modelBuilder.Entity<AssociationCollaboratorTrainingModuleDataModel>()
+                .OwnsOne(a => a.Period);
 
             base.OnModelCreating(modelBuilder);
         }

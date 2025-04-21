@@ -52,15 +52,13 @@ public class TrainingModuleRepository : GenericRepository<ITrainingModule, ITrai
       }
     }
 
-    public async Task<IEnumerable<ITrainingModule>> GetBySubject(Subject subject)
+    public async Task<IEnumerable<ITrainingModule>> GetBySubject(long subjectId)
     {
         try
     {
-        if (subject == null)
-            throw new ArgumentNullException(nameof(subject));
 
         var trainingModulesDM = await _context.Set<TrainingModuleDataModel>()
-            .Where(tm => tm.Id == subject.GetId())
+            .Where(tm => tm.Id == subjectId)
             .ToListAsync();
 
         var trainingModules = trainingModulesDM

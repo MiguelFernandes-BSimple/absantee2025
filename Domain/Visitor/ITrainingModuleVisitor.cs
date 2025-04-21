@@ -7,6 +7,6 @@ namespace Domain.Visitor;
 public interface ITrainingModuleVisitor
 {
     long Id { get; }
-    Subject Assunto { get; }
+    long subjectId { get; }
     List<PeriodDateTime> Periodos { get; }
 }
