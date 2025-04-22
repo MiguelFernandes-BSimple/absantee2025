@@ -34,8 +34,8 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<CollaboratorDataModel, Collaborator>();
     cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
     cfg.CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
-    cfg.CreateMap<TrainingModule, TrainingModuleCollaboratorDataModel>();
-    cfg.CreateMap<TrainingModuleCollaboratorDataModel, TrainingModule>();
+    cfg.CreateMap<TrainingModule, TrainingModuleDataModel>();
+    cfg.CreateMap<TrainingModuleDataModel, TrainingModule>();
     cfg.CreateMap<TrainingSubjectDataModel, TrainingSubject>();
 });
 
