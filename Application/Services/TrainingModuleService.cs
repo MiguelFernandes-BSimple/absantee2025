@@ -9,14 +9,12 @@ namespace Application.Services
     {
         private ITrainingModuleRepository _trainingModuleRepository;
         private ITrainingSubjectRepository _trainingSubjectRepository;
-        private ICollaboratorRepository _collabRepository;
         private ITrainingModuleFactory _trainingModuleFactory;
 
-        public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingSubjectRepository trainingSubjectRepository, ICollaboratorRepository collabRepository, ITrainingModuleFactory trainingModuleFactory)
+        public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingSubjectRepository trainingSubjectRepository, ITrainingModuleFactory trainingModuleFactory)
         {
             _trainingModuleRepository = trainingModuleRepository;
             _trainingSubjectRepository = trainingSubjectRepository;
-            _collabRepository = collabRepository;
             _trainingModuleFactory = trainingModuleFactory;
         }
 

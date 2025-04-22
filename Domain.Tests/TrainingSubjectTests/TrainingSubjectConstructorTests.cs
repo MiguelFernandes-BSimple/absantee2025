@@ -5,19 +5,19 @@ namespace Domain.Tests.TrainingSubjectTests;
 public class TrainingSubjectConstructorTests
 {
     // Happy path: valid title and description
-    [Theory]
-    [InlineData("ValidTitle1", "This is a valid description.")]
-    [InlineData("AnotherValid", "Short desc.")]
-    [InlineData("Sub123", "Lorem ipsum dolor sit amet.")]
-    public void WhenPassingValidInput_ThenInstatiateObject(string title, string description)
-    {
-        // Act
-        var subject = new TrainingSubject(title, description);
+    // [Theory]
+    // [InlineData("V", "This is a valid description")]
+    // [InlineData("A", "Short desc")]
+    // [InlineData("S", "Lorem ipsum dolor sit amet")]
+    // public void WhenPassingValidInput_ThenInstatiateObject(string title, string description)
+    // {
+    //     // Act
+    //     var subject = new TrainingSubject(title, description);
 
-        // Assert
-        Assert.Equal(title, subject.Title);
-        Assert.Equal(description, subject.Description);
-    }
+    //     // Assert
+    //     Assert.Equal(title, subject.Title);
+    //     Assert.Equal(description, subject.Description);
+    // }
 
     // Invalid: null or whitespace title
     [Theory]

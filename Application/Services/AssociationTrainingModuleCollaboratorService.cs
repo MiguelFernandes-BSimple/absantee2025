@@ -2,34 +2,34 @@ using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
 
-namespace Application.Services
+namespace Application.Services;
+
+public class AssociationTrainingModuleCollaboratorService
 {
-    public class AssociationTrainingSubjectCollaborator
+    private IAssociationTrainingModuleCollaboratorRepository _assocTCRepository;
+    private ITrainingModuleRepository _trainingModuleRepository;
+    private ICollaboratorRepository _collabRepository;
+    private IAssociationTrainingModuleCollaboratorFactory _assocTCFactory;
+
+    public AssociationTrainingModuleCollaboratorService(IAssociationTrainingModuleCollaboratorRepository assocTCRepository, ITrainingModuleRepository trainingModuleRepository, ICollaboratorRepository collabRepository, IAssociationTrainingModuleCollaboratorFactory assocTCFactory)
     {
-        private IAssociationTrainingModuleCollaboratorRepository _assocTCRepository;
-        private ITrainingModuleRepository _trainingModuleRepository;
-        private ICollaboratorRepository _collabRepository;
-        private IAssociationTrainingModuleCollaboratorFactory _assocTCFactory;
+        _assocTCRepository = assocTCRepository;
+        _trainingModuleRepository = trainingModuleRepository;
+        _collabRepository = collabRepository;
+        _assocTCFactory = assocTCFactory;
+    }
 
-        public AssociationTrainingSubjectCollaborator(IAssociationTrainingModuleCollaboratorRepository assocTCRepository, ITrainingModuleRepository trainingModuleRepository, ICollaboratorRepository collabRepository, IAssociationTrainingModuleCollaboratorFactory assocTCFactory)
-        {
-            _assocTCRepository = assocTCRepository;
-            _trainingModuleRepository = trainingModuleRepository;
-            _collabRepository = collabRepository;
-            _assocTCFactory = assocTCFactory;
-        }
+    public async Task Add(long trainingModuleId, long collaboratorId)
+    {
+        ITrainingModule? tm = await _trainingModuleRepository.GetByIdAsync(trainingModuleId);
+        ICollaborator? collab = await _collabRepository.GetByIdAsync(collaboratorId);
 
-        public async Task Add(long trainingModuleId, long collaboratorId)
-        {
-            ITrainingModule? tm = await _trainingModuleRepository.GetByIdAsync(trainingModuleId);
-            ICollaborator? collab = await _collabRepository.GetByIdAsync(collaboratorId);
+        if (tm == null || collab == null)
+            throw new ArgumentException("Invalid arguments");
 
-            if (tm == null || collab == null)
-                throw new ArgumentException("Invalid arguments");
+        var assoc = await _assocTCFactory.Create(trainingModuleId, collaboratorId);
 
-            var assoc = await _assocTCFactory.Create(trainingModuleId, collaboratorId);
-
-            await _assocTCRepository.AddAsync(assoc);
-        }
+        await _assocTCRepository.AddAsync(assoc);
     }
 }
+
