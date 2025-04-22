@@ -37,6 +37,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<TrainingModule, TrainingModuleDataModel>();
     cfg.CreateMap<TrainingModuleDataModel, TrainingModule>();
     cfg.CreateMap<TrainingSubjectDataModel, TrainingSubject>();
+    cfg.CreateMap<TrainingSubject, TrainingSubjectDataModel>();
 });
 
 //Factories
