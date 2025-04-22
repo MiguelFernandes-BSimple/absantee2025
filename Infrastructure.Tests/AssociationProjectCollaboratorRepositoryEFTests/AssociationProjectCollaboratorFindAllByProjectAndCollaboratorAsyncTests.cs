@@ -25,23 +25,23 @@ public class AssociationProjectCollaboratorFindAllByProjectAndCollaboratorAsyncT
             new PeriodDate(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
 
         var assoc1 = new Mock<IAssociationProjectCollaborator>();
-        assoc1.Setup(a => a._projectId).Returns(1);
-        assoc1.Setup(a => a._collaboratorId).Returns(1);
-        assoc1.Setup(a => a._periodDate).Returns(period);
+        assoc1.Setup(a => a.ProjectId).Returns(1);
+        assoc1.Setup(a => a.CollaboratorId).Returns(1);
+        assoc1.Setup(a => a.PeriodDate).Returns(period);
         var assocDM1 = new AssociationProjectCollaboratorDataModel(assoc1.Object);
         context.Associations.Add(assocDM1);
 
         var assoc2 = new Mock<IAssociationProjectCollaborator>();
-        assoc2.Setup(a => a._projectId).Returns(2);
-        assoc2.Setup(a => a._collaboratorId).Returns(2);
-        assoc2.Setup(a => a._periodDate).Returns(period);
+        assoc2.Setup(a => a.ProjectId).Returns(2);
+        assoc2.Setup(a => a.CollaboratorId).Returns(2);
+        assoc2.Setup(a => a.PeriodDate).Returns(period);
         var assocDM2 = new AssociationProjectCollaboratorDataModel(assoc2.Object);
         context.Associations.Add(assocDM2);
 
         var assoc3 = new Mock<IAssociationProjectCollaborator>();
-        assoc3.Setup(a => a._projectId).Returns(2);
-        assoc3.Setup(a => a._collaboratorId).Returns(3);
-        assoc3.Setup(a => a._periodDate).Returns(period);
+        assoc3.Setup(a => a.ProjectId).Returns(2);
+        assoc3.Setup(a => a.CollaboratorId).Returns(3);
+        assoc3.Setup(a => a.PeriodDate).Returns(period);
         var assocDM3 = new AssociationProjectCollaboratorDataModel(assoc3.Object);
         context.Associations.Add(assocDM3);
 

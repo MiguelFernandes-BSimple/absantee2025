@@ -1,3 +1,4 @@
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
@@ -10,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>, IAssociationProjectCollaboratorRepository
 {
-    private readonly IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor> _associationProjectCollaboratorMapper;
+    private readonly IMapper _mapper;
 
-    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor> associationProjectCollaboratorMapper)
+    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, IMapper associationProjectCollaboratorMapper)
         : base(context, associationProjectCollaboratorMapper)
     {
-        _associationProjectCollaboratorMapper = associationProjectCollaboratorMapper;
+        _mapper = associationProjectCollaboratorMapper;
     }
 
     public override IAssociationProjectCollaborator? GetById(long id)
@@ -28,7 +29,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             if (assocDM == null)
                 return null;
 
-            var assoc = _associationProjectCollaboratorMapper.ToDomain(assocDM);
+            var assoc = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
             return assoc;
         }
         catch
@@ -47,7 +48,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             if (assocDM == null)
                 return null;
 
-            var assoc = _associationProjectCollaboratorMapper.ToDomain(assocDM);
+            var assoc = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
             return assoc;
         }
         catch
@@ -66,7 +67,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
                               .ToListAsync();
 
             IEnumerable<IAssociationProjectCollaborator> assocs =
-                _associationProjectCollaboratorMapper.ToDomain(assocDM);
+                assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
             return assocs;
         }
@@ -86,7 +87,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             if (assocDM == null)
                 return null;
 
-            IAssociationProjectCollaborator result = _associationProjectCollaboratorMapper.ToDomain(assocDM);
+            IAssociationProjectCollaborator result = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
 
             return result;
         }
@@ -104,7 +105,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
                 await FindByCollaboratorAndProject(collaboratorId, projectId).ToListAsync();
 
 
-            IEnumerable<IAssociationProjectCollaborator> result = _associationProjectCollaboratorMapper.ToDomain(assocsDM);
+            IEnumerable<IAssociationProjectCollaborator> result = assocsDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
             return result;
         }
@@ -121,12 +122,12 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
                 await _context.Set<AssociationProjectCollaboratorDataModel>()
                               .Where(a => a.ProjectId == projectId
-                                    && a.Period._initDate <= periodDate._finalDate
-                                    && periodDate._initDate <= a.Period._finalDate)
+                                    && a.PeriodDate._initDate <= periodDate._finalDate
+                                    && periodDate._initDate <= a.PeriodDate._finalDate)
                               .ToListAsync();
 
             IEnumerable<IAssociationProjectCollaborator> assocs =
-                _associationProjectCollaboratorMapper.ToDomain(assocDM);
+                assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
             return assocs;
         }
@@ -144,8 +145,8 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
 
             int count = assocDMs.Count();
 
-            bool intersect = await assocDMs.Where(a => a.Period._initDate <= periodDate._finalDate &&
-                                                    a.Period._finalDate >= periodDate._initDate)
+            bool intersect = await assocDMs.Where(a => a.PeriodDate._initDate <= periodDate._finalDate &&
+                                                    a.PeriodDate._finalDate >= periodDate._initDate)
                                         .AnyAsync();
 
             return !intersect;

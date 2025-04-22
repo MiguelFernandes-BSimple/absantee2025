@@ -4,33 +4,33 @@ namespace Domain.Models;
 
 public class Collaborator : ICollaborator
 {
-    public long _id { get; set; }
-    public long _userId { get; set; }
-    public PeriodDateTime _periodDateTime { get; set; }
+    public long Id { get; set; }
+    public long UserId { get; set; }
+    public PeriodDateTime PeriodDateTime { get; set; }
 
     public Collaborator(long userId, PeriodDateTime periodDateTime)
     {
-        _periodDateTime = periodDateTime;
-        _userId = userId;
+        PeriodDateTime = periodDateTime;
+        UserId = userId;
     }
 
     public Collaborator(long id, long userId, PeriodDateTime periodDateTime)
     {
-        _id = id;
-        _userId = userId;
-        _periodDateTime = periodDateTime;
+        Id = id;
+        UserId = userId;
+        PeriodDateTime = periodDateTime;
     }
     public long GetId()
     {
-        return _id;
+        return Id;
     }
     public long GetUserId()
     {
-        return _userId;
+        return UserId;
     }
 
     public bool ContractContainsDates(PeriodDateTime periodDateTime)
     {
-        return _periodDateTime.Contains(periodDateTime);
+        return PeriodDateTime.Contains(periodDateTime);
     }
 }

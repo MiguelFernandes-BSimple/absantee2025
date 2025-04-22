@@ -152,7 +152,7 @@ public class CollaboratorFactoryTests
         // Arrange
         var visitor = new Mock<ICollaboratorVisitor>();
         visitor.Setup(v => v.Id).Returns(It.IsAny<int>());
-        visitor.Setup(v => v.UserID).Returns(It.IsAny<int>());
+        visitor.Setup(v => v.UserId).Returns(It.IsAny<int>());
         visitor.Setup(v => v.PeriodDateTime).Returns(It.IsAny<PeriodDateTime>());
 
         var collabRepo = new Mock<ICollaboratorRepository>();

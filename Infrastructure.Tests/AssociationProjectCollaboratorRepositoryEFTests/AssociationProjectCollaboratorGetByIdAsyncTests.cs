@@ -31,7 +31,7 @@ public class AssociationProjectCollaboratorGetByIdAsyncTests
         await context.SaveChangesAsync();
 
         var expected = new Mock<IAssociationProjectCollaborator>();
-        expected.Setup(e => e._id).Returns(assocDM2Id);
+        expected.Setup(e => e.Id).Returns(assocDM2Id);
 
         var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
         mapper.Setup(m => m.ToDomain(assoc2))
