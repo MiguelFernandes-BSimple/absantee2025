@@ -34,6 +34,11 @@ public class CollaboratorService
         _collaboratorFactory = checkCollaboratorFactory;
     }
 
+    public async Task<IEnumerable<ICollaborator>> FindAll()
+    {
+        return await _collaboratorRepository.GetAllAsync();
+    }
+
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
     {
