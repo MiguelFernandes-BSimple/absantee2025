@@ -1,8 +1,6 @@
 using Domain.Factory.TrainingPeriodFactory;
 using Domain.Models;
 using Infrastructure.DataModel;
-using Domain.Visitor;
-using Domain.Interfaces;
 
 namespace Infrastructure.Mapper
 {
