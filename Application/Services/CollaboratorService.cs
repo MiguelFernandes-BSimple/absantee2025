@@ -17,14 +17,14 @@ public class CollaboratorService
 
     private ISubjectRepository _subjectRepository;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IAssociationCollaboratorTrainingModuleFactory assocCollaboratorTrainingModuleRepository)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
         _collaboratorFactory = checkCollaboratorFactory;
-        _assocCollaboratorTrainingModuleRepository = _assocCollaboratorTrainingModuleRepository;
+        
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
