@@ -53,6 +53,6 @@ public class AssociationProjectCollaboratorFactory : IAssociationProjectCollabor
         return new AssociationProjectCollaborator(
                     associationProjectCollaboratorVisitor.CollaboratorId,
                     associationProjectCollaboratorVisitor.ProjectId,
-                    associationProjectCollaboratorVisitor.Period);
+                    associationProjectCollaboratorVisitor.PeriodDate);
     }
 }

@@ -9,7 +9,7 @@ namespace Infrastructure.DataModel
         public long Id { get; set; }
         public long CollaboratorId { get; set; }
         public long ProjectId { get; set; }
-        public PeriodDate Period { get; set; }
+        public PeriodDate PeriodDate { get; set; }
 
 
         public AssociationProjectCollaboratorDataModel()
@@ -18,10 +18,10 @@ namespace Infrastructure.DataModel
 
         public AssociationProjectCollaboratorDataModel(IAssociationProjectCollaborator apc)
         {
-            Id = apc._id;
-            CollaboratorId = apc._collaboratorId;
-            ProjectId = apc._projectId;
-            Period = apc._periodDate;
+            Id = apc.Id;
+            CollaboratorId = apc.CollaboratorId;
+            ProjectId = apc.ProjectId;
+            PeriodDate = apc.PeriodDate;
         }
     }
 }

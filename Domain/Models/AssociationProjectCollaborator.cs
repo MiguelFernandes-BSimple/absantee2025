@@ -4,40 +4,40 @@ namespace Domain.Models;
 
 public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 {
-    public long _id { get; set; }
-    public long _collaboratorId { get; set; }
-    public long _projectId { get; set; }
-    public PeriodDate _periodDate { get; set; }
+    public long Id { get; set; }
+    public long CollaboratorId { get; set; }
+    public long ProjectId { get; set; }
+    public PeriodDate PeriodDate { get; set; }
 
     public AssociationProjectCollaborator(long collaboratorId, long projectId, PeriodDate periodDate)
     {
-        _collaboratorId = collaboratorId;
-        _projectId = projectId;
-        _periodDate = periodDate;
+        CollaboratorId = collaboratorId;
+        ProjectId = projectId;
+        PeriodDate = periodDate;
     }
 
     public void SetId(long id)
     {
-        _id = id;
+        Id = id;
     }
 
     public long GetId()
     {
-        return _id;
+        return Id;
     }
 
     public long GetCollaboratorId()
     {
-        return _collaboratorId;
+        return CollaboratorId;
     }
 
     public long GetProjectId()
     {
-        return _projectId;
+        return ProjectId;
     }
 
     public bool AssociationIntersectPeriod(PeriodDate periodDate)
     {
-        return _periodDate.Intersects(periodDate);
+        return PeriodDate.Intersects(periodDate);
     }
 }

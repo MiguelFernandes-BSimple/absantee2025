@@ -19,7 +19,7 @@ public class HolidayPlanServiceGetHolidayDaysOfCollaboratorInProject
         var period = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         Mock<IAssociationProjectCollaborator> associationDouble = new Mock<IAssociationProjectCollaborator>();
-        associationDouble.Setup(a => a._periodDate).Returns(period);
+        associationDouble.Setup(a => a.PeriodDate).Returns(period);
 
         Mock<IHolidayPlan> holidayPlanDouble = new Mock<IHolidayPlan>();
         holidayPlanDouble.Setup(hp => hp.GetNumberOfHolidayDaysBetween(period)).Returns(5);
