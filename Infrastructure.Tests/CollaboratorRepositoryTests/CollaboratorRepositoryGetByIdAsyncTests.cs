@@ -27,17 +27,17 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             using var context = new AbsanteeContext(options);
 
             var collaborator1 = new Mock<ICollaborator>();
-            collaborator1.Setup(c => c._id).Returns(1);
+            collaborator1.Setup(c => c.Id).Returns(1);
             var collaboratorDM1 = new CollaboratorDataModel(collaborator1.Object);
             context.Collaborators.Add(collaboratorDM1);
 
             var collaborator2 = new Mock<ICollaborator>();
-            collaborator2.Setup(c => c._id).Returns(2);
+            collaborator2.Setup(c => c.Id).Returns(2);
             var collaboratorDM2 = new CollaboratorDataModel(collaborator2.Object);
             context.Collaborators.Add(collaboratorDM2);
 
             var collaborator3 = new Mock<ICollaborator>();
-            collaborator3.Setup(c => c._id).Returns(3);
+            collaborator3.Setup(c => c.Id).Returns(3);
             var collaboratorDM3 = new CollaboratorDataModel(collaborator3.Object);
             context.Collaborators.Add(collaboratorDM3);
 
@@ -67,17 +67,17 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             using var context = new AbsanteeContext(options);
 
             var collaborator1 = new Mock<ICollaborator>();
-            collaborator1.Setup(c => c._id).Returns(1);
+            collaborator1.Setup(c => c.Id).Returns(1);
             var collaboratorDM1 = new CollaboratorDataModel(collaborator1.Object);
             context.Collaborators.Add(collaboratorDM1);
 
             var collaborator2 = new Mock<ICollaborator>();
-            collaborator2.Setup(c => c._id).Returns(2);
+            collaborator2.Setup(c => c.Id).Returns(2);
             var collaboratorDM2 = new CollaboratorDataModel(collaborator2.Object);
             context.Collaborators.Add(collaboratorDM2);
 
             var collaborator3 = new Mock<ICollaborator>();
-            collaborator3.Setup(c => c._id).Returns(3);
+            collaborator3.Setup(c => c.Id).Returns(3);
             var collaboratorDM3 = new CollaboratorDataModel(collaborator3.Object);
             context.Collaborators.Add(collaboratorDM3);
 

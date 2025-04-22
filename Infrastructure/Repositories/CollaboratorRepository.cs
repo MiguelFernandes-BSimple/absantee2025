@@ -7,13 +7,14 @@ using Infrastructure.DataModel;
 using System.Threading.Tasks;
 using Infrastructure.Mapper;
 using Domain.Visitor;
+using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
 public class CollaboratorRepository : GenericRepository<ICollaborator, ICollaboratorVisitor>, ICollaboratorRepository
 {
-    private readonly IMapper<ICollaborator, ICollaboratorVisitor> _mapper;
-    public CollaboratorRepository(AbsanteeContext context, IMapper<ICollaborator, ICollaboratorVisitor> mapper) : base(context, mapper)
+    private readonly IMapper _mapper;
+    public CollaboratorRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }
@@ -21,9 +22,9 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
     public async Task<bool> IsRepeated(ICollaborator collaborator)
     {
         return await this._context.Set<CollaboratorDataModel>()
-                .AnyAsync(c => c.UserID == collaborator._userId
-                    && c.PeriodDateTime._initDate <= collaborator._periodDateTime._finalDate
-                    && collaborator._periodDateTime._initDate <= c.PeriodDateTime._finalDate);
+                .AnyAsync(c => c.UserId == collaborator.UserId
+                    && c.PeriodDateTime._initDate <= collaborator.PeriodDateTime._finalDate
+                    && collaborator.PeriodDateTime._initDate <= c.PeriodDateTime._finalDate);
     }
 
     public override ICollaborator? GetById(long id)
@@ -34,7 +35,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         if (collabDM == null)
             return null;
 
-        var collab = _mapper.ToDomain(collabDM);
+        var collab = _mapper.Map<CollaboratorDataModel, Collaborator>(collabDM);
         return collab;
     }
 
@@ -46,7 +47,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         if (collabDM == null)
             return null;
 
-        var collab = _mapper.ToDomain(collabDM);
+        var collab = _mapper.Map<CollaboratorDataModel, Collaborator>(collabDM);
         return collab;
     }
 
@@ -56,7 +57,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
                     .Where(c => ids.Contains(c.Id))
                     .ToListAsync();
 
-        var collabs = _mapper.ToDomain(collabsDm);
+        var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));
 
         return collabs;
     }
@@ -64,10 +65,10 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
     public async Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<long> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
-                    .Where(c => ids.Contains(c.UserID))
+                    .Where(c => ids.Contains(c.UserId))
                     .ToListAsync();
 
-        var collabs = _mapper.ToDomain(collabsDm);
+        var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));
 
         return collabs;
     }
@@ -78,7 +79,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
                             .Where(c => c.PeriodDateTime._finalDate > DateTime.Now)
                             .ToListAsync();
 
-        var collabs = _mapper.ToDomain(collabsDm);
+        var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));
 
         return collabs;
     }

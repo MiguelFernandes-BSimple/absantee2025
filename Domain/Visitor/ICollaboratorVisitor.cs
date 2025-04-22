@@ -7,7 +7,7 @@ namespace Domain.Visitor;
     public interface ICollaboratorVisitor
     {
         long Id { get; }
-        long UserID { get; }
+        long UserId { get; }
         PeriodDateTime PeriodDateTime { get; }
 
     }

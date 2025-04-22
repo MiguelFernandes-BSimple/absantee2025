@@ -1,3 +1,4 @@
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
@@ -10,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>, IAssociationProjectCollaboratorRepository
 {
-    private readonly IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor> _associationProjectCollaboratorMapper;
+    private readonly IMapper _associationProjectCollaboratorMapper;
 
-    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor> associationProjectCollaboratorMapper)
+    public AssociationProjectCollaboratorRepositoryEF(AbsanteeContext context, IMapper associationProjectCollaboratorMapper)
         : base(context, associationProjectCollaboratorMapper)
     {
         _associationProjectCollaboratorMapper = associationProjectCollaboratorMapper;

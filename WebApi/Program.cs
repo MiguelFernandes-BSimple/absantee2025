@@ -1,10 +1,9 @@
+using Application.Services;
 using Domain.Factory;
-using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,28 +17,26 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+//Services
+builder.Services.AddTransient<CollaboratorService>();
 //Repositories
-builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
-builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
-builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
-builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 
 //Mappers
-builder.Services.AddTransient<ProjectMapper>();
-builder.Services.AddTransient<TrainingPeriodMapper>();
-builder.Services.AddTransient<UserMapper>();
-builder.Services.AddTransient<ProjectManagerMapper>();
-builder.Services.AddTransient<AssociationProjectCollaboratorMapper>();
-builder.Services.AddTransient<IMapper<Collaborator, CollaboratorDataModel> ,CollaboratorMapper>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.CreateMap<Collaborator, CollaboratorDataModel>();
+    cfg.CreateMap<CollaboratorDataModel, Collaborator>();
+});
 
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
-builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
-builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -47,6 +44,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

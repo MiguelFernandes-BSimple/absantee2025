@@ -37,14 +37,14 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             using var context = new AbsanteeContext(options);
 
             var collaborator1 = new Mock<ICollaborator>();
-            collaborator1.Setup(c => c._userId).Returns(2);
+            collaborator1.Setup(c => c.UserId).Returns(2);
             var periodDateTimeColab = new PeriodDateTime(init1, final1);
-            collaborator1.Setup(c => c._periodDateTime).Returns(periodDateTimeColab);
+            collaborator1.Setup(c => c.PeriodDateTime).Returns(periodDateTimeColab);
             context.Collaborators.Add(new CollaboratorDataModel(collaborator1.Object));
 
             var collaborator2 = new Mock<ICollaborator>();
-            collaborator2.Setup(c => c._userId).Returns(2);
-            collaborator2.Setup(c => c._periodDateTime).Returns(periodDateTimeColab);
+            collaborator2.Setup(c => c.UserId).Returns(2);
+            collaborator2.Setup(c => c.PeriodDateTime).Returns(periodDateTimeColab);
             context.Collaborators.Add(new CollaboratorDataModel(collaborator2.Object));
 
             await context.SaveChangesAsync();
@@ -52,8 +52,8 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             var periodDateTime = new PeriodDateTime(new DateTime(2020, 1, 1), new DateTime(2021, 1, 1));
 
             var collaborator = new Mock<ICollaborator>();
-            collaborator.Setup(c => c._userId).Returns(2);
-            collaborator.Setup(c => c._periodDateTime).Returns(periodDateTime);
+            collaborator.Setup(c => c.UserId).Returns(2);
+            collaborator.Setup(c => c.PeriodDateTime).Returns(periodDateTime);
 
             var mapper = new Mock<IMapper<ICollaborator, ICollaboratorVisitor>>();
 

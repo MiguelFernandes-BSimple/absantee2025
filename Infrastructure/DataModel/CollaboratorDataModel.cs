@@ -9,14 +9,14 @@ namespace Infrastructure.DataModel;
 public class CollaboratorDataModel : ICollaboratorVisitor
 {
     public long Id { get; set; }
-    public long UserID { get; set; }
+    public long UserId { get; set; }
     public PeriodDateTime PeriodDateTime { get; set; }
 
     public CollaboratorDataModel(ICollaborator collaborator)
     {
-        Id = collaborator._id;
-        UserID = collaborator._userId;
-        PeriodDateTime = (PeriodDateTime)collaborator._periodDateTime;
+        Id = collaborator.Id;
+        UserId = collaborator.UserId;
+        PeriodDateTime = (PeriodDateTime)collaborator.PeriodDateTime;
     }
 
     public CollaboratorDataModel()
