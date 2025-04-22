@@ -22,6 +22,7 @@ builder.Services.AddTransient<CollaboratorService>();
 //Repositories
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
+builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepository>();
 
 //Mappers
 builder.Services.AddAutoMapper(cfg =>
@@ -30,6 +31,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<CollaboratorDataModel, Collaborator>();
     cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
     cfg.CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
+    cfg.CreateMap<TrainingSubjectDataModel, TrainingSubject>();
 });
 
 //Factories
