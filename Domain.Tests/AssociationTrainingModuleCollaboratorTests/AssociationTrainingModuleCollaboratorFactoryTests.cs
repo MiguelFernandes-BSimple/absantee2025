@@ -122,7 +122,8 @@ public class AssociationTrainingModuleCollaboratorFactoryTests
         collabRepo.Setup(cr => cr.GetByIdAsync(collabId)).ReturnsAsync(collab.Object);
 
         // Unicity test
-        assocRepo.Setup(ar => ar.FindByCollaborator(collabId)).ReturnsAsync(It.IsAny<IAssociationTrainingModuleCollaborator>());
+        Mock<IAssociationTrainingModuleCollaborator> collabRepeated = new Mock<IAssociationTrainingModuleCollaborator>();
+        assocRepo.Setup(ar => ar.FindByCollaborator(collabId)).ReturnsAsync(collabRepeated.Object);
 
         AssociationTrainingModuleCollaborator expected =
             new AssociationTrainingModuleCollaborator(trainingModuleId, collabId);
