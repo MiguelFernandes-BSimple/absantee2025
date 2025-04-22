@@ -68,7 +68,10 @@ public class CollaboratorService
 
         return true;
     }
-
+    public async Task<IEnumerable<ICollaborator>> GetAllCollaborator()
+    {
+        return await _collaboratorRepository.GetAllAsync();
+    }
     public async Task<IEnumerable<ICollaborator>> GetByNames(string names)
     {
         var users = await _userRepository.GetByNamesAsync(names);
