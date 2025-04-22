@@ -21,16 +21,20 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 builder.Services.AddTransient<CollaboratorService>();
 //Repositories
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
+builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
 
 //Mappers
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.CreateMap<Collaborator, CollaboratorDataModel>();
     cfg.CreateMap<CollaboratorDataModel, Collaborator>();
+    cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
+    cfg.CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
 });
 
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
+builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
