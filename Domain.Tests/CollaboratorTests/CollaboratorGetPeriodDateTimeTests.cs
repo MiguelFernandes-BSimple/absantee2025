@@ -13,7 +13,7 @@ namespace Domain.Tests.CollaboratorTests
             Collaborator collaborator = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), periodDateTime);
 
             // Act
-            var result = collaborator._periodDateTime;
+            var result = collaborator.PeriodDateTime;
 
             // Assert
             Assert.Equal(periodDateTime, result);

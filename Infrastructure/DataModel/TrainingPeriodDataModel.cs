@@ -14,7 +14,7 @@ namespace Infrastructure.DataModel
         public TrainingPeriodDataModel(TrainingPeriod trainingPeriod)
         {
             Id = trainingPeriod.GetId();
-            PeriodDate = (PeriodDate)trainingPeriod.GetPeriodDate();
+            PeriodDate = trainingPeriod.GetPeriodDate();
         }
     }
 }
