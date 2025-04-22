@@ -29,8 +29,8 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
             
             var trainingModule1 = new Mock<ITrainingModule>();
             trainingModule1.Setup(t => t.TrainingSubjectId).Returns(1);
-            var period1 = new PeriodDateTime(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1));
-            var period2 = new PeriodDateTime(DateTime.Now.AddDays(-3), DateTime.Now.AddDays(-2));
+            var period1 = new PeriodDateTime(DateTime.Today.AddDays(-1), DateTime.Today);
+            var period2 = new PeriodDateTime(DateTime.Today.AddDays(-3), DateTime.Today.AddDays(-2));
             var periods1 = new List<PeriodDateTime>() { period1, period2 };
             trainingModule1.Setup(t => t.Periods).Returns(periods1);
             var trainingModuleDM1 = new TrainingModuleDataModel(trainingModule1.Object);
@@ -39,7 +39,7 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
             
             var trainingModule2 = new Mock<ITrainingModule>();
             trainingModule2.Setup(t => t.TrainingSubjectId).Returns(1);
-            var period3 = new PeriodDateTime(DateTime.Now.AddDays(2), DateTime.Now.AddDays(4));
+            var period3 = new PeriodDateTime(DateTime.Today.AddDays(2), DateTime.Today.AddDays(4));
             var periods2 = new List<PeriodDateTime>() { period3 };
             trainingModule2.Setup(t => t.Periods).Returns(periods2);
             var trainingModuleDM2 = new TrainingModuleDataModel(trainingModule2.Object);
@@ -56,7 +56,7 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
             var trainingModuleRepo = new TrainingModuleRepository(context, mapper.Object);
 
             //Act
-            var result = await trainingModuleRepo.GetBySubjectIdAndFinished(1, DateTime.Now);
+            var result = await trainingModuleRepo.GetBySubjectIdAndFinished(1, DateTime.Today);
 
             //Assert
             Assert.True(expected.SequenceEqual(result));

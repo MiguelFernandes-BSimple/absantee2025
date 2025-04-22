@@ -41,6 +41,7 @@ namespace Domain.Tests.TrainingSubjectTests
                 // act
                 factory.Create("Subject", "Description")
             );
+            Assert.Equal("Subject must be unique", exception.Message );
         }
     }
 }
