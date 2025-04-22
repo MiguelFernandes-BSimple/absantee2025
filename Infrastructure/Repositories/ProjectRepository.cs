@@ -9,15 +9,16 @@ using Domain.Models;
 using Infrastructure.DataModel;
 using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
 public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, IProjectRepository
 {
-    private readonly ProjectMapper _mapper;
-    public ProjectRepository(AbsanteeContext context, ProjectMapper mapper) : base(context, (IMapper<IProject, ProjectDataModel>)mapper)
+    private readonly IMapper _ProjectMapper;
+    public ProjectRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
-        _mapper = mapper;
+        _ProjectMapper = mapper;
     }
 
     public override IProject? GetById(long id)
@@ -28,7 +29,7 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
         if (projectDM == null)
             return null;
 
-        var project = _mapper.ToDomain(projectDM);
+        var project = _ProjectMapper.Map<ProjectDataModel, Project>(projectDM);
         return project;
     }
 
@@ -40,7 +41,7 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
         if (projectDM == null)
             return null;
 
-        var project = _mapper.ToDomain(projectDM);
+        var project = _ProjectMapper.Map<ProjectDataModel, Project>(projectDM);
         return project;
     }
 
