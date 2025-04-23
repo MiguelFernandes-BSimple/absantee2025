@@ -17,6 +17,9 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+builder.Services.AddTransient<UserService>();
+
+
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
@@ -43,6 +46,7 @@ builder.Services.AddAutoMapper(cfg =>
 
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
+builder.Services.AddTransient<IUserFactory, UserFactory>();
 builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
