@@ -64,17 +64,10 @@ public class CollaboratorService
 
     public async Task<bool> Add(long userId, PeriodDateTime periodDateTime)
     {
-        ICollaborator colab;
-        try
-        {
-            colab = await _collaboratorFactory.Create(userId, periodDateTime);
-            await _collaboratorRepository.AddAsync(colab);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-
+        Collaborator colab;
+        colab = await _collaboratorFactory.Create(userId, periodDateTime);
+        await _collaboratorRepository.AddAsync(colab);
+        await _collaboratorRepository.SaveChangesAsync();
         return true;
     }
 
@@ -107,7 +100,7 @@ public class CollaboratorService
 
         // Step 2: Get training modules that are finished for the subject
         var finishedTrainingModules = await _trainingModuleRepository
-            .GetBySubjectIdAndFinished(subjectId, DateTime.Now); 
+            .GetBySubjectIdAndFinished(subjectId, DateTime.Now);
 
         var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
 

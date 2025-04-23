@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRepository
+public class UserRepositoryEF : GenericRepository<User, IUserVisitor>, IUserRepository
 {
     private readonly IMapper _mapper;
-    public UserRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context,mapper)
+    public UserRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }
@@ -69,7 +69,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
         return user;
     }
 
-    public override IUser? GetById(long id)
+    public override User? GetById(long id)
     {
         var userDM = _context.Set<UserDataModel>().FirstOrDefault(c => c.Id == id);
 
@@ -80,7 +80,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
         return user;
     }
 
-    public override async Task<IUser?> GetByIdAsync(long id)
+    public override async Task<User?> GetByIdAsync(long id)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Id == id);
 

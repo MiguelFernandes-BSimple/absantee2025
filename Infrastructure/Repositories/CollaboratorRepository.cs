@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepository : GenericRepository<ICollaborator, ICollaboratorVisitor>, ICollaboratorRepository
+public class CollaboratorRepository : GenericRepository<Collaborator, CollaboratorDataModel>, ICollaboratorRepository
 {
     private readonly IMapper _mapper;
     public CollaboratorRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -24,7 +24,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
                     && collaborator.PeriodDateTime._initDate <= c.PeriodDateTime._finalDate);
     }
 
-    public override ICollaborator? GetById(long id)
+    public override Collaborator? GetById(long id)
     {
         var collabDM = this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefault(c => c.Id == id);
@@ -36,7 +36,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         return collab;
     }
 
-    public override async Task<ICollaborator?> GetByIdAsync(long id)
+    public override async Task<Collaborator?> GetByIdAsync(long id)
     {
         var collabDM = await this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefaultAsync(c => c.Id == id);
