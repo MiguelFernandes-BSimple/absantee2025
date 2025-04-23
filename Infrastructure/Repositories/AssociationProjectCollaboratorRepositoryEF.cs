@@ -5,7 +5,6 @@ using Domain.Models;
 using Domain.Visitor;
 using Infrastructure;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 

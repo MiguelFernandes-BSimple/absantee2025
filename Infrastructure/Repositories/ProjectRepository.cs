@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 

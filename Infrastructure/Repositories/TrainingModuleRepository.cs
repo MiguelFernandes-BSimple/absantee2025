@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories
     public class TrainingModuleRepository : GenericRepository<ITrainingModule, ITrainingModuleVisitor>, ITrainingModuleRepository
     {
         private readonly IMapper _mapper;
-        public TrainingModuleRepository(DbContext context, IMapper mapper) : base(context, mapper)
+        public TrainingModuleRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }

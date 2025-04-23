@@ -4,7 +4,6 @@ using Domain.IRepository;
 using Domain.Models;
 using Infrastructure;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +25,8 @@ builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositor
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepository>();
+builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
+builder.Services.AddTransient<ITrainingModuleCollaboratorsRepository, TrainingModuleCollaboratorsRepository>();
 
 //Mappers
 builder.Services.AddAutoMapper(cfg =>

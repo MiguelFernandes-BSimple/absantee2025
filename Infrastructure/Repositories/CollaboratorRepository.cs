@@ -1,11 +1,8 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.DataModel;
-using System.Threading.Tasks;
-using Infrastructure.Mapper;
 using Domain.Visitor;
 using AutoMapper;
 

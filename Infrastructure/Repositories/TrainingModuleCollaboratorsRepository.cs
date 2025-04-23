@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
     public class TrainingModuleCollaboratorsRepository : GenericRepository<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor>, ITrainingModuleCollaboratorsRepository
     {
-        private readonly IMapper<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor> _mapper;
-        public TrainingModuleCollaboratorsRepository(DbContext context, IMapper<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor> mapper) : base(context, mapper)
+        private readonly IMapper _mapper;
+        public TrainingModuleCollaboratorsRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }
@@ -28,7 +24,7 @@ namespace Infrastructure.Repositories
             if (trainingModuleCollabDM == null)
                 return null;
 
-            return _mapper.ToDomain(trainingModuleCollabDM);
+            return _mapper.Map<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>(trainingModuleCollabDM);
         }
 
         public override async Task<ITrainingModuleCollaborators?> GetByIdAsync(long id)
@@ -39,7 +35,7 @@ namespace Infrastructure.Repositories
             if (trainingModuleCollabDM == null)
                 return null;
 
-            return _mapper.ToDomain(trainingModuleCollabDM);
+            return _mapper.Map<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>(trainingModuleCollabDM);
         }
 
         public async Task<IEnumerable<ITrainingModuleCollaborators>> GetByTrainingModuleIds(IEnumerable<long> trainingModuleIds)
@@ -48,7 +44,7 @@ namespace Infrastructure.Repositories
                                                 .Where(t => trainingModuleIds.Contains(t.TrainingModuleId))
                                                 .ToListAsync();
 
-            var trainingModuleCollaborators = _mapper.ToDomain(trainingModuleCollaboratorsDMs);
+            var trainingModuleCollaborators = trainingModuleCollaboratorsDMs.Select(t => _mapper.Map<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>(t));
 
             return trainingModuleCollaborators;
         }

@@ -40,7 +40,7 @@ namespace Domain.Factory
 
         public Collaborator Create(ICollaboratorVisitor visitor)
         {
-            return new Collaborator(visitor.Id, visitor.UserID, visitor.PeriodDateTime);
+            return new Collaborator(visitor.Id, visitor.UserId, visitor.PeriodDateTime);
         }
     }
 }

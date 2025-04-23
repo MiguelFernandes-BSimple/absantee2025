@@ -1,16 +1,17 @@
-﻿using Domain.Interfaces;
+﻿using AutoMapper;
+using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRepository
 {
-    private readonly IMapper<IUser,IUserVisitor> _mapper;
-    public UserRepositoryEF(AbsanteeContext context, IMapper<IUser,IUserVisitor> mapper) : base(context,mapper)
+    private readonly IMapper _mapper;
+    public UserRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context,mapper)
     {
         _mapper = mapper;
     }
@@ -23,7 +24,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
         var usersDM = await this._context.Set<UserDataModel>()
                     .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-        var users = _mapper.ToDomain(usersDM);
+        var users = usersDM.Select(u => _mapper.Map<UserDataModel, User>(u));
 
         return users;
     }
@@ -36,7 +37,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
         var usersDM = await this._context.Set<UserDataModel>()
                     .Where(u => u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-        var users = _mapper.ToDomain(usersDM);
+        var users = usersDM.Select(u => _mapper.Map<UserDataModel, User>(u));
 
         return users;
     }
@@ -50,7 +51,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
                     .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)
                              && u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-        var users = _mapper.ToDomain(usersDM);
+        var users = usersDM.Select(u => _mapper.Map<UserDataModel, User>(u));
 
         return users;
     }
@@ -64,7 +65,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
             return null;
         }
 
-        var user = _mapper.ToDomain(userDM);
+        var user = _mapper.Map<UserDataModel, User>(userDM);
         return user;
     }
 
@@ -75,7 +76,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
         if (userDM == null)
             return null;
 
-        var user = _mapper.ToDomain(userDM);
+        var user = _mapper.Map<UserDataModel, User>(userDM);
         return user;
     }
 
@@ -86,7 +87,7 @@ public class UserRepositoryEF : GenericRepository<IUser, IUserVisitor>, IUserRep
         if (userDM == null)
             return null;
 
-        var user = _mapper.ToDomain(userDM);
+        var user = _mapper.Map<UserDataModel, User>(userDM);
         return user;
     }
 }
