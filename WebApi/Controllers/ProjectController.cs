@@ -6,26 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        private readonly CollaboratorService _colaboratorService;
+        private readonly ProjectService _projectService;
 
-        public ProjectController(CollaboratorService colaboratorService)
+        public ProjectController(ProjectService projectService)
         {
-            _colaboratorService = colaboratorService;
+            _projectService = projectService;
         }
 
-        // Post: api/Colaborator
-        [HttpPost]
-        public async Task<ActionResult> AddProjects([FromBody] CollaboratorDataModel collaboratorDataModel)
+        // Post: api/Project
+        [HttpPost("addprojects")]
+        public async Task<ActionResult<Project>> AddProjects([FromBody] Project project)
         {
-            // long userId = 1;
-            // var periodDate = new PeriodDateTime(DateTime.Today, DateTime.Today.AddDays(3));
-            bool result = await _colaboratorService.Add(collaboratorDataModel.UserId, collaboratorDataModel.PeriodDateTime);
-
+            bool result = await _projectService.Add(project);
+            return Ok(result);
+        }
+        // Get: api/Project
+        [HttpGet("getprojects")]
+        public async Task<ActionResult<Project>> GetProjects()
+        {
+            var result = await _projectService.GetAll();
             return Ok(result);
         }
     }

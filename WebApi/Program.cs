@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<CollaboratorService>();
+builder.Services.AddScoped<ProjectService>();
+
 
 builder.Services.AddControllers();
 
@@ -43,6 +45,8 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<TrainingSubject, TrainingSubjectDataModel>();
     cfg.CreateMap<User, UserDataModel>();
     cfg.CreateMap<UserDataModel, User>();
+    cfg.CreateMap<Project, ProjectDataModel>();
+    cfg.CreateMap<ProjectDataModel, Project>();
 });
 
 //Factories
@@ -50,6 +54,7 @@ builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
 builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
+builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

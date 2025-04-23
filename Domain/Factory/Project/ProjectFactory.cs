@@ -13,17 +13,17 @@ public class ProjectFactory : IProjectFactory
     {
         _projectRepository = projectRepository;
     }
-    public async Task<Project> Create(long id, string title, string acronym, PeriodDate periodDate)
+    public async Task<Project> Create(string title, string acronym, PeriodDate periodDate)
     {
         if (!await _projectRepository.CheckIfAcronymIsUnique(acronym))
             throw new ArgumentException("Invalid Arguments");
 
-        Project project = new Project(id, title, acronym, periodDate);
+        Project project = new Project(title, acronym, periodDate);
         return project;
     }
 
     public Project Create(IProjectVisitor visitor)
     {
-        return new Project(visitor.Id, visitor.Title, visitor.Acronym, visitor.PeriodDate);
+        return new Project(visitor.Title, visitor.Acronym, visitor.PeriodDate);
     }
 }

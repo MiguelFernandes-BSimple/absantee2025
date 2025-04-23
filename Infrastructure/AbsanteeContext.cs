@@ -35,7 +35,11 @@ namespace Infrastructure
 
 
             modelBuilder.Entity<ProjectDataModel>()
-                .OwnsOne(a => a.PeriodDate);
+                .OwnsOne(a => a.PeriodDate, pd =>
+    {
+        pd.Property(p => p.finalDate).HasColumnName("PeriodDate__finalDate");
+        pd.Property(p => p.initDate).HasColumnName("PeriodDate__initDate");  // Certifique-se de que o nome da coluna está correto
+    });
 
             modelBuilder.Entity<UserDataModel>()
                 .OwnsOne(a => a.PeriodDateTime);

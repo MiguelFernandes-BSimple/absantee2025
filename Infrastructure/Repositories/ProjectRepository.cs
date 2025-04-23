@@ -46,4 +46,11 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
 
         return found == null;
     }
+    public async Task<IEnumerable<IProject>> GetAllAsync()
+    {
+        var projectDM = await _context.Set<ProjectDataModel>().ToListAsync();
+        var projects = projectDM.Select(d => _ProjectMapper.Map<ProjectDataModel, Project>(d));
+        return projects;
+    }
+
 }
