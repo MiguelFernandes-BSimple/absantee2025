@@ -1,3 +1,4 @@
+using Application.Services;
 using Domain.Factory;
 using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<CollaboratorService>();
 
 builder.Services.AddControllers();
 
