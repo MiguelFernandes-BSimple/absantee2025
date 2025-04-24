@@ -19,9 +19,9 @@ namespace Infrastructure.DataModel
         public ProjectDataModel(Project project)
         {
             Id = project.Id;
-            Title = project.GetTitle();
-            Acronym = project.GetAcronym();
-            PeriodDate = project.GetPeriodDate();
+            Title = project.Title;
+            Acronym = project.Acronym;
+            PeriodDate = project.PeriodDate;
         }
 
         public ProjectDataModel()
