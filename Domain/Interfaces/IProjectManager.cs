@@ -4,8 +4,7 @@ namespace Domain.Interfaces;
 
 public interface IProjectManager
 {
-    public long GetId();
-    public void SetId(long id);
-    public long GetUserId();
-    public PeriodDateTime GetPeriodDateTime();
+    public Guid Id { get; }
+    public Guid UserId { get; }
+    public PeriodDateTime PeriodDateTime { get; }
 }
