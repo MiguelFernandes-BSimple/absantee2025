@@ -16,7 +16,8 @@ namespace Infrastructure.DataModel
 
         public UserDataModel(IUser user)
         {
-            Id = user.GetId();
+            if (Id > 0)
+                Id = user.GetId();
             Names = user.GetNames();
             Surnames = user.GetSurnames();
             Email = user.GetEmail();

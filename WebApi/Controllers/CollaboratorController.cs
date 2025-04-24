@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.DTO;
+using Application.Services;
 using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.DataModel;
@@ -19,11 +20,9 @@ namespace WebApi.Controllers
 
         // Post: api/Colaborator
         [HttpPost]
-        public async Task<ActionResult> AddCollaborator()
+        public async Task<ActionResult> AddCollaborator([FromBody] CollaboratorDTO collaboratorDTO)
         {
-            long userId = 1;
-            var periodDate = new PeriodDateTime(DateTime.UtcNow, DateTime.UtcNow.AddDays(3));
-            bool result = await _colaboratorService.Add(userId, periodDate);
+            var result = await _colaboratorService.Add(collaboratorDTO);
 
             return Ok(result);
         }

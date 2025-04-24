@@ -21,14 +21,14 @@ namespace Domain.Models
             {
                 var periodA = periods[i];
                 //check if period is in the future
-                if (DateTime.Now > periodA._initDate)
+                if (DateTime.Now > periodA.InitDate)
                     throw new ArgumentException("Periods must start in the future");
 
                 for (int j = i + 1; j < periods.Count; j++)
                 {
                     var periodB = periods[j];
 
-                    if (periodA._initDate <= periodB._finalDate && periodB._initDate <= periodA._finalDate)
+                    if (periodA.InitDate <= periodB.FinalDate && periodB.InitDate <= periodA.FinalDate)
                     {
                         throw new ArgumentException("Training periods cannot overlap.");
                     }

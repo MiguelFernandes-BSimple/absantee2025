@@ -38,11 +38,15 @@ namespace Infrastructure
                 .OwnsOne(a => a.PeriodDate, pd =>
     {
         pd.Property(p => p.finalDate).HasColumnName("PeriodDate__finalDate");
-        pd.Property(p => p.initDate).HasColumnName("PeriodDate__initDate");  // Certifique-se de que o nome da coluna está correto
+        pd.Property(p => p.initDate).HasColumnName("PeriodDate__initDate");
     });
 
             modelBuilder.Entity<UserDataModel>()
-                .OwnsOne(a => a.PeriodDateTime);
+                .OwnsOne(a => a.PeriodDateTime, pd =>
+    {
+        pd.Property(p => p.FinalDate).HasColumnName("PeriodDateTime__finalDate");
+        pd.Property(p => p.InitDate).HasColumnName("PeriodDateTime__initDate");
+    });
 
             modelBuilder.Entity<TrainingModuleDataModel>()
                 .OwnsMany(t => t.Periods);

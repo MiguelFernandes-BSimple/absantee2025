@@ -4,6 +4,7 @@ using Domain.Factory;
 using Domain.Models;
 using System.Threading.Tasks;
 using System;
+using Application.DTO;
 
 namespace Application.Services;
 
@@ -31,7 +32,13 @@ public class CollaboratorService
         _trainingModuleCollaboratorsRepository = trainingModuleCollaboratorsRepository;
         _trainingModuleRepository = trainingModuleRepository;
     }
-
+    public async Task<bool> Add(CollaboratorDTO collaboratorDTO)
+    {
+        var collab = await _collaboratorFactory.Create(collaboratorDTO.UserId, collaboratorDTO.PeriodDateTime);
+        await _collaboratorRepository.AddAsync(collab);
+        await _collaboratorRepository.SaveChangesAsync();
+        return true;
+    }
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
     {

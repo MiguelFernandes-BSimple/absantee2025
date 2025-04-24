@@ -1,9 +1,9 @@
-/* using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.DTO;
+using Application.Services;
+using Domain.Interfaces;
+using Domain.Models;
+using Infrastructure.DataModel;
 using Microsoft.AspNetCore.Mvc;
-
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -17,10 +17,22 @@ namespace WebApi.Controllers
             _userService = userService;
         }
 
-        // Post: api/Colaborator
-        [HttpPost]
-        public async Task<ActionResult> AddUsers()
+        // Post: api/User
+        [HttpPost("addusers")]
+        public async Task<ActionResult<UserDTO>> AddUsers([FromBody] UserDTO user)
         {
+            {
+                var result = await _userService.Add(user);
+                return Ok(result);
+            }
+        }
+
+        // Get: api/User
+        [HttpGet("getusers")]
+        public async Task<ActionResult<UserDTO>> GetUsers()
+        {
+            var result = await _userService.GetAll();
+            return Ok(result);
         }
     }
-} */
+}

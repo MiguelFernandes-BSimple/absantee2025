@@ -1,3 +1,4 @@
+using Application.DTO;
 using Application.Services;
 using Domain.Factory;
 using Domain.Factory.TrainingPeriodFactory;
@@ -13,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<CollaboratorService>();
 builder.Services.AddScoped<ProjectService>();
-
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddControllers();
 
@@ -47,6 +48,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<UserDataModel, User>();
     cfg.CreateMap<Project, ProjectDataModel>();
     cfg.CreateMap<ProjectDataModel, Project>();
+    cfg.CreateMap<UserDTO, User>();
 });
 
 //Factories
@@ -55,6 +57,8 @@ builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
+builder.Services.AddTransient<IUserFactory, UserFactory>();
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

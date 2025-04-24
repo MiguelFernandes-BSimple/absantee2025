@@ -20,8 +20,8 @@ public class CollaboratorRepository : GenericRepository<Collaborator, Collaborat
     {
         return await this._context.Set<CollaboratorDataModel>()
                 .AnyAsync(c => c.UserId == collaborator.UserId
-                    && c.PeriodDateTime._initDate <= collaborator.PeriodDateTime._finalDate
-                    && collaborator.PeriodDateTime._initDate <= c.PeriodDateTime._finalDate);
+                    && c.PeriodDateTime.InitDate <= collaborator.PeriodDateTime.FinalDate
+                    && collaborator.PeriodDateTime.InitDate <= c.PeriodDateTime.FinalDate);
     }
 
     public override Collaborator? GetById(long id)
@@ -73,7 +73,7 @@ public class CollaboratorRepository : GenericRepository<Collaborator, Collaborat
     public async Task<IEnumerable<ICollaborator>> GetActiveCollaborators()
     {
         var collabsDm = await _context.Set<CollaboratorDataModel>()
-                            .Where(c => c.PeriodDateTime._finalDate > DateTime.Now)
+                            .Where(c => c.PeriodDateTime.FinalDate > DateTime.Now)
                             .ToListAsync();
 
         var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));

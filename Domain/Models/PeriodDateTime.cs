@@ -4,15 +4,15 @@ namespace Domain.Models;
 
 public class PeriodDateTime
 {
-    public DateTime _initDate { get; set; }
-    public DateTime _finalDate { get; set; }
+    public DateTime InitDate { get; set; }
+    public DateTime FinalDate { get; set; }
 
     public PeriodDateTime(DateTime initDate, DateTime finalDate)
     {
         if (CheckInputFields(initDate, finalDate))
         {
-            _initDate = initDate;
-            _finalDate = finalDate;
+            InitDate = initDate;
+            FinalDate = finalDate;
         }
         else
             throw new ArgumentException("Invalid Arguments");
@@ -34,37 +34,37 @@ public class PeriodDateTime
 
     public DateTime GetInitDate()
     {
-        return _initDate;
+        return InitDate;
     }
 
     public DateTime GetFinalDate()
     {
-        return _finalDate;
+        return FinalDate;
     }
     public void SetFinalDate(DateTime finalDate)
     {
-        this._finalDate = finalDate;
+        this.FinalDate = finalDate;
     }
 
     public bool IsFinalDateUndefined()
     {
-        return _finalDate == DateTime.MaxValue;
+        return FinalDate == DateTime.MaxValue;
     }
 
     public bool IsFinalDateSmallerThan(DateTime date)
     {
-        return date > _finalDate;
+        return date > FinalDate;
     }
 
     public bool Contains(PeriodDateTime periodDateTime)
     {
-        return _initDate <= periodDateTime.GetInitDate()
-            && _finalDate >= periodDateTime.GetFinalDate();
+        return InitDate <= periodDateTime.GetInitDate()
+            && FinalDate >= periodDateTime.GetFinalDate();
     }
 
     public bool Intersects(PeriodDateTime periodDateTime)
     {
-        return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _finalDate;
+        return InitDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= FinalDate;
     }
 }
 
