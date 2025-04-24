@@ -6,9 +6,9 @@ namespace Domain.IRepository;
 
 public interface IAssociationProjectCollaboratorRepository : IGenericRepository<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>
 {
-    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(long projectId);
-    public Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(long projectId, long collaboratorId);
-    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(long projectId, long collaboratorId);
-    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, PeriodDate periodDate);
-    public Task<bool> CanInsert(PeriodDate periodDate, long collaboratorId, long projectId);
+    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId);
+    public Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
+    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
+    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(Guid projectId, PeriodDate periodDate);
+    public Task<bool> CanInsert(PeriodDate periodDate, Guid collaboratorId, Guid projectId);
 }

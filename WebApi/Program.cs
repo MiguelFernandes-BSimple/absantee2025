@@ -43,6 +43,7 @@ builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
 
 //Mappers
 builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
+builder.Services.AddTransient<HolidayPeriodDataModelToHolidayPeriodConverter>();
 builder.Services.AddAutoMapper(cfg =>
 {
     //DataModels
