@@ -40,6 +40,7 @@ builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
+builder.Services.AddTransient<IUserFactory, UserFactory>();
 
 //Mappers
 builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
