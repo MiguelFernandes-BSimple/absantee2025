@@ -13,6 +13,12 @@ public class HolidayPeriod : IHolidayPeriod
         PeriodDate = periodDate;
     }
 
+    public HolidayPeriod(Guid id, PeriodDate periodDate)
+    {
+        Id = id;
+        PeriodDate = periodDate;
+    }
+
     public int GetDuration()
     {
         return PeriodDate.Duration();

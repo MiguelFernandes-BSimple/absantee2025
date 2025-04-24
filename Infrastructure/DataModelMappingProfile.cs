@@ -31,6 +31,9 @@ namespace Infrastructure
             CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
             CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
                 .ConvertUsing<HolidayPeriodDataModelToHolidayPeriodConverter>();
+            CreateMap<HolidayPlan, HolidayPlanDataModel>();
+            CreateMap<HolidayPlanDataModel, HolidayPlan>()
+                .ConvertUsing<HolidayPlanDataModelToHolidayPlanConverter>();
         }
 
     }

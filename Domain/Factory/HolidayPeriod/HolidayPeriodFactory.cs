@@ -1,4 +1,3 @@
-using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -16,7 +15,7 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPeriod Create(long holidayPlanId, PeriodDate periodDate)
+    public HolidayPeriod Create(Guid holidayPlanId, PeriodDate periodDate)
     {
         HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
 
@@ -27,7 +26,7 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         if (holidayPlan == null)
             throw new ArgumentException("Holiday Plan doesn't exist.");
 
-        long collaboratorId = holidayPlan.GetCollaboratorId();
+        Guid collaboratorId = holidayPlan.CollaboratorId;
         var collaborator = _collaboratorRepository.GetById(collaboratorId);
         if (collaborator == null)
             throw new ArgumentException("Collaborator doesn't exist.");

@@ -10,9 +10,9 @@ namespace Infrastructure.DataModel;
 public class HolidayPlanDataModel : IHolidayPlanVisitor
 {
     private IMapper _mapper;
-    public long Id { get; set; }
-    public long CollaboratorId { get; set; }
-    public List<HolidayPeriodDataModel> HolidayPeriodsDM { get; set; }
+    public Guid Id { get; }
+    public Guid CollaboratorId { get; }
+    public List<HolidayPeriodDataModel> HolidayPeriodsDM { get; }
 
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
@@ -22,9 +22,9 @@ public class HolidayPlanDataModel : IHolidayPlanVisitor
     public HolidayPlanDataModel(IHolidayPlan holidayPlan, IMapper mapper)
     {
         _mapper = mapper;
-        Id = holidayPlan.GetId();
-        CollaboratorId = holidayPlan.GetCollaboratorId();
-        HolidayPeriodsDM = holidayPlan.GetHolidayPeriods()
+        Id = holidayPlan.Id;
+        CollaboratorId = holidayPlan.CollaboratorId;
+        HolidayPeriodsDM = holidayPlan.HolidayPeriods
             .Select(h => mapper.Map<HolidayPeriod, HolidayPeriodDataModel>((HolidayPeriod)h)).ToList();
     }
 

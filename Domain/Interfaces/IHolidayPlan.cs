@@ -4,8 +4,8 @@ namespace Domain.Interfaces;
 
 public interface IHolidayPlan
 {
-    long GetId();
-    List<IHolidayPeriod> GetHolidayPeriods();
-    long GetCollaboratorId();
+    Guid Id { get; }
+    Guid CollaboratorId { get; }
+    List<IHolidayPeriod> HolidayPeriods { get; }
     int GetNumberOfHolidayDaysBetween(PeriodDate periodDate);
 }
