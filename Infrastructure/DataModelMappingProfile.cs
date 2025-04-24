@@ -23,7 +23,8 @@ namespace Infrastructure
             CreateMap<TrainingModule, TrainingModuleDataModel>();
             CreateMap<TrainingModuleDataModel, TrainingModule>()
                 .ConvertUsing<TrainingModuleDataModelToTrainingModuleConverter>();
-            CreateMap<TrainingSubjectDataModel, TrainingSubject>();
+            CreateMap<TrainingSubjectDataModel, TrainingSubject>()
+                .ConvertUsing<TrainingSubjectDataModelToTrainingSubjectConverter>();
             CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<Project, ProjectDataModel>();
             CreateMap<ProjectDataModel, Project>()
