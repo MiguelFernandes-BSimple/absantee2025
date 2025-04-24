@@ -66,7 +66,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
                               .ToListAsync();
 
             IEnumerable<IAssociationProjectCollaborator> assocs =
-                assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
+                assocDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
 
             return assocs;
         }

@@ -6,7 +6,7 @@ using Domain.Visitor;
 
 namespace Infrastructure.DataModel;
 
-[Table("HolidayPeriod")]
+[Table("HolidayPeriods")]
 public class HolidayPeriodDataModel : IHolidayPeriodVisitor
 {
     public Guid Id { get; set; }

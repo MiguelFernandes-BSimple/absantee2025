@@ -6,7 +6,6 @@ using Domain.Visitor;
 
 namespace Infrastructure.DataModel;
 
-[Table("HolidayPlan")]
 public class HolidayPlanDataModel : IHolidayPlanVisitor
 {
     private IMapper _mapper;
