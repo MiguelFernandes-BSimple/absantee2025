@@ -41,6 +41,9 @@ namespace Infrastructure
             CreateMap<HRManager, HRManagerDataModel>();
             CreateMap<HRManagerDataModel, HRManager>()
                 .ConvertUsing<HRManagerDataModelToUserConverter>();
+            CreateMap<HolidayPlan, HolidayPlanDataModel>();
+            CreateMap<HolidayPlanDataModel, HolidayPlan>()
+                .ConvertUsing<HolidayPlanDataModelToHolidayPlanConverter>();
         }
 
     }
