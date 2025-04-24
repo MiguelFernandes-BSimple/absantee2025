@@ -2,8 +2,6 @@ using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Factory;
 using Domain.Models;
-using System.Threading.Tasks;
-using System;
 
 namespace Application.Services;
 
@@ -36,7 +34,7 @@ public class CollaboratorService
     public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
     {
         var holidayPlans = await _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThanAsync(days);
-        var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
+        var collabIds = holidayPlans.Select(hp => hp.CollaboratorId);
         return await _collaboratorRepository.GetByIdsAsync(collabIds);
     }
 
@@ -44,25 +42,25 @@ public class CollaboratorService
     public async Task<IEnumerable<ICollaborator>> FindAllWithHolidayPeriodsBetweenDates(PeriodDate periodDate)
     {
         var holidayPlans = await _holidayPlanRepository.FindHolidayPlansWithinPeriodAsync(periodDate);
-        var collabIds = holidayPlans.Select(hp => hp.GetCollaboratorId());
+        var collabIds = holidayPlans.Select(hp => hp.CollaboratorId);
         return await _collaboratorRepository.GetByIdsAsync(collabIds);
     }
 
-    public async Task<IEnumerable<ICollaborator>> FindAllByProject(long projectId)
+    public async Task<IEnumerable<ICollaborator>> FindAllByProject(Guid projectId)
     {
         var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
-        var collabsIds = assocs.Select(c => c.GetCollaboratorId());
+        var collabsIds = assocs.Select(c => c.CollaboratorId);
         return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
 
-    public async Task<IEnumerable<ICollaborator>> FindAllByProjectAndBetweenPeriod(long projectId, PeriodDate periodDate)
+    public async Task<IEnumerable<ICollaborator>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
     {
         var collabs = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, periodDate);
-        var collabsIds = collabs.Select(c => c.GetCollaboratorId());
+        var collabsIds = collabs.Select(c => c.CollaboratorId);
         return await _collaboratorRepository.GetByIdsAsync(collabsIds);
     }
 
-    public async Task<bool> Add(long userId, PeriodDateTime periodDateTime)
+    public async Task<bool> Add(Guid userId, PeriodDateTime periodDateTime)
     {
         ICollaborator colab;
         try
@@ -81,29 +79,29 @@ public class CollaboratorService
     public async Task<IEnumerable<ICollaborator>> GetByNames(string names)
     {
         var users = await _userRepository.GetByNamesAsync(names);
-        var userIds = users.Select(u => u.GetId());
+        var userIds = users.Select(u => u.Id);
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetBySurnames(string surnames)
     {
         var users = await _userRepository.GetBySurnamesAsync(surnames);
-        var userIds = users.Select(u => u.GetId());
+        var userIds = users.Select(u => u.Id);
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetByNamesAndSurnames(string names, string surnames)
     {
         var users = await _userRepository.GetByNamesAndSurnamesAsync(names, surnames);
-        var userIds = users.Select(u => u.GetId());
+        var userIds = users.Select(u => u.Id);
         return await _collaboratorRepository.GetByIdsAsync(userIds);
     }
 
-    public async Task<ICollection<ICollaborator>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(long subjectId)
+    public async Task<ICollection<ICollaborator>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(Guid subjectId)
     {
         // Step 1: Get all active collaborators
         var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
-        var activeCollaboratorIds = activeCollaborators.Select(c => c.GetId()).ToList();
+        var activeCollaboratorIds = activeCollaborators.Select(c => c.Id).ToList();
 
         // Step 2: Get training modules that are finished for the subject
         var finishedTrainingModules = await _trainingModuleRepository
@@ -122,13 +120,13 @@ public class CollaboratorService
 
         // Step 4: Filter active collaborators that are NOT in the above list
         var result = activeCollaborators
-            .Where(c => !collaboratorsWithFinishedModules.Contains(c.GetId()))
+            .Where(c => !collaboratorsWithFinishedModules.Contains(c.Id))
             .ToList();
 
         return result;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(long subjectId, DateTime date)
+    public async Task<IEnumerable<ICollaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(Guid subjectId, DateTime date)
     {
         // Step 1: Get training modules that are finished for the subject
         var finishedTrainingModules = await _trainingModuleRepository

@@ -45,6 +45,7 @@ builder.Services.AddTransient<IUserFactory, UserFactory>();
 builder.Services.AddTransient<IHRManagerFactory, HRManagerFactory>();
 builder.Services.AddTransient<IHolidayPeriodFactory, HolidayPeriodFactory>();
 builder.Services.AddTransient<IHolidayPlanFactory, HolidayPlanFactory>();
+builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorFactory, AssociationTrainingModuleCollaboratorFactory>();
 
 //Mappers
 builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
