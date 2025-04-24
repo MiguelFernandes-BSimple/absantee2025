@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface ITrainingModuleCollaborators
+    public interface IAssociationTrainingModuleCollaborator
     {
-        long Id { get; }
-        long TrainingModuleId { get; }
-        long CollaboratorId { get; }
+        Guid Id { get; }
+        Guid TrainingModuleId { get; }
+        Guid CollaboratorId { get; }
     }
 }

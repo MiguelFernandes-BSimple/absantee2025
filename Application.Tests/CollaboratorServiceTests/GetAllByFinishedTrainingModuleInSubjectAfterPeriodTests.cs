@@ -22,11 +22,11 @@ namespace Application.Tests.CollaboratorServiceTests
             var trainingModuleRepo = new Mock<ITrainingModuleRepository>();
             trainingModuleRepo.Setup(trepo => trepo.GetBySubjectIdAndFinished(It.IsAny<long>(), It.IsAny<DateTime>())).ReturnsAsync(trainingModules);
 
-            var trainingModuleCollaborator1 = new Mock<ITrainingModuleCollaborators>();
+            var trainingModuleCollaborator1 = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollaborator1.Setup(t => t.CollaboratorId).Returns(1);
-            var trainingModuleCollaborator2 = new Mock<ITrainingModuleCollaborators>();
+            var trainingModuleCollaborator2 = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollaborator2.Setup(t => t.CollaboratorId).Returns(2);
-            var trainingModuleCollaboratorList = new List<ITrainingModuleCollaborators>() { trainingModuleCollaborator1.Object, trainingModuleCollaborator2.Object };
+            var trainingModuleCollaboratorList = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollaborator1.Object, trainingModuleCollaborator2.Object };
 
             var trainingModuleCollaboratorRepo = new Mock<ITrainingModuleCollaboratorsRepository>();
             trainingModuleCollaboratorRepo.Setup(t => t.GetByTrainingModuleIds(new List<long>() { 1, 2 })).ReturnsAsync(trainingModuleCollaboratorList);

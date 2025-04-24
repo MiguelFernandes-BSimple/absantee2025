@@ -8,8 +8,8 @@ using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface ITrainingModuleCollaboratorsRepository : IGenericRepository<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor>
+    public interface ITrainingModuleCollaboratorsRepository : IGenericRepository<IAssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorVisitor>
     {
-        Task<IEnumerable<ITrainingModuleCollaborators>> GetByTrainingModuleIds(IEnumerable<long> trainingModuleIds);
+        Task<IEnumerable<IAssociationTrainingModuleCollaborator>> GetByTrainingModuleIds(IEnumerable<Guid> trainingModuleIds);
     }
 }

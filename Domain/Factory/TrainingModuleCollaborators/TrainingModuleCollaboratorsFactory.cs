@@ -10,7 +10,7 @@ using Domain.Visitor;
 
 namespace Domain.Factory
 {
-    public class TrainingModuleCollaboratorsFactory : ITrainingModuleCollaboratorsFactory
+    public class TrainingModuleCollaboratorsFactory : IAssociationTrainingModuleCollaboratorFactory
     {
         private readonly ICollaboratorRepository _collaboratorRepository;
         private readonly ITrainingModuleRepository _trainingModuleRepository;
@@ -21,7 +21,7 @@ namespace Domain.Factory
             _trainingModuleRepository = trainingModuleRepository;
         }
 
-        public async Task<TrainingModuleCollaborators> Create(long trainingModuleId, long collaboratorId)
+        public async Task<AssociationTrainingModuleCollaborator> Create(long trainingModuleId, long collaboratorId)
         {
             var trainingModule = await _trainingModuleRepository.GetByIdAsync(trainingModuleId);
             var collab = await _collaboratorRepository.GetByIdAsync(collaboratorId);
@@ -35,7 +35,7 @@ namespace Domain.Factory
             return new TrainingModuleCollaborators(trainingModuleId, collaboratorId);
         }
 
-        public TrainingModuleCollaborators Create(ITrainingModuleCollaboratorsVisitor visitor)
+        public AssociationTrainingModuleCollaborator Create(AssociationTrainingModuleCollaboratorVisitor visitor)
         {
             return new TrainingModuleCollaborators(visitor.TrainingModuleId, visitor.CollaboratorId);
         }

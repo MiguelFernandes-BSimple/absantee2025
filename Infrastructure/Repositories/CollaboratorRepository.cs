@@ -24,7 +24,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
                     && collaborator.PeriodDateTime._initDate <= c.PeriodDateTime._finalDate);
     }
 
-    public override ICollaborator? GetById(long id)
+    public override ICollaborator? GetById(Guid id)
     {
         var collabDM = this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefault(c => c.Id == id);
@@ -36,7 +36,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         return collab;
     }
 
-    public override async Task<ICollaborator?> GetByIdAsync(long id)
+    public override async Task<ICollaborator?> GetByIdAsync(Guid id)
     {
         var collabDM = await this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefaultAsync(c => c.Id == id);
@@ -48,7 +48,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         return collab;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<long> ids)
+    public async Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
                     .Where(c => ids.Contains(c.Id))
@@ -59,7 +59,7 @@ public class CollaboratorRepository : GenericRepository<ICollaborator, ICollabor
         return collabs;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<long> ids)
+    public async Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
                     .Where(c => ids.Contains(c.UserId))

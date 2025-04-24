@@ -13,7 +13,7 @@ namespace Domain.Tests.UserTests
             PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
             var user = new User(It.IsAny<long>(), "John", "Doe", "john@email.com", periodDateTime);
             //act
-            var userPeriodDateTime = user._periodDateTime;
+            var userPeriodDateTime = user.PeriodDateTime;
 
             //assert
             Assert.Equal(periodDateTime, userPeriodDateTime);

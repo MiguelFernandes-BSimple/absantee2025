@@ -18,7 +18,7 @@ namespace Domain.Factory
             _userRepository = userRepository;
         }
 
-        public async Task<ProjectManager> Create(long userId, PeriodDateTime periodDateTime)
+        public async Task<ProjectManager> Create(Guid userId, PeriodDateTime periodDateTime)
         {
             IUser? user = await _userRepository.GetByIdAsync(userId);
 
@@ -34,7 +34,7 @@ namespace Domain.Factory
             return ProjectManager;
         }
 
-        public async Task<ProjectManager> Create(long userId, DateTime initDate)
+        public async Task<ProjectManager> Create(Guid userId, DateTime initDate)
         {
             var periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
             return await Create(userId, periodDateTime);

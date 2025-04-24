@@ -10,7 +10,7 @@ using Domain.Visitor;
 namespace Domain.Factory;
 public interface ICollaboratorFactory
 {
-    Task<Collaborator> Create(long userId, PeriodDateTime periodDateTime);
+    Task<Collaborator> Create(Guid userId, PeriodDateTime periodDateTime);
     Collaborator Create(ICollaboratorVisitor visitor);
 }
 

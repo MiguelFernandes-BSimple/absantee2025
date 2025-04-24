@@ -6,6 +6,6 @@ namespace Domain.IRepository
 {
     public interface ITrainingModuleRepository : IGenericRepository<ITrainingModule, ITrainingModuleVisitor>
     {
-        Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(long subjectId, DateTime period);
+        Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(Guid subjectId, DateTime period);
     }
 }

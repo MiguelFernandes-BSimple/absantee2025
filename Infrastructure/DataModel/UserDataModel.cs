@@ -8,7 +8,7 @@ namespace Infrastructure.DataModel
     [Table("User")]
     public class UserDataModel : IUserVisitor
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Names { get; set; }
         public string Surnames { get; set; }
         public string Email { get; set; }
@@ -16,11 +16,11 @@ namespace Infrastructure.DataModel
 
         public UserDataModel(IUser user)
         {
-            Id = user.GetId();
-            Names = user.GetNames();
-            Surnames = user.GetSurnames();
-            Email = user.GetEmail();
-            PeriodDateTime = (PeriodDateTime)user.GetPeriodDateTime();
+            Id = user.Id;
+            Names = user.Names;
+            Surnames = user.Surnames;
+            Email = user.Email;
+            PeriodDateTime = user.PeriodDateTime;
         }
 
         public UserDataModel()

@@ -15,19 +15,26 @@ namespace Infrastructure
     {
         public DataModelMappingProfile()
         {
+            CreateMap<User, UserDataModel>();
+            CreateMap<UserDataModel, User>()
+                .ConvertUsing<UserDataModelToUserConverter>();
             CreateMap<Collaborator, CollaboratorDataModel>();
-            CreateMap<CollaboratorDataModel, Collaborator>();
+            CreateMap<CollaboratorDataModel, Collaborator>()
+                .ConvertUsing<CollaboratorDataModelToCollaboratorConverter>();
             CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
             CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
             CreateMap<TrainingModule, TrainingModuleDataModel>();
-            CreateMap<TrainingModuleDataModel, TrainingModule>();
-            CreateMap<TrainingSubjectDataModel, TrainingSubject>();
+            CreateMap<TrainingModuleDataModel, TrainingModule>()
+                .ConvertUsing<TrainingModuleDataModelToTrainingModuleConverter>();
+            CreateMap<TrainingSubjectDataModel, TrainingSubject>()
+                .ConvertUsing<TrainingSubjectDataModelToTrainingSubjectConverter>();
             CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<Project, ProjectDataModel>();
             CreateMap<ProjectDataModel, Project>()
                 .ConvertUsing<ProjectDataModelToProjectConverter>();
-            CreateMap<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>();
-            CreateMap<TrainingModuleCollaborators, TrainingModuleCollaboratorDataModel>();
+            CreateMap<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>()
+                .ConvertUsing<AssociationTrainingModuleCollaboratorDataModelConverter>();
+            CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDataModel>();
             CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
             CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
                 .ConvertUsing<HolidayPeriodDataModelToHolidayPeriodConverter>();
