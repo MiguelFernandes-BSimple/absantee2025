@@ -28,7 +28,7 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
             var trainingSubjectRepo = new Mock<ITrainingModuleRepository>();
             trainingSubjectRepo.Setup(t => t.GetByIdAsync(trainingModuleId)).ReturnsAsync(trainingSubject.Object);
 
-            var factory = new TrainingModuleCollaboratorsFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
+            var factory = new AssociationTrainingModuleCollaboratorFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
 
             //Act
             var result = factory.Create(trainingModuleId, collabId);
@@ -52,7 +52,7 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
             var trainingSubjectRepo = new Mock<ITrainingModuleRepository>();
             trainingSubjectRepo.Setup(t => t.GetByIdAsync(trainingModuleId)).ReturnsAsync(trainingSubject.Object);
 
-            var factory = new TrainingModuleCollaboratorsFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
+            var factory = new AssociationTrainingModuleCollaboratorFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
 
             //Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
@@ -78,7 +78,7 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
             var trainingSubjectRepo = new Mock<ITrainingModuleRepository>();
             trainingSubjectRepo.Setup(t => t.GetByIdAsync(trainingModuleId)).ReturnsAsync((ITrainingModule?)null);
 
-            var factory = new TrainingModuleCollaboratorsFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
+            var factory = new AssociationTrainingModuleCollaboratorFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
 
             //Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>

@@ -10,18 +10,18 @@ using Domain.Visitor;
 
 namespace Domain.Factory
 {
-    public class TrainingModuleCollaboratorsFactory : IAssociationTrainingModuleCollaboratorFactory
+    public class AssociationTrainingModuleCollaboratorFactory : IAssociationTrainingModuleCollaboratorFactory
     {
         private readonly ICollaboratorRepository _collaboratorRepository;
         private readonly ITrainingModuleRepository _trainingModuleRepository;
 
-        public TrainingModuleCollaboratorsFactory(ICollaboratorRepository collaboratorRepository, ITrainingModuleRepository trainingModuleRepository)
+        public AssociationTrainingModuleCollaboratorFactory(ICollaboratorRepository collaboratorRepository, ITrainingModuleRepository trainingModuleRepository)
         {
             _collaboratorRepository = collaboratorRepository;
             _trainingModuleRepository = trainingModuleRepository;
         }
 
-        public async Task<AssociationTrainingModuleCollaborator> Create(long trainingModuleId, long collaboratorId)
+        public async Task<AssociationTrainingModuleCollaborator> Create(Guid trainingModuleId, Guid collaboratorId)
         {
             var trainingModule = await _trainingModuleRepository.GetByIdAsync(trainingModuleId);
             var collab = await _collaboratorRepository.GetByIdAsync(collaboratorId);
@@ -32,12 +32,12 @@ namespace Domain.Factory
             if (collab == null)
                 throw new ArgumentException("Collaborator must exists");
 
-            return new TrainingModuleCollaborators(trainingModuleId, collaboratorId);
+            return new AssociationTrainingModuleCollaborator(trainingModuleId, collaboratorId);
         }
 
         public AssociationTrainingModuleCollaborator Create(AssociationTrainingModuleCollaboratorVisitor visitor)
         {
-            return new TrainingModuleCollaborators(visitor.TrainingModuleId, visitor.CollaboratorId);
+            return new AssociationTrainingModuleCollaborator(visitor.Id, visitor.TrainingModuleId, visitor.CollaboratorId);
         }
     }
 }

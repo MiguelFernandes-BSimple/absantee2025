@@ -15,6 +15,14 @@ namespace Domain.Models
 
         public AssociationTrainingModuleCollaborator(Guid trainingModuleId, Guid collaboratorId)
         {
+            Id = Guid.NewGuid();
+            TrainingModuleId = trainingModuleId;
+            CollaboratorId = collaboratorId;
+        }
+
+        public AssociationTrainingModuleCollaborator(Guid id, Guid trainingModuleId, Guid collaboratorId)
+        {
+            Id = id;
             TrainingModuleId = trainingModuleId;
             CollaboratorId = collaboratorId;
         }
