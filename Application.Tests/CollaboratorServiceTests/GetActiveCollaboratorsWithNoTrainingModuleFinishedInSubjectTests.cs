@@ -41,9 +41,9 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var trainingModuleCollaborator = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollaborator.Setup(t => t.CollaboratorId).Returns(1);
-            var trainingModuleCollaboratorList = new List<IAssociationTrainingModuleCollaborator>() {  trainingModuleCollaborator.Object };
+            var trainingModuleCollaboratorList = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollaborator.Object };
 
-            var trainingModuleCollaboratorRepo = new Mock<ITrainingModuleCollaboratorsRepository>();
+            var trainingModuleCollaboratorRepo = new Mock<IAssociationTrainingModuleCollaboratorsRepository>();
             trainingModuleCollaboratorRepo.Setup(t => t.GetByTrainingModuleIds(new List<long>() { 1 })).ReturnsAsync(trainingModuleCollaboratorList);
 
             var expected = new List<ICollaborator>()
@@ -57,9 +57,9 @@ namespace Application.Tests.CollaboratorServiceTests
             var userRepo = new Mock<IUserRepository>();
             var collabFactory = new Mock<ICollaboratorFactory>();
 
-            var collaboratorService = 
-                new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object, 
-                                        collabRepository.Object, userRepo.Object, collabFactory.Object, 
+            var collaboratorService =
+                new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object,
+                                        collabRepository.Object, userRepo.Object, collabFactory.Object,
                                         trainingModuleCollaboratorRepo.Object, trainingModuleRepo.Object);
 
             //act

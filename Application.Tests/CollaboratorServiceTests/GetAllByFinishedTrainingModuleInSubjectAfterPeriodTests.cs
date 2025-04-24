@@ -28,7 +28,7 @@ namespace Application.Tests.CollaboratorServiceTests
             trainingModuleCollaborator2.Setup(t => t.CollaboratorId).Returns(2);
             var trainingModuleCollaboratorList = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollaborator1.Object, trainingModuleCollaborator2.Object };
 
-            var trainingModuleCollaboratorRepo = new Mock<ITrainingModuleCollaboratorsRepository>();
+            var trainingModuleCollaboratorRepo = new Mock<IAssociationTrainingModuleCollaboratorsRepository>();
             trainingModuleCollaboratorRepo.Setup(t => t.GetByTrainingModuleIds(new List<long>() { 1, 2 })).ReturnsAsync(trainingModuleCollaboratorList);
 
             var collab1 = new Mock<ICollaborator>();

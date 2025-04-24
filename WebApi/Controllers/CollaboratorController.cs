@@ -17,14 +17,12 @@ namespace WebApi.Controllers
         }
 
         // Post: api/Colaborator
-        [HttpPost]
-        public async Task<ActionResult> AddCollaborator()
-        {
-            long userId = 1;
-            var periodDate = new PeriodDateTime(DateTime.Today, DateTime.Today.AddDays(3));
-            bool result = await _colaboratorService.Add(userId, periodDate);
+        //[HttpPost]
+        //public async Task<ActionResult> AddCollaborator()
+        //{
+        //    bool result = await _colaboratorService.Add(userId, periodDate);
 
-            return Ok();
-        }
+//        //    return Ok();
+        //}
     }
 }

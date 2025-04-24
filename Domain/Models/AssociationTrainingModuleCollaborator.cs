@@ -9,7 +9,7 @@ namespace Domain.Models
 {
     public class AssociationTrainingModuleCollaborator : IAssociationTrainingModuleCollaborator
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
         public Guid TrainingModuleId { get; }
         public Guid CollaboratorId { get; }
 

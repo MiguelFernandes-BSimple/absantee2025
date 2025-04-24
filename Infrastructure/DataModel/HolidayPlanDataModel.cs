@@ -10,9 +10,9 @@ namespace Infrastructure.DataModel;
 public class HolidayPlanDataModel : IHolidayPlanVisitor
 {
     private IMapper _mapper;
-    public Guid Id { get; }
-    public Guid CollaboratorId { get; }
-    public List<HolidayPeriodDataModel> HolidayPeriodsDM { get; }
+    public Guid Id { get; set; }
+    public Guid CollaboratorId { get; set; }
+    public List<HolidayPeriodDataModel> HolidayPeriodsDM { get; set; }
 
     public List<IHolidayPeriod> GetHolidayPeriods()
     {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class AssociationTrainingModuleCollaboratorRepository : GenericRepository<IAssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorVisitor>, ITrainingModuleCollaboratorsRepository
+    public class AssociationTrainingModuleCollaboratorRepository : GenericRepository<IAssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorVisitor>, IAssociationTrainingModuleCollaboratorsRepository
     {
         private readonly IMapper _mapper;
         public AssociationTrainingModuleCollaboratorRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
