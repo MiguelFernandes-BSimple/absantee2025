@@ -6,9 +6,9 @@ namespace Infrastructure.DataModel
 {
     public class AssociationProjectCollaboratorDataModel : IAssociationProjectCollaboratorVisitor
     {
-        public long Id { get; set; }
-        public long CollaboratorId { get; set; }
-        public long ProjectId { get; set; }
+        public Guid Id { get; set; }
+        public Guid CollaboratorId { get; set; }
+        public Guid ProjectId { get; set; }
         public PeriodDate PeriodDate { get; set; }
 
 

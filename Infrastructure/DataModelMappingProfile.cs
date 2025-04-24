@@ -29,7 +29,10 @@ namespace Infrastructure
                 .ConvertUsing<ProjectDataModelToProjectConverter>();
             CreateMap<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>();
             CreateMap<TrainingModuleCollaborators, TrainingModuleCollaboratorDataModel>();
+            CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
+            CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
+                .ConvertUsing<HolidayPeriodDataModelToHolidayPeriodConverter>();
         }
-        
+
     }
 }

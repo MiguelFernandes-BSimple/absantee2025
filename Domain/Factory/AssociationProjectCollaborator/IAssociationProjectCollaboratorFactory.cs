@@ -6,7 +6,7 @@ namespace Domain.Factory;
 
 public interface IAssociationProjectCollaboratorFactory
 {
-    public Task<AssociationProjectCollaborator> Create(PeriodDate periodDate, long collaboratorId, long projectId);
+    public Task<AssociationProjectCollaborator> Create(PeriodDate periodDate, Guid collaboratorId, Guid projectId);
 
     public AssociationProjectCollaborator Create(IAssociationProjectCollaboratorVisitor associationProjectCollaboratorVisitor);
 }

@@ -4,7 +4,7 @@ namespace Domain.Visitor;
 
 public interface IUserVisitor
 {
-    long Id { get; }
+    Guid Id { get; }
     string Names { get; }
     string Surnames { get; }
     string Email { get; }
