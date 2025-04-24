@@ -7,7 +7,7 @@ namespace Domain.IRepository;
 public interface ICollaboratorRepository : IGenericRepository<ICollaborator, ICollaboratorVisitor>
 {
     Task<bool> IsRepeated(ICollaborator collaborator);
-    Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<long> ids);
-    Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<long> ids);
+    Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<Guid> ids);
+    Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids);
     Task<IEnumerable<ICollaborator>> GetActiveCollaborators();
 }
