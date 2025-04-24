@@ -19,7 +19,7 @@ namespace Domain.Factory
             _subjectRepository = subjectRepository;
         }
 
-        public async Task<TrainingModule> Create(long traingSubjectId, List<PeriodDateTime> periods)
+        public async Task<TrainingModule> Create(Guid traingSubjectId, List<PeriodDateTime> periods)
         {
             var trainingSubject = await _subjectRepository.GetByIdAsync(traingSubjectId);
 

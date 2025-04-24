@@ -12,8 +12,8 @@ namespace Infrastructure.DataModel
 {
     public class TrainingModuleDataModel : ITrainingModuleVisitor
     {
-        public long Id { get; set; }
-        public long TrainingSubjectId { get; set; }
+        public Guid Id { get; set; }
+        public Guid TrainingSubjectId { get; set; }
         public List<PeriodDateTime> Periods { get; set; }
 
         public TrainingModuleDataModel()

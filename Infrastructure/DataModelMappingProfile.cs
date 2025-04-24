@@ -20,7 +20,8 @@ namespace Infrastructure
             CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
             CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
             CreateMap<TrainingModule, TrainingModuleDataModel>();
-            CreateMap<TrainingModuleDataModel, TrainingModule>();
+            CreateMap<TrainingModuleDataModel, TrainingModule>()
+                .ConvertUsing<TrainingModuleDataModelToTrainingModuleConverter>();
             CreateMap<TrainingSubjectDataModel, TrainingSubject>();
             CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<Project, ProjectDataModel>();

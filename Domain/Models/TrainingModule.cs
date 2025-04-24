@@ -10,11 +10,11 @@ namespace Domain.Models
 {
     public class TrainingModule : ITrainingModule
     {
-        public long Id { get; }
-        public long TrainingSubjectId { get; }
+        public Guid Id { get; }
+        public Guid TrainingSubjectId { get; }
         public List<PeriodDateTime> Periods { get; }
 
-        public TrainingModule(long trainingSubjectId, List<PeriodDateTime> periods)
+        public TrainingModule(Guid trainingSubjectId, List<PeriodDateTime> periods)
         {
             // Check for overlapping periods
             for (int i = 0; i < periods.Count; i++)
@@ -35,11 +35,12 @@ namespace Domain.Models
                 }
             }
 
+            Id = Guid.NewGuid();
             TrainingSubjectId = trainingSubjectId;
             Periods = periods;
         }
 
-        public TrainingModule(long id, long trainingSubjectId, List<PeriodDateTime> periods)
+        public TrainingModule(Guid id, Guid trainingSubjectId, List<PeriodDateTime> periods)
         {
             Id = id;
             TrainingSubjectId = trainingSubjectId;
