@@ -50,8 +50,14 @@ builder.Services.AddAutoMapper(cfg =>
     //DTO
     cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<Project, ProjectDTO>();
-
 });
+builder.Services.AddTransient<UserDataModelToUserConverter>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    //DataModels
+    cfg.AddProfile<DataModelMappingProfile>();
+});
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
