@@ -4,33 +4,30 @@ using Domain.Interfaces;
 namespace Domain.Models;
 public class Project : IProject
 {
-    public long Id { get; set; }
-    public string Title { get; set; }
-    public string Acronym { get; set; }
-    public PeriodDate PeriodDate { get; set; }
-    public Project(long id, string title, string acronym, PeriodDate periodDate)
+    public Guid Id { get; }
+    public string Title { get; }
+    public string Acronym { get; }
+    public PeriodDate PeriodDate { get; }
+    public Project(string title, string acronym, PeriodDate periodDate)
     {
         Regex tituloRegex = new Regex(@"^.{1,50}$");
-        Regex siglaRegex = new Regex(@"^[A-Z0-9]{1,10}$");
-        if (!tituloRegex.IsMatch(title) || !siglaRegex.IsMatch(acronym))
+        Regex acronymRegex = new Regex(@"^[A-Z0-9]{1,10}$");
+        if (!tituloRegex.IsMatch(title) || !acronymRegex.IsMatch(acronym))
         {
             throw new ArgumentException("Invalid Arguments");
         }
-        this.Id = id;
+        this.Id = Guid.NewGuid();
         this.Title = title;
         this.Acronym = acronym;
         this.PeriodDate = periodDate;
     }
 
-
-    public long GetId()
-    {
-        return Id;
-    }
-
-    public void SetId(long id)
+    public Project(Guid id, string title, string acronym, PeriodDate periodDate)
     {
         Id = id;
+        Title = title;
+        Acronym = acronym;
+        PeriodDate = periodDate;
     }
 
     public string GetTitle()

@@ -1,3 +1,5 @@
+using Application.DTO;
+using Application.Services;
 using Domain.Factory;
 using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
@@ -5,6 +7,7 @@ using Domain.Models;
 using Infrastructure;
 using Infrastructure.DataModel;
 using Infrastructure.Repositories;
+using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,9 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+//Services
+builder.Services.AddTransient<ProjectService>();
+
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
@@ -28,24 +34,24 @@ builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectReposit
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddTransient<ITrainingModuleCollaboratorsRepository, TrainingModuleCollaboratorsRepository>();
 
-//Mappers
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.CreateMap<Collaborator, CollaboratorDataModel>();
-    cfg.CreateMap<CollaboratorDataModel, Collaborator>();
-    cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
-    cfg.CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
-    cfg.CreateMap<TrainingModule, TrainingModuleDataModel>();
-    cfg.CreateMap<TrainingModuleDataModel, TrainingModule>();
-    cfg.CreateMap<TrainingSubjectDataModel, TrainingSubject>();
-    cfg.CreateMap<TrainingSubject, TrainingSubjectDataModel>();
-});
-
 //Factories
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
 builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
+builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
+
+//Mappers
+builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    //DataModels
+    cfg.AddProfile<DataModelMappingProfile>();
+    //DTO
+    cfg.CreateMap<ProjectDTO, Project>();
+    cfg.CreateMap<Project, ProjectDTO>();
+
+});
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

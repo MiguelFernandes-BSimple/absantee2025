@@ -2,7 +2,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -10,6 +10,19 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class AssociationProjectCollaboratorCanInsertTests
 {
+    private readonly IMapper _mapper;
+
+    public AssociationProjectCollaboratorCanInsertTests()
+    {
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Add both profiles for testing both mappings
+            cfg.AddProfile<DataModelMappingProfile>();
+        });
+
+        _mapper = config.CreateMapper();
+    }
+
     [Fact]
     public async Task WhenPassingNotExistingProjectAndCollaboratorId_ThenReturnTrue()
     {
@@ -51,12 +64,9 @@ public class AssociationProjectCollaboratorCanInsertTests
 
         long projectIdToInsert = 4, collabIdToInsert = 4;
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
         // Instatiate repository
         AssociationProjectCollaboratorRepositoryEF assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         bool result = await assocRepo.CanInsert(period, collabIdToInsert, projectIdToInsert);
@@ -109,12 +119,9 @@ public class AssociationProjectCollaboratorCanInsertTests
         PeriodDate periodToInsert =
             new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(3)), DateOnly.FromDateTime(DateTime.Now.AddMonths(5)));
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
         // Instatiate repository
         AssociationProjectCollaboratorRepositoryEF assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         bool result = await assocRepo.CanInsert(periodToInsert, collabIdToInsert, projectIdToInsert);
@@ -164,12 +171,9 @@ public class AssociationProjectCollaboratorCanInsertTests
 
         long projectIdToInsert = 3, collabIdToInsert = 3;
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
         // Instatiate repository
         AssociationProjectCollaboratorRepositoryEF assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         bool result = await assocRepo.CanInsert(period, collabIdToInsert, projectIdToInsert);

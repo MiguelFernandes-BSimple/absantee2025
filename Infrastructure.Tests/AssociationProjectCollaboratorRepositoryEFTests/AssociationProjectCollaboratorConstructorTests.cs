@@ -1,6 +1,6 @@
 using Domain.Interfaces;
 using Domain.Visitor;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -15,8 +15,8 @@ public class AssociationProjectCollaboratorConstructorTests
         DbContextOptions<AbsanteeContext> options = new DbContextOptions<AbsanteeContext>();
 
         Mock<AbsanteeContext> contextDouble = new Mock<AbsanteeContext>(options);
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapperMock =
-             new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
+        Mock<IMapper> mapperMock =
+             new Mock<IMapper>();
 
         // Act
         AssociationProjectCollaboratorRepositoryEF result =

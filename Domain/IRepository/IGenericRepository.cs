@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 
 public interface IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
 {
-    TDomain? GetById(long id);
-    Task<TDomain?> GetByIdAsync(long id);
+    TDomain? GetById(Guid id);
+    Task<TDomain?> GetByIdAsync(Guid id);
     IEnumerable<TDomain> GetAll();
     Task<IEnumerable<TDomain>> GetAllAsync();
     void Add(TDomain entity);

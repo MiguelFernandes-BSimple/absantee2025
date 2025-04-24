@@ -2,7 +2,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -10,6 +10,19 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class AssociationProjectCollaboratorGetByIdTests
 {
+    private readonly IMapper _mapper;
+
+    public AssociationProjectCollaboratorGetByIdTests()
+    {
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Add both profiles for testing both mappings
+            cfg.AddProfile<DataModelMappingProfile>();
+        });
+
+        _mapper = config.CreateMapper();
+    }
+
     [Fact]
     public void WhenPassingExistingId_ThenReturnCorrectAssociation()
     {
@@ -42,11 +55,7 @@ public class AssociationProjectCollaboratorGetByIdTests
 
         var expected = new Mock<IAssociationProjectCollaborator>().Object;
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-        mapper.Setup(m => m.ToDomain(assocDM2)).Returns(expected);
-
-        var associationRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+        var associationRepo = new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // act
         var result = associationRepo.GetById(2);
@@ -88,10 +97,7 @@ public class AssociationProjectCollaboratorGetByIdTests
 
         context.SaveChangesAsync();
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
-        var associationRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+        var associationRepo = new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // act
         var result = associationRepo.GetById(6);

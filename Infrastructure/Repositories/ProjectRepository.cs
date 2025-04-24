@@ -7,7 +7,7 @@ using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
-public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, IProjectRepository
+public class ProjectRepository : GenericRepository<Project, ProjectDataModel>, IProjectRepository
 {
     private readonly IMapper _ProjectMapper;
     public ProjectRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -15,7 +15,7 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
         _ProjectMapper = mapper;
     }
 
-    public override IProject? GetById(long id)
+    public override Project? GetById(Guid id)
     {
         var projectDM = this._context.Set<ProjectDataModel>()
                             .FirstOrDefault(p => p.Id == id);
@@ -27,7 +27,7 @@ public class ProjectRepository : GenericRepository<IProject, ProjectDataModel>, 
         return project;
     }
 
-    public override async Task<IProject?> GetByIdAsync(long id)
+    public override async Task<Project?> GetByIdAsync(Guid id)
     {
         var projectDM = await this._context.Set<ProjectDataModel>()
                             .FirstOrDefaultAsync(c => c.Id == id);

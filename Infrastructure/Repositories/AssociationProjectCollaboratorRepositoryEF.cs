@@ -121,8 +121,8 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
                 await _context.Set<AssociationProjectCollaboratorDataModel>()
                               .Where(a => a.ProjectId == projectId
-                                    && a.PeriodDate._initDate <= periodDate._finalDate
-                                    && periodDate._initDate <= a.PeriodDate._finalDate)
+                                    && a.PeriodDate.InitDate <= periodDate.FinalDate
+                                    && periodDate.InitDate <= a.PeriodDate.FinalDate)
                               .ToListAsync();
 
             IEnumerable<IAssociationProjectCollaborator> assocs =
@@ -144,8 +144,8 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
 
             int count = assocDMs.Count();
 
-            bool intersect = await assocDMs.Where(a => a.PeriodDate._initDate <= periodDate._finalDate &&
-                                                    a.PeriodDate._finalDate >= periodDate._initDate)
+            bool intersect = await assocDMs.Where(a => a.PeriodDate.InitDate <= periodDate.FinalDate &&
+                                                    a.PeriodDate.FinalDate >= periodDate.InitDate)
                                         .AnyAsync();
 
             return !intersect;

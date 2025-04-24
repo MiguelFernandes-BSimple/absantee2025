@@ -3,46 +3,46 @@
 namespace Domain.Models;
 public class PeriodDate
 {
-    public DateOnly _initDate { get; set; }
-    public DateOnly _finalDate { get; set; }
+    public DateOnly InitDate { get; set; }
+    public DateOnly FinalDate { get; set; }
 
-    public PeriodDate(DateOnly initDate, DateOnly finalDate)
+    public PeriodDate(DateOnly InitDate, DateOnly FinalDate)
     {
-        if (initDate > finalDate)
+        if (InitDate > FinalDate)
             throw new ArgumentException("Invalid Arguments");
-        _initDate = initDate;
-        _finalDate = finalDate;
+        this.InitDate = InitDate;
+        this.FinalDate = FinalDate;
     }
 
     public DateOnly GetInitDate()
     {
-        return _initDate;
+        return InitDate;
     }
 
     public DateOnly GetFinalDate()
     {
-        return _finalDate;
+        return FinalDate;
     }
 
     public bool IsFinalDateSmallerThan(DateOnly date)
     {
-        return date > _finalDate;
+        return date > FinalDate;
     }
 
     public bool IsInitDateSmallerThan(DateOnly date)
     {
-        return date > _initDate;
+        return date > InitDate;
     }
 
     public bool Intersects(PeriodDate periodDate)
     {
-        return _initDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= _finalDate;
+        return InitDate <= periodDate.GetFinalDate() && periodDate.GetInitDate() <= FinalDate;
     }
 
     public PeriodDate? GetIntersection(PeriodDate periodDate)
     {
-        DateOnly effectiveStart = _initDate > periodDate.GetInitDate() ? _initDate : periodDate.GetInitDate();
-        DateOnly effectiveEnd = _finalDate < periodDate.GetFinalDate() ? _finalDate : periodDate.GetFinalDate();
+        DateOnly effectiveStart = InitDate > periodDate.GetInitDate() ? InitDate : periodDate.GetInitDate();
+        DateOnly effectiveEnd = FinalDate < periodDate.GetFinalDate() ? FinalDate : periodDate.GetFinalDate();
 
         if (effectiveStart > effectiveEnd)
         {
@@ -54,24 +54,24 @@ public class PeriodDate
 
     public int Duration()
     {
-        return _finalDate.DayNumber - _initDate.DayNumber + 1;
+        return FinalDate.DayNumber - InitDate.DayNumber + 1;
     }
 
     public bool Contains(PeriodDate periodDate)
     {
-        return _initDate <= periodDate.GetInitDate()
-        && _finalDate >= periodDate.GetFinalDate();
+        return InitDate <= periodDate.GetInitDate()
+        && FinalDate >= periodDate.GetFinalDate();
     }
 
     public bool ContainsDate(DateOnly date)
     {
-        return _initDate <= date && _finalDate >= date;
+        return InitDate <= date && FinalDate >= date;
     }
 
     public bool ContainsWeekend()
     {
 
-        for (var date = _initDate; date <= _finalDate; date = date.AddDays(1))
+        for (var date = InitDate; date <= FinalDate; date = date.AddDays(1))
         {
             if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
             {
@@ -96,7 +96,7 @@ public class PeriodDate
     public int GetNumberOfCommonUtilDays()
     {
         int weekdayCount = 0;
-        for (DateOnly date = _initDate; date <= _finalDate; date = date.AddDays(1))
+        for (DateOnly date = InitDate; date <= FinalDate; date = date.AddDays(1))
         {
             if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
             {
