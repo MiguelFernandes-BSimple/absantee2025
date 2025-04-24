@@ -4,33 +4,18 @@ namespace Domain.Models;
 
 public class HolidayPeriod : IHolidayPeriod
 {
-    private long _id;
-    public PeriodDate _periodDate {  get; set; }
+    public Guid Id { get; }
+    public PeriodDate PeriodDate { get; }
 
     public HolidayPeriod(PeriodDate periodDate)
     {
-        _periodDate = periodDate;
-    }
-
-    public HolidayPeriod(long id, PeriodDate periodDate)
-    {
-        _id = id;
-        _periodDate = periodDate;
-    }
-
-    public long GetId()
-    {
-        return _id;
-    }
-
-    public void SetId(long id)
-    {
-        _id = id;
+        Id = Guid.NewGuid();
+        PeriodDate = periodDate;
     }
 
     public int GetDuration()
     {
-        return _periodDate.Duration();
+        return PeriodDate.Duration();
     }
 
     public bool IsLongerThan(int days)
@@ -43,27 +28,27 @@ public class HolidayPeriod : IHolidayPeriod
 
     public bool Contains(IHolidayPeriod holidayPeriod)
     {
-        return _periodDate.Contains(holidayPeriod._periodDate);
+        return PeriodDate.Contains(holidayPeriod.PeriodDate);
     }
 
     public bool Contains(PeriodDate periodDate)
     {
-        return _periodDate.Contains(periodDate);
+        return PeriodDate.Contains(periodDate);
     }
 
     public bool ContainsDate(DateOnly date)
     {
-        return _periodDate.ContainsDate(date);
+        return PeriodDate.ContainsDate(date);
     }
 
     public bool ContainsWeekend()
     {
-        return _periodDate.ContainsWeekend();
+        return PeriodDate.ContainsWeekend();
     }
 
     public int GetInterceptionDurationInDays(PeriodDate periodDate)
     {
-        PeriodDate? interceptionPeriod = _periodDate.GetIntersection(periodDate);
+        PeriodDate? interceptionPeriod = PeriodDate.GetIntersection(periodDate);
 
         if (interceptionPeriod == null)
             return 0;
@@ -73,21 +58,21 @@ public class HolidayPeriod : IHolidayPeriod
 
     public int GetNumberOfCommonUtilDaysBetweenPeriods(PeriodDate periodDate)
     {
-        return _periodDate.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate);
+        return PeriodDate.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate);
     }
     public int GetNumberOfCommonUtilDays()
     {
-        return _periodDate.GetNumberOfCommonUtilDays();
+        return PeriodDate.GetNumberOfCommonUtilDays();
     }
 
     public bool Intersects(PeriodDate periodDate)
     {
-        return _periodDate.Intersects(periodDate);
+        return PeriodDate.Intersects(periodDate);
     }
 
     public bool Intersects(IHolidayPeriod holidayPeriod)
     {
-        return _periodDate.Intersects(holidayPeriod._periodDate);
+        return PeriodDate.Intersects(holidayPeriod.PeriodDate);
     }
 
 }

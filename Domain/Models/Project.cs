@@ -30,21 +30,6 @@ public class Project : IProject
         PeriodDate = periodDate;
     }
 
-    public string GetTitle()
-    {
-        return Title;
-    }
-
-    public string GetAcronym()
-    {
-        return Acronym;
-    }
-
-    public PeriodDate GetPeriodDate()
-    {
-        return PeriodDate;
-    }
-
     public bool ContainsDates(PeriodDate periodDate)
     {
         return PeriodDate.Contains(periodDate);

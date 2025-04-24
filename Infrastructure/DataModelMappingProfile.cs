@@ -21,7 +21,8 @@ namespace Infrastructure
             CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
             CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
             CreateMap<TrainingModule, TrainingModuleDataModel>();
-            CreateMap<TrainingModuleDataModel, TrainingModule>();
+            CreateMap<TrainingModuleDataModel, TrainingModule>()
+                .ConvertUsing<TrainingModuleDataModelToTrainingModuleConverter>();
             CreateMap<TrainingSubjectDataModel, TrainingSubject>();
             CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<Project, ProjectDataModel>();
@@ -29,6 +30,9 @@ namespace Infrastructure
                 .ConvertUsing<ProjectDataModelToProjectConverter>();
             CreateMap<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>();
             CreateMap<TrainingModuleCollaborators, TrainingModuleCollaboratorDataModel>();
+            CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
+            CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
+                .ConvertUsing<HolidayPeriodDataModelToHolidayPeriodConverter>();
         }
 
     }

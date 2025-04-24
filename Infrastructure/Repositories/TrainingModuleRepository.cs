@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public override ITrainingModule? GetById(long id)
+        public override ITrainingModule? GetById(Guid id)
         {
             var trainingModuleDM = _context.Set<TrainingModuleDataModel>()
                                         .FirstOrDefault(t => t.Id == id);
@@ -27,7 +27,7 @@ namespace Infrastructure.Repositories
             return _mapper.Map<TrainingModuleDataModel, TrainingModule>(trainingModuleDM);
         }
 
-        public override async Task<ITrainingModule?> GetByIdAsync(long id)
+        public override async Task<ITrainingModule?> GetByIdAsync(Guid id)
         {
             var trainingModuleDM = await _context.Set<TrainingModuleDataModel>()
                                         .FirstOrDefaultAsync(t => t.Id == id);
@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories
             return _mapper.Map<TrainingModuleDataModel, TrainingModule>(trainingModuleDM);
         }
 
-        public async Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(long subjectId, DateTime date)
+        public async Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(Guid subjectId, DateTime date)
         {
             var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
                                             .Where(t => t.TrainingSubjectId == subjectId

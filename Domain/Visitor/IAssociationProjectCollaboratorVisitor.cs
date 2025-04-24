@@ -5,8 +5,8 @@ namespace Domain.Visitor;
 
 public interface IAssociationProjectCollaboratorVisitor
 {
-    public long Id { get; }
-    public long CollaboratorId { get; }
-    public long ProjectId { get; }
+    public Guid Id { get; }
+    public Guid CollaboratorId { get; }
+    public Guid ProjectId { get; }
     public PeriodDate PeriodDate { get; }
 }

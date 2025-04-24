@@ -10,7 +10,5 @@ public interface IProject
     public PeriodDate PeriodDate { get; }
     public bool ContainsDates(PeriodDate periodDate);
     public bool IsFinished();
-    public string GetTitle();
-    public string GetAcronym();
-    public PeriodDate GetPeriodDate();
+
 }

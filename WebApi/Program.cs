@@ -40,10 +40,13 @@ builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
+builder.Services.AddTransient<IUserFactory, UserFactory>();
 
 //Mappers
 builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
 builder.Services.AddTransient<CollaboratorDataModelToCollaboratorConverter>();
+builder.Services.AddTransient<TrainingModuleDataModelToTrainingModuleConverter>();
+builder.Services.AddTransient<HolidayPeriodDataModelToHolidayPeriodConverter>();
 builder.Services.AddAutoMapper(cfg =>
 {
     //DataModels
@@ -51,8 +54,14 @@ builder.Services.AddAutoMapper(cfg =>
     //DTO
     cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<Project, ProjectDTO>();
-
 });
+builder.Services.AddTransient<UserDataModelToUserConverter>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    //DataModels
+    cfg.AddProfile<DataModelMappingProfile>();
+});
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

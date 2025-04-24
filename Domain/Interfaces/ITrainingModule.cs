@@ -4,8 +4,8 @@ namespace Domain.Interfaces
 {
     public interface ITrainingModule
     {
-        long Id { get; }
-        long TrainingSubjectId { get; }
+        Guid Id { get; }
+        Guid TrainingSubjectId { get; }
         List<PeriodDateTime> Periods { get; }
     }
 }

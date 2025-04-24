@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public async Task<ActionResult<IProject?>> GetProjectById(long id)
+        public async Task<ActionResult<IProject?>> GetProjectById(Guid id)
         {
             var result = await _projectService.GetProjectById(id);
             return Ok(result);

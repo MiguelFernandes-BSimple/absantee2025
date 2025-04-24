@@ -14,7 +14,7 @@ namespace Domain.IRepository
         Task<IEnumerable<IUser>> GetBySurnamesAsync(string names);
         Task<IEnumerable<IUser>> GetByNamesAndSurnamesAsync(string names, string surnames);
         Task<IUser?> GetByEmailAsync(string email);
-        IUser? GetById(long id);
-        Task<IUser?> GetByIdAsync(long id);
+        IUser? GetById(Guid id);
+        Task<IUser?> GetByIdAsync(Guid id);
     }
 }

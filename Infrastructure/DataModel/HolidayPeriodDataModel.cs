@@ -8,13 +8,13 @@ namespace Infrastructure.DataModel;
 [Table("HolidayPeriod")]
 public class HolidayPeriodDataModel : IHolidayPeriodVisitor
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public PeriodDate PeriodDate { get; set; }
 
     public HolidayPeriodDataModel(IHolidayPeriod holidayPeriod)
     {
-        Id = holidayPeriod.GetId();
-        PeriodDate = holidayPeriod._periodDate;
+        Id = holidayPeriod.Id;
+        PeriodDate = holidayPeriod.PeriodDate;
     }
 
     public HolidayPeriodDataModel()

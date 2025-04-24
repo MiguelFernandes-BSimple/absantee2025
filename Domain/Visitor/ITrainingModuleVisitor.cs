@@ -9,8 +9,8 @@ namespace Domain.Visitor
 {
     public interface ITrainingModuleVisitor
     {
-        long Id { get; }
-        long TrainingSubjectId { get; }
+        Guid Id { get; }
+        Guid TrainingSubjectId { get; }
         List<PeriodDateTime> Periods { get; }
     }
 }

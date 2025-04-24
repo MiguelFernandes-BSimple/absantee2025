@@ -6,11 +6,11 @@ namespace Domain.Models;
 
 public class User : IUser
 {
-    private long _id;
-    private string _names;
-    private string _surnames;
-    private string _email;
-    public PeriodDateTime _periodDateTime;
+    public Guid Id { get; set; }
+    public string Names { get; set; }
+    public string Surnames { get; set; }
+    public string Email { get; set; }
+    public PeriodDateTime PeriodDateTime { get; set; }
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
@@ -34,60 +34,29 @@ public class User : IUser
         if (DateTime.Now >= deactivationDate)
             throw new ArgumentException("Deactivaton date can't be in the past.");
 
-        _names = names;
-        _surnames = surnames;
-        _email = email;
-        _periodDateTime = new PeriodDateTime(DateTime.Now, (DateTime)deactivationDate);
+        Id = Guid.NewGuid();
+        Names = names;
+        Surnames = surnames;
+        Email = email;
+        PeriodDateTime = new PeriodDateTime(DateTime.UtcNow, (DateTime)deactivationDate);
     }
 
-    public User(long id, string names, string surnames, string email, PeriodDateTime periodDateTime)
+    public User(Guid id, string names, string surnames, string email, PeriodDateTime periodDateTime)
     {
-        _id = id;
-        _names = names;
-        _surnames = surnames;
-        _email = email;
-        _periodDateTime = periodDateTime;
-
+        Id = id;
+        Names = names;
+        Surnames = surnames;
+        Email = email;
+        PeriodDateTime = periodDateTime;
     }
-
-    public long GetId()
-    {
-        return _id;
-    }
-
-    public void SetId(long id)
-    {
-        _id = id;
-    }
-
-    public string GetNames()
-    {
-        return _names;
-    }
-
-    public string GetSurnames()
-    {
-        return _surnames;
-    }
-
-    public string GetEmail()
-    {
-        return _email;
-    }
-
-    public PeriodDateTime GetPeriodDateTime()
-    {
-        return _periodDateTime;
-    }
-
     public bool IsDeactivated()
     {
-        return _periodDateTime.IsFinalDateSmallerThan(DateTime.Now);
+        return PeriodDateTime.IsFinalDateSmallerThan(DateTime.Now);
     }
 
     public bool DeactivationDateIsBefore(DateTime date)
     {
-        return _periodDateTime.IsFinalDateSmallerThan(date);
+        return PeriodDateTime.IsFinalDateSmallerThan(date);
     }
 
     public bool DeactivateUser()
@@ -95,7 +64,7 @@ public class User : IUser
         if (IsDeactivated())
             return false;
 
-        _periodDateTime.SetFinalDate(DateTime.Now);
+        PeriodDateTime.SetFinalDate(DateTime.Now);
 
         return true;
     }
@@ -105,7 +74,7 @@ public class User : IUser
         if (string.IsNullOrWhiteSpace(names))
             return false;
 
-        return _names.Contains(names, StringComparison.OrdinalIgnoreCase);
+        return Names.Contains(names, StringComparison.OrdinalIgnoreCase);
     }
 
     public bool HasSurnames(string surnames)
@@ -113,12 +82,9 @@ public class User : IUser
         if (string.IsNullOrWhiteSpace(surnames))
             return false;
 
-        return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
+        return Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
     }
 
-    /**
-    * As of now, two users are the same if the email is the same
-    */
     override public bool Equals(Object? obj)
     {
         if (obj == null) return false;
@@ -127,10 +93,9 @@ public class User : IUser
         {
             User other = (User)obj;
 
-            if (this._email.Equals(other._email))
+            if (this.Email.Equals(other.Email))
                 return true;
         }
-
         return false;
     }
 }

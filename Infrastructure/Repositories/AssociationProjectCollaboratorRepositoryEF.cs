@@ -18,7 +18,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         _mapper = associationProjectCollaboratorMapper;
     }
 
-    public override IAssociationProjectCollaborator? GetById(long id)
+    public override IAssociationProjectCollaborator? GetById(Guid id)
     {
         try
         {
@@ -37,7 +37,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public override async Task<IAssociationProjectCollaborator?> GetByIdAsync(long id)
+    public override async Task<IAssociationProjectCollaborator?> GetByIdAsync(Guid id)
     {
         try
         {
@@ -56,7 +56,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(long projectId)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
     {
         try
         {
@@ -76,7 +76,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(long projectId, long collaboratorId)
+    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
         try
         {
@@ -96,7 +96,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(long projectId, long collaboratorId)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
         try
         {
@@ -114,7 +114,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(long projectId, PeriodDate periodDate)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(Guid projectId, PeriodDate periodDate)
     {
         try
         {
@@ -136,7 +136,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    public async Task<bool> CanInsert(PeriodDate periodDate, long collaboratorId, long projectId)
+    public async Task<bool> CanInsert(PeriodDate periodDate, Guid collaboratorId, Guid projectId)
     {
         try
         {
@@ -156,7 +156,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
         }
     }
 
-    private IQueryable<AssociationProjectCollaboratorDataModel> FindByCollaboratorAndProject(long collabId, long projectId)
+    private IQueryable<AssociationProjectCollaboratorDataModel> FindByCollaboratorAndProject(Guid collabId, Guid projectId)
     {
         var result = _context.Set<AssociationProjectCollaboratorDataModel>()
                              .Where(a => a.CollaboratorId == collabId && a.ProjectId == projectId);
