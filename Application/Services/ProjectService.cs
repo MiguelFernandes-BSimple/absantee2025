@@ -28,7 +28,7 @@ namespace Application.Services
             return await _repository.GetAllAsync();
         }
 
-        public async Task<IProject?> GetProjectById(long id)
+        public async Task<IProject?> GetProjectById(Guid id)
         {
             return await _repository.GetByIdAsync(id);
         }
