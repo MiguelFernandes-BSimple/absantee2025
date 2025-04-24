@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Factory;
 using Domain.Models;
 using Infrastructure.DataModel;
+using Infrastructure.Resolvers;
 
 namespace Infrastructure
 {
@@ -24,11 +25,7 @@ namespace Infrastructure
             CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<Project, ProjectDataModel>();
             CreateMap<ProjectDataModel, Project>()
-            .ConstructUsing((src, context) =>
-            {
-                var factory = (IProjectFactory)context.ServiceCtor(typeof(IProjectFactory));
-                return factory.Create(src);
-            });
+                .ConvertUsing<ProjectDataModelToProjectConverter>();
             CreateMap<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>();
             CreateMap<TrainingModuleCollaborators, TrainingModuleCollaboratorDataModel>();
         }

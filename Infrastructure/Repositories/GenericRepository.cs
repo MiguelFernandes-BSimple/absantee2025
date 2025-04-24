@@ -52,9 +52,9 @@ namespace Infrastructure.Repositories
             return dataModels.Select(d => _mapper.Map<TDataModel, TDomain>(d));
         }
 
-        public abstract TDomain? GetById(long id);
+        public abstract TDomain? GetById(Guid id);
 
-        public abstract Task<TDomain?> GetByIdAsync(long id);
+        public abstract Task<TDomain?> GetByIdAsync(Guid id);
 
         public void Remove(TDomain entity)
         {

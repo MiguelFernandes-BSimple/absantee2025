@@ -15,7 +15,7 @@ public class ProjectRepository : GenericRepository<Project, ProjectDataModel>, I
         _ProjectMapper = mapper;
     }
 
-    public override Project? GetById(long id)
+    public override Project? GetById(Guid id)
     {
         var projectDM = this._context.Set<ProjectDataModel>()
                             .FirstOrDefault(p => p.Id == id);
@@ -27,7 +27,7 @@ public class ProjectRepository : GenericRepository<Project, ProjectDataModel>, I
         return project;
     }
 
-    public override async Task<Project?> GetByIdAsync(long id)
+    public override async Task<Project?> GetByIdAsync(Guid id)
     {
         var projectDM = await this._context.Set<ProjectDataModel>()
                             .FirstOrDefaultAsync(c => c.Id == id);

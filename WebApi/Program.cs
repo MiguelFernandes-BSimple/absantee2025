@@ -7,6 +7,7 @@ using Domain.Models;
 using Infrastructure;
 using Infrastructure.DataModel;
 using Infrastructure.Repositories;
+using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +34,15 @@ builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectReposit
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddTransient<ITrainingModuleCollaboratorsRepository, TrainingModuleCollaboratorsRepository>();
 
+//Factories
+builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
+builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
+builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
+builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
+builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
+
 //Mappers
+builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
 builder.Services.AddAutoMapper(cfg =>
 {
     //DataModels
@@ -43,13 +52,6 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<Project, ProjectDTO>();
 
 });
-
-//Factories
-builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
-builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
-builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
-builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
-builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

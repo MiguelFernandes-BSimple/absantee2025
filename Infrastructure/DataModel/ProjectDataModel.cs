@@ -11,17 +11,17 @@ namespace Infrastructure.DataModel
 {
     public class ProjectDataModel : IProjectVisitor
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Acronym { get; set; }
         public PeriodDate PeriodDate { get; set; }
 
         public ProjectDataModel(Project project)
         {
-            Id = project.GetId();
+            Id = project.Id;
             Title = project.GetTitle();
             Acronym = project.GetAcronym();
-            PeriodDate = (PeriodDate)project.GetPeriodDate();
+            PeriodDate = project.GetPeriodDate();
         }
 
         public ProjectDataModel()

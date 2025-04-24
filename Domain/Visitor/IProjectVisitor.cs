@@ -5,7 +5,7 @@ namespace Domain.Visitor;
 
 public interface IProjectVisitor
 {
-    long Id { get; }
+    Guid Id { get; }
     string Title { get; }
     string Acronym { get; }
     PeriodDate PeriodDate { get; }
