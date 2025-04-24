@@ -4,7 +4,7 @@ namespace Domain.Visitor;
 
 public interface IHolidayPeriodVisitor
 {
-    long Id { get; }
+    Guid Id { get; }
     PeriodDate PeriodDate { get; }
 }
 
