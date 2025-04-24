@@ -15,10 +15,18 @@ namespace Application.Services
             _associationProjectCollaboratorFactory = associationProjectCollaboratorFactory;
         }
 
-        public async Task Add(PeriodDate periodDate, Guid collabId, Guid projectId)
+        public async Task<bool> Add(PeriodDate periodDate, Guid collabId, Guid projectId)
         {
-            var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
-            await _assocRepository.AddAsync(assoc);
+            try
+            {
+                var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
+                await _assocRepository.AddAsync(assoc);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
