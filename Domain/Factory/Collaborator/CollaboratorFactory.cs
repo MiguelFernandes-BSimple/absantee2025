@@ -17,12 +17,12 @@ namespace Domain.Factory
             _userRepository = userRepository;
         }
 
-        public async Task<Collaborator> Create(long userId, PeriodDateTime periodDateTime)
+        public async Task<Collaborator> Create(Guid userId, PeriodDateTime periodDateTime)
         {
-            IUser? user = _userRepository.GetById((int)userId);
+            IUser? user = _userRepository.GetById(userId);
 
             if (user == null)
-                throw new ArgumentException("User dont exists");
+                throw new ArgumentException("User does not exist");
 
             if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
                 throw new ArgumentException("User deactivation date is before collaborator contract end date.");

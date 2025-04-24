@@ -16,7 +16,8 @@ namespace Infrastructure
         public DataModelMappingProfile()
         {
             CreateMap<Collaborator, CollaboratorDataModel>();
-            CreateMap<CollaboratorDataModel, Collaborator>();
+            CreateMap<CollaboratorDataModel, Collaborator>()
+                .ConvertUsing<CollaboratorDataModelToCollaboratorConverter>();
             CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
             CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
             CreateMap<TrainingModule, TrainingModuleDataModel>();
@@ -29,6 +30,6 @@ namespace Infrastructure
             CreateMap<TrainingModuleCollaboratorDataModel, TrainingModuleCollaborators>();
             CreateMap<TrainingModuleCollaborators, TrainingModuleCollaboratorDataModel>();
         }
-        
+
     }
 }

@@ -8,8 +8,8 @@ using Domain.Visitor;
 namespace Infrastructure.DataModel;
 public class CollaboratorDataModel : ICollaboratorVisitor
 {
-    public long Id { get; set; }
-    public long UserId { get; set; }
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
     public PeriodDateTime PeriodDateTime { get; set; }
 
     public CollaboratorDataModel(ICollaborator collaborator)
