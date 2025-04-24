@@ -39,9 +39,9 @@ namespace Application.Tests.CollaboratorServiceTests
             var trainingModuleRepo = new Mock<ITrainingModuleRepository>();
             trainingModuleRepo.Setup(trepo => trepo.GetBySubjectIdAndFinished(It.IsAny<long>(), It.IsAny<DateTime>())).ReturnsAsync(trainingModules);
 
-            var trainingModuleCollaborator = new Mock<ITrainingModuleCollaborators>();
+            var trainingModuleCollaborator = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollaborator.Setup(t => t.CollaboratorId).Returns(1);
-            var trainingModuleCollaboratorList = new List<ITrainingModuleCollaborators>() {  trainingModuleCollaborator.Object };
+            var trainingModuleCollaboratorList = new List<IAssociationTrainingModuleCollaborator>() {  trainingModuleCollaborator.Object };
 
             var trainingModuleCollaboratorRepo = new Mock<ITrainingModuleCollaboratorsRepository>();
             trainingModuleCollaboratorRepo.Setup(t => t.GetByTrainingModuleIds(new List<long>() { 1 })).ReturnsAsync(trainingModuleCollaboratorList);

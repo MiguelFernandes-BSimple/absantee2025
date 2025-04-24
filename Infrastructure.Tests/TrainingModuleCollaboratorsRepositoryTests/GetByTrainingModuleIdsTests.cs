@@ -39,23 +39,23 @@ namespace Infrastructure.Tests.TrainingModuleCollaboratorsRepositoryTests
 
             using var context = new AbsanteeContext(options);
 
-            var trainingModuleCollab1 = new Mock<ITrainingModuleCollaborators>();
+            var trainingModuleCollab1 = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollab1.Setup(t => t.TrainingModuleId).Returns(1);
-            var traingModuleCollab1DM = new TrainingModuleCollaboratorDataModel(trainingModuleCollab1.Object);
+            var traingModuleCollab1DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab1.Object);
             context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab1DM);
             
-            var trainingModuleCollab2 = new Mock<ITrainingModuleCollaborators>();
+            var trainingModuleCollab2 = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollab2.Setup(t => t.TrainingModuleId).Returns(2);
-            var traingModuleCollab2DM = new TrainingModuleCollaboratorDataModel(trainingModuleCollab2.Object);
+            var traingModuleCollab2DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab2.Object);
             context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab2DM);
 
             await context.SaveChangesAsync();
 
-            var filteredDMs = new List<TrainingModuleCollaboratorDataModel>() { traingModuleCollab2DM };
-            var expected = new List<ITrainingModuleCollaborators>() { trainingModuleCollab2.Object };
+            var filteredDMs = new List<AssociationTrainingModuleCollaboratorDataModel>() { traingModuleCollab2DM };
+            var expected = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollab2.Object };
 
 
-            var trainingModuleRepo = new TrainingModuleCollaboratorsRepository(context, _mapper);
+            var trainingModuleRepo = new AssociationTrainingModuleCollaboratorRepository(context, _mapper);
 
             //Act
             var result = await trainingModuleRepo.GetByTrainingModuleIds([2]);
