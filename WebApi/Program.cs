@@ -38,12 +38,14 @@ builder.Services.AddTransient<ITrainingModuleCollaboratorsRepository, TrainingMo
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
 builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
+builder.Services.AddTransient<ITrainingSubjectFactory, TrainingSubjectFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
 builder.Services.AddTransient<IUserFactory, UserFactory>();
 
 //Mappers
 builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
+builder.Services.AddTransient<TrainingSubjectDataModelToTrainingSubjectConverter>();
 builder.Services.AddTransient<TrainingModuleDataModelToTrainingModuleConverter>();
 builder.Services.AddTransient<HolidayPeriodDataModelToHolidayPeriodConverter>();
 builder.Services.AddAutoMapper(cfg =>

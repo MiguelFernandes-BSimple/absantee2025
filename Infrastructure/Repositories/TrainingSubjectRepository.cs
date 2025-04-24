@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public override ITrainingSubject? GetById(long id)
+        public override ITrainingSubject? GetById(Guid id)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public override async Task<ITrainingSubject?> GetByIdAsync(long id)
+        public override async Task<ITrainingSubject?> GetByIdAsync(Guid id)
         {
             try
             {

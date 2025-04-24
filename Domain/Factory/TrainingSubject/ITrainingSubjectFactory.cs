@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models;
+﻿using Domain.Models;
+using Domain.Visitor;
 
-namespace Domain.Factory
+namespace Domain.Factory;
+
+public interface ITrainingSubjectFactory
 {
-    public interface ITrainingSubjectFactory
-    {
-        TrainingSubject Create(string subject, string description);
-    }
+    Task<TrainingSubject> Create(string subject, string description);
+    TrainingSubject Create(ITrainingSubjectVisitor trainingSubjectVisitor);
 }
+

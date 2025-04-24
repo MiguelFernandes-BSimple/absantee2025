@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.IRepository;
+﻿using Domain.IRepository;
 using Domain.Models;
+using Domain.Visitor;
 
-namespace Domain.Factory
+namespace Domain.Factory;
+
+public class TrainingSubjectFactory : ITrainingSubjectFactory
 {
-    public class TrainingSubjectFactory
+    private readonly ITrainingSubjectRepository _repository;
+
+    public TrainingSubjectFactory(ITrainingSubjectRepository repository)
     {
-        private readonly ITrainingSubjectRepository _repository;
+        _repository = repository;
+    }
 
-        public TrainingSubjectFactory(ITrainingSubjectRepository repository)
-        {
-            _repository = repository;
-        }
+    public async Task<TrainingSubject> Create(string subject, string description)
+    {
+        if (await _repository.IsDuplicated(subject))
+            throw new ArgumentException("Subject must be unique");
 
-        public async Task<TrainingSubject> Create(string subject, string description)
-        {
-            if (await _repository.IsDuplicated(subject))
-                throw new ArgumentException("Subject must be unique");
+        return new TrainingSubject(subject, description);
+    }
 
-            return new TrainingSubject(subject, description);
-        }
+    public TrainingSubject Create(ITrainingSubjectVisitor trainingSubjectVisitor)
+    {
+        return new TrainingSubject(trainingSubjectVisitor.Id, trainingSubjectVisitor.Subject, trainingSubjectVisitor.Description);
     }
 }
