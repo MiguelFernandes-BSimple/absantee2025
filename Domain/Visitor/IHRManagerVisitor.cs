@@ -7,8 +7,8 @@ namespace Domain.Visitor{
     
     public interface IHRManagerVisitor
     {
-        long Id { get; }
-        long UserId { get; }
+        Guid Id { get; }
+        Guid UserId { get; }
         PeriodDateTime PeriodDateTime { get; }
     }
 }

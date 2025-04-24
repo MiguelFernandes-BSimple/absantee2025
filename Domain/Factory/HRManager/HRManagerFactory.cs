@@ -16,7 +16,7 @@ public class HRManagerFactory : IHRManagerFactory
         _userRepository = userRepository;
     }
 
-    public async Task<HRManager> Create(long userId, PeriodDateTime periodDateTime)
+    public async Task<HRManager> Create(Guid userId, PeriodDateTime periodDateTime)
     {
         IUser? user = await _userRepository.GetByIdAsync(userId);
 
@@ -34,7 +34,7 @@ public class HRManagerFactory : IHRManagerFactory
         return hrManager;
     }
 
-    public async Task<HRManager> Create(long userId, DateTime initDate)
+    public async Task<HRManager> Create(Guid userId, DateTime initDate)
     {
         var periodDateTime = new PeriodDateTime(initDate, DateTime.MaxValue);
 

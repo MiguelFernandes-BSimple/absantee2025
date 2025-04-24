@@ -42,6 +42,7 @@ builder.Services.AddTransient<ITrainingSubjectFactory, TrainingSubjectFactory>()
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
 builder.Services.AddTransient<IUserFactory, UserFactory>();
+builder.Services.AddTransient<IHRManagerFactory, HRManagerFactory>();
 
 //Mappers
 builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
@@ -51,10 +52,12 @@ builder.Services.AddTransient<TrainingModuleDataModelToTrainingModuleConverter>(
 builder.Services.AddTransient<HolidayPeriodDataModelToHolidayPeriodConverter>();
 builder.Services.AddTransient<AssociationTrainingModuleCollaboratorDataModelConverter>();
 builder.Services.AddTransient<UserDataModelToUserConverter>();
+builder.Services.AddTransient<HRManagerDataModelToUserConverter>();
 builder.Services.AddAutoMapper(cfg =>
 {
     //DataModels
     cfg.AddProfile<DataModelMappingProfile>();
+
     //DTO
     cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<Project, ProjectDTO>();

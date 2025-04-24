@@ -5,17 +5,17 @@ namespace Infrastructure.DataModel
 {
     public class HRManagerDataModel : IHRManagerVisitor
     {
-        public long Id{ get; set;}
+        public Guid Id{ get; set;}
 
-        public long UserId { get; set;}
+        public Guid UserId { get; set;}
 
         public PeriodDateTime PeriodDateTime { get; set;}
 
         public HRManagerDataModel(HRManager hRManager)
         {
-            Id = hRManager.GetId();
-            UserId = hRManager.GetUserId();
-            PeriodDateTime = hRManager._periodDateTime;
+            Id = hRManager.Id;
+            UserId = hRManager.UserId;
+            PeriodDateTime = hRManager.PeriodDateTime;
         }
     }
 }

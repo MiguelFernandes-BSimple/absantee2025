@@ -4,34 +4,34 @@ namespace Domain.Models;
 
 public class HRManager : IHRManager
 {
-    private long _id;
-    private long _userId;
-    public PeriodDateTime _periodDateTime { get; set; }
+    public Guid Id { get;} 
+    public Guid UserId { get;} 
+    public PeriodDateTime PeriodDateTime { get;}
 
-    public HRManager(long userId, PeriodDateTime periodDateTime)
+    public HRManager(Guid userId, PeriodDateTime periodDateTime)
     {
-        _periodDateTime = periodDateTime;
-        _userId = userId;
+        PeriodDateTime = periodDateTime;
+        UserId = userId;
     }
 
-    public HRManager(long id, long userId, PeriodDateTime periodDateTime)
+    public HRManager(Guid id, Guid userId, PeriodDateTime periodDateTime)
         : this(userId, periodDateTime)
     {
-        _id = id;
+        Id = id;
     }
 
     public bool ContractContainsDates(PeriodDateTime periodDateTime)
     {
-        return _periodDateTime.Contains(periodDateTime);
+        return PeriodDateTime.Contains(periodDateTime);
     }
 
-    public long GetId()
+    public Guid GetId()
     {
-        return _id;
+        return Id;
     }
 
-    public long GetUserId()
+    public Guid GetUserId()
     {
-        return _userId;
+        return UserId;
     }
 }
