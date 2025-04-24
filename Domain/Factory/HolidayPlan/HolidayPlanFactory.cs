@@ -13,7 +13,7 @@ public class HolidayPlanFactory : IHolidayPlanFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPlan Create(long collaboratorId, List<IHolidayPeriod> holidayPeriods)
+    public HolidayPlan Create(Guid collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
         if (_collaboratorRepository.GetById(collaboratorId) == null)
             throw new ArgumentException("Collaborator doesn't exist.");

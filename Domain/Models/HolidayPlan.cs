@@ -1,46 +1,30 @@
-using Domain.Factory;
 using Domain.Interfaces;
 
 namespace Domain.Models;
 
 public class HolidayPlan : IHolidayPlan
 {
-    private long _id;
-    private long _collaboratorId;
-    private List<IHolidayPeriod> _holidaysPeriods;
+    public Guid Id { get; }
+    public Guid CollaboratorId { get; }
+    public List<IHolidayPeriod> HolidayPeriods { get; }
 
-    public HolidayPlan(long collaboratorId, List<IHolidayPeriod> holidayPeriods)
+    public HolidayPlan(Guid collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
-        this._collaboratorId = collaboratorId;
-        this._holidaysPeriods = holidayPeriods;
+        Id = Guid.NewGuid();
+        CollaboratorId = collaboratorId;
+        HolidayPeriods = holidayPeriods;
     }
 
-    public HolidayPlan(long id, long collaboratorId, List<IHolidayPeriod> holidayPeriods)
+    public HolidayPlan(Guid id, Guid collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
-        this._id = id;
-        this._collaboratorId = collaboratorId;
-        this._holidaysPeriods = holidayPeriods;
-
-    }
-
-    public long GetId()
-    {
-        return _id;
-    }
-
-    public long GetCollaboratorId()
-    {
-        return _collaboratorId;
-    }
-
-    public List<IHolidayPeriod> GetHolidayPeriods()
-    {
-        return new List<IHolidayPeriod>(_holidaysPeriods);
+        Id = id;
+        CollaboratorId = collaboratorId;
+        HolidayPeriods = holidayPeriods;
     }
 
     public int GetNumberOfHolidayDaysBetween(PeriodDate periodDate)
     {
-        return _holidaysPeriods.Sum(period =>
+        return HolidayPeriods.Sum(period =>
             period.GetNumberOfCommonUtilDaysBetweenPeriods(periodDate)
         );
     }
