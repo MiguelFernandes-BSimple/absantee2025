@@ -4,11 +4,12 @@ using Domain.Models;
 using Infrastructure.DataModel;
 
 namespace Infrastructure.Resolvers;
-public class UserDataModelToUserConverter : ITypeConverter<UserDataModel, User>
+
+public class UserDataModelConverter : ITypeConverter<UserDataModel, User>
 {
     private readonly IUserFactory _UserFactory;
 
-    public UserDataModelToUserConverter(IUserFactory UserFactory)
+    public UserDataModelConverter(IUserFactory UserFactory)
     {
         _UserFactory = UserFactory;
     }

@@ -5,11 +5,11 @@ using Infrastructure.DataModel;
 
 namespace Infrastructure.Resolvers;
 
-public class HolidayPlanDataModelToHolidayPlanConverter : ITypeConverter<HolidayPlanDataModel, HolidayPlan>
+public class HolidayPlanDataModelConverter : ITypeConverter<HolidayPlanDataModel, HolidayPlan>
 {
     private readonly IHolidayPlanFactory _factory;
 
-    public HolidayPlanDataModelToHolidayPlanConverter(IHolidayPlanFactory factory)
+    public HolidayPlanDataModelConverter(IHolidayPlanFactory factory)
     {
         _factory = factory;
     }

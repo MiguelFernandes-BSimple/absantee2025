@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Factory;
 using Domain.Models;
 using Infrastructure.DataModel;
 
 namespace Infrastructure.Resolvers;
 
-public class TrainingModuleDataModelToTrainingModuleConverter : ITypeConverter<TrainingModuleDataModel, TrainingModule>
+public class TrainingModuleDataModelConverter : ITypeConverter<TrainingModuleDataModel, TrainingModule>
 {
     private readonly ITrainingModuleFactory _factory;
 
-    public TrainingModuleDataModelToTrainingModuleConverter(ITrainingModuleFactory factory)
+    public TrainingModuleDataModelConverter(ITrainingModuleFactory factory)
     {
         _factory = factory;
     }

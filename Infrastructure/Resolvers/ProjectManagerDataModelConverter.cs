@@ -4,6 +4,7 @@ using Domain.Models;
 using Infrastructure.DataModel;
 
 namespace Infrastructure.Resolvers;
+
 public class ProjectManagerDataModelConverter : ITypeConverter<ProjectManagerDataModel, ProjectManager>
 {
     private readonly IProjectManagerFactory _factory;

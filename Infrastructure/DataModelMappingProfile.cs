@@ -17,7 +17,7 @@ namespace Infrastructure
         {
             CreateMap<User, UserDataModel>();
             CreateMap<UserDataModel, User>()
-                .ConvertUsing<UserDataModelToUserConverter>();
+                .ConvertUsing<UserDataModelConverter>();
             CreateMap<HRManager, HRManagerDataModel>();
             CreateMap<HRManagerDataModel, HRManager>()
                 .ConvertUsing<HRManagerDataModelConverter>();
@@ -26,30 +26,31 @@ namespace Infrastructure
                 .ConvertUsing<ProjectManagerDataModelConverter>();
             CreateMap<Collaborator, CollaboratorDataModel>();
             CreateMap<CollaboratorDataModel, Collaborator>()
-                .ConvertUsing<CollaboratorDataModelToCollaboratorConverter>();
+                .ConvertUsing<CollaboratorDataModelConverter>();
             CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>();
-            CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>();
-            CreateMap<TrainingModule, TrainingModuleDataModel>();
-            CreateMap<TrainingModuleDataModel, TrainingModule>()
-                .ConvertUsing<TrainingModuleDataModelToTrainingModuleConverter>();
+            CreateMap<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>()
+                .ConvertUsing<AssociationProjectCollaboratorDataModelConverter>();
+            CreateMap<Project, ProjectDataModel>();
+            CreateMap<ProjectDataModel, Project>()
+                .ConvertUsing<ProjectDataModelConverter>();
+            CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDataModel>();
+            CreateMap<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>()
+                .ConvertUsing<AssociationTrainingModuleCollaboratorDataModelConverter>();
             CreateMap<TrainingPeriod, TrainingPeriodDataModel>();
             CreateMap<TrainingPeriodDataModel, TrainingPeriod>()
                 .ConvertUsing<TrainingPeriodDataModelConverter>();
             CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<TrainingSubjectDataModel, TrainingSubject>()
-                .ConvertUsing<TrainingSubjectDataModelToTrainingSubjectConverter>();
-            CreateMap<Project, ProjectDataModel>();
-            CreateMap<ProjectDataModel, Project>()
-                .ConvertUsing<ProjectDataModelToProjectConverter>();
-            CreateMap<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>()
-                .ConvertUsing<AssociationTrainingModuleCollaboratorDataModelConverter>();
-            CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDataModel>();
-            CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
-            CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
-                .ConvertUsing<HolidayPeriodDataModelToHolidayPeriodConverter>();
+                .ConvertUsing<TrainingSubjectDataModelConverter>();
+            CreateMap<TrainingModule, TrainingModuleDataModel>();
+            CreateMap<TrainingModuleDataModel, TrainingModule>()
+                .ConvertUsing<TrainingModuleDataModelConverter>();
             CreateMap<HolidayPlan, HolidayPlanDataModel>();
             CreateMap<HolidayPlanDataModel, HolidayPlan>()
-                .ConvertUsing<HolidayPlanDataModelToHolidayPlanConverter>();
+                .ConvertUsing<HolidayPlanDataModelConverter>();
+            CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
+            CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
+                .ConvertUsing<HolidayPeriodDataModelConverter>();
         }
 
     }
