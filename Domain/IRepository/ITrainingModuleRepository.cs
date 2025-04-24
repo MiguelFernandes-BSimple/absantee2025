@@ -4,7 +4,7 @@ using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface ITrainingModuleRepository : IGenericRepository<ITrainingModule, ITrainingModuleVisitor>
+    public interface ITrainingModuleRepository
     {
         Task<IEnumerable<ITrainingModule>> GetBySubjectIdAndFinished(long subjectId, DateTime period);
     }

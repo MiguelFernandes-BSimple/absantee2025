@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.IRepository;
+using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -7,8 +8,8 @@ namespace Infrastructure.Repositories
     public abstract class GenericRepository<TDomain, TDataModel> : IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
     {
         protected readonly DbContext _context;
-        private readonly IMapper _mapper;
-        public GenericRepository(DbContext context, IMapper mapper)
+        private readonly IMapper<TDomain, TDataModel> _mapper;
+        public GenericRepository(DbContext context, IMapper<TDomain, TDataModel> mapper)
         {
             _context = context;
             _mapper = mapper;

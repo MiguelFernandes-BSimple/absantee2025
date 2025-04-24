@@ -1,9 +1,12 @@
 using Application.Services;
 using Domain.Factory;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
+using Domain.Visitor;
 using Infrastructure;
 using Infrastructure.DataModel;
+using Infrastructure.Mapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +27,8 @@ builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>()
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
 
 //Mappers
+builder.Services.AddTransient<IMapper<TrainingModule, TrainingModuleDataModel>, TrainingModuleMapper>();
+builder.Services.AddTransient<GenericRepository<TrainingModule, TrainingModuleDataModel>>();
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.CreateMap<Collaborator, CollaboratorDataModel>();

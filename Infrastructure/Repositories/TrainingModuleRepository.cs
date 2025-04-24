@@ -13,15 +13,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class TrainingModuleRepository : GenericRepository<ITrainingModule, ITrainingModuleVisitor>, ITrainingModuleRepository
+    public class TrainingModuleRepository : ITrainingModuleRepository
     {
-        private readonly IMapper<ITrainingModule, ITrainingModuleVisitor> _mapper;
-        public TrainingModuleRepository(DbContext context, IMapper<ITrainingModule, ITrainingModuleVisitor> mapper) : base(context, mapper)
+        private readonly IMapper<TrainingModule, TrainingModuleDataModel> _mapper;
+        private readonly GenericRepository<TrainingModule, TrainingModuleDataModel> _genericRepository;
+        private readonly AbsanteeContext _context;
+        public TrainingModuleRepository(AbsanteeContext context, IMapper<TrainingModule, TrainingModuleDataModel> mapper, GenericRepository<TrainingModule, TrainingModuleDataModel> genericRepository)
         {
+            _context = context;
+            _genericRepository = genericRepository;
             _mapper = mapper;
         }
 
-        public override ITrainingModule? GetById(long id)
+        public ITrainingModule? GetById(long id)
         {
             var trainingModuleDM = _context.Set<TrainingModuleDataModel>()
                                         .FirstOrDefault(t => t.Id == id);
@@ -32,7 +36,7 @@ namespace Infrastructure.Repositories
             return _mapper.ToDomain(trainingModuleDM);
         }
 
-        public override async Task<ITrainingModule?> GetByIdAsync(long id)
+        public async Task<ITrainingModule?> GetByIdAsync(long id)
         {
             var trainingModuleDM = await _context.Set<TrainingModuleDataModel>()
                                         .FirstOrDefaultAsync(t => t.Id == id);
