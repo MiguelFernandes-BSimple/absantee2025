@@ -8,6 +8,7 @@ public class Project : IProject
     public string Title { get; }
     public string Acronym { get; }
     public PeriodDate PeriodDate { get; }
+
     public Project(string title, string acronym, PeriodDate periodDate)
     {
         Regex tituloRegex = new Regex(@"^.{1,50}$");

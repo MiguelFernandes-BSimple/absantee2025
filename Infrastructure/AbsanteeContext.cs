@@ -21,8 +21,8 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<HolidayPeriodDataModel>()
-                .OwnsOne(h => h.PeriodDate);
+            modelBuilder.Entity<UserDataModel>()
+                .OwnsOne(a => a.PeriodDateTime);
 
             modelBuilder.Entity<AssociationProjectCollaboratorDataModel>()
                 .OwnsOne(a => a.PeriodDate);
@@ -37,8 +37,8 @@ namespace Infrastructure
             modelBuilder.Entity<ProjectDataModel>()
                 .OwnsOne(a => a.PeriodDate);
 
-            modelBuilder.Entity<UserDataModel>()
-                .OwnsOne(a => a.PeriodDateTime);
+            modelBuilder.Entity<HolidayPeriodDataModel>()
+                .OwnsOne(h => h.PeriodDate);
 
             modelBuilder.Entity<TrainingModuleDataModel>()
                 .OwnsMany(t => t.Periods);

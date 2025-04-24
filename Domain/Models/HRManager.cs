@@ -4,9 +4,9 @@ namespace Domain.Models;
 
 public class HRManager : IHRManager
 {
-    public Guid Id { get;} 
-    public Guid UserId { get;} 
-    public PeriodDateTime PeriodDateTime { get;}
+    public Guid Id { get; }
+    public Guid UserId { get; }
+    public PeriodDateTime PeriodDateTime { get; }
 
     public HRManager(Guid userId, PeriodDateTime periodDateTime)
     {

@@ -1,10 +1,9 @@
 using Domain.Models;
 
-namespace Domain.Visitor
+namespace Domain.Visitor;
+
+public interface ITrainingPeriodVisitor
 {
-    public interface ITrainingPeriodVisitor
-    {
-        long Id { get; }
-        PeriodDate PeriodDate { get; }
-    }
+    Guid Id { get; }
+    PeriodDate PeriodDate { get; }
 }

@@ -4,9 +4,9 @@ namespace Domain.Models;
 
 public class ProjectManager : IProjectManager
 {
-    public Guid Id {get;}
-    public Guid UserId {get;}
-    public PeriodDateTime PeriodDateTime {get;}
+    public Guid Id { get; }
+    public Guid UserId { get; }
+    public PeriodDateTime PeriodDateTime { get; }
 
     public ProjectManager(Guid userId, PeriodDateTime periodDateTime)
     {

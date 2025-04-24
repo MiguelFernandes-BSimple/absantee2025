@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.Visitor;
 
 namespace Infrastructure.DataModel;
 
 [Table("ProjectManager")]
-public class ProjectManagerDataModel
+public class ProjectManagerDataModel : IProjectManagerVisitor
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }

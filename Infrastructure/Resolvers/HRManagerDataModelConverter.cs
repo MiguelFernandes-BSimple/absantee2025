@@ -4,11 +4,11 @@ using Domain.Models;
 using Infrastructure.DataModel;
 
 namespace Infrastructure.Resolvers;
-public class HRManagerDataModelToUserConverter : ITypeConverter<HRManagerDataModel, HRManager>
+public class HRManagerDataModelConverter : ITypeConverter<HRManagerDataModel, HRManager>
 {
     private readonly IHRManagerFactory _hRManagerFactory;
 
-    public HRManagerDataModelToUserConverter(IHRManagerFactory HRManagerFactory)
+    public HRManagerDataModelConverter(IHRManagerFactory HRManagerFactory)
     {
         _hRManagerFactory = HRManagerFactory;
     }

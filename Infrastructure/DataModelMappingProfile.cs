@@ -18,6 +18,12 @@ namespace Infrastructure
             CreateMap<User, UserDataModel>();
             CreateMap<UserDataModel, User>()
                 .ConvertUsing<UserDataModelToUserConverter>();
+            CreateMap<HRManager, HRManagerDataModel>();
+            CreateMap<HRManagerDataModel, HRManager>()
+                .ConvertUsing<HRManagerDataModelConverter>();
+            CreateMap<ProjectManager, ProjectManagerDataModel>();
+            CreateMap<ProjectManagerDataModel, ProjectManager>()
+                .ConvertUsing<ProjectManagerDataModelConverter>();
             CreateMap<Collaborator, CollaboratorDataModel>();
             CreateMap<CollaboratorDataModel, Collaborator>()
                 .ConvertUsing<CollaboratorDataModelToCollaboratorConverter>();
@@ -26,9 +32,12 @@ namespace Infrastructure
             CreateMap<TrainingModule, TrainingModuleDataModel>();
             CreateMap<TrainingModuleDataModel, TrainingModule>()
                 .ConvertUsing<TrainingModuleDataModelToTrainingModuleConverter>();
+            CreateMap<TrainingPeriod, TrainingPeriodDataModel>();
+            CreateMap<TrainingPeriodDataModel, TrainingPeriod>()
+                .ConvertUsing<TrainingPeriodDataModelConverter>();
+            CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<TrainingSubjectDataModel, TrainingSubject>()
                 .ConvertUsing<TrainingSubjectDataModelToTrainingSubjectConverter>();
-            CreateMap<TrainingSubject, TrainingSubjectDataModel>();
             CreateMap<Project, ProjectDataModel>();
             CreateMap<ProjectDataModel, Project>()
                 .ConvertUsing<ProjectDataModelToProjectConverter>();
@@ -38,9 +47,6 @@ namespace Infrastructure
             CreateMap<HolidayPeriod, HolidayPeriodDataModel>();
             CreateMap<HolidayPeriodDataModel, HolidayPeriod>()
                 .ConvertUsing<HolidayPeriodDataModelToHolidayPeriodConverter>();
-            CreateMap<HRManager, HRManagerDataModel>();
-            CreateMap<HRManagerDataModel, HRManager>()
-                .ConvertUsing<HRManagerDataModelToUserConverter>();
             CreateMap<HolidayPlan, HolidayPlanDataModel>();
             CreateMap<HolidayPlanDataModel, HolidayPlan>()
                 .ConvertUsing<HolidayPlanDataModelToHolidayPlanConverter>();

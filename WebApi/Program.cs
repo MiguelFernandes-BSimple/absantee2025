@@ -27,34 +27,33 @@ builder.Services.AddTransient<ProjectService>();
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
 builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
+builder.Services.AddTransient<ITrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepository>();
+builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepository>();
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
-builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepository>();
-builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
-builder.Services.AddTransient<ITrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepository>();
 
 //Factories
+builder.Services.AddTransient<IUserFactory, UserFactory>();
+builder.Services.AddTransient<IHRManagerFactory, HRManagerFactory>();
 builder.Services.AddTransient<ICollaboratorFactory, CollaboratorFactory>();
-builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorFactory, AssociationProjectCollaboratorFactory>();
+builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<ITrainingSubjectFactory, TrainingSubjectFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 builder.Services.AddTransient<IProjectFactory, ProjectFactory>();
-builder.Services.AddTransient<IUserFactory, UserFactory>();
-builder.Services.AddTransient<IHRManagerFactory, HRManagerFactory>();
-builder.Services.AddTransient<IHolidayPeriodFactory, HolidayPeriodFactory>();
 builder.Services.AddTransient<IHolidayPlanFactory, HolidayPlanFactory>();
+builder.Services.AddTransient<IHolidayPeriodFactory, HolidayPeriodFactory>();
 
 //Mappers
-builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
-builder.Services.AddTransient<TrainingSubjectDataModelToTrainingSubjectConverter>();
-builder.Services.AddTransient<CollaboratorDataModelToCollaboratorConverter>();
-builder.Services.AddTransient<TrainingModuleDataModelToTrainingModuleConverter>();
-builder.Services.AddTransient<HolidayPeriodDataModelToHolidayPeriodConverter>();
-builder.Services.AddTransient<AssociationTrainingModuleCollaboratorDataModelConverter>();
 builder.Services.AddTransient<UserDataModelToUserConverter>();
-builder.Services.AddTransient<HRManagerDataModelToUserConverter>();
+builder.Services.AddTransient<HRManagerDataModelConverter>();
+builder.Services.AddTransient<CollaboratorDataModelToCollaboratorConverter>();
+builder.Services.AddTransient<AssociationTrainingModuleCollaboratorDataModelConverter>();
+builder.Services.AddTransient<TrainingPeriodDataModelConverter>();
+builder.Services.AddTransient<TrainingSubjectDataModelToTrainingSubjectConverter>();
+builder.Services.AddTransient<TrainingModuleDataModelToTrainingModuleConverter>();
+builder.Services.AddTransient<ProjectDataModelToProjectConverter>();
 builder.Services.AddTransient<HolidayPlanDataModelToHolidayPlanConverter>();
 builder.Services.AddTransient<HolidayPeriodDataModelToHolidayPeriodConverter>();
 builder.Services.AddAutoMapper(cfg =>

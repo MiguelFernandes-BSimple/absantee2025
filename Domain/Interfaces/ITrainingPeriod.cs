@@ -4,6 +4,6 @@ namespace Domain.Interfaces;
 
 public interface ITrainingPeriod
 {
-    public long GetId();
-    public PeriodDate GetPeriodDate();
+    Guid Id { get; }
+    PeriodDate PeriodDate { get; }
 }
