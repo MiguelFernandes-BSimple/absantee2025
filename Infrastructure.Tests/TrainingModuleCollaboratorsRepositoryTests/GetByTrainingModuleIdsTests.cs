@@ -7,7 +7,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -16,6 +16,19 @@ namespace Infrastructure.Tests.TrainingModuleCollaboratorsRepositoryTests
 {
     public class GetByTrainingModuleIdsTests
     {
+        private readonly IMapper _mapper;
+
+        public GetByTrainingModuleIdsTests()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                // Add both profiles for testing both mappings
+                cfg.AddProfile<DataModelMappingProfile>();
+            });
+
+            _mapper = config.CreateMapper();
+        }
+
         [Fact]
         public async Task WhenSearchingByTrainingModuleIds_ThenReturnsExpectedResult()
         {
@@ -41,16 +54,17 @@ namespace Infrastructure.Tests.TrainingModuleCollaboratorsRepositoryTests
             var filteredDMs = new List<TrainingModuleCollaboratorDataModel>() { traingModuleCollab2DM };
             var expected = new List<ITrainingModuleCollaborators>() { trainingModuleCollab2.Object };
 
-            var mapper = new Mock<IMapper<ITrainingModuleCollaborators, ITrainingModuleCollaboratorsVisitor>>();
-            mapper.Setup(m => m.ToDomain(filteredDMs)).Returns(expected);
 
-            var trainingModuleRepo = new TrainingModuleCollaboratorsRepository(context, mapper.Object);
+            var trainingModuleRepo = new TrainingModuleCollaboratorsRepository(context, _mapper);
 
             //Act
             var result = await trainingModuleRepo.GetByTrainingModuleIds([2]);
 
             //Assert
-            Assert.True(expected.SequenceEqual(result));
+            Assert.Equal(
+                expected.Select(e => e.TrainingModuleId),
+                result.Select(r => r.TrainingModuleId)
+            );
         }
     }
 }

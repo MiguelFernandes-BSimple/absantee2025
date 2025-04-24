@@ -23,7 +23,8 @@ namespace Infrastructure.Repositories
         public async Task AddAsync(TDomain entity)
         {
             var dataModel = _mapper.Map<TDomain, TDataModel>(entity);
-            await _context.Set<TDataModel>().AddAsync(dataModel);
+            _context.Set<TDataModel>().Add(dataModel);
+            await SaveChangesAsync();
         }
 
         public void AddRange(IEnumerable<TDomain> entities)
@@ -35,7 +36,8 @@ namespace Infrastructure.Repositories
         public async Task AddRangeAsync(IEnumerable<TDomain> entities)
         {
             var dataModels = entities.Select(e => _mapper.Map<TDomain, TDataModel>(e));
-            await _context.Set<TDataModel>().AddRangeAsync(dataModels);
+            _context.Set<TDataModel>().AddRange(dataModels);
+            await SaveChangesAsync();
         }
 
         public IEnumerable<TDomain> GetAll()

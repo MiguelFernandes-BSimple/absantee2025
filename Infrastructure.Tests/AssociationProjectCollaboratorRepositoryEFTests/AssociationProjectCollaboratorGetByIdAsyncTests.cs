@@ -2,7 +2,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -10,7 +10,19 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class AssociationProjectCollaboratorGetByIdAsyncTests
 {
-    
+    private readonly IMapper _mapper;
+
+    public AssociationProjectCollaboratorGetByIdAsyncTests()
+    {
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Add both profiles for testing both mappings
+            cfg.AddProfile<DataModelMappingProfile>();
+        });
+
+        _mapper = config.CreateMapper();
+    }
+
     [Fact]
     public async Task WhenPassingExistingId_ThenReturnCorrectAssociation()
     {
@@ -33,11 +45,7 @@ public class AssociationProjectCollaboratorGetByIdAsyncTests
         var expected = new Mock<IAssociationProjectCollaborator>();
         expected.Setup(e => e.Id).Returns(assocDM2Id);
 
-        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-        mapper.Setup(m => m.ToDomain(assoc2))
-            .Returns(expected.Object);
-
-        var assocRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+        var assocRepo = new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         var result = await assocRepo.GetByIdAsync(assocDM2Id);
@@ -67,9 +75,7 @@ public class AssociationProjectCollaboratorGetByIdAsyncTests
         context.Associations.AddRange(assoc1, assoc2);
         await context.SaveChangesAsync();
 
-        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-   
-        var assocRepo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+        var assocRepo = new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         var result = await assocRepo.GetByIdAsync(assocDM3Id);

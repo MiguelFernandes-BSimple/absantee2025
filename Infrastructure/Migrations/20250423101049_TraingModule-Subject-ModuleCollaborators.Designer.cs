@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AbsanteeContext))]
-    partial class AbsanteeContextModelSnapshot : ModelSnapshot
+    [Migration("20250423101049_TraingModule-Subject-ModuleCollaborators")]
+    partial class TraingModuleSubjectModuleCollaborators
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,10 +203,10 @@ namespace Infrastructure.Migrations
                             b1.Property<long>("AssociationProjectCollaboratorDataModelId")
                                 .HasColumnType("bigint");
 
-                            b1.Property<DateOnly>("FinalDate")
+                            b1.Property<DateOnly>("_finalDate")
                                 .HasColumnType("date");
 
-                            b1.Property<DateOnly>("InitDate")
+                            b1.Property<DateOnly>("_initDate")
                                 .HasColumnType("date");
 
                             b1.HasKey("AssociationProjectCollaboratorDataModelId");
@@ -254,10 +257,10 @@ namespace Infrastructure.Migrations
                             b1.Property<long>("HolidayPeriodDataModelId")
                                 .HasColumnType("bigint");
 
-                            b1.Property<DateOnly>("FinalDate")
+                            b1.Property<DateOnly>("_finalDate")
                                 .HasColumnType("date");
 
-                            b1.Property<DateOnly>("InitDate")
+                            b1.Property<DateOnly>("_initDate")
                                 .HasColumnType("date");
 
                             b1.HasKey("HolidayPeriodDataModelId");
@@ -279,10 +282,10 @@ namespace Infrastructure.Migrations
                             b1.Property<long>("ProjectDataModelId")
                                 .HasColumnType("bigint");
 
-                            b1.Property<DateOnly>("FinalDate")
+                            b1.Property<DateOnly>("_finalDate")
                                 .HasColumnType("date");
 
-                            b1.Property<DateOnly>("InitDate")
+                            b1.Property<DateOnly>("_initDate")
                                 .HasColumnType("date");
 
                             b1.HasKey("ProjectDataModelId");

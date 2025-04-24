@@ -2,7 +2,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -10,6 +10,19 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class AssociationProjectCollaboratorFindAllByProjectAsyncTests
 {
+    private readonly IMapper _mapper;
+
+    public AssociationProjectCollaboratorFindAllByProjectAsyncTests()
+    {
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Add both profiles for testing both mappings
+            cfg.AddProfile<DataModelMappingProfile>();
+        });
+
+        _mapper = config.CreateMapper();
+    }
+
     [Fact]
     public async Task WhenPassingExistingProjectId_ThenReturnRelatedAssociations()
     {
@@ -53,12 +66,7 @@ public class AssociationProjectCollaboratorFindAllByProjectAsyncTests
 
         var expected = new List<IAssociationProjectCollaborator>();
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
-        mapper.Setup(m => m.ToDomain(new List<AssociationProjectCollaboratorDataModel> { assocDM3 })).Returns(expected);
-
-        var repo = new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+        var repo = new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         var result = await repo.FindAllByProjectAsync(projectId);

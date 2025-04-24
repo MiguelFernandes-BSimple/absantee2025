@@ -2,7 +2,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -10,6 +10,19 @@ namespace Infrastructure.Tests.AssociationProjectCollaboratorRepositoryEFTests;
 
 public class AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsyncTests
 {
+    private readonly IMapper _mapper;
+
+    public AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsyncTests()
+    {
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Add both profiles for testing both mappings
+            cfg.AddProfile<DataModelMappingProfile>();
+        });
+
+        _mapper = config.CreateMapper();
+    }
+
     [Fact]
     public async Task WhenPassingExistingProjectIdAndPeriodContains_ThenReturnRelatedAssociations()
     {
@@ -59,14 +72,9 @@ public class AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsync
         List<IAssociationProjectCollaborator> expected =
             new List<IAssociationProjectCollaborator>();
 
-        var mapper = new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
-        // Convert to domain
-        mapper.Setup(m => m.ToDomain(assocDMList)).Returns(expected);
-
         // Instatiate repository
         var assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndBetweenPeriodAsync(projectIdToSearch, periodToSearch);
@@ -119,12 +127,9 @@ public class AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsync
         PeriodDate periodToSearch =
            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(3)));
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
         // Instatiate repository
         AssociationProjectCollaboratorRepositoryEF assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndBetweenPeriodAsync(projectIdToSearch, periodToSearch);
@@ -177,12 +182,9 @@ public class AssociationProjectCollaboratorFindAllByProjectAndBetweenPeriodAsync
         PeriodDate periodToSearch =
            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
 
-        Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>> mapper =
-            new Mock<IMapper<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>>();
-
         // Instatiate repository
         AssociationProjectCollaboratorRepositoryEF assocRepo =
-            new AssociationProjectCollaboratorRepositoryEF(context, mapper.Object);
+            new AssociationProjectCollaboratorRepositoryEF(context, _mapper);
 
         // Act
         IEnumerable<IAssociationProjectCollaborator> result = await assocRepo.FindAllByProjectAndBetweenPeriodAsync(projectIdToSearch, periodToSearch);

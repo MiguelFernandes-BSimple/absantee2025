@@ -7,7 +7,7 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
-using Infrastructure.Mapper;
+using AutoMapper;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -16,6 +16,18 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
 {
     public class GetBySubjectIdAndFinishedTests
     {
+        private readonly IMapper _mapper;
+
+        public GetBySubjectIdAndFinishedTests()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                // Add both profiles for testing both mappings
+                cfg.AddProfile<DataModelMappingProfile>();
+            });
+
+            _mapper = config.CreateMapper();
+        }
         [Fact]
         public async Task WhenSearchingBySubjectIdAndFinishTrainingModule_ThenReturnsExpectedResult()
         {
@@ -50,10 +62,7 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
             var filteredDMs = new List<TrainingModuleDataModel>() { trainingModuleDM2 };
             var expected = new List<ITrainingModule>() { trainingModule2.Object };
 
-            var mapper = new Mock<IMapper<ITrainingModule, ITrainingModuleVisitor>>();
-            mapper.Setup(m => m.ToDomain(filteredDMs)).Returns(expected);
-            
-            var trainingModuleRepo = new TrainingModuleRepository(context, mapper.Object);
+            var trainingModuleRepo = new TrainingModuleRepository(context, _mapper);
 
             //Act
             var result = await trainingModuleRepo.GetBySubjectIdAndFinished(1, DateTime.Today);

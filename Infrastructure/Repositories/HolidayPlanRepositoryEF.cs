@@ -19,8 +19,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         return _context.Set<HolidayPlanDataModel>().Any
             (h => h.Id == holidayPlanId && h.GetHolidayPeriods().Any
-                (hp => hp._periodDate._initDate <= periodDate._periodDate._initDate
-                    && hp._periodDate._finalDate >= periodDate._periodDate._finalDate));
+                (hp => hp._periodDate.InitDate <= periodDate._periodDate.InitDate
+                    && hp._periodDate.FinalDate >= periodDate._periodDate.FinalDate));
     }
 
     private async Task<bool> CanInsertAsync(IHolidayPlan holidayPlan)
@@ -54,8 +54,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         var ret = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => collabIds.Contains(hp.CollaboratorId))
             .SelectMany(hp => hp.HolidayPeriodsDM)
-            .Where(hperiod => periodDate._initDate <= hperiod.PeriodDate._initDate
-                     && periodDate._finalDate >= hperiod.PeriodDate._finalDate)
+            .Where(hperiod => periodDate.InitDate <= hperiod.PeriodDate.InitDate
+                     && periodDate.FinalDate >= hperiod.PeriodDate.FinalDate)
             .ToListAsync();
 
         return ret.Select(h => _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(h));
@@ -66,8 +66,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         return await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
             .SelectMany(hp => hp.GetHolidayPeriods())
-            .Where(hperiod => periodDate._initDate >= hperiod._periodDate._initDate
-                           && periodDate._finalDate <= hperiod._periodDate._finalDate)
+            .Where(hperiod => periodDate.InitDate >= hperiod._periodDate.InitDate
+                           && periodDate.FinalDate <= hperiod._periodDate.FinalDate)
             .ToListAsync();
     }
 
@@ -99,7 +99,7 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.HolidayPeriodsDM
-                .Any(h => (h.PeriodDate._finalDate.DayNumber - h.PeriodDate._initDate.DayNumber + 1) > days))
+                .Any(h => (h.PeriodDate.FinalDate.DayNumber - h.PeriodDate.InitDate.DayNumber + 1) > days))
             .Include(hp => hp.HolidayPeriodsDM)
             .ToListAsync();
 
@@ -122,8 +122,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
         var holidayPeriods = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
             .SelectMany(hp => hp.HolidayPeriodsDM
-                                .Where(hp => hp.PeriodDate._initDate <= period._finalDate
-                                          && period._initDate <= hp.PeriodDate._finalDate))
+                                .Where(hp => hp.PeriodDate.InitDate <= period.FinalDate
+                                          && period.InitDate <= hp.PeriodDate.FinalDate))
             .ToListAsync();
 
         return holidayPeriods.Select(hp => _mapper.Map<HolidayPeriodDataModel,HolidayPeriod>(hp));
@@ -145,8 +145,8 @@ public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPl
     {
         var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
                     .Where(hp => hp.HolidayPeriodsDM
-                        .Any(hperiod => periodDate._initDate <= hperiod.PeriodDate._initDate
-                                    && periodDate._finalDate >= hperiod.PeriodDate._finalDate))
+                        .Any(hperiod => periodDate.InitDate <= hperiod.PeriodDate.InitDate
+                                    && periodDate.FinalDate >= hperiod.PeriodDate.FinalDate))
                     // include adicionado com o prof, sendo que hplan e hperiod são um agregado
                     .Include(hp => hp.HolidayPeriodsDM)
                     .ToListAsync();
