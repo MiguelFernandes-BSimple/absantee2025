@@ -2,135 +2,107 @@ using Domain.Interfaces;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 
-namespace Domain.Models;
-
-public class User : IUser
+namespace Domain.Models
 {
-    private long _id;
-    private string _names;
-    private string _surnames;
-    private string _email;
-    public PeriodDateTime _periodDateTime;
-
-    public User(string names, string surnames, string email, DateTime? deactivationDate)
+    public class User : IUser
     {
+        public long Id { get; private set; }
+        public string Names { get; private set; }
+        public string Surnames { get; private set; }
+        public string Email { get; private set; }
+        public PeriodDateTime PeriodDateTime { get; private set; }
 
-        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
+        // Construtor vazio exigido pelo EF Core / serialização
+        public User() { }
 
-        if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
-            throw new ArgumentException("Names or surnames are invalid.");
-
-        try
+        public User(string names, string surnames, string email, DateTime? deactivationDate)
         {
-            var emailValidator = new MailAddress(email);
-        }
-        catch (Exception)
-        {
-            throw new ArgumentException("Email is invalid.");
-        }
+            Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
 
-        deactivationDate ??= DateTime.MaxValue;
+            if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
+                throw new ArgumentException("Names or surnames are invalid.");
 
-        if (DateTime.Now >= deactivationDate)
-            throw new ArgumentException("Deactivaton date can't be in the past.");
+            try
+            {
+                var emailValidator = new MailAddress(email);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Email is invalid.");
+            }
 
-        _names = names;
-        _surnames = surnames;
-        _email = email;
-        _periodDateTime = new PeriodDateTime(DateTime.Now, (DateTime)deactivationDate);
-    }
+            deactivationDate ??= DateTime.MaxValue;
 
-    public User(long id, string names, string surnames, string email, PeriodDateTime periodDateTime)
-    {
-        _id = id;
-        _names = names;
-        _surnames = surnames;
-        _email = email;
-        _periodDateTime = periodDateTime;
+            if (DateTime.UtcNow >= deactivationDate.Value.ToUniversalTime())
+                throw new ArgumentException("Deactivation date can't be in the past.");
 
-    }
-
-    public long GetId()
-    {
-        return _id;
-    }
-
-    public void SetId(long id)
-    {
-        _id = id;
-    }
-
-    public string GetNames()
-    {
-        return _names;
-    }
-
-    public string GetSurnames()
-    {
-        return _surnames;
-    }
-
-    public string GetEmail()
-    {
-        return _email;
-    }
-
-    public PeriodDateTime GetPeriodDateTime()
-    {
-        return _periodDateTime;
-    }
-
-    public bool IsDeactivated()
-    {
-        return _periodDateTime.IsFinalDateSmallerThan(DateTime.Now);
-    }
-
-    public bool DeactivationDateIsBefore(DateTime date)
-    {
-        return _periodDateTime.IsFinalDateSmallerThan(date);
-    }
-
-    public bool DeactivateUser()
-    {
-        if (IsDeactivated())
-            return false;
-
-        _periodDateTime.SetFinalDate(DateTime.Now);
-
-        return true;
-    }
-
-    public bool HasNames(string names)
-    {
-        if (string.IsNullOrWhiteSpace(names))
-            return false;
-
-        return _names.Contains(names, StringComparison.OrdinalIgnoreCase);
-    }
-
-    public bool HasSurnames(string surnames)
-    {
-        if (string.IsNullOrWhiteSpace(surnames))
-            return false;
-
-        return _surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
-    }
-
-    /**
-    * As of now, two users are the same if the email is the same
-    */
-    override public bool Equals(Object? obj)
-    {
-        if (obj == null) return false;
-
-        if (obj.GetType() == typeof(User))
-        {
-            User other = (User)obj;
-
-            if (this._email.Equals(other._email))
-                return true;
+            Names = names;
+            Surnames = surnames;
+            Email = email;
+            PeriodDateTime = new PeriodDateTime(
+                DateTime.UtcNow,
+                deactivationDate.Value.ToUniversalTime()
+            );
         }
 
-        return false;
+        public User(long id, string names, string surnames, string email, PeriodDateTime periodDateTime)
+        {
+            Id = id;
+            Names = names;
+            Surnames = surnames;
+            Email = email;
+            PeriodDateTime = periodDateTime;
+        }
+
+        public void SetId(long id)
+        {
+            Id = id;
+        }
+
+        // 🔁 Métodos GetX()
+        public long GetId() => Id;
+        public string GetNames() => Names;
+        public string GetSurnames() => Surnames;
+        public string GetEmail() => Email;
+        public PeriodDateTime GetPeriodDateTime() => PeriodDateTime;
+
+        public bool IsDeactivated()
+        {
+            return PeriodDateTime.IsFinalDateSmallerThan(DateTime.UtcNow);
+        }
+
+        public bool DeactivationDateIsBefore(DateTime date)
+        {
+            return PeriodDateTime.IsFinalDateSmallerThan(date);
+        }
+
+        public bool DeactivateUser()
+        {
+            if (IsDeactivated())
+                return false;
+
+            PeriodDateTime.SetFinalDate(DateTime.UtcNow);
+            return true;
+        }
+
+        public bool HasNames(string names)
+        {
+            return !string.IsNullOrWhiteSpace(names) &&
+                   Names.Contains(names, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public bool HasSurnames(string surnames)
+        {
+            return !string.IsNullOrWhiteSpace(surnames) &&
+                   Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not User other)
+                return false;
+
+            return Email.Equals(other.Email, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

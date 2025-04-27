@@ -10,6 +10,10 @@ public class UserService
     {
         _repo = repo;
     }
+    public async Task<IEnumerable<IUser>> GetAllAsync()
+    {
+        return await _repo.GetAllUsersAsync();
+    }
 
     public async Task<IUser?> GetByIdAsync(long id)
     {
@@ -24,6 +28,23 @@ public class UserService
     public async Task<IUser> CreateAsync(User user)
     {
         await _repo.AddAsync(user);
-        return user;
+        await _repo.SaveChangesAsync();
+
+        var userWithId = await _repo.GetByEmailAsync(user.Email);
+        return userWithId!;
+    }
+
+    public async Task<IEnumerable<IUser>> GetByNamesAsync(string names)
+    {
+        return await _repo.GetByNamesAsync(names);
+    }
+
+    public async Task UpdateAsync(User user)
+    {
+        await _repo.UpdateAsync(user);
+    }
+    public async Task<IEnumerable<IUser>> GetActiveUsersAsync()
+    {
+        return await _repo.GetActiveUsersAsync();
     }
 }

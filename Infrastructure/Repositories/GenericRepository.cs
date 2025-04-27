@@ -24,6 +24,8 @@ namespace Infrastructure.Repositories
         {
             var dataModel = _mapper.Map<TDomain, TDataModel>(entity);
             await _context.Set<TDataModel>().AddAsync(dataModel);
+            await _context.SaveChangesAsync();
+
         }
 
         public void AddRange(IEnumerable<TDomain> entities)

@@ -5,7 +5,7 @@ using Domain.Visitor;
 
 namespace Infrastructure.DataModel
 {
-    [Table("User")]
+    [Table("Users")]
     public class UserDataModel : IUserVisitor
     {
         public long Id { get; set; }

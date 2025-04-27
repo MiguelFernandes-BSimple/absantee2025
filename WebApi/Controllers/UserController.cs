@@ -2,7 +2,6 @@
 using Domain.Models;
 using Domain.Factory;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -25,6 +24,13 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var users = await _userService.GetAllAsync();
+        return Ok(users);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
     {
@@ -40,4 +46,52 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpGet("email/{email}")]
+    public async Task<IActionResult> GetByEmail(string email)
+    {
+        var user = await _userService.GetByEmailAsync(email);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
+
+    [HttpGet("name/{names}")]
+    public async Task<IActionResult> GetByNames(string names)
+    {
+        var users = await _userService.GetByNamesAsync(names);
+        if (!users.Any())
+            return NotFound("No users found with the given name.");
+
+        return Ok(users);
+    }
+
+    [HttpPut("{id:long}")]
+    public async Task<IActionResult> Update(long id, [FromBody] CreateUserDto dto)
+    {
+        var existing = await _userService.GetByIdAsync(id);
+        if (existing == null)
+            return NotFound("User not found.");
+
+        var user = new User(id, dto.Names, dto.Surnames, dto.Email, new PeriodDateTime(
+            DateTime.UtcNow, (dto.DeactivationDate ?? DateTime.MaxValue).ToUniversalTime()
+        ));
+
+        try
+        {
+            await _userService.UpdateAsync(user);
+            return NoContent();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("active")]
+    public async Task<IActionResult> GetActiveUsers()
+    {
+        var users = await _userService.GetActiveUsersAsync();
+        if (!users.Any())
+            return NotFound("No active users found.");
+        return Ok(users);
+    }
 }
