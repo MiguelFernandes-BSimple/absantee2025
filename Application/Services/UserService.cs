@@ -1,14 +1,17 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
+using Domain.Factory;
 
 public class UserService
 {
     private readonly IUserRepository _repo;
+    private readonly IUserFactory _userFactory;
 
-    public UserService(IUserRepository repo)
+    public UserService(IUserRepository repo, IUserFactory factory)
     {
         _repo = repo;
+        _userFactory = factory;
     }
     public async Task<IEnumerable<IUser>> GetAllAsync()
     {
@@ -25,8 +28,9 @@ public class UserService
         return await _repo.GetByEmailAsync(email);
     }
 
-    public async Task<IUser> CreateAsync(User user)
+    public async Task<IUser> CreateAsync(UserDTO dto)
     {
+        var user = await _userFactory.Create(dto.Names, dto.Surnames, dto.Email, dto.DeactivationDate ?? DateTime.MaxValue);
         await _repo.AddAsync(user);
         await _repo.SaveChangesAsync();
 
@@ -39,10 +43,25 @@ public class UserService
         return await _repo.GetByNamesAsync(names);
     }
 
-    public async Task UpdateAsync(User user)
+    public async Task<bool> UpdateAsync(UserDTO dto, long id)
     {
-        await _repo.UpdateAsync(user);
+        var user = await GetByIdAsync(id);
+
+        if (user != null)
+        {
+            user = UserDTO.UpdateToDomain(user, dto);
+
+            await _repo.UpdateAsync(user);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+
     public async Task<IEnumerable<IUser>> GetActiveUsersAsync()
     {
         return await _repo.GetActiveUsersAsync();

@@ -8,15 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 public class UsersController : ControllerBase
 {
     private readonly UserService _userService;
-    private readonly IUserFactory _userFactory;
 
-    public UsersController(UserService userService, IUserFactory userFactory)
+    public UsersController(UserService userService)
     {
         _userService = userService;
-        _userFactory = userFactory;
     }
 
-    [HttpGet("{id:long}")]
+    [HttpGet("id/{id}")]
     public async Task<IActionResult> GetById(long id)
     {
         var user = await _userService.GetByIdAsync(id);
@@ -32,12 +30,11 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
+    public async Task<IActionResult> Create(UserDTO dto)
     {
         try
         {
-            var user = await _userFactory.Create(dto.Names, dto.Surnames, dto.Email, dto.DeactivationDate ?? DateTime.MaxValue);
-            var created = await _userService.CreateAsync(user);
+            var created = await _userService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.GetId() }, created);
         }
         catch (ArgumentException ex)
@@ -64,26 +61,15 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
 
-    [HttpPut("{id:long}")]
-    public async Task<IActionResult> Update(long id, [FromBody] CreateUserDto dto)
+    [HttpPut("id/{id}")]
+    public async Task<IActionResult> Update(long id, UserDTO dto)
     {
-        var existing = await _userService.GetByIdAsync(id);
-        if (existing == null)
-            return NotFound("User not found.");
+        bool wasUpdated = await _userService.UpdateAsync(dto, id);
 
-        var user = new User(id, dto.Names, dto.Surnames, dto.Email, new PeriodDateTime(
-            DateTime.UtcNow, (dto.DeactivationDate ?? DateTime.MaxValue).ToUniversalTime()
-        ));
+        if (!wasUpdated)
+            return BadRequest("Update failed.");
 
-        try
-        {
-            await _userService.UpdateAsync(user);
-            return NoContent();
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return NoContent();
     }
 
     [HttpGet("active")]
