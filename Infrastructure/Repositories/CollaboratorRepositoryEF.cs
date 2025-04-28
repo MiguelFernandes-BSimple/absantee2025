@@ -8,10 +8,10 @@ using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepository : GenericRepository<ICollaborator, ICollaboratorVisitor>, ICollaboratorRepository
+public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, ICollaboratorVisitor>, ICollaboratorRepository
 {
     private readonly IMapper _mapper;
-    public CollaboratorRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+    public CollaboratorRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public abstract class GenericRepository<TDomain, TDataModel> : IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
+    public abstract class GenericRepositoryEF<TDomain, TDataModel> : IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
     {
         protected readonly DbContext _context;
         private readonly IMapper _mapper;
-        public GenericRepository(DbContext context, IMapper mapper)
+        public GenericRepositoryEF(DbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

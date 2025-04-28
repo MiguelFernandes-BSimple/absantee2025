@@ -43,7 +43,7 @@ namespace Infrastructure.Tests.TrainingModuleCollaboratorsRepositoryTests
             trainingModuleCollab1.Setup(t => t.TrainingModuleId).Returns(1);
             var traingModuleCollab1DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab1.Object);
             context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab1DM);
-            
+
             var trainingModuleCollab2 = new Mock<IAssociationTrainingModuleCollaborator>();
             trainingModuleCollab2.Setup(t => t.TrainingModuleId).Returns(2);
             var traingModuleCollab2DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab2.Object);
@@ -55,7 +55,7 @@ namespace Infrastructure.Tests.TrainingModuleCollaboratorsRepositoryTests
             var expected = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollab2.Object };
 
 
-            var trainingModuleRepo = new AssociationTrainingModuleCollaboratorRepository(context, _mapper);
+            var trainingModuleRepo = new AssociationTrainingModuleCollaboratorRepositoryEF(context, _mapper);
 
             //Act
             var result = await trainingModuleRepo.GetByTrainingModuleIds([2]);

@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class TrainingSubjectRepository : GenericRepository<ITrainingSubject, ITrainingSubjectVisitor>, ITrainingSubjectRepository
+    public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject, ITrainingSubjectVisitor>, ITrainingSubjectRepository
     {
         private readonly IMapper _mapper;
-        public TrainingSubjectRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+        public TrainingSubjectRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }
