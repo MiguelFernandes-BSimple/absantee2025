@@ -24,6 +24,11 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
                     && collaborator.PeriodDateTime._initDate <= c.PeriodDateTime._finalDate);
     }
 
+    public async Task<long> GetCount()
+    {
+        return await _context.Set<CollaboratorDataModel>().LongCountAsync();
+    }
+
     public override Collaborator? GetById(Guid id)
     {
         var collabDM = this._context.Set<CollaboratorDataModel>()
@@ -39,7 +44,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
     public override async Task<Collaborator?> GetByIdAsync(Guid id)
     {
         var collabDM = await this._context.Set<CollaboratorDataModel>()
-                            .FirstOrDefaultAsync(c => c.Id == id);
+                            .FirstOrDefaultAsync(c => c.UserId == id);
 
         if (collabDM == null)
             return null;
@@ -51,7 +56,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
     public async Task<IEnumerable<Collaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
-                    .Where(c => ids.Contains(c.Id))
+                    .Where(c => ids.Contains(c.UserId))
                     .ToListAsync();
 
         var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));
