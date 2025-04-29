@@ -15,6 +15,7 @@ public class TrainingPeriodController : ControllerBase
         _trainingPeriodService = trainingPeriodService;
     }
 
+    // UC2 
     [HttpPost]
     public async Task<ActionResult<TrainingPeriodDTO>> PostTrainingPeriod(TrainingPeriodDTO trainingPeriodDTO)
     {
