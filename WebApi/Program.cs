@@ -22,6 +22,9 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 //Services
 builder.Services.AddTransient<ProjectService>();
 builder.Services.AddTransient<TrainingPeriodService>();
+builder.Services.AddTransient<CollaboratorService>();
+builder.Services.AddTransient<HolidayPlanService>();
+builder.Services.AddTransient<AssociationProjectCollaboratorService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
