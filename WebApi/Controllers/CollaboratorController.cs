@@ -2,6 +2,7 @@ using Application.DTO;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WebApi.Controllers
 {
@@ -20,6 +21,9 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Get()
         {
             var collaborators = await _collabService.GetAll();
+            if (collaborators == null)
+                return NotFound();
+
             return Ok(collaborators);
         }
 
