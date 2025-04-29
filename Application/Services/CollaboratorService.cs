@@ -43,8 +43,10 @@ public class CollaboratorService
     public async Task<IEnumerable<CollaboratorDTO>> GetAll()
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
-        var result = collabs.Select(c => new CollaboratorDTO(c.Id, c.UserId, c.PeriodDateTime)).ToList();
-        return result;
+        IEnumerable<CollaboratorDTO> colabsDTO = CollaboratorDTO.ToDTO(collabs);
+
+        return colabsDTO;
+        
     }
 
     public async Task<long> GetCount()
