@@ -28,14 +28,14 @@ namespace WebApi.Controllers
 
         // UC11
         [HttpGet("{projectId}/collaborators")]
-        public async Task<ActionResult<CollaboratorDTO>> GetAllCollaborators(Guid projectId)
+        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaborators(Guid projectId)
         {
             var result = await _collaboratorService.FindAllByProject(projectId);
             return Ok(result);
         }
 
         // UC12
-        [HttpGet("{projectId}/collaborators/ByPeriod")]
+        [HttpGet("{projectId}/collaborators/byPeriod")]
         public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaboratorsByPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
         {
             var result = await _collaboratorService.FindAllByProjectAndBetweenPeriod(projectId, periodDate);
@@ -76,7 +76,7 @@ namespace WebApi.Controllers
 
         // UC4: Como gestor de projetos, quero criar projeto
         [HttpPost]
-        public async Task<ActionResult<ProjectDTO>> Add(ProjectDTO projectDTO)
+        public async Task<ActionResult<ProjectDTO>> Add(CreateProjectDTO projectDTO)
         {
             var result = await _projectService.Add(projectDTO);
 

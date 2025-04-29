@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models;
+﻿using Domain.Models;
 
-namespace Application.DTO
+namespace Application.DTO;
+
+public record HolidayPeriodDTO
 {
-    public record HolidayPeriodDTO
+    public Guid Id { get; set; }
+    public PeriodDate PeriodDate { get; set; }
+
+    public HolidayPeriodDTO()
     {
-        public Guid Id { get; }
-        public PeriodDate PeriodDate { get; }
     }
 }

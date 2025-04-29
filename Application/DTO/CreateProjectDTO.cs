@@ -7,9 +7,10 @@ using Domain.Models;
 
 namespace Application.DTO
 {
-    public record CreateAssociationProjectCollaboratorDTO
+    public record CreateProjectDTO
     {
-        public Guid CollaboratorId { get; set; }
+        public string Title { get; set; }
+        public string Acronym { get; set; }
         public PeriodDate PeriodDate { get; set; }
     }
 }
