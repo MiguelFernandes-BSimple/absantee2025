@@ -31,7 +31,7 @@ public class TrainingPeriodService
     }
 
     // UC2
-    public async Task<TrainingPeriodDTO> Add(TrainingPeriodDTO trainingPeriodDTO)
+    public async Task<TrainingPeriodDTO> Add(CreateTrainingPeriodDTO trainingPeriodDTO)
     {
         TrainingPeriod trainingPeriod;
         try

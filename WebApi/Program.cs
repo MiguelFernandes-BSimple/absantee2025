@@ -71,10 +71,11 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<AssociationProjectCollaboratorDTO, AssociationProjectCollaborator>();
     cfg.CreateMap<Project, ProjectDTO>();
     cfg.CreateMap<ProjectDTO, Project>();
-    cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>()
+    cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
+    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
+    cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
             .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
             .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
-    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
     cfg.CreateMap<HolidayPeriod, HolidayPeriodDTO>();
 });
 
