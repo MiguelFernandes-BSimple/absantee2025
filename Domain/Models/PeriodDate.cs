@@ -14,6 +14,9 @@ public class PeriodDate
         this.FinalDate = FinalDate;
     }
 
+    public PeriodDate() { }
+
+
     public DateOnly GetInitDate()
     {
         return InitDate;

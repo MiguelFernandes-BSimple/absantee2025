@@ -1,6 +1,7 @@
 using Application.DTO;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Models;
 
 namespace WebApi.Controllers
 {
@@ -55,5 +56,24 @@ namespace WebApi.Controllers
             return Created("Collab Created:", collabCreated);
 
         }
+        //UC13
+        [HttpGet("collaborators/{collaboratorId}/holidayPlan/holidayPeriods/ByPeriod")]
+        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaboratorByPeriod(Guid collaboratorId, [FromQuery] PeriodDate periodDate)
+        {
+            var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
+
+            return Ok(result);
+        }
+
+
+
+        // Post: api/Colaborator
+        //[HttpPost]
+        //public async Task<ActionResult> AddCollaborator()
+        //{
+        //    bool result = await _colaboratorService.Add(userId, periodDate);
+
+        //        //    return Ok();
+        //}
     }
 }
