@@ -28,7 +28,7 @@ public class HolidayPlanController : Controller
     }
 
     // UC4: Como gestor de projetos, quero criar projeto
-    [HttpPost("/holidayperiod")]
+    [HttpPost("holidayperiod")] 
     public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(CreateHolidayPeriodDTO createHolidayPeriodDTO)
     {
         var result = await _holidayPlanService.AddHolidayPeriod(createHolidayPeriodDTO);
