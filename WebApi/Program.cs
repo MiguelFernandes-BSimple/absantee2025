@@ -67,6 +67,7 @@ builder.Services.AddAutoMapper(cfg =>
     //DTO
     cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<Project, ProjectDTO>();
+    cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>();
 });
 
 
