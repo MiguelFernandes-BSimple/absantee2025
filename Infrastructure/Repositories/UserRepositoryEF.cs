@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepositoryEF : GenericRepository<User, UserDataModel>, IUserRepository
+public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserRepository
 {
     private readonly IMapper _mapper;
     public UserRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
