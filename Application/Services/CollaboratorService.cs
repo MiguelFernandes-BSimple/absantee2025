@@ -39,13 +39,19 @@ public class CollaboratorService
         _mapper = mapper;
     }
 
+    public async Task<long> GetCount()
+    {
+        return await _collaboratorRepository.GetCount();
+    }
+
     // uc10
     public async Task<IEnumerable<Guid>> GetByNames(string names)
     {
         var users = await _userRepository.GetByNamesAsync(names);
         var userIds = users.Select(u => u.Id);
         var collabs = await _collaboratorRepository.GetByIdsAsync(userIds);
-        return collabs.Select(c => c.Id);
+        var collabIds = collabs.Select(c => c.Id);
+        return collabIds;
     }
 
     public async Task<IEnumerable<Guid>> GetBySurnames(string surnames)
@@ -107,7 +113,7 @@ public class CollaboratorService
         var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
         var collabsIds = assocs.Select(c => c.CollaboratorId);
         var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
-        return collabs.Select(c => _mapper.Map<Collaborator, CollaboratorDTO>((Collaborator)c));
+        return collabs.Select(c => _mapper.Map<Collaborator, CollaboratorDTO>(c));
     }
 
     public async Task<IEnumerable<CollaboratorDTO>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
@@ -163,7 +169,14 @@ public class CollaboratorService
         return result;
     }
 
-    public async Task<IEnumerable<Collaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(Guid subjectId, DateTime date)
+    //UC13
+    public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
+    {
+        var result = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
+        return result;
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(Guid subjectId, DateTime date)
     {
         // Step 1: Get training modules that are finished for the subject
         var finishedTrainingModules = await _trainingModuleRepository

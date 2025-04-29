@@ -12,16 +12,17 @@ namespace Application.Services
         private IAssociationProjectCollaboratorFactory _associationProjectCollaboratorFactory;
         private readonly IMapper _mapper;
 
-        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, IAssociationProjectCollaboratorFactory associationProjectCollaboratorFactory)
+        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, IAssociationProjectCollaboratorFactory associationProjectCollaboratorFactory, IMapper mapper)
         {
             _assocRepository = assocRepository;
             _associationProjectCollaboratorFactory = associationProjectCollaboratorFactory;
+            _mapper = mapper;
         }
 
         public async Task<AssociationProjectCollaboratorDTO> Add(PeriodDate periodDate, Guid collabId, Guid projectId)
         {
             var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
-            var assocCreated = (AssociationProjectCollaborator)await _assocRepository.AddAsync(assoc);
+            var assocCreated = await _assocRepository.AddAsync(assoc);
             return _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>(assocCreated);
         }
     }

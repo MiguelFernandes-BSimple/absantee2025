@@ -1,6 +1,7 @@
 using Application.DTO;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Models;
 
 namespace WebApi.Controllers
 {
@@ -39,7 +40,7 @@ namespace WebApi.Controllers
             if (collabIds.Any())
                 return Ok(collabIds);
 
-            return NoContent();
+            else return NoContent();
         }
 
         [HttpPost]
@@ -52,8 +53,38 @@ namespace WebApi.Controllers
 
             if (collabCreated == null) return BadRequest();
 
-            return Created("Collab Created:", collabCreated);
-
+            return Created("", collabCreated);
         }
+
+        // endpoint utilizado para testes
+        [HttpGet("Count")]
+        public async Task<IActionResult> GetCount()
+        {
+            var count = await _collabService.GetCount();
+
+            if (count > 0)
+                return Ok(count);
+
+            return NotFound("No collaborators found");
+        }
+        //UC13
+        [HttpGet("collaborators/{collaboratorId}/holidayPlan/holidayPeriods/ByPeriod")]
+        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaboratorByPeriod(Guid collaboratorId, [FromQuery] PeriodDate periodDate)
+        {
+            var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
+
+            return Ok(result);
+        }
+
+
+
+        // Post: api/Colaborator
+        //[HttpPost]
+        //public async Task<ActionResult> AddCollaborator()
+        //{
+        //    bool result = await _colaboratorService.Add(userId, periodDate);
+
+        //        //    return Ok();
+        //}
     }
 }

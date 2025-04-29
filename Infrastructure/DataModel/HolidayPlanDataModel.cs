@@ -15,6 +15,9 @@ public class HolidayPlanDataModel : IHolidayPlanVisitor
 
     public List<IHolidayPeriod> GetHolidayPeriods()
     {
+        if (HolidayPeriodsDM == null)
+            return new List<IHolidayPeriod>();
+
         return HolidayPeriodsDM.Select(hp => (IHolidayPeriod)_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(hp)).ToList();
     }
 
