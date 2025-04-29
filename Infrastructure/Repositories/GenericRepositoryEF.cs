@@ -20,11 +20,12 @@ namespace Infrastructure.Repositories
             _context.Set<TDataModel>().Add(dataModel);
         }
 
-        public async Task AddAsync(TDomain entity)
+        public async Task<TDomain> AddAsync(TDomain entity)
         {
             var dataModel = _mapper.Map<TDomain, TDataModel>(entity);
             _context.Set<TDataModel>().Add(dataModel);
             await SaveChangesAsync();
+            return _mapper.Map<TDataModel, TDomain>(dataModel);
         }
 
         public void AddRange(IEnumerable<TDomain> entities)

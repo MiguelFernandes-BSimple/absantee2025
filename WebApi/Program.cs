@@ -67,10 +67,12 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<DataModelMappingProfile>();
 
     //DTO
-    cfg.CreateMap<ProjectDTO, Project>();
+    cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>();
+    cfg.CreateMap<AssociationProjectCollaboratorDTO, AssociationProjectCollaborator>();
     cfg.CreateMap<Project, ProjectDTO>();
-    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
+    cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
+    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
 });
 
 
