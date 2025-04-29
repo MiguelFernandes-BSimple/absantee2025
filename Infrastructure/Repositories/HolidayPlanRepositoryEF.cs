@@ -23,11 +23,19 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<IHolidayPlan, Holiday
                     && hp.PeriodDate.FinalDate >= periodDate.PeriodDate.FinalDate));
     }
 
+    public async Task<HolidayPeriod> AddHolidayPeriodAsync(HolidayPeriod holidayPeriod)
+    {
+        var dataModel = _mapper.Map<HolidayPeriod, HolidayPeriodDataModel>(holidayPeriod);
+        _context.Set<HolidayPeriodDataModel>().Add(dataModel);
+        await SaveChangesAsync();
+        return _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(dataModel);
+
+    }
+
     private async Task<bool> CanInsertAsync(IHolidayPlan holidayPlan)
     {
         return !await _context.Set<HolidayPlanDataModel>().AnyAsync(hp => hp.Id == holidayPlan.CollaboratorId);
     }
-
 
     public async Task<bool> AddHolidayPlanAsync(IHolidayPlan holidayPlan)
     {

@@ -22,6 +22,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 //Services
 builder.Services.AddTransient<ProjectService>();
 builder.Services.AddTransient<TrainingPeriodService>();
+builder.Services.AddTransient<HolidayPlanService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
@@ -76,7 +77,13 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
             .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
             .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
+    cfg.CreateMap<HolidayPlan, HolidayPlanDTO>();
+    cfg.CreateMap<HolidayPlanDTO, HolidayPlan>();
     cfg.CreateMap<HolidayPeriod, HolidayPeriodDTO>();
+    cfg.CreateMap<HolidayPeriodDTO, HolidayPeriod>();
+    cfg.CreateMap<HolidayPeriod, CreateHolidayPeriodDTO>()
+            .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
+            .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
 });
 
 

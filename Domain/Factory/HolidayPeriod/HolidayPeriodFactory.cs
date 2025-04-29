@@ -15,8 +15,9 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPeriod Create(Guid holidayPlanId, PeriodDate periodDate)
+    public HolidayPeriod Create(Guid holidayPlanId, DateOnly initDate, DateOnly finalDate)
     {
+        PeriodDate periodDate = new PeriodDate(initDate, finalDate);
         HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
 
         if (!_holidayPlanRepository.CanInsertHolidayPeriod(holidayPlanId, holidayPeriod))
