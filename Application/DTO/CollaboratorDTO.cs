@@ -4,8 +4,8 @@ namespace Application.DTO
 {
     public record CollaboratorDTO
     {
-        public Guid Id { get; }
-        public Guid UserId { get; }
-        public PeriodDateTime PeriodDateTime { get; }
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public PeriodDateTime PeriodDateTime { get; set; }
     }
 }
