@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -15,12 +16,12 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         _collaboratorRepository = collaboratorRepository;
     }
 
-    public HolidayPeriod Create(Guid holidayPlanId, DateOnly initDate, DateOnly finalDate)
+    public async Task<HolidayPeriod> Create(Guid holidayPlanId, DateOnly initDate, DateOnly finalDate)
     {
         PeriodDate periodDate = new PeriodDate(initDate, finalDate);
         HolidayPeriod holidayPeriod = new HolidayPeriod(periodDate);
 
-        if (!_holidayPlanRepository.CanInsertHolidayPeriod(holidayPlanId, holidayPeriod))
+        if (!await _holidayPlanRepository.CanInsertHolidayPeriod(holidayPlanId, holidayPeriod))
             throw new ArgumentException("Holiday Period already exists for this Holiday Plan.");
 
         var holidayPlan = _holidayPlanRepository.GetById(holidayPlanId);

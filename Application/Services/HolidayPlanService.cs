@@ -31,9 +31,9 @@ public class HolidayPlanService
         try
         {
             var holidayPeriods = holidayPlanDTO.HolidayPeriods.Select(hp => (IHolidayPeriod)_mapper.Map<HolidayPeriodDTO, HolidayPeriod>(hp)).ToList();
-            holidayPlan = _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, holidayPeriods);
-            await _holidayPlanRepository.AddHolidayPlanAsync(holidayPlan);
-            return _mapper.Map<HolidayPlan, HolidayPlanDTO>(holidayPlan);
+            holidayPlan = await _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, holidayPeriods);
+            var result = await _holidayPlanRepository.AddAsync(holidayPlan);
+            return _mapper.Map<HolidayPlan, HolidayPlanDTO>(result);
         }
         catch (Exception)
         {
@@ -47,7 +47,7 @@ public class HolidayPlanService
         HolidayPeriod holidayPeriod;
         try
         {
-            holidayPeriod = _holidayPeriodFactory.Create(holidayPeriodDTO.HolidayPlanId, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
+            holidayPeriod = await _holidayPeriodFactory.Create(holidayPeriodDTO.HolidayPlanId, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
             await _holidayPlanRepository.AddHolidayPeriodAsync(holidayPeriod);
             return _mapper.Map<HolidayPeriod, HolidayPeriodDTO>(holidayPeriod);
         }
