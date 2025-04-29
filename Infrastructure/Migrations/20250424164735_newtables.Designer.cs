@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AbsanteeContext))]
-    [Migration("20250424155948_trainingPeriods")]
-    partial class trainingPeriods
+    [Migration("20250424164735_newtables")]
+    partial class newtables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface IUserRepository : IGenericRepository<IUser, IUserVisitor>
+    public interface IUserRepository : IGenericRepository<User, IUserVisitor>
     {
-        Task<IEnumerable<IUser>> GetByNamesAsync(string names);
-        Task<IEnumerable<IUser>> GetBySurnamesAsync(string names);
-        Task<IEnumerable<IUser>> GetByNamesAndSurnamesAsync(string names, string surnames);
-        Task<IUser?> GetByEmailAsync(string email);
-        IUser? GetById(Guid id);
-        Task<IUser?> GetByIdAsync(Guid id);
+        Task<IEnumerable<User>> GetByNamesAsync(string names);
+        Task<IEnumerable<User>> GetBySurnamesAsync(string names);
+        Task<IEnumerable<User>> GetByNamesAndSurnamesAsync(string names, string surnames);
+        Task<User?> GetByEmailAsync(string email);
+        User? GetById(Guid id);
+        Task<User?> GetByIdAsync(Guid id);
+
     }
 }

@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMigration : Migration
+    public partial class newtables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Associations",
+                name: "AssociationsProjectCollaborator",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -24,7 +24,20 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Associations", x => x.Id);
+                    table.PrimaryKey("PK_AssociationsProjectCollaborator", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssociationTrainingModuleCollaborators",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TrainingModuleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CollaboratorId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssociationTrainingModuleCollaborators", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,7 +55,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HolidayPlan",
+                name: "HolidayPlans",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -50,7 +63,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HolidayPlan", x => x.Id);
+                    table.PrimaryKey("PK_HolidayPlans", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,19 +82,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrainingModuleCollaborator",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TrainingModuleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CollaboratorId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingModuleCollaborator", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TrainingModules",
                 columns: table => new
                 {
@@ -91,6 +91,19 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TrainingModules", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrainingPeriods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PeriodDate_InitDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    PeriodDate_FinalDate = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingPeriods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,7 +136,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HolidayPeriod",
+                name: "HolidayPeriods",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -133,11 +146,11 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HolidayPeriod", x => x.Id);
+                    table.PrimaryKey("PK_HolidayPeriods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HolidayPeriod_HolidayPlan_HolidayPlanDataModelId",
+                        name: "FK_HolidayPeriods_HolidayPlans_HolidayPlanDataModelId",
                         column: x => x.HolidayPlanDataModelId,
-                        principalTable: "HolidayPlan",
+                        principalTable: "HolidayPlans",
                         principalColumn: "Id");
                 });
 
@@ -163,8 +176,8 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_HolidayPeriod_HolidayPlanDataModelId",
-                table: "HolidayPeriod",
+                name: "IX_HolidayPeriods_HolidayPlanDataModelId",
+                table: "HolidayPeriods",
                 column: "HolidayPlanDataModelId");
         }
 
@@ -172,22 +185,25 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Associations");
+                name: "AssociationsProjectCollaborator");
+
+            migrationBuilder.DropTable(
+                name: "AssociationTrainingModuleCollaborators");
 
             migrationBuilder.DropTable(
                 name: "Collaborators");
 
             migrationBuilder.DropTable(
-                name: "HolidayPeriod");
+                name: "HolidayPeriods");
 
             migrationBuilder.DropTable(
                 name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "TrainingModuleCollaborator");
+                name: "TrainingModules_Periods");
 
             migrationBuilder.DropTable(
-                name: "TrainingModules_Periods");
+                name: "TrainingPeriods");
 
             migrationBuilder.DropTable(
                 name: "TrainingSubjects");
@@ -196,7 +212,7 @@ namespace Infrastructure.Migrations
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "HolidayPlan");
+                name: "HolidayPlans");
 
             migrationBuilder.DropTable(
                 name: "TrainingModules");

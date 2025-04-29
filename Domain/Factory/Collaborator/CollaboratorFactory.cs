@@ -24,13 +24,18 @@ namespace Domain.Factory
             if (user == null)
                 throw new ArgumentException("User does not exist");
 
+            return await Create((User)user, periodDateTime);
+        }
+
+        public async Task<Collaborator> Create(User user, PeriodDateTime periodDateTime)
+        {
             if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
                 throw new ArgumentException("User deactivation date is before collaborator contract end date.");
 
             if (user.IsDeactivated())
                 throw new ArgumentException("User is deactivated.");
 
-            Collaborator collab = new Collaborator(userId, periodDateTime);
+            Collaborator collab = new Collaborator(user.Id, periodDateTime);
 
             if (await _collabRepository.IsRepeated(collab))
                 throw new ArgumentException("Collaborator already exists");

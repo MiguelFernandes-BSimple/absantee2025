@@ -8,7 +8,7 @@ public interface IGenericRepository<TDomain, TDataModel> where TDomain : class w
     Task<TDomain?> GetByIdAsync(Guid id);
     IEnumerable<TDomain> GetAll();
     Task<IEnumerable<TDomain>> GetAllAsync();
-    void Add(TDomain entity);
+    TDomain Add(TDomain entity);
     Task AddAsync(TDomain entity);
     void AddRange(IEnumerable<TDomain> entities);
     Task AddRangeAsync(IEnumerable<TDomain> entities);
