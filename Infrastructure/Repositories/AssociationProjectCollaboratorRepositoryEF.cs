@@ -8,7 +8,7 @@ using Infrastructure.DataModel;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>, IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>, IAssociationProjectCollaboratorRepository
 {
     private readonly IMapper _mapper;
 
@@ -18,7 +18,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         _mapper = associationProjectCollaboratorMapper;
     }
 
-    public override IAssociationProjectCollaborator? GetById(Guid id)
+    public override AssociationProjectCollaborator? GetById(Guid id)
     {
         try
         {
@@ -37,7 +37,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public override async Task<IAssociationProjectCollaborator?> GetByIdAsync(Guid id)
+    public override async Task<AssociationProjectCollaborator?> GetByIdAsync(Guid id)
     {
         try
         {
@@ -56,7 +56,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
+    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
     {
         try
         {
@@ -65,7 +65,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
                               .Where(a => a.ProjectId == projectId)
                               .ToListAsync();
 
-            IEnumerable<IAssociationProjectCollaborator> assocs =
+            IEnumerable<AssociationProjectCollaborator> assocs =
                 assocDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
 
             return assocs;
@@ -76,7 +76,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
+    public async Task<AssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
         try
         {
@@ -86,7 +86,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
             if (assocDM == null)
                 return null;
 
-            IAssociationProjectCollaborator result = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
+            AssociationProjectCollaborator result = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
 
             return result;
         }
@@ -96,7 +96,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
+    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
         try
         {
@@ -104,7 +104,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
                 await FindByCollaboratorAndProject(collaboratorId, projectId).ToListAsync();
 
 
-            IEnumerable<IAssociationProjectCollaborator> result = assocsDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
+            IEnumerable<AssociationProjectCollaborator> result = assocsDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
 
             return result;
         }
@@ -114,7 +114,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(Guid projectId, PeriodDate periodDate)
+    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(Guid projectId, PeriodDate periodDate)
     {
         try
         {
@@ -125,7 +125,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
                                     && periodDate.InitDate <= a.PeriodDate.FinalDate)
                               .ToListAsync();
 
-            IEnumerable<IAssociationProjectCollaborator> assocs =
+            IEnumerable<AssociationProjectCollaborator> assocs =
                 assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
             return assocs;
@@ -136,7 +136,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
+    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
     {
         try
         {
@@ -148,7 +148,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
                                     && periodDate.InitDate <= a.PeriodDate.FinalDate)
                               .ToListAsync();
 
-            IEnumerable<IAssociationProjectCollaborator> assocs =
+            IEnumerable<AssociationProjectCollaborator> assocs =
                 assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
             return assocs;

@@ -36,7 +36,7 @@ namespace Application.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<ProjectDTO> Add(ProjectDTO projectDTO)
+        public async Task<ProjectDTO> Add(CreateProjectDTO projectDTO)
         {
             Project proj;
             try
