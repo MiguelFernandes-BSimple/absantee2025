@@ -24,12 +24,12 @@ builder.Services.AddTransient<ProjectService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
-builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
+builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepositoryEF>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
-builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
-builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepository>();
-builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepository>();
-builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
+builder.Services.AddTransient<IProjectRepository, ProjectRepositoryEF>();
+builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepositoryEF>();
+builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepositoryEF>();
+builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositoryEF>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 
 //Factories

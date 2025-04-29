@@ -38,7 +38,7 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
 
             using var context = new AbsanteeContext(options);
 
-            
+
             var trainingModule1 = new Mock<ITrainingModule>();
             trainingModule1.Setup(t => t.TrainingSubjectId).Returns(1);
             var period1 = new PeriodDateTime(DateTime.Today.AddDays(-1), DateTime.Today);
@@ -48,7 +48,7 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
             var trainingModuleDM1 = new TrainingModuleDataModel(trainingModule1.Object);
             context.TrainingModules.Add(trainingModuleDM1);
 
-            
+
             var trainingModule2 = new Mock<ITrainingModule>();
             trainingModule2.Setup(t => t.TrainingSubjectId).Returns(1);
             var period3 = new PeriodDateTime(DateTime.Today.AddDays(2), DateTime.Today.AddDays(4));
@@ -62,7 +62,7 @@ namespace Infrastructure.Tests.TrainingModuleRepositoryTests
             var filteredDMs = new List<TrainingModuleDataModel>() { trainingModuleDM2 };
             var expected = new List<ITrainingModule>() { trainingModule2.Object };
 
-            var trainingModuleRepo = new TrainingModuleRepository(context, _mapper);
+            var trainingModuleRepo = new TrainingModuleRepositoryEF(context, _mapper);
 
             //Act
             var result = await trainingModuleRepo.GetBySubjectIdAndFinished(1, DateTime.Today);

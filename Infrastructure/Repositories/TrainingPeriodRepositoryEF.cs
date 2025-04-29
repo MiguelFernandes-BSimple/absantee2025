@@ -10,10 +10,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class TrainingPeriodRepository : GenericRepository<ITrainingPeriod, ITrainingPeriod>, ITrainingPeriodRepository
+    public class TrainingPeriodRepositoryEF : GenericRepositoryEF<ITrainingPeriod, ITrainingPeriod>, ITrainingPeriodRepository
     {
         private readonly IMapper _mapper;
-        public TrainingPeriodRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+        public TrainingPeriodRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }

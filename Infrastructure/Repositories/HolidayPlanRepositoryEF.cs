@@ -6,7 +6,7 @@ using Domain.Interfaces;
 using AutoMapper;
 
 namespace Infrastructure.Repositories;
-public class HolidayPlanRepositoryEF : GenericRepository<IHolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
+public class HolidayPlanRepositoryEF : GenericRepositoryEF<IHolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
 {
     private IMapper _mapper;
 

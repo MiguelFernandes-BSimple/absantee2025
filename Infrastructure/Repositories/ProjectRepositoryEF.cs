@@ -7,10 +7,10 @@ using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
-public class ProjectRepository : GenericRepository<Project, ProjectDataModel>, IProjectRepository
+public class ProjectRepositoryEF : GenericRepositoryEF<Project, ProjectDataModel>, IProjectRepository
 {
     private readonly IMapper _ProjectMapper;
-    public ProjectRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+    public ProjectRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
         _ProjectMapper = mapper;
     }

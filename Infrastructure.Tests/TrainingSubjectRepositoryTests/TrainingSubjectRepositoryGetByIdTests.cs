@@ -40,7 +40,7 @@ public class TrainingSubjectRepositoryGetByIdTests
 
         var mapper = new Mock<IMapper>();
 
-        var trainingSubjectRepository = new TrainingSubjectRepository(context, mapper.Object);
+        var trainingSubjectRepository = new TrainingSubjectRepositoryEF(context, mapper.Object);
 
         //Act
         var result = trainingSubjectRepository.GetById(tsToSearchId);
@@ -79,7 +79,7 @@ public class TrainingSubjectRepositoryGetByIdTests
 
         var mapper = new Mock<IMapper>();
 
-        var trainingSubjectRepository = new TrainingSubjectRepository(context, mapper.Object);
+        var trainingSubjectRepository = new TrainingSubjectRepositoryEF(context, mapper.Object);
 
         //Act
         var result = trainingSubjectRepository.GetById(tsToSearchId);

@@ -38,7 +38,7 @@ public class TrainingSubjectRepositoryIsDuplicatedTests
 
         var mapper = new Mock<IMapper>();
 
-        var trainingModuleRepo = new TrainingSubjectRepository(context, mapper.Object);
+        var trainingModuleRepo = new TrainingSubjectRepositoryEF(context, mapper.Object);
 
         //Act
         var result = await trainingModuleRepo.IsDuplicated("Subject2");
