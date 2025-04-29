@@ -16,6 +16,14 @@ namespace WebApi.Controllers
             _collabService = collabService;
         }
 
+        [HttpGet("All")]
+        public async Task<IActionResult> Get()
+        {
+            var collaborators = await _collabService.GetAll();
+            return Ok(collaborators);
+        }
+
+
         [HttpGet("FindBy")]
         public async Task<IActionResult> FindBy([FromQuery] string? name, [FromQuery] string? surname)
         {
