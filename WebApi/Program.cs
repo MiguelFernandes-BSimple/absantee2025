@@ -68,6 +68,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<Project, ProjectDTO>();
     cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>();
+    cfg.CreateMap<HolidayPeriod, HolidayPeriodDTO>();
 });
 
 

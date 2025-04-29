@@ -28,7 +28,7 @@ namespace WebApi.Controllers
 
         // UC11
         [HttpGet("{projectId}/collaborators")]
-        public async Task<ActionResult<IProject?>> GetProjectById(Guid projectId)
+        public async Task<ActionResult<CollaboratorDTO>> GetAllCollaborators(Guid projectId)
         {
             var result = await _collaboratorService.FindAllByProject(projectId);
             return Ok(result);
@@ -36,7 +36,7 @@ namespace WebApi.Controllers
 
         // UC12
         [HttpGet("{projectId}/collaborators/ByPeriod")]
-        public async Task<ActionResult<IEnumerable<ICollaborator>>> GetAllProjects(Guid projectId, [FromQuery]PeriodDate periodDate)
+        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaboratorsByPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
         {
             var result = await _collaboratorService.FindAllByProjectAndBetweenPeriod(projectId, periodDate);
             return Ok(result);
@@ -52,7 +52,7 @@ namespace WebApi.Controllers
 
         // UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
         [HttpGet("{projectId}/collaborators/{collaboratorId}/holidays")]
-        public async Task<ActionResult<IEnumerable<IHolidayPeriod>>> GetHolidaysByCollaborator(Guid projectId, Guid collaboratorId, [FromQuery] PeriodDate periodDate)
+        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidaysByCollaborator(Guid projectId, Guid collaboratorId, [FromQuery] PeriodDate periodDate)
         {
             var holidays = await _holidayPlanService.FindAllHolidayPeriodsForProjectCollaboratorBetweenDatesAsync(projectId, collaboratorId, periodDate);
             return Ok(holidays);
