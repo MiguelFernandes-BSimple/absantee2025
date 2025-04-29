@@ -1,18 +1,24 @@
 using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Models;
+using Application.DTO;
+using AutoMapper;
 
 namespace Application.Services;
 public class HolidayPlanService
 {
     private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
     private IHolidayPlanRepository _holidayPlanRepository;
+    private readonly IMapper _mapper;
 
-    public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository)
+    public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, IMapper mapper)
     {
-        this._associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
-        this._holidayPlanRepository = holidayPlanRepository;
+        _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
+        _holidayPlanRepository = holidayPlanRepository;
+        _mapper = mapper;
     }
+
+
 
     //UC16: Como gestor de projeto, quero listar quantos dias de férias um colaborador tem marcado durante um projeto
     public async Task<int> GetHolidayDaysOfCollaboratorInProjectAsync(Guid projectId, Guid collaboratorId)
@@ -43,7 +49,7 @@ public class HolidayPlanService
             return Enumerable.Empty<IHolidayPeriod>();
 
         IEnumerable<IHolidayPeriod> holidayPeriodsBetweenDates =
-            await _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(collaboratorId, searchPeriod);
+            await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, searchPeriod);
 
         IEnumerable<IHolidayPeriod> hp = holidayPeriodsBetweenDates
             .Where(hp => hp.ContainsWeekend());
@@ -55,10 +61,10 @@ public class HolidayPlanService
     public async Task<IEnumerable<IHolidayPeriod>> FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(Guid collaboratorId1, Guid collaboratorId2, PeriodDate searchPeriod)
     {
         IEnumerable<IHolidayPeriod> holidayPeriodListColab1 =
-            await _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(collaboratorId1, searchPeriod);
+            await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId1, searchPeriod);
 
         IEnumerable<IHolidayPeriod> holidayPeriodListColab2 =
-            await _holidayPlanRepository.FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(collaboratorId2, searchPeriod);
+            await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId2, searchPeriod);
 
         IEnumerable<IHolidayPeriod> hp = holidayPeriodListColab1
             .SelectMany(period1 => holidayPeriodListColab2
@@ -79,14 +85,17 @@ public class HolidayPlanService
 
     }
 
+    public async Task<IEnumerable<HolidayPeriodDTO>> FindAllHolidayPeriodsForProjectCollaboratorBetweenDatesAsync(Guid collaboratorId, Guid projectId, PeriodDate period)
+    {
+        var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(projectId, collaboratorId, period);
+
+        var holidays = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, period);
+        return holidays.Select(h => _mapper.Map<HolidayPeriod, HolidayPeriodDTO>((HolidayPeriod)h));
+    }
+
     public async Task<int> GetHolidayDaysForProjectCollaboratorBetweenDates(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
     {
-        var association = await _associationProjectCollaboratorRepository.FindByProjectAndCollaboratorAsync(projectId, collaboratorId);
-        if (association == null)
-        {
-            throw new Exception("No association found for the project and collaborator");
-        }
-
+        var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(projectId, collaboratorId, periodDate);
 
         int totalHolidayDays = 0;
         var holidayPeriods = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);

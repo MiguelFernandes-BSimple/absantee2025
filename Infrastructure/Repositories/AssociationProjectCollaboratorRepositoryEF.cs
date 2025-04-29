@@ -8,7 +8,7 @@ using Infrastructure.DataModel;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>, IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IAssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>, IAssociationProjectCollaboratorRepository
 {
     private readonly IMapper _mapper;
 
@@ -121,6 +121,29 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepository<IAss
             IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
                 await _context.Set<AssociationProjectCollaboratorDataModel>()
                               .Where(a => a.ProjectId == projectId
+                                    && a.PeriodDate.InitDate <= periodDate.FinalDate
+                                    && periodDate.InitDate <= a.PeriodDate.FinalDate)
+                              .ToListAsync();
+
+            IEnumerable<IAssociationProjectCollaborator> assocs =
+                assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
+
+            return assocs;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
+    {
+        try
+        {
+            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
+                await _context.Set<AssociationProjectCollaboratorDataModel>()
+                              .Where(a => a.ProjectId == projectId
+                                    && a.CollaboratorId == collaboratorId
                                     && a.PeriodDate.InitDate <= periodDate.FinalDate
                                     && periodDate.InitDate <= a.PeriodDate.FinalDate)
                               .ToListAsync();

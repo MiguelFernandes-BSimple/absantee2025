@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public abstract class GenericRepository<TDomain, TDataModel> : IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
+    public abstract class GenericRepositoryEF<TDomain, TDataModel> : IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
     {
         protected readonly DbContext _context;
         private readonly IMapper _mapper;
-        public GenericRepository(DbContext context, IMapper mapper)
+        public GenericRepositoryEF(DbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -22,11 +22,12 @@ namespace Infrastructure.Repositories
             return _mapper.Map<TDataModel, TDomain>(dm.Entity);
         }
 
-        public async Task AddAsync(TDomain entity)
+        public async Task<TDomain> AddAsync(TDomain entity)
         {
             var dataModel = _mapper.Map<TDomain, TDataModel>(entity);
             _context.Set<TDataModel>().Add(dataModel);
             await SaveChangesAsync();
+            return _mapper.Map<TDataModel, TDomain>(dataModel);
         }
 
         public void AddRange(IEnumerable<TDomain> entities)

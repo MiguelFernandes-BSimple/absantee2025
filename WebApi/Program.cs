@@ -22,15 +22,17 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 //Services
 builder.Services.AddTransient<ProjectService>();
 builder.Services.AddTransient<CollaboratorService>();
+builder.Services.AddTransient<TrainingPeriodService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
-builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
+builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepositoryEF>();
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
-builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
-builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepository>();
-builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepository>();
-builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepository>();
+builder.Services.AddTransient<IProjectRepository, ProjectRepositoryEF>();
+builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepositoryEF>();
+builder.Services.AddTransient<ITrainingPeriodRepository, TrainingPeriodRepositoryEF>();
+builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepositoryEF>();
+builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositoryEF>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 
 //Factories
@@ -66,8 +68,16 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<DataModelMappingProfile>();
 
     //DTO
-    cfg.CreateMap<ProjectDTO, Project>();
+    cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>();
+    cfg.CreateMap<AssociationProjectCollaboratorDTO, AssociationProjectCollaborator>();
     cfg.CreateMap<Project, ProjectDTO>();
+    cfg.CreateMap<ProjectDTO, Project>();
+    cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
+    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
+    cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
+            .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
+            .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
+    cfg.CreateMap<HolidayPeriod, HolidayPeriodDTO>();
 });
 
 

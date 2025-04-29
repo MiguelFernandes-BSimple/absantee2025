@@ -1,9 +1,10 @@
 ﻿using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface ITrainingPeriodRepository : IGenericRepository<ITrainingPeriod, ITrainingPeriodVisitor>
+    public interface ITrainingPeriodRepository : IGenericRepository<TrainingPeriod, ITrainingPeriodVisitor>
     {
     }
 }

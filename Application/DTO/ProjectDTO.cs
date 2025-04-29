@@ -12,11 +12,9 @@ namespace Application.DTO
         public ProjectDTO()
         {
         }
-
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Acronym { get; set; }
         public PeriodDate PeriodDate { get; set; }
-
-
     }
 }

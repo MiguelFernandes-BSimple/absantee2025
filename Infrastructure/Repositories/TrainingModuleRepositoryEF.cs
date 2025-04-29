@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class TrainingModuleRepository : GenericRepository<ITrainingModule, ITrainingModuleVisitor>, ITrainingModuleRepository
+    public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, ITrainingModuleVisitor>, ITrainingModuleRepository
     {
         private readonly IMapper _mapper;
-        public TrainingModuleRepository(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+        public TrainingModuleRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }
@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
             var trainingModuleDM = _context.Set<TrainingModuleDataModel>()
                                         .FirstOrDefault(t => t.Id == id);
 
-            if (trainingModuleDM == null) 
+            if (trainingModuleDM == null)
                 return null;
 
             return _mapper.Map<TrainingModuleDataModel, TrainingModule>(trainingModuleDM);
@@ -42,7 +42,7 @@ namespace Infrastructure.Repositories
         {
             var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
                                             .Where(t => t.TrainingSubjectId == subjectId
-                                                    && t.Periods.All( p => p._finalDate >= date))
+                                                    && t.Periods.All(p => p._finalDate >= date))
                                             .ToListAsync();
 
             var trainingModules = trainingModulesDMs.Select(t => _mapper.Map<TrainingModuleDataModel, TrainingModule>(t));

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTO;
+using AutoMapper;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -16,11 +17,13 @@ namespace Application.Services
     {
         private readonly IProjectRepository _repository;
         private readonly IProjectFactory _factory;
+        private readonly IMapper _mapper;
 
-        public ProjectService(IProjectRepository repository, IProjectFactory factory)
+        public ProjectService(IProjectRepository repository, IProjectFactory factory, IMapper mapper)
         {
             _repository = repository;
             _factory = factory;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<IProject>> GetAll()
@@ -33,7 +36,7 @@ namespace Application.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<bool> Add(ProjectDTO projectDTO)
+        public async Task<ProjectDTO> Add(ProjectDTO projectDTO)
         {
             Project proj;
             try
@@ -43,10 +46,11 @@ namespace Application.Services
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
 
-            return true;
+
+            return _mapper.Map<Project, ProjectDTO>(proj);
         }
     }
 }

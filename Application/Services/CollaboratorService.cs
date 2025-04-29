@@ -2,10 +2,8 @@ using Domain.IRepository;
 using Domain.Interfaces;
 using Domain.Factory;
 using Domain.Models;
-using System.IO.Compression;
 using Application.DTO;
-using System.Data.Common;
-using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using Infrastructure;
 
 namespace Application.Services;
@@ -21,6 +19,7 @@ public class CollaboratorService
     private IAssociationTrainingModuleCollaboratorsRepository _trainingModuleCollaboratorsRepository;
     private ITrainingModuleRepository _trainingModuleRepository;
     private AbsanteeContext _context;
+    private readonly IMapper _mapper;
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IUserFactory userFactory, AbsanteeContext context)
     {
@@ -33,18 +32,11 @@ public class CollaboratorService
         _context = context;
     }
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository, AbsanteeContext context) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory, userFactory, context)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository, AbsanteeContext context, IMapper mapper) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory, userFactory, context)
     {
         _trainingModuleCollaboratorsRepository = trainingModuleCollaboratorsRepository;
         _trainingModuleRepository = trainingModuleRepository;
-    }
-
-    // uc9
-    public async Task<IEnumerable<Guid>> FindAll()
-    {
-        var collabs = await _collaboratorRepository.GetAllAsync();
-        var collabsIs = collabs.Select(c => c.Id);
-        return collabsIs;
+        _mapper = mapper;
     }
 
     // uc10
@@ -110,18 +102,20 @@ public class CollaboratorService
         return await _collaboratorRepository.GetByIdsAsync(collabIds);
     }
 
-    public async Task<IEnumerable<Collaborator>> FindAllByProject(Guid projectId)
+    public async Task<IEnumerable<CollaboratorDTO>> FindAllByProject(Guid projectId)
     {
         var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
         var collabsIds = assocs.Select(c => c.CollaboratorId);
-        return await _collaboratorRepository.GetByIdsAsync(collabsIds);
+        var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
+        return collabs.Select(c => _mapper.Map<Collaborator, CollaboratorDTO>((Collaborator)c));
     }
 
-    public async Task<IEnumerable<Collaborator>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
+    public async Task<IEnumerable<CollaboratorDTO>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
     {
-        var collabs = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, periodDate);
-        var collabsIds = collabs.Select(c => c.CollaboratorId);
-        return await _collaboratorRepository.GetByIdsAsync(collabsIds);
+        var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, periodDate);
+        var collabsIds = assocs.Select(c => c.CollaboratorId);
+        var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
+        return collabs.Select(c => _mapper.Map<Collaborator, CollaboratorDTO>((Collaborator)c));
     }
 
     public async Task<bool> Add(Guid userId, PeriodDateTime periodDateTime)
