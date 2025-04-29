@@ -1,3 +1,4 @@
+using Application.DTO.AssociationTrainingModuleCollaborator;
 using Application.DTO.TrainingModule;
 using AutoMapper;
 using Domain.Factory;

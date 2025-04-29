@@ -35,7 +35,7 @@ namespace Domain.Factory
             return new AssociationTrainingModuleCollaborator(trainingModuleId, collaboratorId);
         }
 
-        public AssociationTrainingModuleCollaborator Create(AssociationTrainingModuleCollaboratorVisitor visitor)
+        public AssociationTrainingModuleCollaborator Create(IAssociationTrainingModuleCollaboratorVisitor visitor)
         {
             return new AssociationTrainingModuleCollaborator(visitor.Id, visitor.TrainingModuleId, visitor.CollaboratorId);
         }

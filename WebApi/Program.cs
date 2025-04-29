@@ -1,4 +1,5 @@
 using Application.DTO;
+using Application.DTO.AssociationTrainingModuleCollaborator;
 using Application.DTO.TrainingModule;
 using Application.DTO.TrainingSubject;
 using Application.Services;
@@ -31,6 +32,7 @@ builder.Services.AddTransient<CollaboratorService>();
 builder.Services.AddTransient<HolidayPlanService>();
 builder.Services.AddTransient<TrainingSubjectService>();
 builder.Services.AddTransient<TrainingModuleService>();
+builder.Services.AddTransient<AssociationTrainingModuleCollaboratorService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
@@ -85,6 +87,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
     cfg.CreateMap<TrainingSubject, TrainingSubjectDTO>();
     cfg.CreateMap<TrainingModule, TrainingModuleDTO>();
+    cfg.CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>();
     cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
             .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
             .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));

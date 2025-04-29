@@ -8,11 +8,11 @@ using Domain.Visitor;
 
 namespace Infrastructure.DataModel
 {
-    public class AssociationTrainingModuleCollaboratorDataModel : AssociationTrainingModuleCollaboratorVisitor
+    public class AssociationTrainingModuleCollaboratorDataModel : IAssociationTrainingModuleCollaboratorVisitor
     {
         public Guid Id { get; set; }
-        public Guid TrainingModuleId {  get; set; }
-        public Guid CollaboratorId {  get; set; }
+        public Guid TrainingModuleId { get; set; }
+        public Guid CollaboratorId { get; set; }
 
         public AssociationTrainingModuleCollaboratorDataModel()
         {
