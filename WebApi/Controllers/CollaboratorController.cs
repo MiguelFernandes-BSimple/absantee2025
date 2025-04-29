@@ -17,7 +17,7 @@ namespace WebApi.Controllers
             _collabService = collabService;
         }
 
-        [HttpGet("All")]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             var collaborators = await _collabService.GetAll();
