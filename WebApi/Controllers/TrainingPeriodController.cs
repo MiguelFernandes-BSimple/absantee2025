@@ -21,9 +21,10 @@ public class TrainingPeriodController : ControllerBase
     {
         TrainingPeriodDTO trainingPeriodResultDTO = await _trainingPeriodService.Add(trainingPeriodDTO);
 
-        if (trainingPeriodResultDTO != null)
-            return Ok(trainingPeriodResultDTO);
+        if (trainingPeriodResultDTO == null)
+            return BadRequest();
 
-        return BadRequest();
+        return Ok(trainingPeriodResultDTO);
+
     }
 }
