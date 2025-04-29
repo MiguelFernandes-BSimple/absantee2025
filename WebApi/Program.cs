@@ -21,6 +21,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 
 //Services
 builder.Services.AddTransient<ProjectService>();
+builder.Services.AddTransient<CollaboratorService>();
 builder.Services.AddTransient<TrainingPeriodService>();
 builder.Services.AddTransient<CollaboratorService>();
 builder.Services.AddTransient<HolidayPlanService>();
@@ -76,6 +77,9 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<ProjectDTO, Project>();
     cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
     cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
+    cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
+            .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
+            .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
     cfg.CreateMap<HolidayPeriod, HolidayPeriodDTO>();
 });
 

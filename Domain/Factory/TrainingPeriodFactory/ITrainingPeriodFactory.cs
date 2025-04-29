@@ -6,6 +6,6 @@ namespace Domain.Factory.TrainingPeriodFactory;
 
 public interface ITrainingPeriodFactory
 {
-    public TrainingPeriod Create(PeriodDate periodDate);
+    public TrainingPeriod Create(DateOnly initDate, DateOnly finalDate);
     public TrainingPeriod Create(ITrainingPeriodVisitor trainingPeriodVisitor);
 }

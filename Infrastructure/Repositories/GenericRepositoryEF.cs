@@ -14,10 +14,12 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public void Add(TDomain entity)
+        public TDomain Add(TDomain entity)
         {
             var dataModel = _mapper.Map<TDomain, TDataModel>(entity);
-            _context.Set<TDataModel>().Add(dataModel);
+            var dm = _context.Set<TDataModel>().Add(dataModel);
+
+            return _mapper.Map<TDataModel, TDomain>(dm.Entity);
         }
 
         public async Task<TDomain> AddAsync(TDomain entity)
@@ -50,7 +52,8 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<TDomain>> GetAllAsync()
         {
             var dataModels = await _context.Set<TDataModel>().ToListAsync();
-            return dataModels.Select(d => _mapper.Map<TDataModel, TDomain>(d));
+            var returned = dataModels.Select(d => _mapper.Map<TDataModel, TDomain>(d));
+            return returned;
         }
 
         public abstract TDomain? GetById(Guid id);

@@ -31,19 +31,18 @@ public class TrainingPeriodService
     }
 
     // UC2
-    public async Task<TrainingPeriodDTO> Add(TrainingPeriodDTO trainingDTO)
+    public async Task<TrainingPeriodDTO> Add(CreateTrainingPeriodDTO trainingPeriodDTO)
     {
         TrainingPeriod trainingPeriod;
         try
         {
-            trainingPeriod = _factory.Create(trainingDTO.PeriodDate);
+            trainingPeriod = _factory.Create(trainingPeriodDTO.InitDate, trainingPeriodDTO.FinalDate);
             await _repository.AddAsync(trainingPeriod);
+            return _mapper.Map<TrainingPeriod, TrainingPeriodDTO>(trainingPeriod);
         }
         catch (Exception)
         {
             return null;
         }
-
-        return _mapper.Map<TrainingPeriod, TrainingPeriodDTO>(trainingPeriod);
     }
 }

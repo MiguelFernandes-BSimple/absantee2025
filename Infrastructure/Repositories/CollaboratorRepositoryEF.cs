@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, ICollaboratorVisitor>, ICollaboratorRepository
+public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, CollaboratorDataModel>, ICollaboratorRepository
 {
     private readonly IMapper _mapper;
     public CollaboratorRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -16,7 +16,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, IColl
         _mapper = mapper;
     }
 
-    public async Task<bool> IsRepeated(ICollaborator collaborator)
+    public async Task<bool> IsRepeated(Collaborator collaborator)
     {
         return await this._context.Set<CollaboratorDataModel>()
                 .AnyAsync(c => c.UserId == collaborator.UserId
@@ -24,7 +24,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, IColl
                     && collaborator.PeriodDateTime._initDate <= c.PeriodDateTime._finalDate);
     }
 
-    public override ICollaborator? GetById(Guid id)
+    public override Collaborator? GetById(Guid id)
     {
         var collabDM = this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefault(c => c.Id == id);
@@ -36,7 +36,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, IColl
         return collab;
     }
 
-    public override async Task<ICollaborator?> GetByIdAsync(Guid id)
+    public override async Task<Collaborator?> GetByIdAsync(Guid id)
     {
         var collabDM = await this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefaultAsync(c => c.Id == id);
@@ -48,7 +48,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, IColl
         return collab;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
+    public async Task<IEnumerable<Collaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
                     .Where(c => ids.Contains(c.Id))
@@ -59,7 +59,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, IColl
         return collabs;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids)
+    public async Task<IEnumerable<Collaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
                     .Where(c => ids.Contains(c.UserId))
@@ -70,7 +70,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, IColl
         return collabs;
     }
 
-    public async Task<IEnumerable<ICollaborator>> GetActiveCollaborators()
+    public async Task<IEnumerable<Collaborator>> GetActiveCollaborators()
     {
         var collabsDm = await _context.Set<CollaboratorDataModel>()
                             .Where(c => c.PeriodDateTime._finalDate > DateTime.Now)

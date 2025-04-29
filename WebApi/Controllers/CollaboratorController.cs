@@ -1,6 +1,5 @@
-﻿using Application.Services;
-using Domain.Interfaces;
-using Domain.Models;
+using Application.DTO;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -9,20 +8,52 @@ namespace WebApi.Controllers
     [ApiController]
     public class CollaboratorController : ControllerBase
     {
-        private readonly CollaboratorService _colaboratorService;
+        private readonly CollaboratorService _collabService;
 
-        public CollaboratorController(CollaboratorService colaboratorService)
+        public CollaboratorController(CollaboratorService collabService)
         {
-            _colaboratorService = colaboratorService;
+            _collabService = collabService;
         }
 
-        // Post: api/Colaborator
-        //[HttpPost]
-        //public async Task<ActionResult> AddCollaborator()
-        //{
-        //    bool result = await _colaboratorService.Add(userId, periodDate);
+        [HttpGet("FindBy")]
+        public async Task<IActionResult> FindBy([FromQuery] string? name, [FromQuery] string? surname)
+        {
+            if (name == null && surname == null)
+                return BadRequest("Please insert at least a name or surname");
 
-//        //    return Ok();
-        //}
+            IEnumerable<Guid> collabIds;
+
+            if (surname == null)
+            {
+                collabIds = await _collabService.GetByNames(name);
+            }
+            else if (name == null)
+            {
+                collabIds = await _collabService.GetBySurnames(surname);
+            }
+            else
+            {
+                collabIds = await _collabService.GetByNamesAndSurnames(name, surname);
+            }
+
+            if (collabIds.Any())
+                return Ok(collabIds);
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateCollaboratorDto collabDto)
+        {
+            if (collabDto == null)
+                return BadRequest("Invalid Arguments");
+
+            var collabCreated = await _collabService.Create(collabDto);
+
+            if (collabCreated == null) return BadRequest();
+
+            return Created("Collab Created:", collabCreated);
+
+        }
     }
 }

@@ -17,13 +17,14 @@ public class TrainingPeriodController : ControllerBase
 
     // UC2 
     [HttpPost]
-    public async Task<ActionResult<TrainingPeriodDTO>> PostTrainingPeriod(TrainingPeriodDTO trainingPeriodDTO)
+    public async Task<ActionResult<TrainingPeriodDTO>> PostTrainingPeriod(CreateTrainingPeriodDTO trainingPeriodDTO)
     {
         TrainingPeriodDTO trainingPeriodResultDTO = await _trainingPeriodService.Add(trainingPeriodDTO);
 
-        if (trainingPeriodResultDTO != null)
-            return Ok(trainingPeriodResultDTO);
+        if (trainingPeriodResultDTO == null)
+            return BadRequest();
 
-        return BadRequest();
+        return Ok(trainingPeriodResultDTO);
+
     }
 }

@@ -16,7 +16,9 @@ namespace Infrastructure.DataModel
 
         public UserDataModel(IUser user)
         {
-            Id = user.Id;
+            if (user.Id != Guid.Empty)
+                Id = user.Id;
+
             Names = user.Names;
             Surnames = user.Surnames;
             Email = user.Email;
