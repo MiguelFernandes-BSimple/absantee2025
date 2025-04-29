@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class TrainingPeriodRepositoryEF : GenericRepositoryEF<ITrainingPeriod, ITrainingPeriod>, ITrainingPeriodRepository
+    public class TrainingPeriodRepositoryEF : GenericRepositoryEF<ITrainingPeriod, TrainingPeriodDataModel>, ITrainingPeriodRepository
     {
         private readonly IMapper _mapper;
+
         public TrainingPeriodRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;

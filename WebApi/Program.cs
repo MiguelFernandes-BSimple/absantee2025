@@ -21,6 +21,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 
 //Services
 builder.Services.AddTransient<ProjectService>();
+builder.Services.AddTransient<TrainingPeriodService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();
@@ -28,6 +29,7 @@ builder.Services.AddTransient<ICollaboratorRepository, CollaboratorRepositoryEF>
 builder.Services.AddTransient<IAssociationProjectCollaboratorRepository, AssociationProjectCollaboratorRepositoryEF>();
 builder.Services.AddTransient<IProjectRepository, ProjectRepositoryEF>();
 builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorsRepository, AssociationTrainingModuleCollaboratorRepositoryEF>();
+builder.Services.AddTransient<ITrainingPeriodRepository, TrainingPeriodRepositoryEF>();
 builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepositoryEF>();
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositoryEF>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
@@ -65,9 +67,12 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<DataModelMappingProfile>();
 
     //DTO
-    cfg.CreateMap<ProjectDTO, Project>();
-    cfg.CreateMap<Project, ProjectDTO>();
     cfg.CreateMap<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>();
+    cfg.CreateMap<AssociationProjectCollaboratorDTO, AssociationProjectCollaborator>();
+    cfg.CreateMap<Project, ProjectDTO>();
+    cfg.CreateMap<ProjectDTO, Project>();
+    cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
+    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
     cfg.CreateMap<HolidayPeriod, HolidayPeriodDTO>();
 });
 
