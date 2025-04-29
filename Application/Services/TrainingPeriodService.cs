@@ -30,6 +30,7 @@ public class TrainingPeriodService
         return await _repository.GetByIdAsync(id);
     }
 
+    // UC2
     public async Task<TrainingPeriodDTO> Add(TrainingPeriodDTO trainingDTO)
     {
         TrainingPeriod trainingPeriod;
