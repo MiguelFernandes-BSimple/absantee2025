@@ -3,21 +3,59 @@ using Domain.Interfaces;
 using Domain.Models;
 using Application.DTO;
 using AutoMapper;
+using Domain.Factory;
+using Infrastructure.Repositories;
 
 namespace Application.Services;
 public class HolidayPlanService
 {
     private IAssociationProjectCollaboratorRepository _associationProjectCollaboratorRepository;
     private IHolidayPlanRepository _holidayPlanRepository;
+    private IHolidayPlanFactory _holidayPlanFactory;
+    private IHolidayPeriodFactory _holidayPeriodFactory;
     private readonly IMapper _mapper;
 
-    public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, IMapper mapper)
+    public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, IHolidayPlanFactory holidayPlanFactory, IHolidayPeriodFactory holidayPeriodFactory, IMapper mapper)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
+        _holidayPlanFactory = holidayPlanFactory;
+        _holidayPeriodFactory = holidayPeriodFactory;
         _mapper = mapper;
     }
 
+    // NENHUMA UC ????
+    public async Task<HolidayPlanDTO> AddHolidayPlan(CreateHolidayPlanDTO holidayPlanDTO)
+    {
+        HolidayPlan holidayPlan;
+        try
+        {
+            var holidayPeriods = holidayPlanDTO.HolidayPeriods.Select(hp => (IHolidayPeriod)_mapper.Map<HolidayPeriodDTO, HolidayPeriod>(hp)).ToList();
+            holidayPlan = await _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, holidayPeriods);
+            var result = await _holidayPlanRepository.AddAsync(holidayPlan);
+            return _mapper.Map<HolidayPlan, HolidayPlanDTO>(result);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    // UC1
+    public async Task<HolidayPeriodDTO> AddHolidayPeriod(CreateHolidayPeriodDTO holidayPeriodDTO)
+    {
+        HolidayPeriod holidayPeriod;
+        try
+        {
+            holidayPeriod = await _holidayPeriodFactory.Create(holidayPeriodDTO.HolidayPlanId, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
+            await _holidayPlanRepository.AddHolidayPeriodAsync(holidayPeriod);
+            return _mapper.Map<HolidayPeriod, HolidayPeriodDTO>(holidayPeriod);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 
 
     //UC16: Como gestor de projeto, quero listar quantos dias de férias um colaborador tem marcado durante um projeto

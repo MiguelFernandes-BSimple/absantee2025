@@ -163,7 +163,14 @@ public class CollaboratorService
         return result;
     }
 
-    public async Task<IEnumerable<Collaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(Guid subjectId, DateTime date)
+    //UC13
+    public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
+    {
+        var result = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
+        return result;
+    }
+
+    public async Task<IEnumerable<ICollaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(Guid subjectId, DateTime date)
     {
         // Step 1: Get training modules that are finished for the subject
         var finishedTrainingModules = await _trainingModuleRepository
