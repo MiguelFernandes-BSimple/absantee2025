@@ -87,6 +87,13 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
+        //US14 
+        [HttpGet("holidayPlan/holidayPeriods/ByPeriod")]
+        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod( [FromQuery] PeriodDate periodDate)
+        {
+            var result = await _collabService.FindAllWithHolidayPeriodsBetweenDates(periodDate);
+            return Ok(result);
+        }
 
 
 
