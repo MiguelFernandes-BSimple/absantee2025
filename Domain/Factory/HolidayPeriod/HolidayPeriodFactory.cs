@@ -24,12 +24,12 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         if (!await _holidayPlanRepository.CanInsertHolidayPeriod(holidayPlanId, holidayPeriod))
             throw new ArgumentException("Holiday Period already exists for this Holiday Plan.");
 
-        var holidayPlan = _holidayPlanRepository.GetById(holidayPlanId);
+        var holidayPlan = await _holidayPlanRepository.GetByIdAsync(holidayPlanId);
         if (holidayPlan == null)
             throw new ArgumentException("Holiday Plan doesn't exist.");
 
         Guid collaboratorId = holidayPlan.CollaboratorId;
-        var collaborator = _collaboratorRepository.GetById(collaboratorId);
+        var collaborator = await _collaboratorRepository.GetByIdAsync(collaboratorId);
         if (collaborator == null)
             throw new ArgumentException("Collaborator doesn't exist.");
 

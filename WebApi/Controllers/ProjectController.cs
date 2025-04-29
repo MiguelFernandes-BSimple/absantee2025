@@ -80,7 +80,7 @@ namespace WebApi.Controllers
         {
             var result = await _projectService.Add(projectDTO);
 
-            return Ok(result);
+            return  Created("",result);
         }
 
         // UC3: Como gestor de projeto, quero associar colaborador a projeto
@@ -89,7 +89,7 @@ namespace WebApi.Controllers
         {
             var result = await _associationProjectCollaboratorService.Add(associationDTO.PeriodDate, associationDTO.CollaboratorId, projectId);
 
-            return Ok(result);
+            return Created("", result);
         }
     }
 }

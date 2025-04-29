@@ -11,6 +11,7 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
 
     public AssociationProjectCollaborator(Guid collaboratorId, Guid projectId, PeriodDate periodDate)
     {
+        Id = Guid.NewGuid();
         CollaboratorId = collaboratorId;
         ProjectId = projectId;
         PeriodDate = periodDate;
