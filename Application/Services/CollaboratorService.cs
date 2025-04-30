@@ -42,13 +42,12 @@ public class CollaboratorService
     }
 
     //uc9
-    public async Task<IEnumerable<CollaboratorDTO>> GetAll()
+    public async Task<IEnumerable<Guid>> GetAll()
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
-        IEnumerable<CollaboratorDTO> colabsDTO = CollaboratorDTO.ToDTO(collabs);
-
-        return colabsDTO;
+        var collabIds = collabs.Select(U => U.Id);
         
+        return collabIds;
     }
 
     public async Task<long> GetCount()
