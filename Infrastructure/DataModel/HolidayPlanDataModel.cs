@@ -8,26 +8,16 @@ namespace Infrastructure.DataModel;
 
 public class HolidayPlanDataModel : IHolidayPlanVisitor
 {
-    private IMapper _mapper;
     public Guid Id { get; set; }
     public Guid CollaboratorId { get; set; }
-    public List<HolidayPeriodDataModel> HolidayPeriodsDM { get; set; } = new List<HolidayPeriodDataModel>();
+    public List<HolidayPeriodDataModel> HolidayPeriods { get; set; } = new List<HolidayPeriodDataModel>();
 
-    public List<IHolidayPeriod> GetHolidayPeriods()
+    public List<HolidayPeriod> GetHolidayPeriods(IMapper _mapper)
     {
-        if (HolidayPeriodsDM == null)
-            return new List<IHolidayPeriod>();
+        if (HolidayPeriods == null)
+            return new List<HolidayPeriod>();
 
-        return HolidayPeriodsDM.Select(hp => (IHolidayPeriod)_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(hp)).ToList();
-    }
-
-    public HolidayPlanDataModel(IHolidayPlan holidayPlan, IMapper mapper)
-    {
-        _mapper = mapper;
-        Id = holidayPlan.Id;
-        CollaboratorId = holidayPlan.CollaboratorId;
-        HolidayPeriodsDM = holidayPlan.HolidayPeriods
-            .Select(h => mapper.Map<HolidayPeriod, HolidayPeriodDataModel>((HolidayPeriod)h)).ToList();
+        return HolidayPeriods.Select(_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>).ToList();
     }
 
     public HolidayPlanDataModel()

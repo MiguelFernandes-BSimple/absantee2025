@@ -48,11 +48,39 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
             CollaboratorId = collaboratorCreatedDTO.Id,
             PeriodDate = projectDTO.PeriodDate
         };
+        //Act
         var createdAssociationDTO = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{createdProjectDTO.Id}/collaborators", associationDTO);
 
         // Assert: Check that the status code is 201 Created
         Assert.NotNull(createdAssociationDTO);
         Assert.Equal(createdAssociationDTO.ProjectId, createdProjectDTO.Id);
         Assert.Equal(createdAssociationDTO.CollaboratorId, collaboratorCreatedDTO.Id);
+    }
+
+
+    [Fact]
+    public async Task GetAllCollaborators_ReturnsAssociatedCollaborators()
+    {
+        // Arrange: Create a random project payload
+        var projectDTO = ProjectHelper.GenerateRandomProjectDto();
+        var createdProjectDTO = await PostAndDeserializeAsync<ProjectDTO>("/api/Project", projectDTO);
+
+        // Create Collaborator
+        var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
+
+        // Create Association
+        var associationDTO = new CreateAssociationProjectCollaboratorDTO
+        {
+            CollaboratorId = collaboratorCreatedDTO.Id,
+            PeriodDate = projectDTO.PeriodDate
+        };
+        var createdAssociationDTO = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{createdProjectDTO.Id}/collaborators", associationDTO);
+
+        var collaborators = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"/api/Project/{createdProjectDTO.Id}/collaborators");
+
+        // Assert: Check that the status code is 201 Created
+        Assert.NotEmpty(collaborators);
+        Assert.Equal(collaboratorCreatedDTO.Id, collaborators.First().Id);
     }
 }

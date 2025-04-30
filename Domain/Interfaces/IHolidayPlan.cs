@@ -6,6 +6,6 @@ public interface IHolidayPlan
 {
     Guid Id { get; }
     Guid CollaboratorId { get; }
-    List<IHolidayPeriod> HolidayPeriods { get; }
+    List<HolidayPeriod> HolidayPeriods { get; }
     int GetNumberOfHolidayDaysBetween(PeriodDate periodDate);
 }
