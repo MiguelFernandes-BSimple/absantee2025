@@ -241,4 +241,10 @@ public class CollaboratorService
 
         return collabs;
     }
+
+    public async Task<IEnumerable<Guid>> GetAllIds()
+    {
+        var collabs = await _collaboratorRepository.GetAllAsync();
+        return collabs.Select(c => c.Id);
+    }
 }
