@@ -11,11 +11,13 @@ public class TrainingModuleController : ControllerBase
 {
     private readonly TrainingModuleService _trainingModuleService;
     private readonly AssociationTrainingModuleCollaboratorService _assocTMCService;
+    private readonly CollaboratorService _collaboratorService;
 
-    public TrainingModuleController(TrainingModuleService trainingModuleService, AssociationTrainingModuleCollaboratorService assocTMCService)
+    public TrainingModuleController(TrainingModuleService trainingModuleService, AssociationTrainingModuleCollaboratorService assocTMCService, CollaboratorService collaboratorService)
     {
         _trainingModuleService = trainingModuleService;
         _assocTMCService = assocTMCService;
+        _collaboratorService = collaboratorService;
     }
 
     // US 30: Como Gestor de Formação, quero definir um Módulo de Formação (Training Module): 
@@ -51,6 +53,24 @@ public class TrainingModuleController : ControllerBase
         catch
         {
             return BadRequest(trainingModuleId);
+        }
+    }
+
+    // UC32: Como Gestor de Formação, quero listar todos os colaboradores ativos que não têm qualquer formação terminada em determinado tema
+    // GET api/TrainingSubject/{id}/collaborators/active/no-training-done
+    [HttpGet("not-completed/subjects/{id}/collaborators/active/")]
+    public async Task<ActionResult> GetActiveCollaboratorsWithNoTrainingDoneForSubject(Guid id)
+    {
+        try
+        {
+            IEnumerable<Guid> collabs =
+                await _collaboratorService.GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(id);
+
+            return Ok(collabs);
+        }
+        catch
+        {
+            return BadRequest(id);
         }
     }
 }
