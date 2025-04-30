@@ -1,20 +1,18 @@
-using System.Diagnostics;
-using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.IRepository;
 
-public interface IHolidayPlanRepository : IGenericRepository<IHolidayPlan, IHolidayPeriodVisitor>
+public interface IHolidayPlanRepository : IGenericRepository<HolidayPlan, IHolidayPeriodVisitor>
 {
-    public bool CanInsertHolidayPeriod(Guid holidayPlanId, IHolidayPeriod periodDate);
-    public Task<bool> AddHolidayPlanAsync(IHolidayPlan holidayPlan);
-    public Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsForCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate);
-    public Task<IEnumerable<IHolidayPlan>> FindHolidayPlansWithinPeriodAsync(PeriodDate periodDate);
-    public Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate, int days);
-    public Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(List<Guid> collabIds, PeriodDate periodDate);
-    public Task<IHolidayPlan?> FindHolidayPlanByCollaboratorAsync(Guid collaboratorId);
-    public Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorAsync(Guid collaboratorId);
-    public Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate period);
-    public Task<IEnumerable<IHolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days);
+    public Task<bool> CanInsertHolidayPlan(Guid collaboratorId);
+    public Task<bool> CanInsertHolidayPeriod(Guid holidayPlanId, HolidayPeriod periodDate);
+    public Task<HolidayPeriod> AddHolidayPeriodAsync(HolidayPeriod holidayPeriod);
+    public Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate);
+    public Task<IEnumerable<HolidayPlan>> FindHolidayPlansWithinPeriodAsync(PeriodDate periodDate);
+    public Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate, int days);
+    public Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(List<Guid> collabIds, PeriodDate periodDate);
+    public Task<HolidayPlan?> FindHolidayPlanByCollaboratorAsync(Guid collaboratorId);
+    public Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorAsync(Guid collaboratorId);
+    public Task<IEnumerable<HolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days);
 }

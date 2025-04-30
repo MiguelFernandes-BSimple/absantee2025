@@ -1,6 +1,8 @@
 ﻿using Domain.Factory;
 using Domain.Models;
 using Domain.IRepository;
+using AutoMapper;
+using Application.DTO;
 
 namespace Application.Services
 {
@@ -8,25 +10,20 @@ namespace Application.Services
     {
         private IAssociationProjectCollaboratorRepository _assocRepository;
         private IAssociationProjectCollaboratorFactory _associationProjectCollaboratorFactory;
+        private readonly IMapper _mapper;
 
-        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, IAssociationProjectCollaboratorFactory associationProjectCollaboratorFactory)
+        public AssociationProjectCollaboratorService(IAssociationProjectCollaboratorRepository assocRepository, IAssociationProjectCollaboratorFactory associationProjectCollaboratorFactory, IMapper mapper)
         {
             _assocRepository = assocRepository;
             _associationProjectCollaboratorFactory = associationProjectCollaboratorFactory;
+            _mapper = mapper;
         }
 
-        public async Task<bool> Add(PeriodDate periodDate, Guid collabId, Guid projectId)
+        public async Task<AssociationProjectCollaboratorDTO> Add(PeriodDate periodDate, Guid collabId, Guid projectId)
         {
-            try
-            {
-                var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
-                await _assocRepository.AddAsync(assoc);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
+            var assocCreated = await _assocRepository.AddAsync(assoc);
+            return _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>(assocCreated);
         }
     }
 }

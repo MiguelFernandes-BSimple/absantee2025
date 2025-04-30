@@ -1,63 +1,59 @@
 ﻿using AutoMapper;
-using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
-using Domain.Visitor;
 using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories;
+public class TrainingSubjectRepositoryEF : GenericRepositoryEF<TrainingSubject, TrainingSubjectDataModel>, ITrainingSubjectRepository
 {
-    public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject, ITrainingSubjectVisitor>, ITrainingSubjectRepository
+    private readonly IMapper _mapper;
+    public TrainingSubjectRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
-        private readonly IMapper _mapper;
-        public TrainingSubjectRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+        _mapper = mapper;
+    }
+
+    public override TrainingSubject? GetById(Guid id)
+    {
+        try
         {
-            _mapper = mapper;
-        }
+            var tsDM = _context.Set<TrainingSubjectDataModel>()
+                               .FirstOrDefault();
 
-        public override ITrainingSubject? GetById(Guid id)
+            if (tsDM == null)
+                return null;
+
+            var ts = _mapper.Map<TrainingSubjectDataModel, TrainingSubject>(tsDM);
+            return ts;
+        }
+        catch
         {
-            try
-            {
-                var tsDM = _context.Set<TrainingSubjectDataModel>()
-                                   .FirstOrDefault();
-
-                if (tsDM == null)
-                    return null;
-
-                var ts = _mapper.Map<TrainingSubjectDataModel, TrainingSubject>(tsDM);
-                return ts;
-            }
-            catch
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public override async Task<ITrainingSubject?> GetByIdAsync(Guid id)
+    public override async Task<TrainingSubject?> GetByIdAsync(Guid id)
+    {
+        try
         {
-            try
-            {
-                var tsDM = await _context.Set<TrainingSubjectDataModel>()
-                                   .FirstOrDefaultAsync();
+            var tsDM = await _context.Set<TrainingSubjectDataModel>()
+                               .FirstOrDefaultAsync();
 
-                if (tsDM == null)
-                    return null;
+            if (tsDM == null)
+                return null;
 
-                var ts = _mapper.Map<TrainingSubjectDataModel, TrainingSubject>(tsDM);
-                return ts;
-            }
-            catch
-            {
-                throw;
-            }
+            var ts = _mapper.Map<TrainingSubjectDataModel, TrainingSubject>(tsDM);
+            return ts;
         }
-
-        public async Task<bool> IsDuplicated(string subject)
+        catch
         {
-            return await _context.Set<TrainingSubjectDataModel>()
-                           .AnyAsync(t => t.Subject.Equals(subject));
+            throw;
         }
+    }
+
+    public async Task<bool> IsDuplicated(string subject)
+    {
+        return await _context.Set<TrainingSubjectDataModel>()
+                       .AnyAsync(t => t.Subject.Equals(subject));
     }
 }

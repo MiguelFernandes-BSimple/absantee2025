@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepositoryEF : GenericRepositoryEF<IUser, IUserVisitor>, IUserRepository
+public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserRepository
 {
     private readonly IMapper _mapper;
     public UserRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -17,47 +17,62 @@ public class UserRepositoryEF : GenericRepositoryEF<IUser, IUserVisitor>, IUserR
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<IUser>> GetByNamesAsync(string names)
+    // método adicionado com o professor, pode ser util mais tarde
+    /*     public async Task<IEnumerable<Guid>> GetUserIdByNamesAsync(string names)
+        {
+            if (string.IsNullOrWhiteSpace(names))
+                return new List<Guid>();
+
+            var usersIds = await this._context.Set<UserDataModel>()
+                        .Where(u => u.Names.Contains(names)).Select(u => u.Id)
+                        .ToListAsync();
+
+            return usersIds;
+        } */
+
+    public async Task<IEnumerable<User>> GetByNamesAsync(string names)
     {
         if (string.IsNullOrWhiteSpace(names))
-            return new List<IUser>();
+            return new List<User>();
 
-        var usersDM = await this._context.Set<UserDataModel>()
-                    .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        var usersDM = await _context.Set<UserDataModel>()
+            .Where(u => EF.Functions.Like(u.Names, $"%{names}%"))
+            .ToListAsync();
 
-        var users = usersDM.Select(u => _mapper.Map<UserDataModel, User>(u));
+        var users = usersDM.Select(u => _mapper.Map<User>(u));
 
         return users;
     }
 
-    public async Task<IEnumerable<IUser>> GetBySurnamesAsync(string surnames)
+    public async Task<IEnumerable<User>> GetBySurnamesAsync(string surnames)
     {
         if (string.IsNullOrWhiteSpace(surnames))
-            return new List<IUser>();
+            return new List<User>();
 
-        var usersDM = await this._context.Set<UserDataModel>()
-                    .Where(u => u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        var usersDM = await _context.Set<UserDataModel>()
+            .Where(u => EF.Functions.Like(u.Surnames, $"%{surnames}%"))
+            .ToListAsync();
 
-        var users = usersDM.Select(u => _mapper.Map<UserDataModel, User>(u));
-
-        return users;
+        return usersDM.Select(u => _mapper.Map<User>(u));
     }
 
-    public async Task<IEnumerable<IUser>> GetByNamesAndSurnamesAsync(string names, string surnames)
+    public async Task<IEnumerable<User>> GetByNamesAndSurnamesAsync(string names, string surnames)
     {
         if (string.IsNullOrWhiteSpace(names) && string.IsNullOrWhiteSpace(surnames))
-            return new List<IUser>();
+            return new List<User>();
 
-        var usersDM = await this._context.Set<UserDataModel>()
-                    .Where(u => u.Names.Contains(names, StringComparison.OrdinalIgnoreCase)
-                             && u.Surnames.Contains(surnames, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        var usersDM = await _context.Set<UserDataModel>()
+            .Where(u =>
+                (string.IsNullOrWhiteSpace(names) || EF.Functions.Like(u.Names, $"%{names}%")) &&
+                (string.IsNullOrWhiteSpace(surnames) || EF.Functions.Like(u.Surnames, $"%{surnames}%"))
+            )
+            .ToListAsync();
 
-        var users = usersDM.Select(u => _mapper.Map<UserDataModel, User>(u));
-
-        return users;
+        return usersDM.Select(u => _mapper.Map<User>(u));
     }
 
-    public async Task<IUser?> GetByEmailAsync(string email)
+
+    public async Task<User?> GetByEmailAsync(string email)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Email == email);
 
@@ -70,7 +85,7 @@ public class UserRepositoryEF : GenericRepositoryEF<IUser, IUserVisitor>, IUserR
         return user;
     }
 
-    public override IUser? GetById(Guid id)
+    public override User? GetById(Guid id)
     {
         var userDM = _context.Set<UserDataModel>().FirstOrDefault(c => c.Id == id);
 
@@ -81,7 +96,7 @@ public class UserRepositoryEF : GenericRepositoryEF<IUser, IUserVisitor>, IUserR
         return user;
     }
 
-    public override async Task<IUser?> GetByIdAsync(Guid id)
+    public override async Task<User?> GetByIdAsync(Guid id)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == id);
 

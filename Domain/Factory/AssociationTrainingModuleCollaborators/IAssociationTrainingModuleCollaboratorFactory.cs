@@ -6,6 +6,6 @@ namespace Domain.Factory
     public interface IAssociationTrainingModuleCollaboratorFactory
     {
         Task<AssociationTrainingModuleCollaborator> Create(Guid trainingModuleId, Guid collaboratorId);
-        AssociationTrainingModuleCollaborator Create(AssociationTrainingModuleCollaboratorVisitor visitor);
+        AssociationTrainingModuleCollaborator Create(IAssociationTrainingModuleCollaboratorVisitor visitor);
     }
 }

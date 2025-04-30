@@ -4,10 +4,11 @@ using Domain.Visitor;
 
 namespace Domain.IRepository;
 
-public interface ICollaboratorRepository : IGenericRepository<ICollaborator, ICollaboratorVisitor>
+public interface ICollaboratorRepository : IGenericRepository<Collaborator, ICollaboratorVisitor>
 {
-    Task<bool> IsRepeated(ICollaborator collaborator);
-    Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<Guid> ids);
-    Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids);
-    Task<IEnumerable<ICollaborator>> GetActiveCollaborators();
+    Task<bool> IsRepeated(Collaborator collaborator);
+    Task<IEnumerable<Collaborator>> GetByIdsAsync(IEnumerable<Guid> ids);
+    Task<IEnumerable<Collaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids);
+    Task<IEnumerable<Collaborator>> GetActiveCollaborators();
+    Task<long> GetCount();
 }

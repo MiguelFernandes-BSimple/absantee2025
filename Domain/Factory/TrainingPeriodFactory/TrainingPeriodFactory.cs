@@ -10,8 +10,9 @@ public class TrainingPeriodFactory : ITrainingPeriodFactory
     {
     }
 
-    public TrainingPeriod Create(PeriodDate periodDate)
+    public TrainingPeriod Create(DateOnly initDate, DateOnly finalDate)
     {
+        PeriodDate periodDate = new PeriodDate(initDate, finalDate);
         return new TrainingPeriod(periodDate);
     }
 

@@ -6,24 +6,27 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
+using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class TrainingPeriodRepositoryEF : GenericRepositoryEF<ITrainingPeriod, ITrainingPeriod>, ITrainingPeriodRepository
+    public class TrainingPeriodRepositoryEF : GenericRepositoryEF<TrainingPeriod, TrainingPeriodDataModel>, ITrainingPeriodRepository
     {
         private readonly IMapper _mapper;
+
         public TrainingPeriodRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }
 
-        public override ITrainingPeriod? GetById(Guid id)
+        public override TrainingPeriod? GetById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<ITrainingPeriod?> GetByIdAsync(Guid id)
+        public override Task<TrainingPeriod?> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
