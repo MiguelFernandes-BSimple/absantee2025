@@ -37,16 +37,14 @@ public class UserService
         var User = await _userRepository.GetByIdAsync(Id);
         return User;
     }
-    public async Task<IUser?> UpdateActivation(Guid Id, ActivationDTO activationDTO, List<string> errorMessage)
+    public async Task<IUser?> UpdateActivation(Guid Id, ActivationDTO activationDTO)
     {
 
         var User = await _userRepository.GetByIdAsync(Id);
 
         if (User != null)
         {
-            User.
-
-            await _userRepository.Update(User);
+            await _userRepository.ActivationUser(Id, activationDTO.FinalDate);
             await _userRepository.SaveChangesAsync();
         }
         return User;
