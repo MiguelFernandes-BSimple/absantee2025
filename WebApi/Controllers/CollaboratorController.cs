@@ -2,6 +2,8 @@ using Application.DTO;
 using Application.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WebApi.Controllers
 {
@@ -18,14 +20,17 @@ namespace WebApi.Controllers
             _holidayPlanService = holidayPlanService;
         }
 
-        // Get: api/collaborators
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Guid>>> GetAllCollaborators() {
-            var result = await _collabService.GetAll();
-            return Ok(result);
+        public async Task<IActionResult> Get()
+        {
+            var collaborators = await _collabService.GetAll();
+            if (collaborators == null)
+                return NotFound();
+
+            return Ok(collaborators);
         }
 
-        // Get: api/collaborators/foo/holidayperiods?includesDate=bar
+        // UC17 Get: api/collaborators/foo/holidayperiods?includesDate=bar
         [HttpGet("{id}/holidayperiods")]
         public async Task<ActionResult<HolidayPeriod?>> GetHolidayPeriodContainingDay(Guid id, string includesDate) {
             var dateOnly = DateOnly.Parse(includesDate);
@@ -94,6 +99,13 @@ namespace WebApi.Controllers
         {
             var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
 
+            return Ok(result);
+        }
+        //US14 
+        [HttpGet("holidayPlan/holidayPeriods/ByPeriod")]
+        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod( [FromQuery] PeriodDate periodDate)
+        {
+            var result = await _collabService.FindAllWithHolidayPeriodsBetweenDates(periodDate);
             return Ok(result);
         }
 

@@ -5,7 +5,7 @@ using Domain.Models;
 using Application.DTO;
 using AutoMapper;
 using Infrastructure;
-using System.Data.Common;
+using System.IO.Compression;
 
 namespace Application.Services;
 
@@ -38,6 +38,15 @@ public class CollaboratorService
         _trainingModuleCollaboratorsRepository = trainingModuleCollaboratorsRepository;
         _trainingModuleRepository = trainingModuleRepository;
         _mapper = mapper;
+    }
+
+    public async Task<IEnumerable<CollaboratorDTO>> GetAll()
+    {
+        var collabs = await _collaboratorRepository.GetAllAsync();
+        IEnumerable<CollaboratorDTO> colabsDTO = CollaboratorDTO.ToDTO(collabs);
+
+        return colabsDTO;
+        
     }
 
     public async Task<long> GetCount()
@@ -196,7 +205,7 @@ public class CollaboratorService
         return collabs;
     }
 
-    public async Task<IEnumerable<Guid>> GetAll()
+    public async Task<IEnumerable<Guid>> GetAllIds()
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
         return collabs.Select(c => c.Id);

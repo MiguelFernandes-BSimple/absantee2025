@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/holidayplan")]
 [ApiController]
 public class HolidayPlanController : Controller
 {
@@ -24,11 +24,11 @@ public class HolidayPlanController : Controller
         if (result == null)
             return BadRequest();
 
-        return Ok(result);
+        return Created("", result);
     }
 
     // UC4: Como gestor de projetos, quero criar projeto
-    [HttpPost("holidayperiod")] 
+    [HttpPost("holidayperiod")]
     public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(CreateHolidayPeriodDTO createHolidayPeriodDTO)
     {
         var result = await _holidayPlanService.AddHolidayPeriod(createHolidayPeriodDTO);
@@ -36,7 +36,7 @@ public class HolidayPlanController : Controller
         if (result == null)
             return BadRequest();
 
-        return Ok(result);
+        return Created("", result);
     }
 
 }

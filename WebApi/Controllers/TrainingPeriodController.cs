@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/trainingperiod")]
 [ApiController]
 public class TrainingPeriodController : ControllerBase
 {
@@ -24,7 +24,7 @@ public class TrainingPeriodController : ControllerBase
         if (trainingPeriodResultDTO == null)
             return BadRequest();
 
-        return Ok(trainingPeriodResultDTO);
+        return Created("", trainingPeriodResultDTO);
 
     }
 }

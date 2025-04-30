@@ -21,8 +21,8 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
 
     public async Task<bool> CanInsertHolidayPeriod(Guid holidayPlanId, HolidayPeriod periodDate)
     {
-        return await _context.Set<HolidayPlanDataModel>().AnyAsync
-            (h => h.Id == holidayPlanId && h.GetHolidayPeriods().Any
+        return !await _context.Set<HolidayPlanDataModel>().AnyAsync
+            (h => h.Id == holidayPlanId && h.HolidayPeriodsDM.Any
                 (hp => hp.PeriodDate.InitDate <= periodDate.PeriodDate.InitDate
                     && hp.PeriodDate.FinalDate >= periodDate.PeriodDate.FinalDate));
     }
