@@ -24,8 +24,8 @@ public class PeriodDateTime
     }
 
     public PeriodDateTime(PeriodDate periodDate) : this(
-        periodDate.GetInitDate().ToDateTime(TimeOnly.MinValue),
-        periodDate.GetFinalDate().ToDateTime(TimeOnly.MinValue))
+        periodDate.InitDate.ToDateTime(TimeOnly.MinValue),
+        periodDate.FinalDate.ToDateTime(TimeOnly.MinValue))
     {
     }
 
@@ -37,15 +37,6 @@ public class PeriodDateTime
         return true;
     }
 
-    public DateTime GetInitDate()
-    {
-        return _initDate;
-    }
-
-    public DateTime GetFinalDate()
-    {
-        return _finalDate;
-    }
     public void SetFinalDate(DateTime finalDate)
     {
         this._finalDate = finalDate;
@@ -63,13 +54,13 @@ public class PeriodDateTime
 
     public bool Contains(PeriodDateTime periodDateTime)
     {
-        return _initDate <= periodDateTime.GetInitDate()
-            && _finalDate >= periodDateTime.GetFinalDate();
+        return _initDate <= periodDateTime._initDate
+            && _finalDate >= periodDateTime._finalDate;
     }
 
     public bool Intersects(PeriodDateTime periodDateTime)
     {
-        return _initDate <= periodDateTime.GetFinalDate() && periodDateTime.GetInitDate() <= _finalDate;
+        return _initDate <= periodDateTime._finalDate && periodDateTime._initDate <= _finalDate;
     }
 }
 

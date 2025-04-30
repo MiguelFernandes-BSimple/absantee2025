@@ -17,6 +17,8 @@ namespace Domain.IRepository
         Task<User?> GetByEmailAsync(string email);
         User? GetById(Guid id);
         Task<User?> GetByIdAsync(Guid id);
+        Task<IUser?> ActivationUser(Guid Id, DateTime FinalDate);
+        Task<bool> Exists(Guid ID);
 
     }
 }
