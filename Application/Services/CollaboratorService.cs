@@ -6,6 +6,7 @@ using Application.DTO;
 using AutoMapper;
 using Infrastructure;
 using System.IO.Compression;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Application.Services;
 
@@ -40,11 +41,13 @@ public class CollaboratorService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CollaboratorDTO>> GetAll()
+    //uc9
+    public async Task<IEnumerable<Guid>> GetAll()
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
-        var result = collabs.Select(c => new CollaboratorDTO(c.Id, c.UserId, c.PeriodDateTime)).ToList();
-        return result;
+        var collabIds = collabs.Select(U => U.Id);
+        
+        return collabIds;
     }
 
     public async Task<long> GetCount()
@@ -177,6 +180,41 @@ public class CollaboratorService
         return result;
     }
 
+    //UC33
+    public async Task<IEnumerable<Guid>> GetCompletedTrainingsAsync(Guid subjectId, DateTime fromDate)
+{
+    // Garantir que a data de entrada também seja UTC
+    var fromDateUtc = DateTime.SpecifyKind(fromDate, DateTimeKind.Utc);
+
+    // Passo 1 - Confirmar a existencia do subjectId
+    var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
+    var activeCollaboratorIds = activeCollaborators.Select(c => c.Id).ToList();
+
+    // Passo 2 - Procurar os Training Modules que foram terminados antes da fromDate de um dado SubjectId
+    var finishedTrainingModules = await _trainingModuleRepository
+        .GetBySubjectAndAfterDateFinished(subjectId, fromDateUtc);
+
+    var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
+    
+    // Passo 3: Obter as ligações de colaboradores que completaram esses módulos
+    var trainingModuleCollaborators = await _trainingModuleCollaboratorsRepository
+        .GetByTrainingModuleIds(finishedTrainingModuleIds);
+
+    var collaboratorsWithFinishedModules = trainingModuleCollaborators
+        .Select(c => c.CollaboratorId)
+        .Distinct()
+        .ToHashSet();
+
+    // Passo 4: Filtrar os colaboradores ativos que participaram e terminaram esses módulos
+    var result = activeCollaborators
+        .Where(c => collaboratorsWithFinishedModules.Contains(c.Id))
+        .Select(c => c.Id)  // Alteração aqui, estamos agora retornando apenas o ID
+        .ToList();
+
+    return result;
+}
+
+
     //UC13
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
     {
@@ -201,5 +239,11 @@ public class CollaboratorService
         var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
 
         return collabs;
+    }
+
+    public async Task<IEnumerable<Guid>> GetAllIds()
+    {
+        var collabs = await _collaboratorRepository.GetAllAsync();
+        return collabs.Select(c => c.Id);
     }
 }

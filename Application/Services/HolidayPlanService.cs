@@ -164,4 +164,18 @@ public class HolidayPlanService
 
         return totalHolidayDays;
     }
+
+    public async Task<HolidayPeriod?> FindHolidayPeriodForCollaboratorThatContainsDay(Guid collabId, DateOnly dateOnly)
+    {
+        var holidayPeriods = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorAsync(collabId);
+
+        return holidayPeriods.Where(h => h.ContainsDate(dateOnly)).FirstOrDefault();
+    }
+
+    public async Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForCollaboratorLongerThan(Guid collabId, int amount)
+    {
+        var holidayPeriods = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorAsync(collabId);
+
+        return holidayPeriods.Where(h => h.GetDuration() > amount);
+    }
 }

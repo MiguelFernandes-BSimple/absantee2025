@@ -47,6 +47,19 @@ public class TrainingModuleRepositoryEF : GenericRepositoryEF<TrainingModule, Tr
         return trainingModules;
     }
 
+    //Metodo para encontrar os TrainingModules de um dados subject que terminaram depois de uma determinada data
+    public async Task<IEnumerable<TrainingModule>> GetBySubjectAndAfterDateFinished(Guid  subjectId, DateTime date)
+    {
+        var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
+                                        .Where(t => t.TrainingSubjectId == subjectId
+                                                && t.Periods.All(p => p._finalDate <= date))
+                                        .ToListAsync();
+
+        var trainingModules = trainingModulesDMs.Select(t => _mapper.Map<TrainingModuleDataModel,TrainingModule>(t));
+
+        return trainingModules;
+    }
+
     public async Task<bool> HasOverlappingPeriodsAsync(Guid trainingSubjectId, List<PeriodDateTime> newPeriods)
     {
         var existingModules = await _context.Set<TrainingModuleDataModel>()

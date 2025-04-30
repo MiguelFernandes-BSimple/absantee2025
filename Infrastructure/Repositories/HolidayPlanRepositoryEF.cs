@@ -111,6 +111,7 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
     public async Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorAsync(Guid collaboratorId)
     {
         var holidayPlans = await _context.Set<HolidayPlanDataModel>()
+            .Include(hp => hp.HolidayPeriodsDM)
             .FirstOrDefaultAsync(hp => hp.CollaboratorId == collaboratorId);
 
         if (holidayPlans == null)
