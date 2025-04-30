@@ -30,7 +30,7 @@ public class HolidayPlanService
         HolidayPlan holidayPlan;
         try
         {
-            var holidayPeriods = holidayPlanDTO.HolidayPeriods.Select(hp => (IHolidayPeriod)_mapper.Map<HolidayPeriodDTO, HolidayPeriod>(hp)).ToList();
+            var holidayPeriods = holidayPlanDTO.HolidayPeriods.Select(_mapper.Map<HolidayPeriodDTO, HolidayPeriod>).ToList();
             holidayPlan = await _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, holidayPeriods);
             var result = await _holidayPlanRepository.AddAsync(holidayPlan);
             return _mapper.Map<HolidayPlan, HolidayPlanDTO>(result);
