@@ -30,18 +30,6 @@ namespace WebApi.Controllers
             return Ok(collaborators);
         }
 
-        // UC17 Get: api/collaborators/foo/holidayperiods?includesDate=bar
-        [HttpGet("{id}/holidayperiods")]
-        public async Task<ActionResult<HolidayPeriod?>> GetHolidayPeriodContainingDay(Guid id, string includesDate) {
-            var dateOnly = DateOnly.Parse(includesDate);
-            var result = await _holidayPlanService.FindHolidayPeriodForCollaboratorThatContainsDay(id, dateOnly);
-
-            if(result != null)
-                return Ok(result);
-            
-            return NotFound();
-        }
-
         [HttpGet("FindBy")]
         public async Task<IActionResult> FindBy([FromQuery] string? name, [FromQuery] string? surname)
         {
@@ -109,15 +97,34 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+        // UC17 Get: api/collaborators/foo/holidayperiods/includes-date?date=bar
+        [HttpGet("{id}/holidayperiods/includes-date")]
+        public async Task<ActionResult<HolidayPeriod?>> GetHolidayPeriodContainingDay(Guid id, string date) {
+            var dateOnly = DateOnly.Parse(date);
+            var result = await _holidayPlanService.FindHolidayPeriodForCollaboratorThatContainsDay(id, dateOnly);
 
+            if(result != null)
+                return Ok(result);
+            
+            return NotFound();
+        }
+
+        // UC18 Get: api/collaborators/foo/holidayperiods/longer-than?days=bar
+        [HttpGet("{id}/holidayperiods/longer-than")]
+        public async Task<ActionResult<IEnumerable<HolidayPeriod>>> GetHolidayPeriodLongerThan(Guid id, string days) {
+            var amount = int.Parse(days);
+            var result = await _holidayPlanService.FindAllHolidayPeriodsForCollaboratorLongerThan(id, amount);
+
+            return Ok(result);
+        }
 
         // Post: api/Colaborator
         //[HttpPost]
         //public async Task<ActionResult> AddCollaborator()
         //{
         //    bool result = await _colaboratorService.Add(userId, periodDate);
-
-        //        //    return Ok();
+        //
+        //    return Ok();
         //}
     }
 }

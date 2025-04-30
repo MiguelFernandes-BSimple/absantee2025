@@ -171,4 +171,11 @@ public class HolidayPlanService
 
         return holidayPeriods.Where(h => h.ContainsDate(dateOnly)).FirstOrDefault();
     }
+
+    public async Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForCollaboratorLongerThan(Guid collabId, int amount)
+    {
+        var holidayPeriods = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorAsync(collabId);
+
+        return holidayPeriods.Where(h => h.GetDuration() > amount);
+    }
 }
