@@ -5,9 +5,6 @@ using Domain.Models;
 using Application.DTO;
 using AutoMapper;
 using Infrastructure;
-using System.IO.Compression;
-using Microsoft.EntityFrameworkCore.Query;
-
 namespace Application.Services;
 
 public class CollaboratorService
@@ -18,7 +15,7 @@ public class CollaboratorService
     private IUserRepository _userRepository;
     private ICollaboratorFactory _collaboratorFactory;
     private IUserFactory _userFactory;
-    private IAssociationTrainingModuleCollaboratorsRepository _trainingModuleCollaboratorsRepository;
+    private IAssociationTrainingModuleCollaboratorsRepository _assocTMCRepository;
     private ITrainingModuleRepository _trainingModuleRepository;
     private AbsanteeContext _context;
     private readonly IMapper _mapper;
@@ -36,7 +33,7 @@ public class CollaboratorService
 
     public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository, AbsanteeContext context, IMapper mapper) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory, userFactory, context)
     {
-        _trainingModuleCollaboratorsRepository = trainingModuleCollaboratorsRepository;
+        _assocTMCRepository = trainingModuleCollaboratorsRepository;
         _trainingModuleRepository = trainingModuleRepository;
         _mapper = mapper;
     }
@@ -46,7 +43,7 @@ public class CollaboratorService
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
         var collabIds = collabs.Select(U => U.Id);
-        
+
         return collabIds;
     }
 
@@ -151,7 +148,7 @@ public class CollaboratorService
         return true;
     }
 
-    public async Task<ICollection<Collaborator>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(Guid subjectId)
+    public async Task<ICollection<Guid>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(Guid subjectId)
     {
         // Step 1: Get all active collaborators
         var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
@@ -164,7 +161,7 @@ public class CollaboratorService
         var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
 
         // Step 3: Get collaborator-module links for those finished modules
-        var finishedCollaborators = await _trainingModuleCollaboratorsRepository
+        var finishedCollaborators = await _assocTMCRepository
             .GetByTrainingModuleIds(finishedTrainingModuleIds);
 
         var collaboratorsWithFinishedModules = finishedCollaborators
@@ -175,6 +172,7 @@ public class CollaboratorService
         // Step 4: Filter active collaborators that are NOT in the above list
         var result = activeCollaborators
             .Where(c => !collaboratorsWithFinishedModules.Contains(c.Id))
+            .Select(c => c.Id)
             .ToList();
 
         return result;
@@ -182,37 +180,37 @@ public class CollaboratorService
 
     //UC33
     public async Task<IEnumerable<Guid>> GetCompletedTrainingsAsync(Guid subjectId, DateTime fromDate)
-{
-    // Garantir que a data de entrada também seja UTC
-    var fromDateUtc = DateTime.SpecifyKind(fromDate, DateTimeKind.Utc);
+    {
+        // Garantir que a data de entrada também seja UTC
+        var fromDateUtc = DateTime.SpecifyKind(fromDate, DateTimeKind.Utc);
 
-    // Passo 1 - Confirmar a existencia do subjectId
-    var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
-    var activeCollaboratorIds = activeCollaborators.Select(c => c.Id).ToList();
+        // Passo 1 - Confirmar a existencia do subjectId
+        var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
+        var activeCollaboratorIds = activeCollaborators.Select(c => c.Id).ToList();
 
-    // Passo 2 - Procurar os Training Modules que foram terminados antes da fromDate de um dado SubjectId
-    var finishedTrainingModules = await _trainingModuleRepository
-        .GetBySubjectAndAfterDateFinished(subjectId, fromDateUtc);
+        // Passo 2 - Procurar os Training Modules que foram terminados antes da fromDate de um dado SubjectId
+        var finishedTrainingModules = await _trainingModuleRepository
+            .GetBySubjectAndAfterDateFinished(subjectId, fromDateUtc);
 
-    var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
-    
-    // Passo 3: Obter as ligações de colaboradores que completaram esses módulos
-    var trainingModuleCollaborators = await _trainingModuleCollaboratorsRepository
-        .GetByTrainingModuleIds(finishedTrainingModuleIds);
+        var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
 
-    var collaboratorsWithFinishedModules = trainingModuleCollaborators
-        .Select(c => c.CollaboratorId)
-        .Distinct()
-        .ToHashSet();
+        // Passo 3: Obter as ligações de colaboradores que completaram esses módulos
+        var trainingModuleCollaborators = await _assocTMCRepository
+            .GetByTrainingModuleIds(finishedTrainingModuleIds);
 
-    // Passo 4: Filtrar os colaboradores ativos que participaram e terminaram esses módulos
-    var result = activeCollaborators
-        .Where(c => collaboratorsWithFinishedModules.Contains(c.Id))
-        .Select(c => c.Id)  // Alteração aqui, estamos agora retornando apenas o ID
-        .ToList();
+        var collaboratorsWithFinishedModules = trainingModuleCollaborators
+            .Select(c => c.CollaboratorId)
+            .Distinct()
+            .ToHashSet();
 
-    return result;
-}
+        // Passo 4: Filtrar os colaboradores ativos que participaram e terminaram esses módulos
+        var result = activeCollaborators
+            .Where(c => collaboratorsWithFinishedModules.Contains(c.Id))
+            .Select(c => c.Id)  // Alteração aqui, estamos agora retornando apenas o ID
+            .ToList();
+
+        return result;
+    }
 
 
     //UC13
@@ -231,7 +229,7 @@ public class CollaboratorService
         var trainingModulesIds = finishedTrainingModules.Select(t => t.Id).ToList();
 
         // Step 2: Get collaborator-module links for those finished modules
-        var trainingModuleCollaborators = await _trainingModuleCollaboratorsRepository.GetByTrainingModuleIds(trainingModulesIds);
+        var trainingModuleCollaborators = await _assocTMCRepository.GetByTrainingModuleIds(trainingModulesIds);
 
         var collabsIds = trainingModuleCollaborators.Select(t => t.CollaboratorId).ToList();
 
