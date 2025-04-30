@@ -76,13 +76,14 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
     }
 
     public async Task<IEnumerable<Collaborator>> GetActiveCollaborators()
-    {
-        var collabsDm = await _context.Set<CollaboratorDataModel>()
-                            .Where(c => c.PeriodDateTime._finalDate > DateTime.Now)
+{
+    // Usar DateTime.UtcNow para garantir consistência com UTC
+    var collabsDm = await _context.Set<CollaboratorDataModel>()
+                            .Where(c => c.PeriodDateTime._finalDate > DateTime.UtcNow)
                             .ToListAsync();
 
-        var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));
+    var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));
 
-        return collabs;
-    }
+    return collabs;
+}
 }
