@@ -1,19 +1,40 @@
 using Application.DTO;
 using Application.Services;
-using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/collaborators")]
     [ApiController]
     public class CollaboratorController : ControllerBase
     {
         private readonly CollaboratorService _collabService;
+        private readonly HolidayPlanService _holidayPlanService;
 
-        public CollaboratorController(CollaboratorService collabService)
+        public CollaboratorController(CollaboratorService collabService, HolidayPlanService holidayPlanService)
         {
             _collabService = collabService;
+            _holidayPlanService = holidayPlanService;
+        }
+
+        // Get: api/collaborators
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Guid>>> GetAllCollaborators() {
+            var result = await _collabService.GetAll();
+            return Ok(result);
+        }
+
+        // Get: api/collaborators/foo/holidayperiods?includesDate=bar
+        [HttpGet("{id}/holidayperiods")]
+        public async Task<ActionResult<HolidayPeriod?>> GetHolidayPeriodContainingDay(Guid id, string includesDate) {
+            var dateOnly = DateOnly.Parse(includesDate);
+            var result = await _holidayPlanService.FindHolidayPeriodForCollaboratorThatContainsDay(id, dateOnly);
+
+            if(result != null)
+                return Ok(result);
+            
+            return NotFound();
         }
 
         [HttpGet("FindBy")]
