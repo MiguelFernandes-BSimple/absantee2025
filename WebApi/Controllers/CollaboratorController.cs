@@ -118,7 +118,7 @@ public class CollaboratorController : ControllerBase
         return Ok(result);
     }
 
-    // UC18 Get: api/collaborators/holidayperiods/include-weekends?
+    // UC19 Get: api/collaborators/holidayperiods/include-weekends?
     [HttpGet("{id}/holidayperiods/includes-weekends")]
     public async Task<ActionResult<IEnumerable<HolidayPeriod>>> GetHolidayPeriodsBetweenThatIncludeWeeknds(Guid id, PeriodDate periodDate)
     {
