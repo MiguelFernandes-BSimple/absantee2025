@@ -21,6 +21,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 
 //Services
 builder.Services.AddTransient<ProjectService>();
+builder.Services.AddScoped<UserService>();
 
 //Repositories
 builder.Services.AddTransient<IUserRepository, UserRepositoryEF>();

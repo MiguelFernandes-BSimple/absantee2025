@@ -4,6 +4,7 @@ using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
 using Infrastructure.DataModel;
+using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -82,12 +83,34 @@ public class UserRepositoryEF : GenericRepositoryEF<IUser, IUserVisitor>, IUserR
 
     public override async Task<IUser?> GetByIdAsync(Guid id)
     {
-        var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(c => c.Id == id);
+        var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == id);
 
         if (userDM == null)
             return null;
 
         var user = _mapper.Map<UserDataModel, User>(userDM);
         return user;
+    }
+
+    public async Task<bool> Exists(Guid ID)
+    {
+        var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == ID);
+        if (userDM == null)
+            return false;
+        return true;
+    }
+    public async Task<IUser?> ActivationUser(Guid Id, DateTime FinalDate)
+    {
+
+        var userDataModel = await _context.Set<UserDataModel>()
+                .FirstAsync(u => u.Id == Id);
+
+        userDataModel.PeriodDateTime._finalDate = FinalDate;
+        _context.Entry(userDataModel).State = EntityState.Modified;
+
+        await _context.SaveChangesAsync();
+        var user = _mapper.Map<UserDataModel, User>(userDataModel);
+        return user;
+
     }
 }
