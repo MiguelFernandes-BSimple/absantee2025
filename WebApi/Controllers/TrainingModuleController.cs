@@ -73,4 +73,12 @@ public class TrainingModuleController : ControllerBase
             return BadRequest(id);
         }
     }
+
+    [HttpGet("completed")]
+    public async Task<IActionResult> GetAllCollaborators([FromQuery] Guid subjectId, [FromQuery] DateTime fromDate)
+    {
+        var collaborators = await _collaboratorService.GetCompletedTrainingsAsync(subjectId, fromDate);
+
+        return Ok(collaborators);
+    }
 }
