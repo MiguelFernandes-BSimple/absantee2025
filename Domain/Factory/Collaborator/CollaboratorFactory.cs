@@ -29,7 +29,7 @@ namespace Domain.Factory
 
         public async Task<Collaborator> Create(User user, PeriodDateTime periodDateTime)
         {
-            if (user.DeactivationDateIsBefore(periodDateTime.GetFinalDate()))
+            if (user.DeactivationDateIsBefore(periodDateTime._finalDate))
                 throw new ArgumentException("User deactivation date is before collaborator contract end date.");
 
             if (user.IsDeactivated())

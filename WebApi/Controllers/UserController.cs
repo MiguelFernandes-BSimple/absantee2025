@@ -35,26 +35,14 @@ public class UserController : ControllerBase
     }
 
     // Patch: api/User/dfgsdfgd/activation
-    [HttpPatch("{id}/activation")]
-    public async Task<ActionResult<UserDTO>> UpdateActivation([FromBody] Guid Id, ActivationDTO activationPeriodDTO)
+    [HttpPatch("{id}/updateactivation")]
+    public async Task<ActionResult<UserDTO>> UpdateActivation(Guid id, [FromBody] ActivationDTO activationPeriodDTO)
     {
-        if (!await _userService.Exists(Id))
+        if (!await _userService.Exists(id))
             return NotFound();
 
-        var result = await _userService.UpdateActivation(Id, activationPeriodDTO);
+        var result = await _userService.UpdateActivation(id, activationPeriodDTO);
         return Ok(result);
     }
-    /* [HttpPost()]
-    public async Task<ActionResult<UserDTO>> PostRHManager(Guid Id, RHManagerDTO RHManagerDTO, List<string> errorMessage)
-    {
-        if (!await _userService.Exists(Id))
-            return NotFound("Utilizador não encontrado.");
 
-        var result = await rhService.CreateRHManager(Id, RHManagerDTO);
-
-        if (result == null)
-            return BadRequest("Erro ao criar RH Manager.");
-
-        return Ok(result);
-    } */
 }

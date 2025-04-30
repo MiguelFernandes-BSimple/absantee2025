@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DTO;
+using AutoMapper;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -13,11 +14,13 @@ public class UserService
 {
     private IUserRepository _userRepository;
     private IUserFactory _userFactory;
+    private readonly IMapper _mapper;
 
-    public UserService(IUserRepository userRepository, IUserFactory userFactory)
+    public UserService(IUserRepository userRepository, IUserFactory userFactory, IMapper mapper)
     {
         _userRepository = userRepository;
         _userFactory = userFactory;
+        _mapper = mapper;
     }
 
     public async Task<bool> Add(UserDTO userDTO)
@@ -37,7 +40,7 @@ public class UserService
         var User = await _userRepository.GetByIdAsync(Id);
         return User;
     }
-    public async Task<IUser?> UpdateActivation(Guid Id, ActivationDTO activationDTO)
+    public async Task<UserDTO?> UpdateActivation(Guid Id, ActivationDTO activationDTO)
     {
 
         var User = await _userRepository.GetByIdAsync(Id);
@@ -47,7 +50,7 @@ public class UserService
             await _userRepository.ActivationUser(Id, activationDTO.FinalDate);
             await _userRepository.SaveChangesAsync();
         }
-        return User;
+        return _mapper.Map<User, UserDTO>(User);
     }
     public async Task<bool> Exists(Guid Id)
     {

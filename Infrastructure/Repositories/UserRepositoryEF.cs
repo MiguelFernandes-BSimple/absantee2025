@@ -120,7 +120,7 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         var userDataModel = await _context.Set<UserDataModel>()
                 .FirstAsync(u => u.Id == Id);
 
-        userDataModel.PeriodDateTime._finalDate = FinalDate;
+        userDataModel.PeriodDateTime = new PeriodDateTime(userDataModel.PeriodDateTime._initDate, FinalDate.ToUniversalTime());
         _context.Entry(userDataModel).State = EntityState.Modified;
 
         await _context.SaveChangesAsync();

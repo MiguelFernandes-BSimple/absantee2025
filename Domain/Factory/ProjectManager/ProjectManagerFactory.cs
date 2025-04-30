@@ -25,7 +25,7 @@ namespace Domain.Factory
             if (user == null)
                 throw new ArgumentException("User does not exist");
 
-            else if (user.DeactivationDateIsBefore(periodDateTime.GetInitDate()))
+            else if (user.DeactivationDateIsBefore(periodDateTime._initDate))
                 throw new ArgumentException("Deactivation date is before init date");
 
             else if (user.IsDeactivated())
