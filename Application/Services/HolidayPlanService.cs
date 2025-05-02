@@ -109,8 +109,8 @@ public class HolidayPlanService
                     .Where(period2 => period1.Intersects(period2))
                     .SelectMany(period2 => new List<IHolidayPeriod> { period1, period2 }))
                     .Distinct();
-
-        return hp;
+ 
+        return hp; 
     }
 
     public async Task<IEnumerable<IHolidayPeriod>> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(Guid projectId, PeriodDate period)

@@ -28,8 +28,8 @@ public class CollaboratorController : ControllerBase
         return Ok(collaborators);
     }
 
-    [HttpGet("FindBy")]
-    public async Task<IActionResult> FindBy([FromQuery] string? name, [FromQuery] string? surname)
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<Guid>>> FindBy([FromQuery] string? name, [FromQuery] string? surname)
     {
         if (name == null && surname == null)
             return BadRequest("Please insert at least a name or surname");
@@ -69,7 +69,7 @@ public class CollaboratorController : ControllerBase
     }
 
     // endpoint utilizado para testes
-    [HttpGet("Count")]
+    [HttpGet("count")]
     public async Task<IActionResult> GetCount()
     {
         var count = await _collabService.GetCount();
@@ -125,4 +125,20 @@ public class CollaboratorController : ControllerBase
         var result = await _holidayPlanService.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(id, periodDate);
         return Ok(result);
     }
+
+    // uc20 
+    [HttpGet("holidayperiods/overlaps")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetOverlapingPeriodsBetween(
+        [FromQuery] Guid collabId1,
+        [FromQuery] Guid collabId2,
+        [FromQuery] PeriodDate periodDate)
+    {
+        var periods = await _holidayPlanService.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(collabId1, collabId2, periodDate);
+
+        if (periods == null) return BadRequest();
+
+        return Ok(periods);
+    }
+
+
 }
