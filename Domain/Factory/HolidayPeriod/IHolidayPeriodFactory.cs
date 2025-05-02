@@ -5,6 +5,7 @@ namespace Domain.Factory;
 public interface IHolidayPeriodFactory
 {
     Task<HolidayPeriod> Create(Guid holidayPlanId, DateOnly initDate, DateOnly finalDate);
+    Task<HolidayPeriod> CreateWithoutHolidayPlan(Guid collaboratorId, DateOnly initDate, DateOnly finalDate);
     HolidayPeriod Create(IHolidayPeriodVisitor visitor);
 }
 
