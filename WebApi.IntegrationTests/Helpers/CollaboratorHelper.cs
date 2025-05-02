@@ -25,4 +25,22 @@ public static class CollaboratorHelper
             }
         };
     }
+
+    public static CreateCollaboratorDto GenerateRandomCollaboratorDtoWithDates(DateTime ini, DateTime end)
+    {
+        var name = Faker.Name.First();
+        var surname = Faker.Name.Last();
+        return new CreateCollaboratorDto
+        {
+            Names = name,
+            Surnames = surname,
+            Email = $"{name}-{surname}@test.com",
+            deactivationDate = end,
+            PeriodDateTime = new PeriodDateTime
+            {
+                _initDate = ini,
+                _finalDate = end
+            }
+        };
+    }
 }
