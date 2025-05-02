@@ -59,16 +59,13 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
     public async Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
     {
 
-        var holidayPlans = await _context.Set<HolidayPlanDataModel>()
+        var holidayPeriodsDM = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.CollaboratorId == collaboratorId)
             .Include(hp => hp.HolidayPeriods)
-            .ToListAsync();
-
-        var holidayPeriodsDM = holidayPlans
             .SelectMany(hp => hp.HolidayPeriods)
             .Where(hperiod => periodDate.InitDate <= hperiod.PeriodDate.InitDate
                     && periodDate.FinalDate >= hperiod.PeriodDate.FinalDate)
-            .ToList();
+            .ToListAsync();
 
         return holidayPeriodsDM.Select(_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>);
     }

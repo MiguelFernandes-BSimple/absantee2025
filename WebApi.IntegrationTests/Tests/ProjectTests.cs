@@ -128,4 +128,50 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
         Assert.NotEmpty(collaborators);
         Assert.Equal(collaboratorCreatedDTO2.Id, collaborators.First().Id);
     }
+
+    [Fact]
+    public async Task GetHolidayCountByCollaborator_ReturnsNumberOfDays()
+    {
+        // Arrange
+        // Create a random project payload
+        var projectDTO = ProjectHelper.GenerateRandomProjectDto(
+            DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
+            DateOnly.FromDateTime(DateTime.Today.AddYears(1))
+            );
+        var projectCreatedDTO = await PostAndDeserializeAsync<ProjectDTO>("/api/Project", projectDTO);
+
+        // Create Collaborator
+        var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
+
+        // Create Association
+        var associationDTO = AssociationProjectCollaboratorHelper.
+            GenerateCreateAssociationProjectCollaboratorDto(collaboratorCreatedDTO.Id, projectCreatedDTO.PeriodDate);
+        var createdAssociationDTO = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{projectCreatedDTO.Id}/collaborators", associationDTO);
+
+        //Create Holiday Plan with HolidayPeriods
+        var holidayPeriod1 = new PeriodDate
+            (DateOnly.FromDateTime(DateTime.Today.AddMonths(1)),
+            DateOnly.FromDateTime(DateTime.Today.AddMonths(1)).AddDays(5));
+
+        var holidayPeriod2 = new PeriodDate
+            (DateOnly.FromDateTime(DateTime.Today.AddMonths(6)),
+            DateOnly.FromDateTime(DateTime.Today.AddMonths(6)).AddDays(10));
+
+        var holidayPeriods = new List<PeriodDate> { holidayPeriod1,  holidayPeriod2 };
+
+        var createHolidayPlanDTO = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaboratorCreatedDTO.Id, holidayPeriods);
+        var holidayPlanDTO = await PostAndDeserializeAsync<HolidayPlanDTO>(
+            $"/api/holidayplans", createHolidayPlanDTO);
+
+        //expected result is the number of utils days in holiday periods
+        var expected = holidayPlanDTO.HolidayPeriods.Sum(hp => hp.PeriodDate.GetNumberOfCommonUtilDays());
+
+        //Act
+        var result = await GetAndDeserializeAsync<int>(
+            $"/api/Project/{projectCreatedDTO.Id}/collaborators/{collaboratorCreatedDTO.Id}/holidays/count");
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
 }

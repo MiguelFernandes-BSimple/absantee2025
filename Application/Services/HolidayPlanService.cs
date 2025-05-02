@@ -30,8 +30,8 @@ public class HolidayPlanService
         HolidayPlan holidayPlan;
         try
         {
-            var holidayPeriods = holidayPlanDTO.HolidayPeriods.Select(_mapper.Map<HolidayPeriodDTO, HolidayPeriod>).ToList();
-            holidayPlan = await _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, holidayPeriods);
+            var periodDates = holidayPlanDTO.HolidayPeriods.Select(hp => new PeriodDate(hp.InitDate, hp.FinalDate)).ToList();
+            holidayPlan = await _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, periodDates);
             var result = await _holidayPlanRepository.AddAsync(holidayPlan);
             return _mapper.Map<HolidayPlan, HolidayPlanDTO>(result);
         }
@@ -42,12 +42,12 @@ public class HolidayPlanService
     }
 
     // UC1
-    public async Task<HolidayPeriodDTO> AddHolidayPeriod(CreateHolidayPeriodDTO holidayPeriodDTO)
+    public async Task<HolidayPeriodDTO> AddHolidayPeriod(Guid holidayPlanId, CreateHolidayPeriodDTO holidayPeriodDTO)
     {
         HolidayPeriod holidayPeriod;
         try
         {
-            holidayPeriod = await _holidayPeriodFactory.Create(holidayPeriodDTO.HolidayPlanId, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
+            holidayPeriod = await _holidayPeriodFactory.Create(holidayPlanId, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
             await _holidayPlanRepository.AddHolidayPeriodAsync(holidayPeriod);
             return _mapper.Map<HolidayPeriod, HolidayPeriodDTO>(holidayPeriod);
         }
