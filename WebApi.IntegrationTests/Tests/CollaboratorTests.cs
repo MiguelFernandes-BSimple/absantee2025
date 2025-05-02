@@ -157,7 +157,6 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
             Assert.Equal(finalDate, period.PeriodDate.FinalDate);
         }
     }
-}
 
     [Fact]
     public async Task ListHolidayPeriodContainingDay_Returns200AndObject()
@@ -186,7 +185,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.Equal(period, result.PeriodDate);
     }
 
-        [Fact]
+    [Fact]
     public async Task ListHolidayPeriodLongerThan_Returns200AndObjects()
     {
         // Arrange: Create a random Collaborator and respective HolidayPeriods
