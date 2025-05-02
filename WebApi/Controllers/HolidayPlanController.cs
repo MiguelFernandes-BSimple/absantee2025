@@ -19,17 +19,25 @@ public class HolidayPlanController : Controller
     [HttpPost]
     public async Task<ActionResult<HolidayPlanDTO>> AddHolidayPlan(CreateHolidayPlanDTO createHolidayPlanDTO)
     {
-        var result = await _holidayPlanService.AddHolidayPlan(createHolidayPlanDTO);
+        try
+        {
+            var result = await _holidayPlanService.AddHolidayPlan(createHolidayPlanDTO);
 
-        if (result == null)
-            return BadRequest();
+            if (result == null)
+                return BadRequest();
 
-        return Created("", result);
+            return Created("", result);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
+
     }
 
     // UC4: Como gestor de projetos, quero criar projeto
     [HttpPost("{holidayPlanId}/holidayperiod")]
-    public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(Guid holidayPlanId, [FromBody]CreateHolidayPeriodDTO createHolidayPeriodDTO)
+    public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(Guid holidayPlanId, [FromBody] CreateHolidayPeriodDTO createHolidayPeriodDTO)
     {
         var result = await _holidayPlanService.AddHolidayPeriod(holidayPlanId, createHolidayPeriodDTO);
 

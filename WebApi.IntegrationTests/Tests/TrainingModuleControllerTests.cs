@@ -32,7 +32,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Act : Post new module
         var createdTrainingModuleDTO =
-            await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodule", trainingModuleDTO);
+            await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodules", trainingModuleDTO);
 
         // Assert
         Assert.NotNull(createdTrainingModuleDTO);
@@ -58,7 +58,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Post new module
         var createdTrainingModuleDTO =
-            await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodule", trainingModuleDTO);
+            await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodules", trainingModuleDTO);
 
 
         // Create a new Collaborator to add to module
@@ -73,7 +73,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Act : Add new collaborator to module
         var createdAssocDTO =
-            await PostAndDeserializeAsync<AssociationTrainingModuleCollaboratorDTO>($"/api/trainingmodule/{createdTrainingModuleDTO.Id}/collaborators", assocTMCDTO);
+            await PostAndDeserializeAsync<AssociationTrainingModuleCollaboratorDTO>($"/api/trainingmodules/{createdTrainingModuleDTO.Id}/collaborators", assocTMCDTO);
 
         // Assert
         Assert.NotNull(createdAssocDTO);
@@ -99,13 +99,13 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Post new module
         var createdTrainingModuleDTO =
-            await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodule", trainingModuleDTO);
+            await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodules", trainingModuleDTO);
 
         var expected = new List<Guid>();
 
         // Act
         var collabdIds =
-            await GetAndDeserializeAsync<IEnumerable<Guid>>($"api/trainingmodule/not-completed/subjects/{createdTrainingSubjectDTO.Id}/collaborators/active/");
+            await GetAndDeserializeAsync<IEnumerable<Guid>>($"api/trainingmodules/not-completed/subjects/{createdTrainingSubjectDTO.Id}/collaborators/active/");
 
         // Assert
         Assert.True(expected.SequenceEqual(collabdIds));

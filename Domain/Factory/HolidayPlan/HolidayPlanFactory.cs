@@ -33,9 +33,35 @@ public class HolidayPlanFactory : IHolidayPlanFactory
             .Select(p => _holidayPeriodFactory.CreateWithoutHolidayPlan(collaboratorId, p.InitDate, p.FinalDate))
             .ToList();
 
-        var holidayPeriods = (await Task.WhenAll(holidayPeriodTasks)).ToList();
+        var holidayPeriods = new List<HolidayPeriod>();
+
+        foreach (var period in periods)
+        {
+            try
+            {
+                var holidayPeriod = await _holidayPeriodFactory.CreateWithoutHolidayPlan(
+                    collaboratorId, period.InitDate, period.FinalDate);
+
+                holidayPeriods.Add(holidayPeriod);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while creating holiday period for dates {period.InitDate} to {period.FinalDate}: {ex.Message}", ex);
+            }
+        }
+
+        // Check for intersecting periods
+        for (int i = 0; i < holidayPeriods.Count; i++)
+        {
+            for (int j = i + 1; j < holidayPeriods.Count; j++)
+            {
+                if (holidayPeriods[i].Intersects(holidayPeriods[j]))
+                    throw new ArgumentException("Holiday periods must not intersect.");
+            }
+        }
 
         return new HolidayPlan(collaboratorId, holidayPeriods);
+
     }
 
     public HolidayPlan Create(IHolidayPlanVisitor visitor)
