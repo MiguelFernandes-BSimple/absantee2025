@@ -1,6 +1,4 @@
-﻿using Domain.Interfaces;
-
-namespace Domain.Models;
+﻿namespace Domain.Models;
 
 public class PeriodDateTime
 {
@@ -61,6 +59,19 @@ public class PeriodDateTime
     public bool Intersects(PeriodDateTime periodDateTime)
     {
         return _initDate <= periodDateTime._finalDate && periodDateTime._initDate <= _finalDate;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not PeriodDateTime other)
+            return false;
+
+        return _initDate == other._initDate && _finalDate == other._finalDate;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_initDate, _finalDate);
     }
 }
 
