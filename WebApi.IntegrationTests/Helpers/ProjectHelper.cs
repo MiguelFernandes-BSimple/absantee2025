@@ -21,4 +21,19 @@ public static class ProjectHelper
             }
         };
     }
+
+    public static CreateProjectDTO GenerateRandomProjectDto(DateOnly initDate, DateOnly finalDate)
+    {
+        var number = _random.Next(0, 999999);
+        return new CreateProjectDTO
+        {
+            Title = $"teste {number}",
+            Acronym = $"T{number}",
+            PeriodDate = new PeriodDate
+            {
+                InitDate = initDate,
+                FinalDate = finalDate
+            }
+        };
+    }
 }
