@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Application.DTO;
+using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
 using Xunit;
 
@@ -97,6 +98,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.Equal(createdCollabDTO.Id, collabIdList.First());
     }
 
+    // este teste falha se todos os testes forem corridos ao mesmo tempo
     [Fact]
     public async Task Count_ReturnsLong()
     {
@@ -121,6 +123,38 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
 
         // assert
         Assert.Equal(5, count);
+    }
+
+    [Fact]
+    public async Task FindOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates_ReturnsPeriods()
+    {
+        // arrange
+        var initDate = DateOnly.FromDateTime(new DateTime(2025, 5, 10));
+        var finalDate = DateOnly.FromDateTime(new DateTime(2025, 5, 20));
+
+        var collabDTO1 = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var createdCollab1 = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO1);
+        var periodsForCollab1 = new List<PeriodDate> { new PeriodDate(initDate, finalDate) };
+        var holidayPlan1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(createdCollab1.Id, periodsForCollab1);
+        var createdHolidayPlan1 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan1);
+
+        var collabDTO2 = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var createdCollab2 = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO2);
+        var periodsForCollab2 = new List<PeriodDate> { new PeriodDate(initDate, finalDate) };
+        var holidayPlan2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(createdCollab2.Id, periodsForCollab2);
+        var createdHolidayPlan2 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan2);
+
+        // act
+        var returnedPeriods = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>($"/api/collaborators/holidayperiods/overlaps?collabId1={createdCollab1.Id}&collabId2={createdCollab2.Id}&InitDate={initDate:yyyy-MM-dd}&FinalDate={finalDate:yyyy-MM-dd}");
+
+        // assert
+        Assert.NotNull(returnedPeriods);
+        Assert.NotEmpty(returnedPeriods);
+        foreach (var period in returnedPeriods)
+        {
+            Assert.Equal(initDate, period.PeriodDate.InitDate);
+            Assert.Equal(finalDate, period.PeriodDate.FinalDate);
+        }
     }
 }
 
