@@ -80,7 +80,7 @@ public class CollaboratorController : ControllerBase
         return NotFound("No collaborators found");
     }
     //UC13
-    [HttpGet("collaborators/{collaboratorId}/holidayPlan/holidayPeriods/ByPeriod")]
+    [HttpGet("{collaboratorId}/holidayPlan/holidayPeriods/ByPeriod")]
     public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaboratorByPeriod(Guid collaboratorId, [FromQuery] PeriodDate periodDate)
     {
         var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
