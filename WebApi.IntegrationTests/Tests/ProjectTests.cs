@@ -225,13 +225,76 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
         var holidayPlanDTO2 = await PostAndDeserializeAsync<HolidayPlanDTO>(
             $"/api/holidayplans", createHolidayPlanDTO2);
 
-        //Act : Search holiday Periods by holidayPeriod2
+        //Act : Search holiday Periods by searchPeriod
+        var searchPeriod = new PeriodDate
+        {
+            InitDate = holidayPeriod2.InitDate.AddDays(-3),
+            FinalDate = holidayPeriod2.FinalDate.AddDays(-2),
+        };
+        //expected is the intersection between searchPeriod and holidayPeriod2
+        var expected =
+            new PeriodDate
+            {
+                InitDate = holidayPeriod2.InitDate,
+                FinalDate = holidayPeriod2.FinalDate.AddDays(-2),
+            };
         var result = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>(
-            $"api/Project/{projectCreatedDTO.Id}/collaborators/holidays/byPeriod?InitDate={holidayPeriod2.InitDate.ToString("yyyy-MM-dd")}&FinalDate={holidayPeriod2.FinalDate.ToString("yyyy-MM-dd")}");
+            $"api/Project/{projectCreatedDTO.Id}/collaborators/holidays/byPeriod" +
+            $"?InitDate={searchPeriod.InitDate.ToString("yyyy-MM-dd")}" +
+            $"&FinalDate={searchPeriod.FinalDate.ToString("yyyy-MM-dd")}");
 
         // Assert : List should only contain holidayPeriods2
         Assert.Single(result);
-        Assert.Equal(holidayPeriod2.InitDate, result.First().PeriodDate.InitDate);
-        Assert.Equal(holidayPeriod2.FinalDate, result.First().PeriodDate.FinalDate);
+        Assert.Equal(expected.InitDate, result.First().PeriodDate.InitDate);
+        Assert.Equal(expected.FinalDate, result.First().PeriodDate.FinalDate);
+    }
+
+    [Fact]
+    public async Task GetHolidayCountByCollaboratorAndPeriod_ReturnsNumberOfDays()
+    {
+        // Arrange
+        // Create a random project payload
+        var projectDTO = ProjectHelper.GenerateRandomProjectDto(
+            DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
+            DateOnly.FromDateTime(DateTime.Today.AddYears(1))
+            );
+        var projectCreatedDTO = await PostAndDeserializeAsync<ProjectDTO>("/api/Project", projectDTO);
+
+        // Create Collaborator
+        var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
+
+        // Create Association
+        var associationDTO = AssociationProjectCollaboratorHelper.
+            GenerateCreateAssociationProjectCollaboratorDto(collaboratorCreatedDTO.Id, projectCreatedDTO.PeriodDate);
+        var createdAssociationDTO = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{projectCreatedDTO.Id}/collaborators", associationDTO);
+
+        //Create Holiday Plan with HolidayPeriods
+        var holidayPeriod1 = new PeriodDate
+            (DateOnly.FromDateTime(DateTime.Today.AddMonths(1)),
+            DateOnly.FromDateTime(DateTime.Today.AddMonths(1)).AddDays(5));
+
+        var holidayPeriod2 = new PeriodDate
+            (DateOnly.FromDateTime(DateTime.Today.AddMonths(6)),
+            DateOnly.FromDateTime(DateTime.Today.AddMonths(6)).AddDays(10));
+
+        var holidayPeriods = new List<PeriodDate> { holidayPeriod1, holidayPeriod2 };
+
+        var createHolidayPlanDTO = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaboratorCreatedDTO.Id, holidayPeriods);
+        var holidayPlanDTO = await PostAndDeserializeAsync<HolidayPlanDTO>(
+            $"/api/holidayplans", createHolidayPlanDTO);
+
+        //expected result is number of common days in searchingPeriod
+        var searchingPeriod = new PeriodDate(
+            holidayPeriod2.InitDate,
+            holidayPeriod2.FinalDate.AddDays(-3));
+        var expected = holidayPeriod2.GetNumberOfCommonUtilDaysBetweenPeriods(searchingPeriod);
+
+        //Act : Filter by PeriodDate of HolidayPeriod2
+        var result = await GetAndDeserializeAsync<int>(
+            $"/api/Project/{projectCreatedDTO.Id}/collaborators/{collaboratorCreatedDTO.Id}/holidays/count/byPeriod?InitDate={searchingPeriod.InitDate.ToString("yyyy-MM-dd")}&FinalDate={searchingPeriod.FinalDate.ToString("yyyy-MM-dd")}");
+
+        // Assert
+        Assert.Equal(expected, result);
     }
 }
