@@ -282,6 +282,10 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
 
         // Assert
         Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Contains(result, c => c.Id == collaboratorCreatedDTO.Id);
+        Assert.Equal(collaboratorCreatedDTO.Id, result.First().Id);
+
     }
 
     [Fact]
