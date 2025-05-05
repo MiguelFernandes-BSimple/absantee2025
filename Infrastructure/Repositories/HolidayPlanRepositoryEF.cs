@@ -56,6 +56,18 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
         return ret.Select(h => _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(h));
     }
 
+    public async Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsIntersectionPeriodAsync(List<Guid> collabIds, PeriodDate periodDate)
+    {
+        var ret = await _context.Set<HolidayPlanDataModel>()
+            .Where(hp => collabIds.Contains(hp.CollaboratorId))
+            .SelectMany(hp => hp.HolidayPeriods)
+            .Where(hperiod => periodDate.InitDate <= hperiod.PeriodDate.FinalDate
+                    && periodDate.FinalDate >= hperiod.PeriodDate.InitDate)
+            .ToListAsync();
+
+        return ret.Select(h => _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(h));
+    }
+
     public async Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
     {
 
@@ -65,6 +77,20 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
             .SelectMany(hp => hp.HolidayPeriods)
             .Where(hperiod => periodDate.InitDate <= hperiod.PeriodDate.InitDate
                     && periodDate.FinalDate >= hperiod.PeriodDate.FinalDate)
+            .ToListAsync();
+
+        return holidayPeriodsDM.Select(_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>);
+    }
+
+    public async Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorIntersectingPeriodDate(Guid collaboratorId, PeriodDate periodDate)
+    {
+
+        var holidayPeriodsDM = await _context.Set<HolidayPlanDataModel>()
+            .Where(hp => hp.CollaboratorId == collaboratorId)
+            .Include(hp => hp.HolidayPeriods)
+            .SelectMany(hp => hp.HolidayPeriods)
+            .Where(hperiod => periodDate.InitDate <= hperiod.PeriodDate.FinalDate
+                    && periodDate.FinalDate >= hperiod.PeriodDate.InitDate)
             .ToListAsync();
 
         return holidayPeriodsDM.Select(_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>);
