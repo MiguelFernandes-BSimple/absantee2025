@@ -98,6 +98,15 @@ public class CollaboratorController : ControllerBase
         return Ok(result);
     }
 
+    //US15
+    [HttpGet("longer-than")]
+    public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetWithHolidayPeriodsLongerThan(int days)
+    {
+        var result = await _collabService.FindAllWithHolidayPeriodsLongerThan(days);
+
+        return Ok(result);
+    }
+
 
     // UC17 Get: api/collaborators/foo/holidayperiods/includes-date?date=bar
     [HttpGet("{id}/holidayperiods/includes-date")]
