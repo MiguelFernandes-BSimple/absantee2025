@@ -112,24 +112,22 @@ public class HolidayPlanService
  
         return hp; 
     }
+    private async Task<IEnumerable<HolidayPeriod>> GetIntersectingHolidayPeriodsForProjectCollaboratorsAsync(Guid projectId, PeriodDate period)
+    {
+        var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, period);
+        var collaboratorIds = associations.Select(a => a.CollaboratorId).Distinct().ToList();
+
+        return await _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsIntersectionPeriodAsync(collaboratorIds, period);
+    }
 
     public async Task<IEnumerable<HolidayPeriodDTO>> FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(Guid projectId, PeriodDate period)
     {
-        var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, period);
+        var holidayPeriods = await GetIntersectingHolidayPeriodsForProjectCollaboratorsAsync(projectId, period);
 
-        var collaboratorsIds = associations.Select(a => a.CollaboratorId);
-
-        var holidays = await _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsIntersectionPeriodAsync(collaboratorsIds.ToList(), period);
-        
-        var filteredPeriodsDTO = holidays.Select(h =>
+        return holidayPeriods.Select(h => new HolidayPeriodDTO
         {
-            var intersection = h.PeriodDate.GetIntersection(period);
-            return new HolidayPeriodDTO
-            {
-                PeriodDate = intersection!
-            };
+            PeriodDate = h.PeriodDate.GetIntersection(period)!
         });
-        return filteredPeriodsDTO;
     }
 
     public async Task<IEnumerable<HolidayPeriodDTO>> FindAllHolidayPeriodsForProjectCollaboratorBetweenDatesAsync(Guid collaboratorId, Guid projectId, PeriodDate period)
@@ -167,20 +165,9 @@ public class HolidayPlanService
 
     public async Task<int> GetHolidayDaysForProjectAllCollaboratorBetweenDates(Guid projectId, PeriodDate searchPeriod)
     {
-        var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
+        var holidayPeriods = await GetIntersectingHolidayPeriodsForProjectCollaboratorsAsync(projectId, searchPeriod);
 
-        int totalHolidayDays = 0;
-
-        var collabList = associations.Select(a => a.CollaboratorId);
-
-        var holidayPeriods = await _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsIntersectionPeriodAsync(collabList.ToList(), searchPeriod);
-
-        foreach (var period in holidayPeriods)
-        {
-            totalHolidayDays += period.GetNumberOfCommonUtilDaysBetweenPeriods(searchPeriod);
-        }
-
-        return totalHolidayDays;
+        return holidayPeriods.Sum(period => period.GetNumberOfCommonUtilDaysBetweenPeriods(searchPeriod));
     }
 
     public async Task<HolidayPeriod?> FindHolidayPeriodForCollaboratorThatContainsDay(Guid collabId, DateOnly dateOnly)
