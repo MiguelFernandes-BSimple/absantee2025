@@ -56,7 +56,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
     public async Task<IEnumerable<Collaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
-                    .Where(c => ids.Contains(c.UserId))
+                    .Where(c => ids.Contains(c.Id))
                     .ToListAsync();
 
         var collabs = collabsDm.Select(c => _mapper.Map<CollaboratorDataModel, Collaborator>(c));

@@ -40,19 +40,13 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         return holidayPeriod;
     }
 
-    public async Task<HolidayPeriod> CreateWithoutHolidayPlan(Guid collaboratorId, DateOnly initDate, DateOnly finalDate)
+    public HolidayPeriod CreateWithoutHolidayPlan(Collaborator collaborator, DateOnly initDate, DateOnly finalDate)
     {
         PeriodDate periodDate = new PeriodDate(initDate, finalDate);
-
-        var collaborator = await _collaboratorRepository.GetByIdAsync(collaboratorId);
-        if (collaborator == null)
-            throw new ArgumentException("Collaborator doesn't exist.");
 
         PeriodDateTime periodDateTime = new PeriodDateTime(periodDate);
         if (!collaborator.ContractContainsDates(periodDateTime))
             throw new ArgumentException("Collaborator's contract out of bounds.");
-        
-        //Falta verificar se os periodos não se intersetam
 
         return new HolidayPeriod(periodDate);
     }

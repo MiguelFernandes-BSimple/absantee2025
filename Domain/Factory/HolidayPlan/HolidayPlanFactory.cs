@@ -23,45 +23,39 @@ public class HolidayPlanFactory : IHolidayPlanFactory
 
     public async Task<HolidayPlan> Create(Guid collaboratorId, List<PeriodDate> periods)
     {
-        if (_collaboratorRepository.GetById(collaboratorId) == null)
+        var collab = _collaboratorRepository.GetById(collaboratorId);
+        if (collab == null)
             throw new ArgumentException("Collaborator doesn't exist.");
 
         if (!await _holidayPlanRepository.CanInsertHolidayPlan(collaboratorId))
             throw new ArgumentException("Holiday plan already exists for this collaborator.");
 
-        var holidayPeriodTasks = periods
-            .Select(p => _holidayPeriodFactory.CreateWithoutHolidayPlan(collaboratorId, p.InitDate, p.FinalDate))
-            .ToList();
-
         var holidayPeriods = new List<HolidayPeriod>();
 
         foreach (var period in periods)
         {
+            HolidayPeriod newPeriod;
             try
             {
-                var holidayPeriod = await _holidayPeriodFactory.CreateWithoutHolidayPlan(
-                    collaboratorId, period.InitDate, period.FinalDate);
+                newPeriod = _holidayPeriodFactory.CreateWithoutHolidayPlan(
+                    collab, period.InitDate, period.FinalDate);
 
-                holidayPeriods.Add(holidayPeriod);
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error while creating holiday period for dates {period.InitDate} to {period.FinalDate}: {ex.Message}", ex);
             }
-        }
 
-        // Check for intersecting periods
-        for (int i = 0; i < holidayPeriods.Count; i++)
-        {
-            for (int j = i + 1; j < holidayPeriods.Count; j++)
+            // Check against already-added periods
+            if (holidayPeriods.Any(existing => existing.Intersects(newPeriod)))
             {
-                if (holidayPeriods[i].Intersects(holidayPeriods[j]))
-                    throw new ArgumentException("Holiday periods must not intersect.");
+                throw new ArgumentException($"Holiday periods must not intersect.");
             }
+
+            holidayPeriods.Add(newPeriod);
         }
 
         return new HolidayPlan(collaboratorId, holidayPeriods);
-
     }
 
     public HolidayPlan Create(IHolidayPlanVisitor visitor)
