@@ -112,7 +112,8 @@ public class CollaboratorService
     public async Task<IEnumerable<Collaborator>> FindAllWithHolidayPeriodsBetweenDates(PeriodDate periodDate)
     {
         var holidayPlans = await _holidayPlanRepository.FindHolidayPlansWithinPeriodAsync(periodDate);
-        var collabIds = holidayPlans.Select(hp => hp.CollaboratorId);
+        
+        var collabIds =holidayPlans.Select(holidayPlans => holidayPlans.CollaboratorId);
         return await _collaboratorRepository.GetByIdsAsync(collabIds);
     }
 

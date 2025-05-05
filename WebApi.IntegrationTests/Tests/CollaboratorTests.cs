@@ -219,4 +219,45 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.Equal(period.InitDate, result.First().PeriodDate.InitDate);
         Assert.Equal(period.FinalDate, result.First().PeriodDate.FinalDate);
     }
+    [Fact]
+    public async Task GetCollaboratorsByPeriod_ReturnsCollaboratorsOnHolidayDuringPeriod()
+    {
+        // Arrange
+        var initDate = DateOnly.FromDateTime(new DateTime(2025, 7, 1));
+        var finalDate = DateOnly.FromDateTime(new DateTime(2025, 7, 10));
+
+        // Criação de dois colaboradores
+        var collaborator1 = await PostAndDeserializeAsync<CollaboratorDTO>(
+            "/api/collaborators",
+            CollaboratorHelper.GenerateRandomCollaboratorDto());
+
+        var collaborator2 = await PostAndDeserializeAsync<CollaboratorDTO>(
+            "/api/collaborators",
+            CollaboratorHelper.GenerateRandomCollaboratorDto());
+
+        // Define períodos de férias
+        var period1 = new PeriodDate(initDate, finalDate);
+        var outsidePeriod = new PeriodDate(
+            DateOnly.FromDateTime(new DateTime(2025, 8, 1)),
+            DateOnly.FromDateTime(new DateTime(2025, 8, 10)));
+
+        // Cria planos de férias
+        var holidayPlan1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaborator1.Id, new List<PeriodDate> { period1 });
+        var holidayPlan2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaborator2.Id, new List<PeriodDate> { outsidePeriod });
+
+        
+        var createdHolidayPlan1 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan1);
+        var createdHolidayPlan2 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan2);
+
+        
+        var query = "/api/collaborators/holidayPlan/holidayPeriods/ByPeriod?InitDate=2025-07-1&FinalDate=2025-07-09";
+
+        // Act
+        var result = await GetAndDeserializeAsync<IEnumerable<CollaboratorDTO>>(query);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Contains(result, c => c.Id == collaborator1.Id);
+        Assert.DoesNotContain(result, c => c.Id == collaborator2.Id);
+    }
 }
