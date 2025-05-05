@@ -248,8 +248,13 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var result = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>(query);
 
         // Assert
-        Assert.NotNull(result);
+        var resultList = result.ToList();
+        Assert.Single(resultList);
 
+        var returnedPeriod = resultList.First();
+
+        Assert.Equal(DateOnly.Parse("18/2/2045"), returnedPeriod.PeriodDate.InitDate);
+        Assert.Equal(DateOnly.Parse("18/3/2045"), returnedPeriod.PeriodDate.FinalDate);
     }
 
     [Fact]
