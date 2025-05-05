@@ -4,6 +4,7 @@ using Xunit;
 using Application.DTO;
 using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
+using Domain.Interfaces;
 
 namespace WebApi.IntegrationTests.Tests;
 
@@ -85,7 +86,8 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
     [Fact]
     public async Task GetAllCollaboratorsByPeriod_ReturnsAssociatedCollaborators()
     {
-        // Arrange: Create a random project payload
+        // Arrange
+        // Create a random project payload
         var projectDTO = ProjectHelper.GenerateRandomProjectDto(
             DateOnly.FromDateTime(DateTime.Today),
             DateOnly.FromDateTime(DateTime.Today.AddYears(4))
@@ -122,7 +124,7 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
 
         //Act: Search by periodDate2
         var collaborators = await GetAndDeserializeAsync<List<CollaboratorDTO>>(
-            $"/api/Project/{projectCreatedDTO.Id}/collaborators/byPeriod?InitDate={periodDate2.InitDate}&FinalDate={periodDate2.FinalDate}");
+            $"api/Project/{projectCreatedDTO.Id}/collaborators/byPeriod?InitDate={periodDate2.InitDate.ToString("yyyy-MM-dd")}&FinalDate={periodDate2.FinalDate.ToString("yyyy-MM-dd")}");
 
         // Assert: List should not be empty and only have collaboratorCreatedDTO2
         Assert.NotEmpty(collaborators);
@@ -173,5 +175,63 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
 
         // Assert
         Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public async Task GetHolidaysByProjectAndBetweenPeriod_ReturnsHolidayPeriods()
+    {
+        // Arrange
+        // Create a random project payload
+        var projectDTO = ProjectHelper.GenerateRandomProjectDto(
+            DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
+            DateOnly.FromDateTime(DateTime.Today.AddYears(1))
+            );
+        var projectCreatedDTO = await PostAndDeserializeAsync<ProjectDTO>("/api/Project", projectDTO);
+
+        // Create Collaborators
+        var collaborator1 = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var collaboratorCreatedDTO1 = await PostAndDeserializeAsync<CollaboratorCreatedDto>(
+            "api/collaborators", collaborator1);
+
+        var collaborator2 = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var collaboratorCreatedDTO2 = await PostAndDeserializeAsync<CollaboratorCreatedDto>(
+            "api/collaborators", collaborator2);
+
+        // Create Associations
+        var associationDTO1 = AssociationProjectCollaboratorHelper.
+            GenerateCreateAssociationProjectCollaboratorDto(collaboratorCreatedDTO1.Id, projectCreatedDTO.PeriodDate);
+        var createdAssociationDTO1 = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{projectCreatedDTO.Id}/collaborators", associationDTO1);
+
+        var associationDTO2 = AssociationProjectCollaboratorHelper.
+            GenerateCreateAssociationProjectCollaboratorDto(collaboratorCreatedDTO2.Id, projectCreatedDTO.PeriodDate);
+        var createdAssociationDTO2 = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{projectCreatedDTO.Id}/collaborators", associationDTO2);
+
+        //Create Holiday Plans with HolidayPeriods
+        var holidayPeriod1 = new PeriodDate
+            (DateOnly.FromDateTime(DateTime.Today.AddMonths(1)),
+            DateOnly.FromDateTime(DateTime.Today.AddMonths(1)).AddDays(5));
+        var holidayPeriods1 = new List<PeriodDate> { holidayPeriod1 };
+
+        var createHolidayPlanDTO1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaboratorCreatedDTO1.Id, holidayPeriods1);
+        var holidayPlanDTO1 = await PostAndDeserializeAsync<HolidayPlanDTO>(
+            $"/api/holidayplans", createHolidayPlanDTO1);
+
+        var holidayPeriod2 = new PeriodDate
+            (DateOnly.FromDateTime(DateTime.Today.AddMonths(6)),
+            DateOnly.FromDateTime(DateTime.Today.AddMonths(6)).AddDays(10));
+        var holidayPeriods2 = new List<PeriodDate> { holidayPeriod2 };
+
+        var createHolidayPlanDTO2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaboratorCreatedDTO2.Id, holidayPeriods2);
+        var holidayPlanDTO2 = await PostAndDeserializeAsync<HolidayPlanDTO>(
+            $"/api/holidayplans", createHolidayPlanDTO2);
+
+        //Act : Search holiday Periods by holidayPeriod2
+        var result = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>(
+            $"api/Project/{projectCreatedDTO.Id}/collaborators/holidays/byPeriod?InitDate={holidayPeriod2.InitDate.ToString("yyyy-MM-dd")}&FinalDate={holidayPeriod2.FinalDate.ToString("yyyy-MM-dd")}");
+
+        // Assert : List should only contain holidayPeriods2
+        Assert.Single(result);
+        Assert.Equal(holidayPeriod2.InitDate, result.First().PeriodDate.InitDate);
+        Assert.Equal(holidayPeriod2.FinalDate, result.First().PeriodDate.FinalDate);
     }
 }
