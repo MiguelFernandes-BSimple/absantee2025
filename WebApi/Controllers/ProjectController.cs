@@ -51,15 +51,15 @@ namespace WebApi.Controllers
         }
 
         // UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
-        [HttpGet("{projectId}/collaborators/{collaboratorId}/holidays")]
-        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidaysByCollaborator(Guid projectId, Guid collaboratorId, [FromQuery] PeriodDate periodDate)
+        [HttpGet("{projectId}/collaborators/holidays/byPeriod")]
+        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidaysByProjectAndBetweenPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
         {
-            var holidays = await _holidayPlanService.FindAllHolidayPeriodsForProjectCollaboratorBetweenDatesAsync(projectId, collaboratorId, periodDate);
+            var holidays = await _holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(projectId, periodDate);
             return Ok(holidays);
         }
 
         //UC22: Como gestor de projeto, quero listar quantos dias de férias dum colaborador do projeto tem num dado período
-        [HttpGet("{projectId}/collaborators/{collaboratorId}/holidays/count/ByPeriod")]
+        [HttpGet("{projectId}/collaborators/{collaboratorId}/holidays/count/byPeriod")]
         public async Task<ActionResult<int>> GetHolidayCountByCollaboratorByPeriod(Guid projectId, Guid collaboratorId, [FromQuery]PeriodDate periodDate)
         {
             var count = await _holidayPlanService.GetHolidayDaysForProjectCollaboratorBetweenDates(projectId, collaboratorId, periodDate);
@@ -67,7 +67,7 @@ namespace WebApi.Controllers
         }
 
         //UC23: Como gestor de projeto, quero listar a quantidade de dias de férias de todos os colaboradores do projeto num dado período
-        [HttpGet("{projectId}/collaborators/holidays/count/ByPeriod")]
+        [HttpGet("{projectId}/collaborators/holidays/count/byPeriod")]
         public async Task<ActionResult<int>> GetHolidayCountForAllCollaboratorsByPeriod(Guid projectId, [FromQuery] PeriodDate periodDate)
         {
             var count = await _holidayPlanService.GetHolidayDaysForProjectAllCollaboratorBetweenDates(projectId, periodDate);

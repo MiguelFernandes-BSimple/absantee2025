@@ -20,7 +20,7 @@ public class TrainingSubjectControllerTests : IntegrationTestBase, IClassFixture
 
         // Act : Send POST request to create the training subject
         var createdTrainingSubjectDTO =
-            await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubject", trainingSubjectDTO);
+            await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubjects", trainingSubjectDTO);
 
         // Assert
         Assert.NotNull(createdTrainingSubjectDTO);

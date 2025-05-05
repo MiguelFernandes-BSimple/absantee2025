@@ -9,7 +9,7 @@ public static class CollaboratorHelper
 
     public static CreateCollaboratorDto GenerateRandomCollaboratorDto()
     {
-        var deactivationDate = DateTime.UtcNow.AddYears(_random.Next(1, 5));
+        var deactivationDate = DateTime.UtcNow.AddYears(_random.Next(5, 10));
         var name = Faker.Name.First();
         var surname = Faker.Name.Last();
         return new CreateCollaboratorDto
@@ -22,6 +22,24 @@ public static class CollaboratorHelper
             {
                 _initDate = DateTime.UtcNow,
                 _finalDate = deactivationDate
+            }
+        };
+    }
+
+    public static CreateCollaboratorDto GenerateRandomCollaboratorDtoWithDates(DateTime ini, DateTime end)
+    {
+        var name = Faker.Name.First();
+        var surname = Faker.Name.Last();
+        return new CreateCollaboratorDto
+        {
+            Names = name,
+            Surnames = surname,
+            Email = $"{name}-{surname}@test.com",
+            deactivationDate = end,
+            PeriodDateTime = new PeriodDateTime
+            {
+                _initDate = ini,
+                _finalDate = end
             }
         };
     }

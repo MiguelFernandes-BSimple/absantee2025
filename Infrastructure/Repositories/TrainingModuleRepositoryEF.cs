@@ -37,25 +37,27 @@ public class TrainingModuleRepositoryEF : GenericRepositoryEF<TrainingModule, Tr
 
     public async Task<IEnumerable<TrainingModule>> GetBySubjectIdAndFinished(Guid subjectId, DateTime date)
     {
-        var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
-                                        .Where(t => t.TrainingSubjectId == subjectId
-                                                && t.Periods.All(p => p._finalDate >= date))
-                                        .ToListAsync();
+        var allModules = await _context.Set<TrainingModuleDataModel>()
+                               .Where(t => t.TrainingSubjectId == subjectId)
+                               .ToListAsync();
 
-        var trainingModules = trainingModulesDMs.Select(t => _mapper.Map<TrainingModuleDataModel, TrainingModule>(t));
+        var finishedModules = allModules
+            .Where(t => t.Periods.All(p => p._finalDate <= date));
+
+        var trainingModules = finishedModules.Select(_mapper.Map<TrainingModuleDataModel, TrainingModule>);
 
         return trainingModules;
     }
 
     //Metodo para encontrar os TrainingModules de um dados subject que terminaram depois de uma determinada data
-    public async Task<IEnumerable<TrainingModule>> GetBySubjectAndAfterDateFinished(Guid  subjectId, DateTime date)
+    public async Task<IEnumerable<TrainingModule>> GetBySubjectAndAfterDateFinished(Guid subjectId, DateTime date)
     {
         var trainingModulesDMs = await _context.Set<TrainingModuleDataModel>()
                                         .Where(t => t.TrainingSubjectId == subjectId
                                                 && t.Periods.All(p => p._finalDate <= date))
                                         .ToListAsync();
 
-        var trainingModules = trainingModulesDMs.Select(t => _mapper.Map<TrainingModuleDataModel,TrainingModule>(t));
+        var trainingModules = trainingModulesDMs.Select(t => _mapper.Map<TrainingModuleDataModel, TrainingModule>(t));
 
         return trainingModules;
     }

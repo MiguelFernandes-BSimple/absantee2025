@@ -40,6 +40,17 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         return holidayPeriod;
     }
 
+    public HolidayPeriod CreateWithoutHolidayPlan(Collaborator collaborator, DateOnly initDate, DateOnly finalDate)
+    {
+        PeriodDate periodDate = new PeriodDate(initDate, finalDate);
+
+        PeriodDateTime periodDateTime = new PeriodDateTime(periodDate);
+        if (!collaborator.ContractContainsDates(periodDateTime))
+            throw new ArgumentException("Collaborator's contract out of bounds.");
+
+        return new HolidayPeriod(periodDate);
+    }
+
     public HolidayPeriod Create(IHolidayPeriodVisitor visitor)
     {
         return new HolidayPeriod(visitor.Id, visitor.PeriodDate);

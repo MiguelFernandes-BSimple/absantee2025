@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[Route("api/holidayplan")]
+[Route("api/holidayplans")]
 [ApiController]
 public class HolidayPlanController : Controller
 {
@@ -19,19 +19,27 @@ public class HolidayPlanController : Controller
     [HttpPost]
     public async Task<ActionResult<HolidayPlanDTO>> AddHolidayPlan(CreateHolidayPlanDTO createHolidayPlanDTO)
     {
-        var result = await _holidayPlanService.AddHolidayPlan(createHolidayPlanDTO);
+        try
+        {
+            var result = await _holidayPlanService.AddHolidayPlan(createHolidayPlanDTO);
 
-        if (result == null)
-            return BadRequest();
+            if (result == null)
+                return BadRequest();
 
-        return Created("", result);
+            return Created("", result);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
+
     }
 
     // UC4: Como gestor de projetos, quero criar projeto
-    [HttpPost("holidayperiod")]
-    public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(CreateHolidayPeriodDTO createHolidayPeriodDTO)
+    [HttpPost("{holidayPlanId}/holidayperiod")]
+    public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(Guid holidayPlanId, [FromBody] CreateHolidayPeriodDTO createHolidayPeriodDTO)
     {
-        var result = await _holidayPlanService.AddHolidayPeriod(createHolidayPeriodDTO);
+        var result = await _holidayPlanService.AddHolidayPeriod(holidayPlanId, createHolidayPeriodDTO);
 
         if (result == null)
             return BadRequest();
