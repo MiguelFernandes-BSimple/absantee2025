@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
 using Application.DTO;
 using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
-using Domain.Models;
 using Xunit;
 
 namespace WebApi.IntegrationTests.Tests;
@@ -219,6 +217,34 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.Equal(period.InitDate, result.First().PeriodDate.InitDate);
         Assert.Equal(period.FinalDate, result.First().PeriodDate.FinalDate);
     }
+
+    [Fact]
+    public async Task ListCollaboratorsWithHolidayPeriodsLongerThan_Returns200AndObjects()
+    {
+        // Arrange: Create a random Collaborator and respective HolidayPeriods
+        var init = new DateTime(2045, 2, 1).ToUniversalTime();
+        var end = new DateTime(2045, 3, 20).ToUniversalTime();
+        var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
+        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
+
+        var period = new PeriodDate(DateOnly.Parse("5/2/2045"),
+                DateOnly.Parse("18/2/2045"));
+
+        var holidayPlan = HolidayPlanHelper.GenerateCreateHolidayPlanDto(
+           collaboratorCreatedDTO.Id,
+           new List<PeriodDate> {
+                period
+           }
+       );
+
+        var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
+
+        var result = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
     [Fact]
     public async Task GetCollaboratorsByPeriod_ReturnsCollaboratorsOnHolidayDuringPeriod()
     {
@@ -245,11 +271,11 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var holidayPlan1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaborator1.Id, new List<PeriodDate> { period1 });
         var holidayPlan2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaborator2.Id, new List<PeriodDate> { outsidePeriod });
 
-        
+
         var createdHolidayPlan1 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan1);
         var createdHolidayPlan2 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan2);
 
-        
+
         var query = "/api/collaborators/holidayPlan/holidayPeriods/ByPeriod?InitDate=2025-07-1&FinalDate=2025-07-09";
 
         // Act
