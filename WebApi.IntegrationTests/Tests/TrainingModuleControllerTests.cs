@@ -24,7 +24,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Post new subject and get Id
         var createdTrainingSubjectDTO =
-                    await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubject", trainingSubjectDTO);
+                    await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubjects", trainingSubjectDTO);
 
         // Create a training module payload with random dates
         var trainingModuleDTO =
@@ -50,7 +50,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Post new subject and get Id
         var createdTrainingSubjectDTO =
-                    await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubject", trainingSubjectDTO);
+                    await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubjects", trainingSubjectDTO);
 
         // Create a training module payload with random dates
         var trainingModuleDTO =
@@ -91,7 +91,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Post new subject and get Id
         var createdTrainingSubjectDTO =
-                    await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubject", trainingSubjectDTO);
+                    await PostAndDeserializeAsync<TrainingSubjectDTO>("/api/trainingsubjects", trainingSubjectDTO);
 
         // Create a training module payload with random dates
         var trainingModuleDTO =
@@ -105,7 +105,7 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
 
         // Act
         var collabdIds =
-            await GetAndDeserializeAsync<IEnumerable<Guid>>($"api/trainingmodules/not-completed/subjects/{createdTrainingSubjectDTO.Id}/collaborators/active/");
+            await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/trainingmodules/not-completed/subjects/{createdTrainingSubjectDTO.Id}/collaborators/active/");
 
         // Assert
         Assert.True(expected.SequenceEqual(collabdIds));
