@@ -109,12 +109,14 @@ public class CollaboratorService
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
-    public async Task<IEnumerable<Collaborator>> FindAllWithHolidayPeriodsBetweenDates(PeriodDate periodDate)
+    public async Task<IEnumerable<CollaboratorDTO>> FindAllWithHolidayPeriodsBetweenDates(PeriodDate periodDate)
     {
         var holidayPlans = await _holidayPlanRepository.FindHolidayPlansWithinPeriodAsync(periodDate);
-        
-        var collabIds =holidayPlans.Select(holidayPlans => holidayPlans.CollaboratorId);
-        return await _collaboratorRepository.GetByIdsAsync(collabIds);
+
+        var collabIds = holidayPlans.Select(holidayPlans => holidayPlans.CollaboratorId);
+        var collabs = await _collaboratorRepository.GetByIdsAsync(collabIds);
+
+        return collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
     }
 
     public async Task<IEnumerable<CollaboratorDTO>> FindAllByProject(Guid projectId)
