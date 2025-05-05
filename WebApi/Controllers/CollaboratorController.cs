@@ -89,11 +89,15 @@ public class CollaboratorController : ControllerBase
     }
     //US14 
     [HttpGet("holidayPlan/holidayPeriods/ByPeriod")]
-    public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod([FromQuery] PeriodDate periodDate)
+    public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod(
+        [FromQuery] DateOnly initDate,
+        [FromQuery] DateOnly finalDate)
     {
+        var periodDate = new PeriodDate(initDate, finalDate);
         var result = await _collabService.FindAllWithHolidayPeriodsBetweenDates(periodDate);
         return Ok(result);
     }
+
 
     // UC17 Get: api/collaborators/foo/holidayperiods/includes-date?date=bar
     [HttpGet("{id}/holidayperiods/includes-date")]

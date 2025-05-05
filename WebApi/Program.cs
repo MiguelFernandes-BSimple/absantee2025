@@ -28,6 +28,7 @@ builder.Services.AddTransient<CollaboratorService>();
 builder.Services.AddTransient<AssociationProjectCollaboratorService>();
 builder.Services.AddTransient<ProjectService>();
 builder.Services.AddTransient<TrainingPeriodService>();
+builder.Services.AddTransient<RHManagerService>();
 builder.Services.AddTransient<CollaboratorService>();
 
 builder.Services.AddTransient<HolidayPlanService>();
@@ -44,6 +45,7 @@ builder.Services.AddTransient<IAssociationTrainingModuleCollaboratorsRepository,
 builder.Services.AddTransient<ITrainingPeriodRepository, TrainingPeriodRepositoryEF>();
 builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepositoryEF>();
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositoryEF>();
+builder.Services.AddTransient<IHRMangerRepository, RHManagerRepositoryEF>();
 builder.Services.AddTransient<IHolidayPlanRepository, HolidayPlanRepositoryEF>();
 
 //Factories
@@ -89,6 +91,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
     cfg.CreateMap<TrainingSubject, TrainingSubjectDTO>();
     cfg.CreateMap<TrainingModule, TrainingModuleDTO>();
+    cfg.CreateMap<HRManager, CreateRHManagerDTO>();
     cfg.CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>();
     cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
             .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))

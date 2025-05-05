@@ -8,6 +8,7 @@ namespace Domain.Factory
     {
         Task<HRManager> Create(Guid userId, PeriodDateTime periodDateTime);
         Task<HRManager> Create(Guid userId, DateTime initDate);
+        Task<HRManager> Create(User user, PeriodDateTime periodDateTime);
 
         HRManager Create(IHRManagerVisitor visitor);
     }

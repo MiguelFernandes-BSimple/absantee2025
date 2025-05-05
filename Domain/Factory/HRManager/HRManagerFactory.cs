@@ -40,6 +40,18 @@ public class HRManagerFactory : IHRManagerFactory
 
         return await Create(userId, periodDateTime);
     }
+    public async Task<HRManager> Create(User user, PeriodDateTime periodDateTime)
+    {
+        if (user.DeactivationDateIsBefore(periodDateTime._finalDate))
+            throw new ArgumentException("User deactivation date is before collaborator contract end date.");
+
+        if (user.IsDeactivated())
+            throw new ArgumentException("User is deactivated.");
+
+        HRManager hR = new HRManager(user.Id, periodDateTime);
+
+        return hR;
+    }
 
     public HRManager Create(IHRManagerVisitor visitor)
     {

@@ -157,17 +157,16 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
     }
 
     public async Task<IEnumerable<HolidayPlan>> FindHolidayPlansWithinPeriodAsync(PeriodDate periodDate)
-    {
-        var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
-                    .Where(hp => hp.HolidayPeriods
-                        .Any(hperiod => periodDate.InitDate <= hperiod.PeriodDate.InitDate
-                                    && periodDate.FinalDate >= hperiod.PeriodDate.FinalDate))
-                    // include adicionado com o prof, sendo que hplan e hperiod são um agregado
-                    .Include(hp => hp.HolidayPeriods)
-                    .ToListAsync();
+{
+    var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
+                .Where(hp => hp.HolidayPeriods
+                    .Any(hperiod => periodDate.InitDate <= hperiod.PeriodDate.FinalDate
+                                 && periodDate.FinalDate >= hperiod.PeriodDate.InitDate))
+                .Include(hp => hp.HolidayPeriods)
+                .ToListAsync();
 
-        return holidayPlansDMs.Select(h => _mapper.Map<HolidayPlanDataModel, HolidayPlan>(h));
-    }
+    return holidayPlansDMs.Select(h => _mapper.Map<HolidayPlanDataModel, HolidayPlan>(h));
+}
 
     public override async Task<HolidayPlan?> GetByIdAsync(Guid id)
     {

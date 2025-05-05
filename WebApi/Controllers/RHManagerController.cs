@@ -14,5 +14,20 @@ public class RHManagerController : ControllerBase
     {
         _rhManagerService = rhManagerService;
     }
+    // Post: api/rhmanager
+    [HttpPost]
+    public async Task<ActionResult<CreateRHManagerDTO>> Postrhmanagers([FromBody] CreateRHManagerDTO rHManagerDTO)
+    {
+        {
+            if (rHManagerDTO == null)
+                return BadRequest("Invalid Arguments");
+
+            var rHManagerDTOResult = await _rhManagerService.Add(rHManagerDTO);
+
+            if (rHManagerDTOResult == null) return BadRequest();
+
+            return Created("", rHManagerDTOResult);
+        }
+    }
 }
 
