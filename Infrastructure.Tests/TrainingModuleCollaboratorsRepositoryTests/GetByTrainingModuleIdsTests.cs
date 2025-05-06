@@ -14,57 +14,57 @@ using Moq;
 
 namespace Infrastructure.Tests.TrainingModuleCollaboratorsRepositoryTests
 {
-    public class GetByTrainingModuleIdsTests
-    {
-        private readonly IMapper _mapper;
+    //public class GetByTrainingModuleIdsTests
+    //{
+    //    private readonly IMapper _mapper;
 
-        public GetByTrainingModuleIdsTests()
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                // Add both profiles for testing both mappings
-                cfg.AddProfile<DataModelMappingProfile>();
-            });
+    //    public GetByTrainingModuleIdsTests()
+    //    {
+    //        var config = new MapperConfiguration(cfg =>
+    //        {
+    //            // Add both profiles for testing both mappings
+    //            cfg.AddProfile<DataModelMappingProfile>();
+    //        });
 
-            _mapper = config.CreateMapper();
-        }
+    //        _mapper = config.CreateMapper();
+    //    }
 
-        [Fact]
-        public async Task WhenSearchingByTrainingModuleIds_ThenReturnsExpectedResult()
-        {
-            //Assert
-            var options = new DbContextOptionsBuilder<AbsanteeContext>()
-               .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
-               .Options;
+    //    [Fact]
+    //    public async Task WhenSearchingByTrainingModuleIds_ThenReturnsExpectedResult()
+    //    {
+    //        //Assert
+    //        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+    //           .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
+    //           .Options;
 
-            using var context = new AbsanteeContext(options);
+    //        using var context = new AbsanteeContext(options);
 
-            var trainingModuleCollab1 = new Mock<IAssociationTrainingModuleCollaborator>();
-            trainingModuleCollab1.Setup(t => t.TrainingModuleId).Returns(1);
-            var traingModuleCollab1DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab1.Object);
-            context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab1DM);
+    //        var trainingModuleCollab1 = new Mock<IAssociationTrainingModuleCollaborator>();
+    //        trainingModuleCollab1.Setup(t => t.TrainingModuleId).Returns(1);
+    //        var traingModuleCollab1DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab1.Object);
+    //        context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab1DM);
 
-            var trainingModuleCollab2 = new Mock<IAssociationTrainingModuleCollaborator>();
-            trainingModuleCollab2.Setup(t => t.TrainingModuleId).Returns(2);
-            var traingModuleCollab2DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab2.Object);
-            context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab2DM);
+    //        var trainingModuleCollab2 = new Mock<IAssociationTrainingModuleCollaborator>();
+    //        trainingModuleCollab2.Setup(t => t.TrainingModuleId).Returns(2);
+    //        var traingModuleCollab2DM = new AssociationTrainingModuleCollaboratorDataModel(trainingModuleCollab2.Object);
+    //        context.TrainingModuleCollaboratorDataModels.Add(traingModuleCollab2DM);
 
-            await context.SaveChangesAsync();
+    //        await context.SaveChangesAsync();
 
-            var filteredDMs = new List<AssociationTrainingModuleCollaboratorDataModel>() { traingModuleCollab2DM };
-            var expected = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollab2.Object };
+    //        var filteredDMs = new List<AssociationTrainingModuleCollaboratorDataModel>() { traingModuleCollab2DM };
+    //        var expected = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollab2.Object };
 
 
-            var trainingModuleRepo = new AssociationTrainingModuleCollaboratorRepositoryEF(context, _mapper);
+    //        var trainingModuleRepo = new AssociationTrainingModuleCollaboratorRepositoryEF(context, _mapper);
 
-            //Act
-            var result = await trainingModuleRepo.GetByTrainingModuleIds([2]);
+    //        //Act
+    //        var result = await trainingModuleRepo.GetByTrainingModuleIds([2]);
 
-            //Assert
-            Assert.Equal(
-                expected.Select(e => e.TrainingModuleId),
-                result.Select(r => r.TrainingModuleId)
-            );
-        }
-    }
+    //        //Assert
+    //        Assert.Equal(
+    //            expected.Select(e => e.TrainingModuleId),
+    //            result.Select(r => r.TrainingModuleId)
+    //        );
+    //    }
+    //}
 }

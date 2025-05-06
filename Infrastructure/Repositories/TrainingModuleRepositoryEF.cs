@@ -37,14 +37,12 @@ public class TrainingModuleRepositoryEF : GenericRepositoryEF<TrainingModule, Tr
 
     public async Task<IEnumerable<TrainingModule>> GetBySubjectIdAndFinished(Guid subjectId, DateTime date)
     {
-        var allModules = await _context.Set<TrainingModuleDataModel>()
-                               .Where(t => t.TrainingSubjectId == subjectId)
+        var modules = await _context.Set<TrainingModuleDataModel>()
+                               .Where(t => t.TrainingSubjectId == subjectId
+                               && t.Periods.All(p => p._finalDate <= date))
                                .ToListAsync();
 
-        var finishedModules = allModules
-            .Where(t => t.Periods.All(p => p._finalDate <= date));
-
-        var trainingModules = finishedModules.Select(_mapper.Map<TrainingModuleDataModel, TrainingModule>);
+        var trainingModules = modules.Select(_mapper.Map<TrainingModuleDataModel, TrainingModule>);
 
         return trainingModules;
     }

@@ -7,18 +7,12 @@ using Moq;
 
 namespace Infrastructure.Tests.TrainingSubjectRepositoryTests;
 
-public class TrainingSubjectRepositoryIsDuplicatedTests
+public class TrainingSubjectRepositoryIsDuplicatedTests : RepositoryTestBase
 {
     [Fact]
     public async Task WhenSearchingByTrainingModuleIds_ThenReturnsExpectedResult()
     {
         //Assert
-        var options = new DbContextOptionsBuilder<AbsanteeContext>()
-           .UseInMemoryDatabase(Guid.NewGuid().ToString()) // ensure isolation per test
-           .Options;
-
-        using var context = new AbsanteeContext(options);
-
         var trainingSubject1 = new Mock<ITrainingSubject>();
         trainingSubject1.Setup(t => t.Subject).Returns("Subject1");
         trainingSubject1.Setup(t => t.Description).Returns("Description1");
@@ -36,9 +30,7 @@ public class TrainingSubjectRepositoryIsDuplicatedTests
         var filteredDMs = new List<TrainingSubjectDataModel>() { trainingSubject2DM };
         var expected = new List<ITrainingSubject>() { trainingSubject2.Object };
 
-        var mapper = new Mock<IMapper>();
-
-        var trainingModuleRepo = new TrainingSubjectRepositoryEF(context, mapper.Object);
+        var trainingModuleRepo = new TrainingSubjectRepositoryEF(context, _mapper.Object);
 
         //Act
         var result = await trainingModuleRepo.IsDuplicated("Subject2");

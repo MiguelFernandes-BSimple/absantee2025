@@ -10,7 +10,7 @@ using Domain.Visitor;
 
 namespace Infrastructure.DataModel
 {
-    public class TrainingModuleDataModel : ITrainingModuleVisitor
+    public record TrainingModuleDataModel : ITrainingModuleVisitor
     {
         public Guid Id { get; set; }
         public Guid TrainingSubjectId { get; set; }

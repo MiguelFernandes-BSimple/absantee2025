@@ -361,7 +361,7 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
             $"?InitDate={searchPeriod.InitDate.ToString("yyyy-MM-dd")}" +
             $"&FinalDate={searchPeriod.FinalDate.ToString("yyyy-MM-dd")}");
 
-        // Assert : List should only contain holidayPeriods2
+        // Assert
         Assert.Equal(expected, result);
     }
 }
