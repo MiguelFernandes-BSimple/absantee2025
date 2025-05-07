@@ -20,60 +20,39 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<As
 
     public override AssociationProjectCollaborator? GetById(Guid id)
     {
-        try
-        {
-            var assocDM = _context.Set<AssociationProjectCollaboratorDataModel>()
-                                  .FirstOrDefault(a => a.Id == id);
+        var assocDM = _context.Set<AssociationProjectCollaboratorDataModel>()
+                              .FirstOrDefault(a => a.Id == id);
 
-            if (assocDM == null)
-                return null;
+        if (assocDM == null)
+            return null;
 
-            var assoc = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
-            return assoc;
-        }
-        catch
-        {
-            throw;
-        }
+        var assoc = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
+        return assoc;
     }
 
     public override async Task<AssociationProjectCollaborator?> GetByIdAsync(Guid id)
     {
-        try
-        {
-            var assocDM = await _context.Set<AssociationProjectCollaboratorDataModel>()
-                                  .FirstOrDefaultAsync(a => a.Id == id);
+        var assocDM = await _context.Set<AssociationProjectCollaboratorDataModel>()
+                              .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (assocDM == null)
-                return null;
+        if (assocDM == null)
+            return null;
 
-            var assoc = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
-            return assoc;
-        }
-        catch
-        {
-            throw;
-        }
+        var assoc = _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(assocDM);
+        return assoc;
     }
 
     public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
     {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
-                await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == projectId)
-                              .ToListAsync();
+        IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
+            await _context.Set<AssociationProjectCollaboratorDataModel>()
+                          .Where(a => a.ProjectId == projectId)
+                          .ToListAsync();
 
-            IEnumerable<AssociationProjectCollaborator> assocs =
-                assocDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
+        IEnumerable<AssociationProjectCollaborator> assocs =
+            assocDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
 
-            return assocs;
-        }
-        catch
-        {
-            throw;
-        }
+        return assocs;
     }
 
     public async Task<AssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
@@ -98,65 +77,44 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<As
 
     public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocsDM =
-                await FindByCollaboratorAndProject(collaboratorId, projectId).ToListAsync();
+        IEnumerable<AssociationProjectCollaboratorDataModel> assocsDM =
+            await FindByCollaboratorAndProject(collaboratorId, projectId).ToListAsync();
 
 
-            IEnumerable<AssociationProjectCollaborator> result = assocsDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
+        IEnumerable<AssociationProjectCollaborator> result = assocsDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
 
-            return result;
-        }
-        catch
-        {
-            throw;
-        }
+        return result;
     }
 
     public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndIntersectingPeriodAsync(Guid projectId, PeriodDate periodDate)
     {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
-                await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == projectId
-                                    && a.PeriodDate.InitDate <= periodDate.FinalDate
-                                    && periodDate.InitDate <= a.PeriodDate.FinalDate)
-                              .ToListAsync();
+        IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
+            await _context.Set<AssociationProjectCollaboratorDataModel>()
+                          .Where(a => a.ProjectId == projectId
+                                && a.PeriodDate.InitDate <= periodDate.FinalDate
+                                && periodDate.InitDate <= a.PeriodDate.FinalDate)
+                          .ToListAsync();
 
-            IEnumerable<AssociationProjectCollaborator> assocs =
-                assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
+        IEnumerable<AssociationProjectCollaborator> assocs =
+            assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
-            return assocs;
-        }
-        catch
-        {
-            throw;
-        }
+        return assocs;
     }
 
     public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
     {
-        try
-        {
-            IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
-                await _context.Set<AssociationProjectCollaboratorDataModel>()
-                              .Where(a => a.ProjectId == projectId
-                                    && a.CollaboratorId == collaboratorId
-                                    && a.PeriodDate.InitDate <= periodDate.FinalDate
-                                    && periodDate.InitDate <= a.PeriodDate.FinalDate)
-                              .ToListAsync();
+        IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
+            await _context.Set<AssociationProjectCollaboratorDataModel>()
+                          .Where(a => a.ProjectId == projectId
+                                && a.CollaboratorId == collaboratorId
+                                && a.PeriodDate.InitDate <= periodDate.FinalDate
+                                && periodDate.InitDate <= a.PeriodDate.FinalDate)
+                          .ToListAsync();
 
-            IEnumerable<AssociationProjectCollaborator> assocs =
-                assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
+        IEnumerable<AssociationProjectCollaborator> assocs =
+            assocDM.Select(a => _mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>(a));
 
-            return assocs;
-        }
-        catch
-        {
-            throw;
-        }
+        return assocs;
     }
 
     public async Task<bool> CanInsert(PeriodDate periodDate, Guid collaboratorId, Guid projectId)

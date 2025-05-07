@@ -119,20 +119,37 @@ public class CollaboratorService
         return collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
     }
 
-    public async Task<IEnumerable<CollaboratorDTO>> FindAllByProject(Guid projectId)
+    public async Task<Result<IEnumerable<CollaboratorDTO>>> FindAllByProject(Guid projectId)
     {
-        var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
-        var collabsIds = assocs.Select(c => c.CollaboratorId);
-        var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
-        return collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+        try
+        {
+            var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
+            var collabsIds = assocs.Select(c => c.CollaboratorId);
+            var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
+            var result = collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+            return Result<IEnumerable<CollaboratorDTO>>.Success(result);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<CollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
+        }
     }
 
-    public async Task<IEnumerable<CollaboratorDTO>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
+    public async Task<Result<IEnumerable<CollaboratorDTO>>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
     {
-        var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAndIntersectingPeriodAsync(projectId, periodDate);
-        var collabsIds = assocs.Select(c => c.CollaboratorId);
-        var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
-        return collabs.Select(c => _mapper.Map<Collaborator, CollaboratorDTO>((Collaborator)c));
+        try
+        {
+            var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAndIntersectingPeriodAsync(projectId, periodDate);
+            var collabsIds = assocs.Select(c => c.CollaboratorId);
+            var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
+            var result = collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+            return Result<IEnumerable<CollaboratorDTO>>.Success(result);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<CollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
+        }
+
     }
 
     public async Task<bool> Add(Guid userId, PeriodDateTime periodDateTime)

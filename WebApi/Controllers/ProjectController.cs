@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System;
-using Application.DTO;
+﻿using Application.DTO;
 using Application.Services;
-using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +28,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaborators(Guid projectId)
         {
             var result = await _collaboratorService.FindAllByProject(projectId);
-            return Ok(result);
+            return result.ToActionResult();
         }
 
         // UC12
@@ -39,7 +36,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaboratorsByPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
         {
             var result = await _collaboratorService.FindAllByProjectAndBetweenPeriod(projectId, periodDate);
-            return Ok(result);
+            return result.ToActionResult();
         }
 
         // UC16 : Como gestor de projeto, quero listar quantos dias de férias um colaborador tem marcado durante um projeto
@@ -47,7 +44,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<int>> GetHolidayCountByCollaborator(Guid projectId, Guid collaboratorId)
         {
             var count = await _holidayPlanService.GetHolidayDaysOfCollaboratorInProjectAsync(projectId, collaboratorId);
-            return Ok(count);
+            return count.ToActionResult();
         }
 
         // UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
@@ -55,7 +52,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidaysByProjectAndBetweenPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
         {
             var holidays = await _holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(projectId, periodDate);
-            return Ok(holidays);
+            return holidays.ToActionResult();
         }
 
         //UC22: Como gestor de projeto, quero listar quantos dias de férias dum colaborador do projeto tem num dado período
@@ -63,7 +60,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<int>> GetHolidayCountByCollaboratorByPeriod(Guid projectId, Guid collaboratorId, [FromQuery]PeriodDate periodDate)
         {
             var count = await _holidayPlanService.GetHolidayDaysForProjectCollaboratorBetweenDates(projectId, collaboratorId, periodDate);
-            return Ok(count);
+            return count.ToActionResult();
         }
 
         //UC23: Como gestor de projeto, quero listar a quantidade de dias de férias de todos os colaboradores do projeto num dado período
@@ -71,7 +68,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<int>> GetHolidayCountForAllCollaboratorsByPeriod(Guid projectId, [FromQuery] PeriodDate periodDate)
         {
             var count = await _holidayPlanService.GetHolidayDaysForProjectAllCollaboratorBetweenDates(projectId, periodDate);
-            return Ok(count);
+            return count.ToActionResult();
         }
 
         // UC4: Como gestor de projetos, quero criar projeto
@@ -89,7 +86,7 @@ namespace WebApi.Controllers
         {
             var result = await _associationProjectCollaboratorService.Add(associationDTO.PeriodDate, associationDTO.CollaboratorId, projectId);
 
-            return Created("", result);
+            return result.ToActionResult();
         }
     }
 }

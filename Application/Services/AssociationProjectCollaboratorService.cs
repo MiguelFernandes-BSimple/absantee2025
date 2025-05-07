@@ -19,11 +19,22 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<AssociationProjectCollaboratorDTO> Add(PeriodDate periodDate, Guid collabId, Guid projectId)
+        public async Task<Result<AssociationProjectCollaboratorDTO>> Add(PeriodDate periodDate, Guid collabId, Guid projectId)
         {
-            var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
-            var assocCreated = await _assocRepository.AddAsync(assoc);
-            return _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>(assocCreated);
+            try
+            {
+                var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
+                var assocCreated = await _assocRepository.AddAsync(assoc);
+                var result = _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>(assocCreated);
+                return Result<AssociationProjectCollaboratorDTO>.Success(result);
+            } catch(ArgumentException a)
+            {
+                return Result<AssociationProjectCollaboratorDTO>.Failure(Error.BadRequest(a.Message));
+            }
+            catch (Exception ex)
+            {
+                return Result<AssociationProjectCollaboratorDTO>.Failure(Error.InternalServerError(ex.Message));
+            }
         }
     }
 }
