@@ -56,7 +56,7 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
         return ret.Select(h => _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(h));
     }
 
-    public async Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsIntersectionPeriodAsync(List<Guid> collabIds, PeriodDate periodDate)
+    public async Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsIntersectingPeriodAsync(List<Guid> collabIds, PeriodDate periodDate)
     {
         var ret = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => collabIds.Contains(hp.CollaboratorId))

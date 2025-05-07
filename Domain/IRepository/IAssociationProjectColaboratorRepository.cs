@@ -9,7 +9,7 @@ public interface IAssociationProjectCollaboratorRepository : IGenericRepository<
     public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId);
     public Task<AssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
     public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
-    public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(Guid projectId, PeriodDate periodDate);
+    public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndIntersectingPeriodAsync(Guid projectId, PeriodDate periodDate);
     Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate);
     public Task<bool> CanInsert(PeriodDate periodDate, Guid collaboratorId, Guid projectId);
 }

@@ -114,7 +114,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<As
         }
     }
 
-    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndBetweenPeriodAsync(Guid projectId, PeriodDate periodDate)
+    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndIntersectingPeriodAsync(Guid projectId, PeriodDate periodDate)
     {
         try
         {

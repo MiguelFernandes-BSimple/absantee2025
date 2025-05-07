@@ -129,7 +129,7 @@ public class CollaboratorService
 
     public async Task<IEnumerable<CollaboratorDTO>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
     {
-        var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAndBetweenPeriodAsync(projectId, periodDate);
+        var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAndIntersectingPeriodAsync(projectId, periodDate);
         var collabsIds = assocs.Select(c => c.CollaboratorId);
         var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
         return collabs.Select(c => _mapper.Map<Collaborator, CollaboratorDTO>((Collaborator)c));
