@@ -25,6 +25,12 @@ namespace WebApi.IntegrationTests.Tests
             return JsonConvert.DeserializeObject<T>(body)!;
         }
 
+        protected async Task<HttpResponseMessage> PostAsync(string url, object payload)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+            return await Client.PostAsync(url, content);
+        }
+
         protected async Task<T> GetAndDeserializeAsync<T>(string url)
         {
             var response = await Client.GetAsync(url);

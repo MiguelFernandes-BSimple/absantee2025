@@ -5,6 +5,7 @@ using Application.DTO;
 using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
 using Domain.Interfaces;
+using System.Net;
 
 namespace WebApi.IntegrationTests.Tests;
 
@@ -25,12 +26,51 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
         // Act: Send the POST request to create the project
         var createdProjectDTO = await PostAndDeserializeAsync<ProjectDTO>("/api/Project", projectDTO);
 
-        // Assert: Check that the status code is 201 Created
+        // Assert
         Assert.NotNull(createdProjectDTO);
         Assert.Equal(projectDTO.Title, createdProjectDTO.Title);
         Assert.Equal(projectDTO.Acronym, createdProjectDTO.Acronym);
         Assert.Equal(projectDTO.PeriodDate.InitDate, createdProjectDTO.PeriodDate.InitDate);
         Assert.Equal(projectDTO.PeriodDate.FinalDate, createdProjectDTO.PeriodDate.FinalDate);
+    }
+
+    [Fact]
+    public async Task CreateProject_WithInvalidAcronym_Returns400BadRequest()
+    {
+        // Arrange
+        var invalidProjectDTO = ProjectHelper.GenerateRandomProjectDto();
+        invalidProjectDTO.Acronym = "Invalid"; // contains lowercase letters
+
+        // Act
+        var response = await PostAsync("/api/Project", invalidProjectDTO);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Equal("Acronym must be 1 to 10 characters long and contain only uppercase letters and digits.", body);
+    }
+
+    [Fact]
+    public async Task AssociateCollaboratorWithProject_CollaboratorDontExists_Returns400BadRequest()
+    {
+        // Arrange
+        // Create a random project payload
+        var projectDTO = ProjectHelper.GenerateRandomProjectDto();
+        var projectCreatedDTO = await PostAndDeserializeAsync<ProjectDTO>("/api/Project", projectDTO);
+
+        //Create a random collaborator Id
+        var collaboradorId = Guid.NewGuid();
+        // Create Association
+        var associationDTO = AssociationProjectCollaboratorHelper.
+            GenerateCreateAssociationProjectCollaboratorDto(collaboradorId, projectCreatedDTO.PeriodDate);
+        //Act
+        var response = await PostAsync($"/api/Project/{projectCreatedDTO.Id}/collaborators", associationDTO);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Equal("Invalid arguments", body);
     }
 
     [Fact]
