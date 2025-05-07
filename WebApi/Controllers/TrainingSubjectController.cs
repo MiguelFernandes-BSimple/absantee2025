@@ -20,17 +20,10 @@ public class TrainingSubjectController : ControllerBase
     //      - descrição (não nulo, max. 100 carateres alfanuméricos)
     // POST  api/TrainingSubject
     [HttpPost]
-    public async Task<ActionResult> AddTrainingSubject(AddTrainingSubjectDTO tsDTO)
+    public async Task<ActionResult<TrainingSubjectDTO>> AddTrainingSubject(AddTrainingSubjectDTO tsDTO)
     {
-        try
-        {
-            TrainingSubjectDTO addedTS = await _trainingSubjectService.Add(tsDTO);
+        var addedTS = await _trainingSubjectService.Add(tsDTO);
 
-            return Created("", addedTS);
-        }
-        catch
-        {
-            return BadRequest(tsDTO.Subject);
-        }
+        return addedTS.ToActionResult();
     }
 }

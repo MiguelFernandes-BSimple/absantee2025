@@ -1,4 +1,3 @@
-using Application.DTO.AssociationTrainingModuleCollaborator;
 using Application.DTO.TrainingModule;
 using AutoMapper;
 using Domain.Factory;
@@ -20,13 +19,26 @@ public class TrainingModuleService
         _mapper = mapper;
     }
 
-    public async Task<TrainingModuleDTO> Add(AddTrainingModuleDTO tmDTO)
+    public async Task<Result<TrainingModuleDTO>> Add(AddTrainingModuleDTO tmDTO)
     {
         TrainingModule tm;
 
-        tm = await _trainingModuleFactory.Create(tmDTO.TrainingSubjectId, tmDTO.Periods);
-        tm = await _trainingModuleRepository.AddAsync(tm);
+        try
+        {
+            tm = await _trainingModuleFactory.Create(tmDTO.TrainingSubjectId, tmDTO.Periods);
+            tm = await _trainingModuleRepository.AddAsync(tm);
+        }
+        catch (ArgumentException a)
+        {
+            return Result<TrainingModuleDTO>.Failure(Error.BadRequest(a.Message));
+        }
+        catch (Exception e)
+        {
+            return Result<TrainingModuleDTO>.Failure(Error.BadRequest(e.Message));
+        }
 
-        return _mapper.Map<TrainingModule, TrainingModuleDTO>(tm);
+        var result = _mapper.Map<TrainingModule, TrainingModuleDTO>(tm);
+
+        return Result<TrainingModuleDTO>.Success(result);
     }
 }

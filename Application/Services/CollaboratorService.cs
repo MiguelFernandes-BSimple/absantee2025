@@ -168,21 +168,30 @@ public class CollaboratorService
         return true;
     }
 
-    public async Task<ICollection<Guid>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(Guid subjectId)
+    public async Task<Result<ICollection<Guid>>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(Guid subjectId)
     {
-        // Step 1: Get all active collaborators
-        var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
-        var activeCollaboratorIds = activeCollaborators.Select(c => c.Id).ToList();
+        IEnumerable<Collaborator> activeCollaborators;
+        IEnumerable<AssociationTrainingModuleCollaborator> finishedCollaborators;
+        try
+        {
+            // Step 1: Get all active collaborators
+            activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
 
-        // Step 2: Get training modules that are finished for the subject
-        var finishedTrainingModules = await _trainingModuleRepository
-            .GetBySubjectIdAndFinished(subjectId, DateTime.Now);
+            // Step 2: Get training modules that are finished for the subject
+            var finishedTrainingModules = await _trainingModuleRepository
+                .GetBySubjectIdAndFinished(subjectId, DateTime.Now);
 
-        var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
+            var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
 
-        // Step 3: Get collaborator-module links for those finished modules
-        var finishedCollaborators = await _assocTMCRepository
-            .GetByTrainingModuleIds(finishedTrainingModuleIds);
+            // Step 3: Get collaborator-module links for those finished modules
+            finishedCollaborators = await _assocTMCRepository
+                .GetByTrainingModuleIds(finishedTrainingModuleIds);
+
+        }
+        catch (Exception e)
+        {
+            return Result<ICollection<Guid>>.Failure(Error.InternalServerError(e.Message));
+        }
 
         var collaboratorsWithFinishedModules = finishedCollaborators
             .Select(c => c.CollaboratorId)
@@ -195,28 +204,37 @@ public class CollaboratorService
             .Select(c => c.Id)
             .ToList();
 
-        return result;
+        return Result<ICollection<Guid>>.Success(result);
     }
 
-    //UC33
-    public async Task<IEnumerable<Guid>> GetCompletedTrainingsAsync(Guid subjectId, DateTime fromDate)
+    public async Task<Result<ICollection<Guid>>> GetCompletedTrainingsAsync(Guid subjectId, DateTime fromDate)
     {
         // Garantir que a data de entrada também seja UTC
         var fromDateUtc = DateTime.SpecifyKind(fromDate, DateTimeKind.Utc);
 
-        // Passo 1 - Confirmar a existencia do subjectId
-        var activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
+        IEnumerable<Collaborator> activeCollaborators;
+        IEnumerable<AssociationTrainingModuleCollaborator> trainingModuleCollaborators;
+        try
+        {
+            // Passo 1 - Confirmar a existencia do subjectId
+            activeCollaborators = await _collaboratorRepository.GetActiveCollaborators();
+
+            // Passo 2 - Procurar os Training Modules que foram terminados antes da fromDate de um dado SubjectId
+            var finishedTrainingModules = await _trainingModuleRepository
+                .GetBySubjectAndAfterDateFinished(subjectId, fromDateUtc);
+
+            var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
+
+            // Passo 3: Obter as ligações de colaboradores que completaram esses módulos
+            trainingModuleCollaborators = await _assocTMCRepository
+                .GetByTrainingModuleIds(finishedTrainingModuleIds);
+        }
+        catch (Exception e)
+        {
+            return Result<ICollection<Guid>>.Failure(Error.InternalServerError(e.Message));
+        }
+
         var activeCollaboratorIds = activeCollaborators.Select(c => c.Id).ToList();
-
-        // Passo 2 - Procurar os Training Modules que foram terminados antes da fromDate de um dado SubjectId
-        var finishedTrainingModules = await _trainingModuleRepository
-            .GetBySubjectAndAfterDateFinished(subjectId, fromDateUtc);
-
-        var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
-
-        // Passo 3: Obter as ligações de colaboradores que completaram esses módulos
-        var trainingModuleCollaborators = await _assocTMCRepository
-            .GetByTrainingModuleIds(finishedTrainingModuleIds);
 
         var collaboratorsWithFinishedModules = trainingModuleCollaborators
             .Select(c => c.CollaboratorId)
@@ -229,9 +247,8 @@ public class CollaboratorService
             .Select(c => c.Id)  // Alteração aqui, estamos agora retornando apenas o ID
             .ToList();
 
-        return result;
+        return Result<ICollection<Guid>>.Success(result);
     }
-
 
     //UC13
     public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
