@@ -16,7 +16,7 @@ public class ProjectFactory : IProjectFactory
     public async Task<Project> Create(string title, string acronym, PeriodDate periodDate)
     {
         if (!await _projectRepository.CheckIfAcronymIsUnique(acronym))
-            throw new ArgumentException("Invalid Arguments");
+            throw new ArgumentException("Project should be unique");
 
         Project project = new Project(title, acronym, periodDate);
         return project;

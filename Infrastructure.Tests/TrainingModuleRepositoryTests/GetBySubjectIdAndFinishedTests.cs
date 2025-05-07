@@ -32,9 +32,6 @@ public class GetBySubjectIdAndFinishedTests : RepositoryTestBase
 
         await context.SaveChangesAsync();
 
-        var filteredDMs = new List<TrainingModuleDataModel>() { trainingModuleDM2 };
-        var expected = new List<ITrainingModule>() { trainingModule2.Object };
-
         _mapper.Setup(m => m.Map<TrainingModuleDataModel, TrainingModule>(
             It.Is<TrainingModuleDataModel>(t =>
                 t.Id == trainingModuleDM1.Id
@@ -44,7 +41,7 @@ public class GetBySubjectIdAndFinishedTests : RepositoryTestBase
         var trainingModuleRepo = new TrainingModuleRepositoryEF(context, _mapper.Object);
 
         //Act
-        var result = (await trainingModuleRepo.GetBySubjectIdAndFinished(guid1, DateTime.Today)).ToList();
+        var result = await trainingModuleRepo.GetBySubjectIdAndFinished(guid1, DateTime.Today);
 
         //Assert
         Assert.Single(result);

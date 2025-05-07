@@ -36,7 +36,7 @@ namespace Application.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<ProjectDTO> Add(CreateProjectDTO projectDTO)
+        public async Task<Result<ProjectDTO>> Add(CreateProjectDTO projectDTO)
         {
             Project proj;
             try
@@ -44,13 +44,17 @@ namespace Application.Services
                 proj = await _factory.Create(projectDTO.Title, projectDTO.Acronym, projectDTO.PeriodDate);
                 await _repository.AddAsync(proj);
             }
-            catch (Exception)
+            catch (ArgumentException a)
             {
-                return null;
+                return Result<ProjectDTO>.Failure(Error.BadRequest(a.Message));
+            }
+            catch (Exception ex)
+            {
+                return Result<ProjectDTO>.Failure(Error.InternalServerError(ex.Message));
             }
 
-
-            return _mapper.Map<Project, ProjectDTO>(proj);
+            var result = _mapper.Map<Project, ProjectDTO>(proj);
+            return Result<ProjectDTO>.Success(result);
         }
     }
 }

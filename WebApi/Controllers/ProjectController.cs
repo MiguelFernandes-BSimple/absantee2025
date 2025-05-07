@@ -79,8 +79,8 @@ namespace WebApi.Controllers
         public async Task<ActionResult<ProjectDTO>> Add(CreateProjectDTO projectDTO)
         {
             var result = await _projectService.Add(projectDTO);
-
-            return  Created("",result);
+            
+            return result.ToActionResult();
         }
 
         // UC3: Como gestor de projeto, quero associar colaborador a projeto

@@ -9,14 +9,17 @@ public class Project : IProject
     public string Acronym { get; }
     public PeriodDate PeriodDate { get; }
 
-    public Project(string title, string acronym, PeriodDate periodDate)
+    public  Project(string title, string acronym, PeriodDate periodDate)
     {
-        Regex tituloRegex = new Regex(@"^.{1,50}$");
+        Regex titleRegex = new Regex(@"^.{1,50}$");
         Regex acronymRegex = new Regex(@"^[A-Z0-9]{1,10}$");
-        if (!tituloRegex.IsMatch(title) || !acronymRegex.IsMatch(acronym))
-        {
-            throw new ArgumentException("Invalid Arguments");
-        }
+
+        if (!titleRegex.IsMatch(title))
+            throw new ArgumentException("Title must be between 1 and 50 characters.");
+
+        if (!acronymRegex.IsMatch(acronym))
+            throw new ArgumentException("Acronym must be 1 to 10 characters long and contain only uppercase letters and digits.");
+
         this.Id = Guid.NewGuid();
         this.Title = title;
         this.Acronym = acronym;
