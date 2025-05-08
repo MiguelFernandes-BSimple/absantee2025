@@ -179,7 +179,7 @@ public class CollaboratorService
 
             // Step 2: Get training modules that are finished for the subject
             var finishedTrainingModules = await _trainingModuleRepository
-                .GetBySubjectIdAndFinished(subjectId, DateTime.Now);
+                .GetBySubjectIdAndFinished(subjectId, DateTime.UtcNow);
 
             var finishedTrainingModuleIds = finishedTrainingModules.Select(m => m.Id).ToList();
 

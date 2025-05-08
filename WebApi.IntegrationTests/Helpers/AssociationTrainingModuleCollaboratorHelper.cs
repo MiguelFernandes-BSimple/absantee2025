@@ -1,4 +1,4 @@
-using Application.DTO.TrainingModule;
+using Application.DTO.AssociationTrainingModuleCollaborator;
 
 namespace WebApi.IntegrationTests.Helpers;
 
