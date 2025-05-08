@@ -1,4 +1,4 @@
-namespace Application.DTO.TrainingModule;
+namespace Application.DTO.AssociationTrainingModuleCollaborator;
 
 public record CreateAssociationTrainingModuleCollaboratorDTO
 {
