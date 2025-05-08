@@ -33,7 +33,7 @@ namespace WebApi.Controllers
 
         // UC12
         [HttpGet("{projectId}/collaborators/byPeriod")]
-        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaboratorsByPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
+        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaboratorsByPeriod(Guid projectId, [FromQuery] PeriodDate periodDate)
         {
             var result = await _collaboratorService.FindAllByProjectAndBetweenPeriod(projectId, periodDate);
             return result.ToActionResult();
@@ -49,7 +49,7 @@ namespace WebApi.Controllers
 
         // UC21: Como gestor de projeto, quero listar os períodos de férias dos colaboradores dum projeto, num período
         [HttpGet("{projectId}/collaborators/holidays/byPeriod")]
-        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidaysByProjectAndBetweenPeriod(Guid projectId, [FromQuery]PeriodDate periodDate)
+        public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidaysByProjectAndBetweenPeriod(Guid projectId, [FromQuery] PeriodDate periodDate)
         {
             var holidays = await _holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(projectId, periodDate);
             return holidays.ToActionResult();
@@ -57,7 +57,7 @@ namespace WebApi.Controllers
 
         //UC22: Como gestor de projeto, quero listar quantos dias de férias dum colaborador do projeto tem num dado período
         [HttpGet("{projectId}/collaborators/{collaboratorId}/holidays/count/byPeriod")]
-        public async Task<ActionResult<int>> GetHolidayCountByCollaboratorByPeriod(Guid projectId, Guid collaboratorId, [FromQuery]PeriodDate periodDate)
+        public async Task<ActionResult<int>> GetHolidayCountByCollaboratorByPeriod(Guid projectId, Guid collaboratorId, [FromQuery] PeriodDate periodDate)
         {
             var count = await _holidayPlanService.GetHolidayDaysForProjectCollaboratorBetweenDates(projectId, collaboratorId, periodDate);
             return count.ToActionResult();
@@ -76,15 +76,31 @@ namespace WebApi.Controllers
         public async Task<ActionResult<ProjectDTO>> Add(CreateProjectDTO projectDTO)
         {
             var result = await _projectService.Add(projectDTO);
-            
+
             return result.ToActionResult();
         }
 
         // UC3: Como gestor de projeto, quero associar colaborador a projeto
         [HttpPost("{projectId}/collaborators")]
-        public async Task<ActionResult<AssociationProjectCollaboratorDTO>> AddCollaborator(Guid projectId, [FromBody]CreateAssociationProjectCollaboratorDTO associationDTO)
+        public async Task<ActionResult<AssociationProjectCollaboratorDTO>> AddCollaborator(Guid projectId, [FromBody] CreateAssociationProjectCollaboratorDTO associationDTO)
         {
             var result = await _associationProjectCollaboratorService.Add(associationDTO.PeriodDate, associationDTO.CollaboratorId, projectId);
+
+            return result.ToActionResult();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAll()
+        {
+            var result = await _projectService.GetAll();
+
+            return result.ToActionResult();
+        }
+
+        [HttpGet("{projectId}")]
+        public async Task<ActionResult<ProjectDTO>> GetById(Guid projectId)
+        {
+            var result = await _projectService.GetProjectById(projectId);
 
             return result.ToActionResult();
         }

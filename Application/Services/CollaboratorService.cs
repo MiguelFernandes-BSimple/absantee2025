@@ -39,12 +39,22 @@ public class CollaboratorService
     }
 
     //uc9
-    public async Task<IEnumerable<Guid>> GetAll()
+    public async Task<Result<IEnumerable<Guid>>> GetAll()
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
         var collabIds = collabs.Select(U => U.Id);
 
-        return collabIds;
+        return Result<IEnumerable<Guid>>.Success(collabIds);
+    }
+
+    public async Task<Result<CollaboratorDTO>> GetById(Guid id)
+    {
+        var collab = await _collaboratorRepository.GetByIdAsync(id);
+        if (collab == null)
+            return Result<CollaboratorDTO>.Failure(Error.NotFound("User not found"));
+        var result = _mapper.Map<CollaboratorDTO>(collab);
+
+        return Result<CollaboratorDTO>.Success(result);
     }
 
     public async Task<long> GetCount()

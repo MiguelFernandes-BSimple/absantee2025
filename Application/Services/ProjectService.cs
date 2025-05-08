@@ -26,14 +26,20 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<IProject>> GetAll()
+        public async Task<Result<IEnumerable<ProjectDTO>>> GetAll()
         {
-            return await _repository.GetAllAsync();
+            var projects = await _repository.GetAllAsync();
+            var result = projects.Select(_mapper.Map<ProjectDTO>);
+            return Result<IEnumerable<ProjectDTO>>.Success(result);
         }
 
-        public async Task<IProject?> GetProjectById(Guid id)
+        public async Task<Result<ProjectDTO>> GetProjectById(Guid id)
         {
-            return await _repository.GetByIdAsync(id);
+            var project = await _repository.GetByIdAsync(id);
+            if (project == null)
+                return Result<ProjectDTO>.Failure(Error.NotFound("Project not found"));
+            var result = _mapper.Map<ProjectDTO>(project);
+            return Result<ProjectDTO>.Success(result);
         }
 
         public async Task<Result<ProjectDTO>> Add(CreateProjectDTO projectDTO)
