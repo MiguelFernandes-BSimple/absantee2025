@@ -1,42 +1,70 @@
-﻿using AutoMapper;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Infrastructure.DataModel;
 using Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Moq;
+using Domain.Models;
+
 
 namespace Infrastructure.Tests.TrainingSubjectRepositoryTests;
 
 public class TrainingSubjectRepositoryIsDuplicatedTests : RepositoryTestBase
 {
     [Fact]
-    public async Task WhenSearchingByTrainingModuleIds_ThenReturnsExpectedResult()
+    public async Task WhenSearchingIfTrainingSubjectIsDuplicatedWhenIsDuplicated_ThenReturnsTrue()
     {
         //Assert
         var trainingSubject1 = new Mock<ITrainingSubject>();
+        var guid1 = Guid.NewGuid();
+        trainingSubject1.Setup(t => t.Id).Returns(guid1);
         trainingSubject1.Setup(t => t.Subject).Returns("Subject1");
         trainingSubject1.Setup(t => t.Description).Returns("Description1");
         var trainingSubject1DM = new TrainingSubjectDataModel(trainingSubject1.Object);
         context.TrainingSubjects.Add(trainingSubject1DM);
 
-        var trainingSubject2 = new Mock<ITrainingSubject>();
-        trainingSubject2.Setup(t => t.Subject).Returns("Subject2");
-        trainingSubject2.Setup(t => t.Description).Returns("Description2");
-        var trainingSubject2DM = new TrainingSubjectDataModel(trainingSubject2.Object);
-        context.TrainingSubjects.Add(trainingSubject2DM);
-
         await context.SaveChangesAsync();
 
-        var filteredDMs = new List<TrainingSubjectDataModel>() { trainingSubject2DM };
-        var expected = new List<ITrainingSubject>() { trainingSubject2.Object };
+        _mapper.Setup(m => m.Map<TrainingSubjectDataModel, TrainingSubject>(
+                   It.Is<TrainingSubjectDataModel>(t =>
+                       t.Id == trainingSubject1DM.Id
+                       )))
+                       .Returns(new TrainingSubject(trainingSubject1DM.Id, trainingSubject1DM.Subject, trainingSubject1DM.Description));
 
-        var trainingModuleRepo = new TrainingSubjectRepositoryEF(context, _mapper.Object);
+        var trainingSubjectRepo = new TrainingSubjectRepositoryEF(context, _mapper.Object);
 
         //Act
-        var result = await trainingModuleRepo.IsDuplicated("Subject2");
+        var result = await trainingSubjectRepo.IsDuplicated("Subject1");
 
         //Assert
         Assert.True(result);
+    }
+
+    [Fact]
+    public async Task WhenSearchingIfTrainingSubjectIsDuplicatedWhenIsNotDuplicated_ThenReturnsFalse()
+    {
+        //Assert
+        var trainingSubject1 = new Mock<ITrainingSubject>();
+        var guid1 = Guid.NewGuid();
+        trainingSubject1.Setup(t => t.Id).Returns(guid1);
+        trainingSubject1.Setup(t => t.Subject).Returns("Subject1");
+        trainingSubject1.Setup(t => t.Description).Returns("Description1");
+        var trainingSubject1DM = new TrainingSubjectDataModel(trainingSubject1.Object);
+        context.TrainingSubjects.Add(trainingSubject1DM);
+
+        await context.SaveChangesAsync();
+
+        _mapper.Setup(m => m.Map<TrainingSubjectDataModel, TrainingSubject>(
+                   It.Is<TrainingSubjectDataModel>(t =>
+                       t.Id == trainingSubject1DM.Id
+                       )))
+                       .Returns(new TrainingSubject(trainingSubject1DM.Id, trainingSubject1DM.Subject, trainingSubject1DM.Description));
+
+        var trainingSubjectRepo = new TrainingSubjectRepositoryEF(context, _mapper.Object);
+
+        //Act
+        var result = await trainingSubjectRepo.IsDuplicated("Subject2");
+
+        //Assert
+        Assert.False(result);
     }
 }
 
