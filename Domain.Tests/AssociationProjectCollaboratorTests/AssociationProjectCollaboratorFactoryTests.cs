@@ -19,13 +19,13 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
         collabRepo.Setup(cr => cr.GetById(collabId)).Returns(collab.Object);
@@ -61,16 +61,16 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
-        collabRepo.Setup(cr => cr.GetById(collabId)).Returns((ICollaborator)null!);
+        collabRepo.Setup(cr => cr.GetById(collabId)).Returns((Collaborator)null!);
         projectRepo.Setup(pr => pr.GetById(projectId)).Returns(project.Object);
 
         // All validations
@@ -104,17 +104,17 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
         collabRepo.Setup(cr => cr.GetById(collabId)).Returns(collab.Object);
-        projectRepo.Setup(pr => pr.GetById(projectId)).Returns((IProject)null!);
+        projectRepo.Setup(pr => pr.GetById(projectId)).Returns((Project)null!);
 
         // All validations
         // Project doesnt contain the dates
@@ -147,13 +147,13 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
         collabRepo.Setup(cr => cr.GetById(collabId)).Returns(collab.Object);
@@ -191,13 +191,13 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
         collabRepo.Setup(cr => cr.GetById(collabId)).Returns(collab.Object);
@@ -235,13 +235,13 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
         collabRepo.Setup(cr => cr.GetById(collabId)).Returns(collab.Object);
@@ -279,13 +279,13 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<ICollaborator> collab = new Mock<ICollaborator>();
-        Mock<IProject> project = new Mock<IProject>();
+        Mock<Collaborator> collab = new Mock<Collaborator>();
+        Mock<Project> project = new Mock<Project>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // Get collab and project from repos
         collabRepo.Setup(cr => cr.GetById(collabId)).Returns(collab.Object);

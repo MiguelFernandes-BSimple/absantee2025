@@ -47,7 +47,7 @@ public class HolidayPlanFactory : IHolidayPlanFactory
             }
 
             // Check against already-added periods
-            if (holidayPeriods.Any(existing => existing.Intersects(newPeriod)))
+            if (holidayPeriods.Any(existing => newPeriod.Intersects(existing)))
             {
                 throw new ArgumentException($"Holiday periods must not intersect.");
             }

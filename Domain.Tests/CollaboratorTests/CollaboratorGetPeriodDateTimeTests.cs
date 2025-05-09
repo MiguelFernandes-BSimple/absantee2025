@@ -10,7 +10,7 @@ namespace Domain.Tests.CollaboratorTests
         {
             // Arrange
             PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
-            Collaborator collaborator = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), periodDateTime);
+            Collaborator collaborator = new Collaborator(It.IsAny<Guid>(), It.IsAny<Guid>(), periodDateTime);
 
             // Act
             var result = collaborator.PeriodDateTime;

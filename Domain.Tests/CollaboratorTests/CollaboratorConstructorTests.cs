@@ -11,7 +11,7 @@ namespace Domain.Tests.CollaboratorTests
             // Arrange
 
             // Act
-            Collaborator collab = new Collaborator(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
+            Collaborator collab = new Collaborator(It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
 
             // Assert
             Assert.NotNull(collab);
@@ -23,7 +23,7 @@ namespace Domain.Tests.CollaboratorTests
             // Arrange
 
             // Act
-            Collaborator collab = new Collaborator(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
+            Collaborator collab = new Collaborator(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
 
             // Assert
             Assert.NotNull(collab);

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -9,159 +10,157 @@ namespace Domain.Tests.HolidayPeriodTests;
 public class HolidayPeriodFactoryTests
 {
     [Fact]
-    public void WhenCreatingWithValidData_ThenObjectIsInstantiated()
+    public async Task WhenCreatingWithValidData_ThenObjectIsInstantiated()
     {
         // Arrange
         var start = new DateOnly(2024, 4, 10);
         var end = new DateOnly(2024, 4, 15);
         var periodDate = new PeriodDate(start, end);
 
-        var holidayPlanMock = new Mock<IHolidayPlan>();
+        var holidayPlanMock = new Mock<HolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
-        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<Guid>(), It.IsAny<HolidayPeriod>())).ReturnsAsync(true);
+        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<Guid>())).Returns(holidayPlanMock.Object);
 
-        var collaboratorMock = new Mock<ICollaborator>();
+        var collaboratorMock = new Mock<Collaborator>();
         collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
-        collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
+        collaboratorRepo.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(collaboratorMock.Object);
 
         var factory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
 
         // Act
-        var result = factory.Create(123L, periodDate);
+        var result = await factory.Create(It.IsAny<Guid>(), start, end);
 
         // Assert
         Assert.NotNull(result);
     }
 
     [Fact]
-    public void WhenCreatingWithExistingHolidayPeriod_ThenThrowsException()
+    public async Task WhenCreatingWithExistingHolidayPeriod_ThenThrowsException()
     {
         var start = new DateOnly(2024, 4, 10);
         var end = new DateOnly(2024, 4, 15);
         var periodDate = new PeriodDate(start, end);
 
-        var holidayPlanMock = new Mock<IHolidayPlan>();
+        var holidayPlanMock = new Mock<HolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(false);
-        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<Guid>(), It.IsAny<HolidayPeriod>())).ReturnsAsync(false);
+        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<Guid>())).Returns(holidayPlanMock.Object);
 
-        var collaboratorMock = new Mock<ICollaborator>();
+        var collaboratorMock = new Mock<Collaborator>();
         collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
-        collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
-
+        collaboratorRepo.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(collaboratorMock.Object);
 
         var holidayPeriodFactory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
+                holidayPeriodFactory.Create(It.IsAny<Guid>(), start, end)
 
         );
         Assert.Equal("Holiday Period already exists for this Holiday Plan.", exception.Message);
     }
 
     [Fact]
-    public void WhenCreatingWithoutHolidayPlan_ThenThrowsException()
+    public async Task WhenCreatingWithoutHolidayPlan_ThenThrowsException()
     {
         // Arrange 
         var start = new DateOnly(2024, 4, 10);
         var end = new DateOnly(2024, 4, 15);
         var periodDate = new PeriodDate(start, end);
 
-        var holidayPlanMock = new Mock<IHolidayPlan>();
+        var holidayPlanMock = new Mock<HolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
-        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns((HolidayPlan?)null);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<Guid>(), It.IsAny<HolidayPeriod>())).ReturnsAsync(false);
+        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<Guid>())).Returns((HolidayPlan?)null);
 
-        var collaboratorMock = new Mock<ICollaborator>();
+        var collaboratorMock = new Mock<Collaborator>();
         collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
-        collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
-
+        collaboratorRepo.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(collaboratorMock.Object);
 
         var holidayPeriodFactory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
+                holidayPeriodFactory.Create(It.IsAny<Guid>(), start, end)
 
         );
         Assert.Equal("Holiday Plan doesn't exist.", exception.Message);
     }
 
     [Fact]
-    public void WhenCreatingWithoutCollaborator_ThenThrowsException()
+    public async Task WhenCreatingWithoutCollaborator_ThenThrowsException()
     {
         // Arrange 
         var start = new DateOnly(2024, 4, 10);
         var end = new DateOnly(2024, 4, 15);
         var periodDate = new PeriodDate(start, end);
 
-        var holidayPlanMock = new Mock<IHolidayPlan>();
+        var holidayPlanMock = new Mock<HolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
-        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<Guid>(), It.IsAny<HolidayPeriod>())).ReturnsAsync(false);
+        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<Guid>())).Returns(holidayPlanMock.Object);
 
-        var collaboratorMock = new Mock<ICollaborator>();
+        var collaboratorMock = new Mock<Collaborator>();
         collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(true);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
-        collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns((Collaborator?)null);
-
+        collaboratorRepo.Setup(c => c.GetById(It.IsAny<Guid>())).Returns((Collaborator?)null);
 
         var holidayPeriodFactory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
 
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
+                holidayPeriodFactory.Create(It.IsAny<Guid>(), start, end)
 
         );
         Assert.Equal("Collaborator doesn't exist.", exception.Message);
     }
 
     [Fact]
-    public void WhenCreatingWithOutOfBoundsCollaboratorContract_ThenThrowsException()
+    public async Task WhenCreatingWithOutOfBoundsCollaboratorContract_ThenThrowsException()
     {
         // Arrange 
         var start = new DateOnly(2024, 4, 10);
         var end = new DateOnly(2024, 4, 15);
         var periodDate = new PeriodDate(start, end);
-        var holidayPlanMock = new Mock<IHolidayPlan>();
+
+        var holidayPlanMock = new Mock<HolidayPlan>();
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
-        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<long>(), It.IsAny<IHolidayPeriod>())).Returns(true);
-        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<long>())).Returns(holidayPlanMock.Object);
+        holidayPlanRepo.Setup(hp => hp.CanInsertHolidayPeriod(It.IsAny<Guid>(), It.IsAny<HolidayPeriod>())).ReturnsAsync(false);
+        holidayPlanRepo.Setup(hp => hp.GetById(It.IsAny<Guid>())).Returns(holidayPlanMock.Object);
 
-        var collaboratorMock = new Mock<ICollaborator>();
+        var collaboratorMock = new Mock<Collaborator>();
         collaboratorMock.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>())).Returns(false);
 
         var collaboratorRepo = new Mock<ICollaboratorRepository>();
-        collaboratorRepo.Setup(c => c.GetById(It.IsAny<long>())).Returns(collaboratorMock.Object);
-
+        collaboratorRepo.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(collaboratorMock.Object);
 
         var holidayPeriodFactory = new HolidayPeriodFactory(holidayPlanRepo.Object, collaboratorRepo.Object);
 
+
         //assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 //act
-                holidayPeriodFactory.Create(It.IsAny<long>(), periodDate)
+                holidayPeriodFactory.Create(It.IsAny<Guid>(), start, end)
 
         );
         Assert.Equal("Collaborator's contract out of bounds.", exception.Message);
@@ -174,7 +173,7 @@ public class HolidayPeriodFactoryTests
     {
         //arrange
         var visitor = new Mock<IHolidayPeriodVisitor>();
-        visitor.Setup(v => v.Id).Returns(It.IsAny<long>());
+        visitor.Setup(v => v.Id).Returns(It.IsAny<Guid>());
         visitor.Setup(v => v.PeriodDate).Returns(It.IsAny<PeriodDate>());
 
         var holidayPlanRepo = new Mock<IHolidayPlanRepository>();
