@@ -16,7 +16,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
         _mapper = mapper;
     }
 
-    public async Task<bool> IsRepeated(Collaborator collaborator)
+    public async Task<bool> IsRepeated(ICollaborator collaborator)
     {
         return await this._context.Set<CollaboratorDataModel>()
                 .AnyAsync(c => c.UserId == collaborator.UserId
