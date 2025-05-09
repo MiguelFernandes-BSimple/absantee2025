@@ -37,7 +37,7 @@ public class TrainingSubjectRepositoryEF : GenericRepositoryEF<TrainingSubject, 
         try
         {
             var tsDM = await _context.Set<TrainingSubjectDataModel>()
-                               .FirstOrDefaultAsync();
+                               .FirstOrDefaultAsync(ts => ts.Id == id);
 
             if (tsDM == null)
                 return null;

@@ -1,6 +1,4 @@
-using Domain.Interfaces;
 using Domain.Models;
-using Domain.Visitor;
 using Moq;
 
 namespace Domain.Tests.HRManagerTests;
@@ -10,20 +8,24 @@ public class HRManagerConstructorTests
     [Fact]
     public void WhenCreatingHRManagerWithValidUserIdAndPeriod_ThenHRManagerIsCreatedCorrectly()
     {
-        //arrange
+        //Arrange
 
-        //act
-        new HRManager(It.IsAny<long>(), It.IsAny<PeriodDateTime>());
-        //assert
+        //Act
+        var result = new HRManager(It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
+
+        //Assert
+        Assert.NotNull(result);
     }
 
     [Fact]
     public void WhenCreatingHRManagerWithValidIdandUserIdAndPeriod_ThenHRManagerIsCreatedCorrectly()
     {
-        //arrange
+        //Arrange
 
-        //act
-        new HRManager(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<PeriodDateTime>());
-        //assert
+        //Act
+        var result = new HRManager(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
+
+        //Assert
+        Assert.NotNull(result);
     }
 }

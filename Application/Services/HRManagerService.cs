@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.DTO;
 using AutoMapper;
 using Domain.Factory;
-using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
 using Infrastructure;
 namespace Application.Services;
 public class RHManagerService
@@ -42,7 +36,7 @@ public class RHManagerService
         var createdUser = _userRepository.Add(user);
         if (createdUser == null) return null;
 
-        var rhmanager = await _HRManagerFactory.Create(createdUser, rHManagerDTO.PeriodDateTime);
+        var rhmanager = await _HRManagerFactory.Create(createdUser.Id, rHManagerDTO.PeriodDateTime);
         if (rhmanager == null) return null;
 
         var rhmanagercreated = _RHManagerRepository.Add(rhmanager);
