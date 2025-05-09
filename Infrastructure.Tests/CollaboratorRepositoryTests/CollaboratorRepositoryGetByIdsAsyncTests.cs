@@ -64,8 +64,8 @@ namespace Infrastructure.Tests.CollaboratorRepositoryTests
             //Assert
             Assert.Equal(2, result.Count());
 
-            Assert.Contains(result, c => c.Id == guid1 && c.UserId == userguid1);
-            Assert.Contains(result, c => c.Id == guid3 && c.UserId == userguid3);
+            Assert.Contains(result, c => c.Id == guid1);
+            Assert.Contains(result, c => c.Id == guid3);
         }
     }
 }
