@@ -1,8 +1,7 @@
-using AutoMapper;
 using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.DataModel;
 using Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace Infrastructure.Tests.TrainingSubjectRepositoryTests;
@@ -31,7 +30,11 @@ public class TrainingSubjectRepositoryGetByIdAsyncTests : RepositoryTestBase
 
         await context.SaveChangesAsync();
 
-        ITrainingSubject expected = trainingSubject2.Object;
+        _mapper.Setup(m => m.Map<TrainingSubjectDataModel, TrainingSubject>(
+            It.Is<TrainingSubjectDataModel>(t =>
+                t.Id == trainingSubject2DM.Id
+                )))
+                .Returns(new TrainingSubject(trainingSubject2DM.Id, trainingSubject2DM.Subject, trainingSubject2DM.Description));
 
         var trainingSubjectRepository = new TrainingSubjectRepositoryEF(context, _mapper.Object);
 
@@ -39,7 +42,8 @@ public class TrainingSubjectRepositoryGetByIdAsyncTests : RepositoryTestBase
         var result = await trainingSubjectRepository.GetByIdAsync(guid2);
 
         //Assert
-        Assert.Equal(expected, result);
+        Assert.Equal(trainingSubject2DM.Id, result.Id);
+
     }
 
     [Fact]
