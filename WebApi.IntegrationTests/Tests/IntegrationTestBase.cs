@@ -38,5 +38,12 @@ namespace WebApi.IntegrationTests.Tests
             var body = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(body)!;
         }
+
+        protected async Task<HttpResponseMessage> GetAsync(string url)
+        {
+            return await Client.GetAsync(url);
+        }
+
+
     }
 }

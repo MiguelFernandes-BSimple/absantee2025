@@ -1,3 +1,4 @@
+using System.Net;
 using Application.DTO;
 using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
@@ -44,6 +45,57 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     }
 
     [Fact]
+    public async Task CreateCollaborator_WithEmptyName_ReturnsBadRequest()
+    {
+        // arrange
+        var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        collabDTO.Names = "";
+
+        // act
+        var response = await PostAsync("/api/collaborators", collabDTO);
+
+        // assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Error. Name required", body);
+    }
+
+    [Fact]
+    public async Task CreateCollaborator_WithEmptySurname_ReturnsBadRequest()
+    {
+        // arrange
+        var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        collabDTO.Surnames = "";
+
+        // act
+        var response = await PostAsync("/api/collaborators", collabDTO);
+
+        // assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Error. Surname required", body);
+    }
+
+    [Fact]
+    public async Task CreateCollaborator_WithEmptyEmail_ReturnsBadRequest()
+    {
+        // arrange
+        var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        collabDTO.Email = "";
+
+        // act
+        var response = await PostAsync("/api/collaborators", collabDTO);
+
+        // assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Error. Email required", body);
+    }
+
+    [Fact]
     public async Task SearchByName_ReturnsCollabId()
     {
         // arrange
@@ -59,6 +111,23 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.NotEmpty(collabIdList);
         Assert.Single(collabIdList);
         Assert.Equal(createdCollabDTO.Id, collabIdList.First());
+    }
+
+    [Fact]
+    public async Task SearchByName_WithEmptyNameAndSurname_ReturnsBadRequest()
+    {
+        // arrange
+        var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO);
+
+
+        // act
+        var response = await GetAsync($"/api/collaborators/search");
+
+        // assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Equal("Please insert at least a name or surname", body);
     }
 
     [Fact]
