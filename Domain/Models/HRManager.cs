@@ -20,18 +20,4 @@ public class HRManager : IHRManager
         Id = id;
     }
 
-    public bool ContractContainsDates(PeriodDateTime periodDateTime)
-    {
-        return PeriodDateTime.Contains(periodDateTime);
-    }
-
-    public Guid GetId()
-    {
-        return Id;
-    }
-
-    public Guid GetUserId()
-    {
-        return UserId;
-    }
 }
