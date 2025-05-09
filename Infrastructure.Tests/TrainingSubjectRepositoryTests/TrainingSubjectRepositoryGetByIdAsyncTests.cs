@@ -42,6 +42,7 @@ public class TrainingSubjectRepositoryGetByIdAsyncTests : RepositoryTestBase
         var result = await trainingSubjectRepository.GetByIdAsync(guid2);
 
         //Assert
+        Assert.NotNull(result);
         Assert.Equal(trainingSubject2DM.Id, result.Id);
 
     }
