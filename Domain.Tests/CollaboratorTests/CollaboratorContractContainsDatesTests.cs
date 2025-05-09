@@ -13,7 +13,7 @@ public class CollaboratorContractContainsDatesTests
         PeriodDateTime collabPeriod = new PeriodDateTime(DateTime.Now, DateTime.Now.AddMonths(2));
         PeriodDateTime inPeriod = new PeriodDateTime(DateTime.Now.AddDays(1), DateTime.Now.AddDays(10));
 
-        Collaborator collaborator = new Collaborator(It.IsAny<long>(), collabPeriod);
+        Collaborator collaborator = new Collaborator(It.IsAny<Guid>(), collabPeriod);
 
         // Act
         bool result = collaborator.ContractContainsDates(inPeriod);
@@ -30,7 +30,7 @@ public class CollaboratorContractContainsDatesTests
         PeriodDateTime collabPeriod = new PeriodDateTime(DateTime.Now, DateTime.Now.AddMonths(2));
         PeriodDateTime inPeriod = new PeriodDateTime(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(3));
 
-        Collaborator collaborator = new Collaborator(It.IsAny<long>(), collabPeriod);
+        Collaborator collaborator = new Collaborator(It.IsAny<Guid>(), collabPeriod);
 
         // Act
         bool result = collaborator.ContractContainsDates(inPeriod);

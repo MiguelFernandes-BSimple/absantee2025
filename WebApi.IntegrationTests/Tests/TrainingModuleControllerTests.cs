@@ -85,6 +85,9 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
     public async Task GetActiveCollaboratorsWithNoTrainingDoneForSubject_Return200Ok()
     {
         // Arrange
+        var iniCollabdIds =
+            await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/collaborators");
+        
         // Create a random training subject payload
         var trainingSubjectDTO =
                     TrainingSubjectHelper.GenerateRandomAddTrainingSubjectDTO();
@@ -101,13 +104,11 @@ public class TrainingModuleControllerTests : IntegrationTestBase, IClassFixture<
         var createdTrainingModuleDTO =
             await PostAndDeserializeAsync<TrainingModuleDTO>("/api/trainingmodules", trainingModuleDTO);
 
-        var expected = new List<Guid>();
-
         // Act
         var collabdIds =
             await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/trainingmodules/not-completed/subjects/{createdTrainingSubjectDTO.Id}/collaborators/active/");
 
         // Assert
-        Assert.True(expected.SequenceEqual(collabdIds));
+        Assert.True(iniCollabdIds.SequenceEqual(collabdIds));
     }
 }

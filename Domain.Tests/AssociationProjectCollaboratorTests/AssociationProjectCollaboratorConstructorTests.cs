@@ -13,7 +13,7 @@ public class AssociationProjectCollaboratorConstructorTests
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Act
-        var result = new AssociationProjectCollaborator(It.IsAny<long>(), It.IsAny<long>(), periodDate);
+        var result = new AssociationProjectCollaborator(It.IsAny<Guid>(), It.IsAny<Guid>(), periodDate);
 
         // Assert
         Assert.NotNull(result);

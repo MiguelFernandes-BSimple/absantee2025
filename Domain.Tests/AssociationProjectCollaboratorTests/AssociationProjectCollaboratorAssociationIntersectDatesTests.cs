@@ -12,8 +12,8 @@ public class AssociationProjectCollaboratorAssociationIntersectDatesTests
     {
         // Arrange
         var periodDate = new PeriodDate(new DateOnly(2024, 10, 10), new DateOnly(2024, 10, 20));
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // PeriodDAte to intersect
         var periodDateToIntersect = new PeriodDate(new DateOnly(2024, 10, 15), new DateOnly(2024, 10, 25));
@@ -34,8 +34,8 @@ public class AssociationProjectCollaboratorAssociationIntersectDatesTests
         // Arrange
         // Association parameters
         var periodDate = new PeriodDate(new DateOnly(2024, 10, 10), new DateOnly(2024, 10, 20));
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         // PeriodDAte to intersect
         var periodDateToIntersect = new PeriodDate(new DateOnly(2024, 10, 25), new DateOnly(2024, 10, 29));

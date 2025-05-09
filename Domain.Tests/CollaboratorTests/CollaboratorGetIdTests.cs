@@ -9,11 +9,11 @@ namespace Domain.Tests.CollaboratorTests
         public void WhenGettingId_ThenReturnsId()
         {
             // Arrange
-            var id = 1;
-            var collaborator = new Collaborator(id, It.IsAny<long>(), It.IsAny<PeriodDateTime>());
+            Guid id = new Guid();
+            var collaborator = new Collaborator(id, It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
 
             // Act
-            var result = collaborator.GetId();
+            var result = collaborator.Id;
 
             // Assert
             Assert.Equal(id, result);

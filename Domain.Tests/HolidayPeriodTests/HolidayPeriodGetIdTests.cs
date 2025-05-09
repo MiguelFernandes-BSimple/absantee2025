@@ -11,7 +11,7 @@ public class HolidayPeriodGetIdTests
     public void WhenGettingId_ThenReturnsTheId()
     {
 
-        var expected = 2;
+        var expected = new Guid();
 
         // Arrange
 
@@ -23,7 +23,7 @@ public class HolidayPeriodGetIdTests
         var holidayPlan = new HolidayPeriod(expected, periodDate);
 
         // Act
-        var result = holidayPlan.GetId();
+        var result = holidayPlan.Id;
 
         // Assert
 

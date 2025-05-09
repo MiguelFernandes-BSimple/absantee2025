@@ -13,9 +13,9 @@ public class HolidayPlanConstructorTests
     {
         // Arrange
         // Test double for Holiday Period
-        Mock<IHolidayPeriod> holidayPeriodDouble = new Mock<IHolidayPeriod>();
+        Mock<HolidayPeriod> holidayPeriodDouble = new Mock<HolidayPeriod>();
 
-        holidayPeriodDouble.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
+        holidayPeriodDouble.Setup(hp => hp.PeriodDate).Returns(It.IsAny<PeriodDate>());
 
         // Test double for Collaborator
         //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -26,10 +26,10 @@ public class HolidayPlanConstructorTests
         //.Setup(c => c.ContractContainsDates(It.IsAny<PeriodDateTime>()))
         //.Returns(true);
 
-        var holidayPeriods = new List<IHolidayPeriod> { holidayPeriodDouble.Object };
+        var holidayPeriods = new List<HolidayPeriod> { holidayPeriodDouble.Object };
 
         // Act
-        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
+        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<Guid>(), holidayPeriods);
 
         // Assert
     }
@@ -41,15 +41,15 @@ public class HolidayPlanConstructorTests
     {
         // Arrange
         // Test doubles for Holiday Period
-        Mock<IHolidayPeriod> holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
+        Mock<HolidayPeriod> holidayPeriodDouble1 = new Mock<HolidayPeriod>();
 
-        holidayPeriodDouble1.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
+        holidayPeriodDouble1.Setup(hp => hp.PeriodDate).Returns(It.IsAny<PeriodDate>());
 
-        Mock<IHolidayPeriod> holidayPeriodDouble2 = new Mock<IHolidayPeriod>();
-        holidayPeriodDouble2.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
+        Mock<HolidayPeriod> holidayPeriodDouble2 = new Mock<HolidayPeriod>();
+        holidayPeriodDouble2.Setup(hp => hp.PeriodDate).Returns(It.IsAny<PeriodDate>());
 
-        Mock<IHolidayPeriod> holidayPeriodDouble3 = new Mock<IHolidayPeriod>();
-        holidayPeriodDouble3.Setup(hp => hp._periodDate).Returns(It.IsAny<PeriodDate>());
+        Mock<HolidayPeriod> holidayPeriodDouble3 = new Mock<HolidayPeriod>();
+        holidayPeriodDouble3.Setup(hp => hp.PeriodDate).Returns(It.IsAny<PeriodDate>());
 
         // Test double for Collaborator
         //Mock<ICollaborator> collaboratorDouble = new Mock<ICollaborator>();
@@ -62,17 +62,17 @@ public class HolidayPlanConstructorTests
 
         // Can't overlap with any other holiday periods
         holidayPeriodDouble1
-            .Setup(hp1 => hp1.Contains(It.IsAny<IHolidayPeriod>()))
+            .Setup(hp1 => hp1.Contains(It.IsAny<HolidayPeriod>()))
             .Returns(false);
         holidayPeriodDouble2
-            .Setup(hp2 => hp2.Contains(It.IsAny<IHolidayPeriod>()))
+            .Setup(hp2 => hp2.Contains(It.IsAny<HolidayPeriod>()))
             .Returns(false);
         holidayPeriodDouble3
-            .Setup(hp3 => hp3.Contains(It.IsAny<IHolidayPeriod>()))
+            .Setup(hp3 => hp3.Contains(It.IsAny<HolidayPeriod>()))
             .Returns(false);
 
         // Create Holiday Periods list
-        List<IHolidayPeriod> holidayPeriods = new List<IHolidayPeriod>
+        List<HolidayPeriod> holidayPeriods = new List<HolidayPeriod>
         {
             holidayPeriodDouble1.Object,
             holidayPeriodDouble2.Object,
@@ -80,7 +80,7 @@ public class HolidayPlanConstructorTests
         };
 
         // Act
-        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<long>(), holidayPeriods);
+        HolidayPlan holidayPlan = new HolidayPlan(It.IsAny<Guid>(), holidayPeriods);
 
         // Assert
     }

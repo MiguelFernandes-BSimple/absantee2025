@@ -13,14 +13,14 @@ public class AssociationProjectCollaboratorGetCollaboratorIdTests
         // Arrange
         // Association parameters
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
-        long collabId = 1;
-        long projectId = 1;
+        Guid collabId = new Guid();
+        Guid projectId = new Guid();
 
         AssociationProjectCollaborator assoc =
             new AssociationProjectCollaborator(collabId, projectId, periodDate);
 
         // Act
-        var result = assoc.GetCollaboratorId();
+        var result = assoc.Id;
 
         // Assert
         Assert.Equal(collabId, result);
