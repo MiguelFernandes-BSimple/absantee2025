@@ -57,7 +57,7 @@ public class CollaboratorService
     {
         var users = await _userRepository.GetByNamesAsync(names);
         var userIds = users.Select(u => u.Id);
-        var collabs = await _collaboratorRepository.GetByIdsAsync(userIds);
+        var collabs = await _collaboratorRepository.GetByUsersIdsAsync(userIds);
         var collabIds = collabs.Select(c => c.Id);
         return collabIds;
     }
@@ -66,7 +66,7 @@ public class CollaboratorService
     {
         var users = await _userRepository.GetBySurnamesAsync(surnames);
         var userIds = users.Select(u => u.Id);
-        var collabs = await _collaboratorRepository.GetByIdsAsync(userIds);
+        var collabs = await _collaboratorRepository.GetByUsersIdsAsync(userIds);
         return collabs.Select(c => c.Id);
     }
 
@@ -74,7 +74,7 @@ public class CollaboratorService
     {
         var users = await _userRepository.GetByNamesAndSurnamesAsync(names, surnames);
         var userIds = users.Select(u => u.Id);
-        var collabs = await _collaboratorRepository.GetByIdsAsync(userIds);
+        var collabs = await _collaboratorRepository.GetByUsersIdsAsync(userIds);
         return collabs.Select(c => c.Id);
     }
 
