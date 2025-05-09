@@ -65,9 +65,7 @@ public class CollaboratorController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCollaboratorDto collabDto)
     {
-        if (collabDto == null)
-            return BadRequest("Invalid Arguments");
-
+        // verificações feitas no dto
         var collabCreated = await _collabService.Create(collabDto);
 
         if (collabCreated == null) return BadRequest();
