@@ -1,3 +1,4 @@
+using Application;
 using Application.DTO;
 using Application.Services;
 using Domain.Models;
@@ -19,13 +20,19 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<ActionResult<IEnumerable<Guid>>> Get()
     {
         var collaborators = await _collabService.GetAll();
-        if (collaborators == null)
-            return NotFound();
 
-        return Ok(collaborators);
+        return collaborators.ToActionResult();
+    }
+
+    [HttpGet("{collaboratorId}")]
+    public async Task<ActionResult<CollaboratorDTO>> GetById(Guid collaboratorId)
+    {
+        var collaborator = await _collabService.GetById(collaboratorId);
+
+        return collaborator.ToActionResult();
     }
 
     [HttpGet("search")]
