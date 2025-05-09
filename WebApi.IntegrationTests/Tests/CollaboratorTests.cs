@@ -102,6 +102,8 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     public async Task Count_ReturnsLong()
     {
         // arrange
+        var iniCount = await GetAndDeserializeAsync<long>("/api/collaborators/count");
+
         var collabDTO1 = CollaboratorHelper.GenerateRandomCollaboratorDto();
         await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO1);
 
@@ -121,7 +123,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var count = await GetAndDeserializeAsync<long>("/api/collaborators/count");
 
         // assert
-        Assert.Equal(5, count);
+        Assert.Equal(iniCount + 5, count);
     }
 
     [Fact]
@@ -195,7 +197,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
         var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
 
-        var period = new PeriodDate(DateOnly.Parse("18/2/2045"),
+        var period = new PeriodDate(DateOnly.Parse("20/2/2045"),
                 DateOnly.Parse("18/3/2045"));
         var period2 = new PeriodDate(DateOnly.Parse("18/2/2045"),
                 DateOnly.Parse("19/2/2045"));
@@ -261,6 +263,8 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     public async Task ListCollaboratorsWithHolidayPeriodsLongerThan_Returns200AndObjects()
     {
         // Arrange: Create a random Collaborator and respective HolidayPeriods
+        var iniResult = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
+
         var init = new DateTime(2045, 2, 1).ToUniversalTime();
         var end = new DateTime(2045, 3, 20).ToUniversalTime();
         var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
@@ -284,7 +288,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.NotNull(result);
         Assert.NotEmpty(result);
         Assert.Contains(result, c => c.Id == collaboratorCreatedDTO.Id);
-        Assert.Equal(collaboratorCreatedDTO.Id, result.First().Id);
+        Assert.Equal(iniResult.Count + 1, result.Count);
 
     }
 
