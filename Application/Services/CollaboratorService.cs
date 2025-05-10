@@ -95,7 +95,6 @@ public class CollaboratorService
 
         if (user == null) return null;
 
-        // corrigir o savechanges - deve ser uma transação
         var createdUser = _userRepository.Add(user);
         if (createdUser == null) return null;
 
@@ -108,7 +107,7 @@ public class CollaboratorService
         _context.SaveChanges();
 
         return new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdCollab.PeriodDateTime);
-    }
+    } 
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public async Task<IEnumerable<Collaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
@@ -160,22 +159,6 @@ public class CollaboratorService
             return Result<IEnumerable<CollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
         }
 
-    }
-
-    public async Task<bool> Add(Guid userId, PeriodDateTime periodDateTime)
-    {
-        Collaborator colab;
-        try
-        {
-            colab = await _collaboratorFactory.Create(userId, periodDateTime);
-            await _collaboratorRepository.AddAsync(colab);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     public async Task<Result<ICollection<Guid>>> GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(Guid subjectId)

@@ -165,8 +165,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.Single(collabIdList);
         Assert.Equal(createdCollabDTO.Id, collabIdList.First());
     }
-
-    // este teste falha se todos os testes forem corridos ao mesmo tempo
+    
     [Fact]
     public async Task Count_ReturnsLong()
     {

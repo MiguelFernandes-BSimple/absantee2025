@@ -12,61 +12,59 @@ using Moq;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubjectTests
+    public class GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubjectTests : CollaboratorServiceTestBase
     {
+
         [Fact]
-        public async Task WhenSearchingActiveCollaboratorsWithNoTrainingModuleFinishedInSubject_ThenReturnsExpectedResult()
+        public async Task GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject_ReturnsExpectedResult()
         {
-            //arrange
-            var collab1 = new Mock<ICollaborator>();
-            var collab2 = new Mock<ICollaborator>();
-            var collab3 = new Mock<ICollaborator>();
-            collab1.Setup(c1 => c1.GetId()).Returns(1);
-            collab2.Setup(c2 => c2.GetId()).Returns(2);
-            collab3.Setup(c3 => c3.GetId()).Returns(3);
+            // Arrange
+            var subjectId = Guid.NewGuid();
 
-            var activeCollabs = new List<ICollaborator>()
+            var user1Id = Guid.NewGuid();
+            var user2Id = Guid.NewGuid();
+            var collabId1 = Guid.NewGuid();
+            var collabId2 = Guid.NewGuid();
+            var period = new PeriodDateTime(DateTime.UtcNow.AddDays(5), DateTime.UtcNow.AddDays(15));
+
+            var collab1 = new Collaborator(collabId1, user1Id, period);
+            var collab2 = new Collaborator(collabId2, user2Id, period);
+
+            var activeCollaborators = new List<Collaborator> { collab1, collab2 };
+
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetActiveCollaborators()).ReturnsAsync(activeCollaborators);
+
+            var trainingModule1Id = new Guid();
+            var trainingModule2Id = new Guid();
+            var finishedTrainingModules = new List<TrainingModule>
             {
-                collab1.Object, collab2.Object, collab3.Object
-            };
-            var collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.GetActiveCollaborators()).ReturnsAsync(activeCollabs);
-
-            var trainingModule = new Mock<ITrainingModule>();
-            trainingModule.Setup(t => t.Id).Returns(1);
-            var trainingModules = new List<ITrainingModule>() { trainingModule.Object };
-
-            var trainingModuleRepo = new Mock<ITrainingModuleRepository>();
-            trainingModuleRepo.Setup(trepo => trepo.GetBySubjectIdAndFinished(It.IsAny<long>(), It.IsAny<DateTime>())).ReturnsAsync(trainingModules);
-
-            var trainingModuleCollaborator = new Mock<IAssociationTrainingModuleCollaborator>();
-            trainingModuleCollaborator.Setup(t => t.CollaboratorId).Returns(1);
-            var trainingModuleCollaboratorList = new List<IAssociationTrainingModuleCollaborator>() { trainingModuleCollaborator.Object };
-
-            var trainingModuleCollaboratorRepo = new Mock<IAssociationTrainingModuleCollaboratorsRepository>();
-            trainingModuleCollaboratorRepo.Setup(t => t.GetByTrainingModuleIds(new List<long>() { 1 })).ReturnsAsync(trainingModuleCollaboratorList);
-
-            var expected = new List<ICollaborator>()
-            {
-                collab2.Object,
-                collab3.Object
+                new TrainingModule(trainingModule1Id, subjectId, new List<PeriodDateTime> { 
+                    new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>()) 
+                }),
+                new TrainingModule(trainingModule2Id, subjectId, new List<PeriodDateTime> {
+                    new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>())
+                })
             };
 
-            var assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
-            var holidayPlanRepositoryDouble = new Mock<IHolidayPlanRepository>();
-            var userRepo = new Mock<IUserRepository>();
-            var collabFactory = new Mock<ICollaboratorFactory>();
+            TrainingModuleRepositoryDouble.Setup(repo => repo.GetBySubjectIdAndFinished(subjectId, It.IsAny<DateTime>())).ReturnsAsync(finishedTrainingModules);
 
-            var collaboratorService =
-                new CollaboratorService(assocRepoMock.Object, holidayPlanRepositoryDouble.Object,
-                                        collabRepository.Object, userRepo.Object, collabFactory.Object,
-                                        trainingModuleCollaboratorRepo.Object, trainingModuleRepo.Object);
+            var finishedTrainigModulesIds = new List<Guid>{trainingModule1Id, trainingModule2Id};
 
-            //act
-            var result = await collaboratorService.GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(It.IsAny<long>());
+            var associationTrainingModuleCollaboratorId1 = new Guid();
+            var associationTrainingModuleCollaboratorId2 = new Guid();
+            var finishedCollaborators = new List<AssociationTrainingModuleCollaborator>
+            {
+                new AssociationTrainingModuleCollaborator(associationTrainingModuleCollaboratorId1, trainingModule1Id, It.IsAny<Guid>()),
+                new AssociationTrainingModuleCollaborator(associationTrainingModuleCollaboratorId2, trainingModule2Id, It.IsAny<Guid>()),
+            };
 
-            //assert
-            Assert.True(expected.SequenceEqual(result));
+            AssociationTrainingModuleCollaboratorsRepositoryDouble.Setup(repo => repo.GetByTrainingModuleIds(finishedTrainigModulesIds)).ReturnsAsync(finishedCollaborators);
+
+            // Act
+            var result = await CollaboratorService.GetActiveCollaboratorsWithNoTrainingModuleFinishedInSubject(subjectId);
+
+            // Assert;
+            Assert.Equal(2, result.Value.Count);
         }
     }
 }

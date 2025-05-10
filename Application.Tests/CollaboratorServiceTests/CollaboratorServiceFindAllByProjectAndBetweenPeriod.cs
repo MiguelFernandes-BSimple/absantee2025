@@ -1,90 +1,115 @@
-﻿using Domain.Interfaces;
-using Domain.IRepository;
-using Application.Services;
+﻿using Application.Services;
 using Moq;
-using System.Linq.Expressions;
-using Domain.Factory;
-using System.Threading.Tasks;
 using Domain.Models;
+using Application.DTO;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
-    public class CollaboratorServiceFindAllByProjectAndBetweenPeriod
+    public class CollaboratorServiceFindAllByProjectAndBetweenPeriod : CollaboratorServiceTestBase
     {
         [Fact]
-        public async Task WhenProjectHasCollaboratorsInPeriod_ThenReturnAllCollaborators()
+        public async Task FindAllByProjectAndBetweenPeriod_ReturnsCollaboratorDTOList()
         {
-            // Arrange
-            Mock<IProject> projectMock = new Mock<IProject>();
+            // arrange
+            var projectId = Guid.NewGuid();
+            var period = new PeriodDate(new DateOnly(2025, 05, 10), new DateOnly(2025, 05, 20));
+            var periodDate = new PeriodDateTime(DateTime.UtcNow.AddDays(-5), DateTime.UtcNow.AddDays(150));
 
-            Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
-            Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
+            var user1Id = Guid.NewGuid();
+            var user2Id = Guid.NewGuid();
 
-            Mock<IAssociationProjectCollaborator> assoc1 = new Mock<IAssociationProjectCollaborator>();
-            Mock<IAssociationProjectCollaborator> assoc2 = new Mock<IAssociationProjectCollaborator>();
+            var collabId1 = Guid.NewGuid();
+            var collabId2 = Guid.NewGuid();
 
-            List<IAssociationProjectCollaborator> associations = new List<IAssociationProjectCollaborator>()
+            var associations = new List<AssociationProjectCollaborator>
             {
-                assoc1.Object,
-                assoc2.Object,
+                new AssociationProjectCollaborator(
+                    collabId1,
+                    projectId,
+                    new PeriodDate(
+                        DateOnly.FromDateTime(DateTime.UtcNow),
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddDays(100))
+                    )
+                ),
+                new AssociationProjectCollaborator(
+                    collabId2,
+                    projectId,
+                    new PeriodDate(
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-10)),
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10))
+                    )
+                )
             };
 
-            Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
-            Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
+            AssociationProjectCollaboratorRepositoryDouble.Setup(repo => repo.FindAllByProjectAndIntersectingPeriodAsync(projectId, period)).ReturnsAsync(associations);
 
-            var collabsIds = new List<long>()
+            var collaborators = new List<Collaborator>
             {
-                1, 2
+                new Collaborator(
+                    collabId1,
+                    user1Id,
+                    periodDate
+                ),
+                new Collaborator(
+                    collabId2,
+                    user2Id,
+                    periodDate
+                )
             };
-            assoc1.Setup(a => a.GetCollaboratorId()).Returns(collabsIds[0]);
-            assoc2.Setup(a => a.GetCollaboratorId()).Returns(collabsIds[1]);
 
-            List<ICollaborator> expected = new List<ICollaborator>()
-            {
-                collab1.Object,
-                collab2.Object
-            };
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByIdsAsync(It.IsAny<IEnumerable<Guid>>())).ReturnsAsync(collaborators);
 
-            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriodAsync(It.IsAny<long>(), It.IsAny<PeriodDate>())).ReturnsAsync(associations);
+            MapperDouble
+                .Setup(m => m.Map<Collaborator, CollaboratorDTO>(It.IsAny<Collaborator>()))
+                .Returns<Collaborator>(c => new CollaboratorDTO
+                (
+                    c.Id,
+                    c.UserId,
+                    c.PeriodDateTime
+                ));
 
-            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
-            collabRepository.Setup(c => c.GetByIdsAsync(collabsIds)).ReturnsAsync(expected);
+            // act
+            var result = await CollaboratorService.FindAllByProjectAndBetweenPeriod(projectId, period);
 
-            var userRepo = new Mock<IUserRepository>();
-            var collabFactory = new Mock<ICollaboratorFactory>();
-            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
-
-            // Act
-            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
-
-            // Assert
-            Assert.True(expected.SequenceEqual(result));
+            // assert
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+            Assert.Equal(2, result.Value.Count());
+            Assert.Contains(result.Value, c => c.Id == collabId1);
+            Assert.Contains(result.Value, c => c.Id == collabId2);
         }
 
-
         [Fact]
-        public async Task WhenProjectHasNoCollaboratorsInPeriod_ThenReturnEmptyList()
+        public async Task FindAllByProjectAndBetweenPeriod_ReturnsEmptyList()
         {
-            // Arrange
-            Mock<IHolidayPlanRepository> holidayPlanRepoMock = new Mock<IHolidayPlanRepository>();
-            Mock<IAssociationProjectCollaboratorRepository> assocRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
+            // arrange
+            var projectId = Guid.NewGuid();
+            var period = new PeriodDate(new DateOnly(2025, 05, 10), new DateOnly(2025, 05, 20));
 
-            // No associations for the project in the period
-            List<IAssociationProjectCollaborator> emptyAssociations = new List<IAssociationProjectCollaborator>();
+            var associations = new List<AssociationProjectCollaborator>();
 
-            assocRepoMock.Setup(a => a.FindAllByProjectAndBetweenPeriodAsync(It.IsAny<long>(), It.IsAny<PeriodDate>())).ReturnsAsync(emptyAssociations);
+            AssociationProjectCollaboratorRepositoryDouble.Setup(repo => repo.FindAllByProjectAndIntersectingPeriodAsync(projectId, period)).ReturnsAsync(associations);
 
-            Mock<ICollaboratorRepository> collabRepository = new Mock<ICollaboratorRepository>();
+            var collaborators = new List<Collaborator>();
 
-            var userRepo = new Mock<IUserRepository>();
-            var collabFactory = new Mock<ICollaboratorFactory>();
-            var service = new CollaboratorService(assocRepoMock.Object, holidayPlanRepoMock.Object, collabRepository.Object, userRepo.Object, collabFactory.Object);
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByIdsAsync(It.IsAny<IEnumerable<Guid>>())).ReturnsAsync(collaborators);
 
-            // Act
-            var result = await service.FindAllByProjectAndBetweenPeriod(It.IsAny<long>(), It.IsAny<PeriodDate>());
+            MapperDouble
+                .Setup(m => m.Map<Collaborator, CollaboratorDTO>(It.IsAny<Collaborator>()))
+                .Returns<Collaborator>(c => new CollaboratorDTO
+                (
+                    c.Id,
+                    c.UserId,
+                    c.PeriodDateTime
+                ));
 
-            // Assert
-            Assert.Empty(result);
+            // act
+            var result = await CollaboratorService.FindAllByProjectAndBetweenPeriod(projectId, period);
+
+            // assert
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+            Assert.Empty(result.Value);
         }
     }
 }

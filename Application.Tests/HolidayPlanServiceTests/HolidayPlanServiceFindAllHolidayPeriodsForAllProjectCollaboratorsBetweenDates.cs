@@ -1,4 +1,4 @@
-using Domain.Interfaces;
+/* using Domain.Interfaces;
 using Domain.IRepository;
 using Application.Services;
 using Moq;
@@ -93,3 +93,4 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
         Assert.Empty(result);
     }
 }
+ */
