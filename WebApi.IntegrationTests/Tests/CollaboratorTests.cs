@@ -165,7 +165,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.Single(collabIdList);
         Assert.Equal(createdCollabDTO.Id, collabIdList.First());
     }
-    
+
     [Fact]
     public async Task Count_ReturnsLong()
     {
@@ -291,7 +291,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     [Fact]
     public async Task ListCollaboratorHolidayPeriodsBetweenPeriod()
     {
-        // Arrange: Create a random Collaborator and respective HolidayPeriods
+        // Arrange
         var init = new DateTime(2045, 2, 1).ToUniversalTime();
         var end = new DateTime(2047, 3, 20).ToUniversalTime();
         var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
@@ -311,10 +311,8 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
 
         var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
 
-        var query = $"/api/collaborators/{collaboratorCreatedDTO.Id}/holidayPlan/holidayPeriods/ByPeriod?InitDate=2045-01-1&FinalDate=2045-4-1";
-
-
         // Act
+        var query = $"/api/collaborators/{collaboratorCreatedDTO.Id}/holidayPlan/holidayPeriods/ByPeriod?InitDate=2045-01-1&FinalDate=2045-4-1";
         var result = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>(query);
 
         // Assert
@@ -330,7 +328,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     [Fact]
     public async Task ListCollaboratorsWithHolidayPeriodsLongerThan_Returns200AndObjects()
     {
-        // Arrange: Create a random Collaborator and respective HolidayPeriods
+        // Arrange
         var iniResult = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
 
         var init = new DateTime(2045, 2, 1).ToUniversalTime();
@@ -350,6 +348,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
 
         var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
 
+        //Act
         var result = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
 
         // Assert

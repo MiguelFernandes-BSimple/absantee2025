@@ -15,7 +15,7 @@ public class HolidayPlanController : Controller
         _holidayPlanService = holidayPlanService;
     }
 
-    // UC4: Como gestor de projetos, quero criar projeto
+    // UC4: Como gestor de RH, quero criar um holiday plan
     [HttpPost]
     public async Task<ActionResult<HolidayPlanDTO>> AddHolidayPlan(CreateHolidayPlanDTO createHolidayPlanDTO)
     {
@@ -35,7 +35,7 @@ public class HolidayPlanController : Controller
 
     }
 
-    // UC4: Como gestor de projetos, quero criar projeto
+    // Como gestor de RH, quero registar um holiday period
     [HttpPost("{holidayPlanId}/holidayperiod")]
     public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriod(Guid holidayPlanId, [FromBody] CreateHolidayPeriodDTO createHolidayPeriodDTO)
     {
