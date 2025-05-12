@@ -92,6 +92,7 @@ public class CollaboratorController : ControllerBase
 
         return Ok(result);
     }
+
     //US14 
     [HttpGet("holidayPlan/holidayPeriods/ByPeriod")]
     public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod(

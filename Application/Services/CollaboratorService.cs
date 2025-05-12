@@ -107,14 +107,16 @@ public class CollaboratorService
         _context.SaveChanges();
 
         return new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdCollab.PeriodDateTime);
-    } 
+    }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
-    public async Task<IEnumerable<Collaborator>> FindAllWithHolidayPeriodsLongerThan(int days)
+    public async Task<IEnumerable<CollaboratorDTO>> FindAllWithHolidayPeriodsLongerThan(int days)
     {
         var holidayPlans = await _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThanAsync(days);
         var collabIds = holidayPlans.Select(hp => hp.CollaboratorId);
-        return await _collaboratorRepository.GetByIdsAsync(collabIds);
+        var collabs = await _collaboratorRepository.GetByIdsAsync(collabIds);
+
+        return collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
@@ -244,10 +246,11 @@ public class CollaboratorService
     }
 
     //UC13
-    public async Task<IEnumerable<IHolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
+    public async Task<IEnumerable<HolidayPeriodDTO>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate)
     {
         var result = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
-        return result;
+
+        return result.Select(_mapper.Map<HolidayPeriod, HolidayPeriodDTO>);
     }
 
     public async Task<IEnumerable<ICollaborator>> GetAllByFinishedTrainingModuleInSubjectAfterPeriod(Guid subjectId, DateTime date)

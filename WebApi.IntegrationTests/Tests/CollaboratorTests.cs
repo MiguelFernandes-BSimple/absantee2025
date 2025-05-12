@@ -289,7 +289,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     }
 
     [Fact]
-    public async Task ListCollaboratorHolidayPeriodsBetweenPeriod()
+    public async Task ListCollaboratorHolidayPeriodsBetweenPeriod_Returns200AndObjects()
     {
         // Arrange
         var init = new DateTime(2045, 2, 1).ToUniversalTime();
@@ -312,7 +312,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
 
         // Act
-        var query = $"/api/collaborators/{collaboratorCreatedDTO.Id}/holidayPlan/holidayPeriods/ByPeriod?InitDate=2045-01-1&FinalDate=2045-4-1";
+        var query = $"/api/collaborators/{collaboratorCreatedDTO.Id}/holidayPlan/holidayPeriods/ByPeriod?InitDate=2045-01-01&FinalDate=2045-04-01";
         var result = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>(query);
 
         // Assert
