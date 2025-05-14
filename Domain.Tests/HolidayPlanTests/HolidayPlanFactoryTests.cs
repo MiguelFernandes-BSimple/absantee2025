@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using Domain.Factory;
@@ -80,22 +81,25 @@ public class HolidayPlanFactoryTests
     }
 
     [Fact]
-    public void WhenPassingCollaboratorThatDoesNotExist_ThenShouldThrowArgumentException()
+    public async Task WhenPassingCollaboratorThatDoesNotExist_ThenShouldThrowArgumentException()
     {
         //Arrange
-
-        var holidayPeriodDouble1 = new Mock<IHolidayPeriod>();
-        var periodList = new List<IHolidayPeriod> { holidayPeriodDouble1.Object };
+        var id = Guid.NewGuid();
+        var holidayPeriodDate = new Mock<PeriodDate>();
+        var periodList = new List<PeriodDate> { holidayPeriodDate.Object };
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
-        collabRepoDouble.Setup(cr => cr.GetById(1)).Returns((ICollaborator?)null);
+        collabRepoDouble.Setup(cr => cr.GetById(id)).Returns((Collaborator?)null);
 
-        var holidayPlanFactory = new HolidayPlanFactory(collabRepoDouble.Object);
+        var holidayPlanRepository = new Mock<IHolidayPlanRepository>();
+        var mapper = new Mock<IMapper>();
+        var holidayPeriodFactory = new Mock<HolidayPeriodFactory>();
+        var holidayPlanFactory = new HolidayPlanFactory(collabRepoDouble.Object, holidayPlanRepository.Object, mapper.Object, holidayPeriodFactory.Object);
 
         //Assert
-        var exception = Assert.Throws<ArgumentException>(() =>
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             //Act
-            holidayPlanFactory.Create(1, periodList));
+            holidayPlanFactory.Create(id, periodList));
 
         Assert.Equal("Collaborator doesn't exist.", exception.Message);
 
@@ -108,8 +112,10 @@ public class HolidayPlanFactoryTests
         var holidayPlanVisitorDouble = new Mock<IHolidayPlanVisitor>();
 
         var collabRepoDouble = new Mock<ICollaboratorRepository>();
-
-        var holidayPlanFactory = new HolidayPlanFactory(collabRepoDouble.Object);
+        var holidayPlanRepository = new Mock<IHolidayPlanRepository>();
+        var mapper = new Mock<IMapper>();
+        var holidayPeriodFactory = new Mock<HolidayPeriodFactory>();
+        var holidayPlanFactory = new HolidayPlanFactory(collabRepoDouble.Object, holidayPlanRepository.Object, mapper.Object, holidayPeriodFactory.Object);
 
         //Act
         var result = holidayPlanFactory.Create(holidayPlanVisitorDouble.Object);

@@ -22,7 +22,7 @@ namespace Domain.Tests.TrainingModuleTests
             var periods = new List<PeriodDateTime>() { periodDateTime1, periodDateTime2};
 
             //Act
-            new TrainingModule(It.IsAny<long>(), periods);
+            new TrainingModule(It.IsAny<Guid>(), periods);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Domain.Tests.TrainingModuleTests
             //Arrange
             var exception = Assert.Throws<ArgumentException>(() =>
                 //Act
-                new TrainingModule(It.IsAny<long>(), periods)
+                new TrainingModule(It.IsAny<Guid>(), periods)
             );
 
             Assert.Equal("Training periods cannot overlap.", exception.Message);
@@ -55,7 +55,7 @@ namespace Domain.Tests.TrainingModuleTests
             //Arrange
             var exception = Assert.Throws<ArgumentException>(() =>
                 //Act
-                new TrainingModule(It.IsAny<long>(), periods)
+                new TrainingModule(It.IsAny<Guid>(), periods)
             );
 
             Assert.Equal("Periods must start in the future", exception.Message);

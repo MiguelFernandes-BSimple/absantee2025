@@ -16,7 +16,7 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
             //Arrange
 
             //Act
-            new TrainingModuleCollaborators(It.IsAny<long>(), It.IsAny<long>());
+            new AssociationTrainingModuleCollaborator(It.IsAny<Guid>(), It.IsAny<Guid>());
 
             //Assert
         }

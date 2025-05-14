@@ -10,13 +10,13 @@ public class TrainingPeriodFactoryTests
     public void WhenPassingValidDates_ThenCreateTrainingPeriod()
     {
         // Arrange
-        PeriodDate periodDate =
-            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
+        DateOnly InitDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(1));
+        DateOnly FinalDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(2));
 
         TrainingPeriodFactory factory = new TrainingPeriodFactory();
 
         // Act
-        var result = factory.Create(periodDate);
+        var result = factory.Create(InitDate, FinalDate);
 
         // Assert
         Assert.NotNull(result);
@@ -26,8 +26,8 @@ public class TrainingPeriodFactoryTests
     public void WhenPassingDatesInThePast_ThenThrowsArgumentException()
     {
         // Arrange
-        PeriodDate periodDate =
-            new PeriodDate(DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)), DateOnly.FromDateTime(DateTime.Now.AddMonths(2)));
+        DateOnly InitDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1));
+        DateOnly FinalDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(2));
 
         TrainingPeriodFactory factory = new TrainingPeriodFactory();
 
@@ -35,7 +35,7 @@ public class TrainingPeriodFactoryTests
         ArgumentException exception = Assert.Throws<ArgumentException>(
             () =>
                 // Act
-                factory.Create(periodDate)
+                factory.Create(InitDate, FinalDate)
 
         );
 

@@ -12,7 +12,7 @@ public class ProjectContainsDatesTests
         var initDate = new DateOnly(2025, 4, 1);
         var endDate = new DateOnly(2025, 4, 15);
         var periodDate = new PeriodDate(initDate, endDate);
-        var project = new Project(1, "Titulo 1", "T1", periodDate);
+        var project = new Project(Guid.NewGuid(), "Titulo 1", "T1", periodDate);
 
         var initDateExpected = new DateOnly(2025, 4, 5);
         var endDateExpected = new DateOnly(2025, 4, 10);
@@ -32,7 +32,7 @@ public class ProjectContainsDatesTests
         var initDate = new DateOnly(2025, 4, 1);
         var endDate = new DateOnly(2025, 4, 15);
         var periodDate = new PeriodDate(initDate, endDate);
-        var project = new Project(1, "Titulo 1", "T1", periodDate);
+        var project = new Project(Guid.NewGuid(), "Titulo 1", "T1", periodDate);
 
         var initDateExpected = new DateOnly(2025, 5, 5);
         var endDateExpected = new DateOnly(2025, 5, 10);

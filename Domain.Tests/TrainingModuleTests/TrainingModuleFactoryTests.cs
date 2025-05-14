@@ -17,8 +17,8 @@ namespace Domain.Tests.TrainingModuleTests
         public async Task WhenPassingValidData_ThenTrainingModuleIsCreated()
         {
             //Arrange
-            var subjectId = 1;
-            var subject = new Mock<ITrainingSubject>();
+            var subjectId = Guid.NewGuid();
+            var subject = new Mock<TrainingSubject>();
 
             var periodDateTime1 = new PeriodDateTime(DateTime.Now.AddDays(1), DateTime.Now.AddDays(3));
 
@@ -29,7 +29,8 @@ namespace Domain.Tests.TrainingModuleTests
             var subjectRepository = new Mock<ITrainingSubjectRepository>();
             subjectRepository.Setup(s => s.GetByIdAsync(subjectId)).ReturnsAsync(subject.Object);
 
-            var factory = new TrainingModuleFactory(subjectRepository.Object);
+            var moduleRepository = new Mock<ITrainingModuleRepository>();
+            var factory = new TrainingModuleFactory(subjectRepository.Object, moduleRepository.Object);
 
             //Act
             var result = await factory.Create(subjectId, periods);
@@ -43,7 +44,7 @@ namespace Domain.Tests.TrainingModuleTests
         public async Task WhenTrainingSubjectDontExists_ThenThrowExeption()
         {
             //Arrange
-            var subjectId = 1;
+            var subjectId = Guid.NewGuid();
 
             var periodDateTime1 = new PeriodDateTime(DateTime.Now.AddDays(1), DateTime.Now.AddDays(3));
 
@@ -52,9 +53,10 @@ namespace Domain.Tests.TrainingModuleTests
             var periods = new List<PeriodDateTime>() { periodDateTime1, periodDateTime2 };
 
             var subjectRepository = new Mock<ITrainingSubjectRepository>();
-            subjectRepository.Setup(s => s.GetByIdAsync(subjectId)).ReturnsAsync((ITrainingSubject?)null);
+            subjectRepository.Setup(s => s.GetByIdAsync(subjectId)).ReturnsAsync((TrainingSubject?)null);
 
-            var factory = new TrainingModuleFactory(subjectRepository.Object);
+            var moduleRepository = new Mock<ITrainingModuleRepository>();
+            var factory = new TrainingModuleFactory(subjectRepository.Object, moduleRepository.Object);
 
             //Arrange
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>

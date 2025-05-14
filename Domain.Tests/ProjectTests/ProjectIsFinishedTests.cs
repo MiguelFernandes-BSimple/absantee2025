@@ -13,7 +13,7 @@ public class ProjectIsFinishedTests
         var projectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
         var periodDate = new PeriodDate(projectInitDate, projectFinalDate);
 
-        var project = new Project(1, "Titulo 1", "T1", periodDate);
+        var project = new Project(Guid.NewGuid(), "Titulo 1", "T1", periodDate);
 
         //act
         bool result = project.IsFinished();
@@ -30,7 +30,7 @@ public class ProjectIsFinishedTests
         var projectFinalDate = DateOnly.FromDateTime(DateTime.Now.AddDays(10));
         var periodDate = new PeriodDate(projectInitDate, projectFinalDate);
 
-        var project = new Project(1, "Titulo 1", "T1", periodDate);
+        var project = new Project(Guid.NewGuid(), "Titulo 1", "T1", periodDate);
 
         //act
         bool result = project.IsFinished();

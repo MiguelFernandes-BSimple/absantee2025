@@ -42,7 +42,7 @@ public class ProjectFactoryTests
         var projectFactory = new ProjectFactory(projectRepoDouble.Object);
 
         // act
-        await projectFactory.Create(1, "something", "SMT", It.IsAny<PeriodDate>());
+        await projectFactory.Create("something", "SMT", It.IsAny<PeriodDate>());
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class ProjectFactoryTests
 
         // act & assert
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-            projectFactory.Create(1, "Projeto Teste", "ABC123", It.IsAny<PeriodDate>()));
+            projectFactory.Create("Projeto Teste", "ABC123", It.IsAny<PeriodDate>()));
 
         Assert.Equal("Invalid Arguments", exception.Message);
     }

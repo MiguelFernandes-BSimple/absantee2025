@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 using Moq;
 
 namespace Domain.Tests.TrainingModuleCollaboratorsTests
@@ -16,11 +17,11 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
         public void WhenPassingValidIds_ThenTrainingModuleCollaboratorIsCreated()
         {
             //Arrange
-            var collabId = 1;
-            var collab = new Mock<ICollaborator>();
+            var collabId = Guid.NewGuid();
+            var collab = new Mock<Collaborator>();
 
-            var trainingModuleId = 1;
-            var trainingSubject = new Mock<ITrainingModule>();
+            var trainingModuleId = Guid.NewGuid();
+            var trainingSubject = new Mock<TrainingModule>();
 
             var collaboratorRepo = new Mock<ICollaboratorRepository>();
             collaboratorRepo.Setup(c => c.GetByIdAsync(collabId)).ReturnsAsync(collab.Object);
@@ -41,13 +42,13 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
         public async Task WhenCollaboratorDontExists_ThenThrowException()
         {
             //Arrange
-            var collabId = 1;
+            var collabId = Guid.NewGuid();
 
-            var trainingModuleId = 1;
-            var trainingSubject = new Mock<ITrainingModule>();
+            var trainingModuleId = Guid.NewGuid();
+            var trainingSubject = new Mock<TrainingModule>();
 
             var collaboratorRepo = new Mock<ICollaboratorRepository>();
-            collaboratorRepo.Setup(c => c.GetByIdAsync(collabId)).ReturnsAsync((ICollaborator?)null);
+            collaboratorRepo.Setup(c => c.GetByIdAsync(collabId)).ReturnsAsync((Collaborator?)null);
 
             var trainingSubjectRepo = new Mock<ITrainingModuleRepository>();
             trainingSubjectRepo.Setup(t => t.GetByIdAsync(trainingModuleId)).ReturnsAsync(trainingSubject.Object);
@@ -67,16 +68,16 @@ namespace Domain.Tests.TrainingModuleCollaboratorsTests
         public async Task WhenTrainingModuleDontExists_ThenThrowException()
         {
             //Arrange
-            var collabId = 1;
-            var collab = new Mock<ICollaborator>();
+            var collabId = Guid.NewGuid();
+            var collab = new Mock<Collaborator>();
 
-            var trainingModuleId = 1;
+            var trainingModuleId = Guid.NewGuid();
 
             var collaboratorRepo = new Mock<ICollaboratorRepository>();
             collaboratorRepo.Setup(c => c.GetByIdAsync(collabId)).ReturnsAsync(collab.Object);
 
             var trainingSubjectRepo = new Mock<ITrainingModuleRepository>();
-            trainingSubjectRepo.Setup(t => t.GetByIdAsync(trainingModuleId)).ReturnsAsync((ITrainingModule?)null);
+            trainingSubjectRepo.Setup(t => t.GetByIdAsync(trainingModuleId)).ReturnsAsync((TrainingModule?)null);
 
             var factory = new AssociationTrainingModuleCollaboratorFactory(collaboratorRepo.Object, trainingSubjectRepo.Object);
 

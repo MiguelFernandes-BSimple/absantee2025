@@ -33,7 +33,7 @@ public class Factory
     {
         //arrange
         string email = "test@email.com";
-        var existingUser = new Mock<IUser>();
+        var existingUser = new Mock<User>();
 
         var userRepository = new Mock<IUserRepository>();
         userRepository.Setup(repo => repo.GetByEmailAsync(email)).ReturnsAsync(existingUser.Object);
@@ -54,7 +54,7 @@ public class Factory
         //Arrange
         var userVisitor = new Mock<IUserVisitor>();
 
-        userVisitor.Setup(u => u.Id).Returns(1);
+        userVisitor.Setup(u => u.Id).Returns(Guid.NewGuid());
         userVisitor.Setup(u => u.Names).Returns("John");
         userVisitor.Setup(u => u.Surnames).Returns("Doe");
         userVisitor.Setup(u => u.Email).Returns("john.doe@email.com");
