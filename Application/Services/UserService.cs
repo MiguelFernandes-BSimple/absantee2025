@@ -23,12 +23,12 @@ public class UserService
         _mapper = mapper;
     }
 
-    public async Task<bool> Add(UserDTO userDTO)
+    public async Task<UserDTO> Add(UserDTO userDTO)
     {
         var user = await _userFactory.Create(userDTO.Names, userDTO.Surnames, userDTO.Email, userDTO.FinalDate);
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
-        return true;
+        return _mapper.Map<User, UserDTO>(user);
     }
     public async Task<IEnumerable<IUser>> GetAll()
     {
