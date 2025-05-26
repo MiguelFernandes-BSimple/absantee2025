@@ -13,6 +13,7 @@ namespace Application.DTO
         public string Names { get; set; }
         public string Surnames { get; set; }
         public string Email { get; set; }
-        public PeriodDateTime FinalDate { get; set; }
+        public PeriodDateTime UserPeriod { get; set; }
+        public PeriodDateTime CollaboratorPeriod { get; set; }
     }
 }
