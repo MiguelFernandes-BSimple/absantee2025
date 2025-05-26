@@ -27,6 +27,14 @@ public class CollaboratorController : ControllerBase
         return collaborators.ToActionResult();
     }
 
+    [HttpGet("details")]
+    public async Task<ActionResult<IEnumerable<CollabDetailsDTO>>> GetAllInfo()
+    {
+        var collaborators = await _collabService.GetAllInfo();
+
+        return collaborators.ToActionResult();
+    }
+
     [HttpGet("{collaboratorId}")]
     public async Task<ActionResult<CollaboratorDTO>> GetById(Guid collaboratorId)
     {
