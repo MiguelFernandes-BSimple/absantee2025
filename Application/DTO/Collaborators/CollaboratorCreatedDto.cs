@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
 
-namespace Application.DTO
+namespace Application.DTO.Collaborators
 {
     public class CollaboratorCreatedDto
     {

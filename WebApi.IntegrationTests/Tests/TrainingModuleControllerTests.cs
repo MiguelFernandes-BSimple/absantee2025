@@ -1,5 +1,5 @@
-using Application.DTO;
 using Application.DTO.AssociationTrainingModuleCollaborator;
+using Application.DTO.Collaborators;
 using Application.DTO.TrainingModule;
 using Application.DTO.TrainingSubject;
 using WebApi.IntegrationTests.Helpers;

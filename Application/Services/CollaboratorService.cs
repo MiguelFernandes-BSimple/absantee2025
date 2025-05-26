@@ -5,6 +5,7 @@ using Domain.Models;
 using Application.DTO;
 using AutoMapper;
 using Infrastructure;
+using Application.DTO.Collaborators;
 namespace Application.Services;
 
 public class CollaboratorService
@@ -143,6 +144,38 @@ public class CollaboratorService
         catch (Exception ex)
         {
             return Result<IEnumerable<CollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
+        }
+    }
+
+    public async Task<Result<IEnumerable<AssociationProjectCollaboratorDTO>>> FindAllAssociationsByProject(Guid projectId)
+    {
+        try
+        {
+            var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
+            var collabsIds = assocs.Select(c => c.CollaboratorId);
+            var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
+            var users = await _userRepository.GetBy
+
+            var result = assocs.Select(assoc =>
+            {
+                var collab = collabs.First(c => c.Id == assoc.CollaboratorId);
+
+                return new AssociationProjectCollaboratorDTO
+                {
+                    Id = assoc.Id,
+                    CollaboratorId = assoc.CollaboratorId,
+                    CollaboratorEmail = collab.
+                    ProjectId = assoc.ProjectId,
+                    ProjectAcronym = "TODO", // Replace with actual project acronym if needed
+                    PeriodDate = assoc.PeriodDate
+                };
+            }).ToList();
+
+            return Result<IEnumerable<CollaboratorDTO>>.Success(result);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<AssociationProjectCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
         }
     }
 
