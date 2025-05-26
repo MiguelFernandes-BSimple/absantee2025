@@ -19,21 +19,23 @@ public class CollaboratorService
     private IUserFactory _userFactory;
     private IAssociationTrainingModuleCollaboratorsRepository _assocTMCRepository;
     private ITrainingModuleRepository _trainingModuleRepository;
+    private IProjectRepository _projectRepository;
     private AbsanteeContext _context;
     private readonly IMapper _mapper;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IUserFactory userFactory, AbsanteeContext context)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IUserFactory userFactory, IProjectRepository projectRepository, AbsanteeContext context)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
         _collaboratorFactory = checkCollaboratorFactory;
+        _projectRepository = projectRepository;
         _userFactory = userFactory;
         _context = context;
     }
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository, AbsanteeContext context, IMapper mapper) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory, userFactory, context)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository, IProjectRepository projectRepository, AbsanteeContext context, IMapper mapper) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory, userFactory, projectRepository, context)
     {
         _assocTMCRepository = trainingModuleCollaboratorsRepository;
         _trainingModuleRepository = trainingModuleRepository;
@@ -342,5 +344,30 @@ public class CollaboratorService
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
         return collabs.Select(c => c.Id);
+    }
+
+    public async Task<IEnumerable<AssociationProjectCollaboratorDTO>> GetCollaboratorProjects(Guid CollabId)
+    {
+        // Get all associations connected to collaborator ID
+        var assocs = await _associationProjectCollaboratorRepository.FindAllByCollaboratorAsync(CollabId);
+
+        // Find and get all projects associated with collaborator
+        var projectIds = assocs.Select(a => a.ProjectId);
+        var projects = await _projectRepository.GetByIdAsync(projectIds);
+
+        // Converto into AssociationProjectCollaboratorDTO
+        var result = assocs.Select(a =>
+        {
+            var currAssoc = new AssociationProjectCollaboratorDTO();
+            currAssoc.Id = a.Id;
+            currAssoc.CollaboratorId = a.CollaboratorId;
+            currAssoc.ProjectId = a.ProjectId;
+            currAssoc.ProjectAcronym = projects.First(p => p.Id == a.ProjectId).Acronym;
+            currAssoc.PeriodDate = a.PeriodDate;
+
+            return currAssoc;
+        });
+
+        return result;
     }
 }

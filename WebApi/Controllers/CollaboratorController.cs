@@ -168,5 +168,14 @@ public class CollaboratorController : ControllerBase
         return Ok(periods);
     }
 
+    // Collaborator Projects
+    [HttpGet("{id}/associations")]
+    public async Task<ActionResult<IEnumerable<AssociationProjectCollaboratorDTO>>> GetCollaboratorProjects(Guid id)
+    {
+        var result = await _collabService.GetCollaboratorProjects(id);
 
+        if (result == null) return BadRequest();
+
+        return Ok(result);
+    }
 }

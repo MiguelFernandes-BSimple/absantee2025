@@ -46,4 +46,13 @@ public class ProjectRepositoryEF : GenericRepositoryEF<Project, ProjectDataModel
 
         return found == null;
     }
+
+    public async Task<IEnumerable<Project>> GetByIdAsync(IEnumerable<Guid> projectIds)
+    {
+        var projectDMs = await this._context.Set<ProjectDataModel>().Where(p => projectIds.Contains(p.Id)).ToListAsync();
+
+        var projects = projectDMs.Select(_ProjectMapper.Map<ProjectDataModel, Project>);
+
+        return projects;
+    }
 }
