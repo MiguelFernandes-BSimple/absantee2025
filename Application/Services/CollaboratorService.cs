@@ -70,7 +70,8 @@ public class CollaboratorService
                     Names = user.Names,
                     Surnames = user.Surnames,
                     Email = user.Email,
-                    FinalDate = user.PeriodDateTime
+                    UserPeriod = user.PeriodDateTime,
+                    CollaboratorPeriod = collab.PeriodDateTime
                 });
             }
         }
