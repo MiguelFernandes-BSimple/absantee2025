@@ -20,5 +20,7 @@ namespace Domain.IRepository
         Task<IUser?> ActivationUser(Guid Id, DateTime FinalDate);
         Task<bool> Exists(Guid ID);
 
+        Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab);
+
     }
 }
