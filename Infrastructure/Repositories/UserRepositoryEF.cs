@@ -107,6 +107,15 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         return user;
     }
 
+    public async Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab)
+    {
+        var usersDM = await _context.Set<UserDataModel>()
+            .Where(u => userIdsOfCollab.Contains(u.Id))
+            .ToListAsync();
+
+        return usersDM.Select(u => _mapper.Map<User>(u));
+    }
+    
     public async Task<bool> Exists(Guid ID)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == ID);

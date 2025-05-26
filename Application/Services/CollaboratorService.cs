@@ -5,6 +5,7 @@ using Domain.Models;
 using Application.DTO;
 using AutoMapper;
 using Infrastructure;
+using System.Collections;
 namespace Application.Services;
 
 public class CollaboratorService
@@ -46,6 +47,36 @@ public class CollaboratorService
 
         return Result<IEnumerable<Guid>>.Success(collabIds);
     }
+
+    public async Task<Result<IEnumerable<CollabDetailsDTO>>> GetAllInfo()
+    {
+        var collabs = await _collaboratorRepository.GetAllAsync();
+        var userIds = collabs.Select(c => c.UserId).ToList();
+        var users = await _userRepository.GetByIdsAsync(userIds);
+
+        var resultList = new List<CollabDetailsDTO>();
+
+        foreach (var collab in collabs)
+        {
+            var user = users.FirstOrDefault(u => u.Id == collab.UserId);
+
+            if (user != null)
+            {
+                resultList.Add(new CollabDetailsDTO
+                {
+                    CollabId = collab.Id,
+                    UserId = user.Id,
+                    Names = user.Names,
+                    Surnames = user.Surnames,
+                    Email = user.Email,
+                    FinalDate = user.PeriodDateTime
+                });
+            }
+        }
+
+        return Result<IEnumerable<CollabDetailsDTO>>.Success(resultList);
+    }
+
 
     public async Task<Result<CollaboratorDTO>> GetById(Guid id)
     {
