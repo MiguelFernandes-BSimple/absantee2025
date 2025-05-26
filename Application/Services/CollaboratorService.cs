@@ -6,6 +6,7 @@ using Application.DTO;
 using AutoMapper;
 using Infrastructure;
 using System.Collections;
+using Application.DTO.Collaborators;
 namespace Application.Services;
 
 public class CollaboratorService
@@ -184,24 +185,25 @@ public class CollaboratorService
             var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
             var collabsIds = assocs.Select(c => c.CollaboratorId);
             var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
-            var users = await _userRepository.GetBy
+            var users = await _userRepository.GetByIdsAsync(collabs.Select(c => c.UserId).ToList());
 
             var result = assocs.Select(assoc =>
             {
                 var collab = collabs.First(c => c.Id == assoc.CollaboratorId);
+                var user = users.First(u => u.Id == collab.UserId);
 
                 return new AssociationProjectCollaboratorDTO
                 {
                     Id = assoc.Id,
                     CollaboratorId = assoc.CollaboratorId,
-                    CollaboratorEmail = collab.
+                    CollaboratorEmail = user.Email,
                     ProjectId = assoc.ProjectId,
-                    ProjectAcronym = "TODO", // Replace with actual project acronym if needed
+                    ProjectAcronym = null!,
                     PeriodDate = assoc.PeriodDate
                 };
-            }).ToList();
+            });
 
-            return Result<IEnumerable<CollaboratorDTO>>.Success(result);
+            return Result<IEnumerable<AssociationProjectCollaboratorDTO>>.Success(result);
         }
         catch (Exception ex)
         {

@@ -33,9 +33,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{projectId}/associations")]
-        public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllAssociations(Guid projectId)
+        public async Task<ActionResult<IEnumerable<AssociationProjectCollaboratorDTO>>> GetAllAssociations(Guid projectId)
         {
-            var result = await _collaboratorService.FindAllByProject(projectId);
+            var result = await _collaboratorService.FindAllAssociationsByProject(projectId);
             return result.ToActionResult();
         }
 

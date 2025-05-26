@@ -11,9 +11,9 @@ namespace Application.DTO
     {
         public Guid Id { get; set; }
         public Guid CollaboratorId { get; set; }
-        public string CollaboratorEmail { get; set; }
+        public string? CollaboratorEmail { get; set; }
         public Guid ProjectId { get; set; }
-        public string ProjectAcronym { get; set; }
+        public string? ProjectAcronym { get; set; }
         public PeriodDate PeriodDate { get; set; }
     }
 }
