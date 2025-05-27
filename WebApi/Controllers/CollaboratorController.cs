@@ -84,23 +84,12 @@ public class CollaboratorController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCollaboratorDto collabDto)
     {
-        try
-        {
-            var collabCreated = await _collabService.Create(collabDto);
+        // verificações feitas no dto
+        var collabCreated = await _collabService.Create(collabDto);
 
-            if (collabCreated == null)
-                return BadRequest("Failed to create collaborator.");
+        if (collabCreated == null) return BadRequest();
 
-            return Created("", collabCreated);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Unexpected server error", detail = ex.Message });
-        }
+        return Created("", collabCreated);
     }
 
     // endpoint utilizado para testes
@@ -136,6 +125,14 @@ public class CollaboratorController : ControllerBase
     public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> UpdateHolidayPeriodsOfCollaborator(Guid collaboratorId, [FromBody] HolidayPeriodDTO hp)
     {
         var result = await _holidayPlanService.UpdateHolidayPeriodForCollaborator(collaboratorId, hp);
+
+        return Ok(result);
+    }
+
+    [HttpPost("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> AddHolidayPeriodForCollaborator(Guid collaboratorId, [FromBody] CreateHolidayPeriodDTO hp)
+    {
+        var result = await _holidayPlanService.AddHolidayPeriod(collaboratorId, hp);
 
         return Ok(result);
     }
