@@ -84,12 +84,23 @@ public class CollaboratorController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCollaboratorDto collabDto)
     {
-        // verificações feitas no dto
-        var collabCreated = await _collabService.Create(collabDto);
+        try
+        {
+            var collabCreated = await _collabService.Create(collabDto);
 
-        if (collabCreated == null) return BadRequest();
+            if (collabCreated == null)
+                return BadRequest("Failed to create collaborator.");
 
-        return Created("", collabCreated);
+            return Created("", collabCreated);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "Unexpected server error", detail = ex.Message });
+        }
     }
 
     // endpoint utilizado para testes
