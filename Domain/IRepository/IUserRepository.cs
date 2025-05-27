@@ -22,5 +22,6 @@ namespace Domain.IRepository
 
         Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab);
 
+        Task<User> updateUser(string name, string surname, string email, PeriodDateTime period, Guid userId);
     }
 }

@@ -6,6 +6,9 @@ using Application.DTO;
 using AutoMapper;
 using Infrastructure;
 using System.Collections;
+using Application.DTO.Collaborator;
+using Domain.Visitor;
+using Infrastructure.DataModel;
 namespace Application.Services;
 
 public class CollaboratorService
@@ -76,6 +79,19 @@ public class CollaboratorService
         }
 
         return Result<IEnumerable<CollabDetailsDTO>>.Success(resultList);
+    }
+
+    public async Task<CollaboratorEditedDTO> EditCollaborator(CollabDetailsDTO updatedCollabInfo)
+    {
+        var updateCollabDetails = await _collaboratorRepository.UpdateCollaborator(updatedCollabInfo.CollabId, updatedCollabInfo.CollaboratorPeriod);
+
+        var updatedUserDetails = await _userRepository.updateUser(updatedCollabInfo.Names, updatedCollabInfo.Surnames, updatedCollabInfo.Email, updatedCollabInfo.UserPeriod, updatedCollabInfo.UserId);
+
+        if (updateCollabDetails == null || updatedUserDetails == null) return null;
+
+        _context.SaveChanges();
+        
+        return new CollaboratorEditedDTO(updatedCollabInfo.Names, updatedCollabInfo.Surnames, updatedCollabInfo.Email, updatedCollabInfo.UserPeriod, updatedCollabInfo.CollaboratorPeriod);
     }
 
 

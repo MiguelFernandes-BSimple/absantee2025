@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net.Mail;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
@@ -16,19 +17,6 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
     {
         _mapper = mapper;
     }
-
-    // método adicionado com o professor, pode ser util mais tarde
-    /*     public async Task<IEnumerable<Guid>> GetUserIdByNamesAsync(string names)
-        {
-            if (string.IsNullOrWhiteSpace(names))
-                return new List<Guid>();
-
-            var usersIds = await this._context.Set<UserDataModel>()
-                        .Where(u => u.Names.Contains(names)).Select(u => u.Id)
-                        .ToListAsync();
-
-            return usersIds;
-        } */
 
     public async Task<IEnumerable<User>> GetByNamesAsync(string names)
     {
@@ -115,7 +103,7 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
 
         return usersDM.Select(u => _mapper.Map<User>(u));
     }
-    
+
     public async Task<bool> Exists(Guid ID)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == ID);
@@ -136,5 +124,29 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         var user = _mapper.Map<UserDataModel, User>(userDataModel);
         return user;
 
+    }
+
+    public async Task<User> updateUser(string name, string surname, string email, PeriodDateTime period, Guid userId)
+    {
+        var userDm = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (userDm == null) return null;
+
+        try
+        {
+            var emailValidator = new MailAddress(email);
+        }
+        catch (Exception)
+        {
+            throw new ArgumentException("Email is invalid.");
+        }
+
+        userDm.Names = name;
+        userDm.Surnames = surname;
+        userDm.Email = email;
+        userDm.PeriodDateTime = period;
+
+        var user = _mapper.Map<UserDataModel, User>(userDm);
+        return user;
     }
 }

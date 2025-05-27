@@ -1,5 +1,6 @@
 using Application;
 using Application.DTO;
+using Application.DTO.Collaborator;
 using Application.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,15 @@ public class CollaboratorController : ControllerBase
         _collabService = collabService;
         _holidayPlanService = holidayPlanService;
     }
+
+
+    [HttpPut]
+    public async Task<ActionResult<CollaboratorEditedDTO>> updateCollaborator([FromBody] CollabDetailsDTO newCollabData)
+    {
+        var result = await _collabService.EditCollaborator(newCollabData);
+        if (result == null) return BadRequest("Invalid Arguments");
+        return Ok(result);
+    } 
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Guid>>> Get()
