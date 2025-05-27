@@ -112,6 +112,23 @@ public class CollaboratorController : ControllerBase
         return Ok(result);
     }
 
+        
+    [HttpGet("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaborator(Guid collaboratorId)
+    {
+        var result = await _holidayPlanService.FindHolidayPeriodForCollaborator(collaboratorId);
+
+        return Ok(result);
+    }
+
+    [HttpPut("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> UpdateHolidayPeriodsOfCollaborator(Guid collaboratorId, [FromBody] HolidayPeriodDTO hp)
+    {
+        var result = await _holidayPlanService.UpdateHolidayPeriodForCollaborator(collaboratorId, hp);
+
+        return Ok(result);
+    }
+
     //US14 
     [HttpGet("holidayPlan/holidayPeriods/ByPeriod")]
     public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod(

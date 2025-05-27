@@ -8,6 +8,7 @@ public interface IHolidayPlanRepository : IGenericRepository<HolidayPlan, IHolid
     public Task<bool> CanInsertHolidayPlan(Guid collaboratorId);
     public Task<bool> CanInsertHolidayPeriod(Guid holidayPlanId, HolidayPeriod periodDate);
     public Task<HolidayPeriod> AddHolidayPeriodAsync(Guid holidayPlanId, HolidayPeriod holidayPeriod);
+    public Task<HolidayPeriod> UpdateHolidayPeriodAsync(Guid collabId, HolidayPeriod holidayPeriod);
     public Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate);
     public Task<IEnumerable<HolidayPlan>> FindHolidayPlansWithinPeriodAsync(PeriodDate periodDate);
     public Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsLongerThanForCollaboratorBetweenDatesAsync(Guid collaboratorId, PeriodDate periodDate, int days);

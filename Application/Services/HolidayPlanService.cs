@@ -57,6 +57,19 @@ public class HolidayPlanService
         }
     }
 
+    public async Task<IEnumerable<HolidayPeriodDTO>> FindHolidayPeriodForCollaborator(Guid collaboratorId)
+    {
+        var holidayPeriods = await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorAsync(collaboratorId);
+
+        return holidayPeriods.Select(_mapper.Map<HolidayPeriod, HolidayPeriodDTO>);
+    }
+
+    public async Task<HolidayPeriod> UpdateHolidayPeriodForCollaborator(Guid collabId, HolidayPeriodDTO periodDTO)
+    {
+        var period = _mapper.Map<HolidayPeriodDTO, HolidayPeriod>(periodDTO);
+        return await _holidayPlanRepository.UpdateHolidayPeriodAsync(collabId, period);
+    }
+
 
     //UC16: Como gestor de projeto, quero listar quantos dias de férias um colaborador tem marcado durante um projeto
     public async Task<Result<int>> GetHolidayDaysOfCollaboratorInProjectAsync(Guid projectId, Guid collaboratorId)

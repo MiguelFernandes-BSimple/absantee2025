@@ -39,6 +39,27 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
 
     }
 
+    public async Task<HolidayPeriod> UpdateHolidayPeriodAsync(Guid collabId, HolidayPeriod holidayPeriod)
+    {
+        var holidayPlan = await _context.Set<HolidayPlanDataModel>()
+            .Include(h => h.HolidayPeriods)
+            .FirstOrDefaultAsync(h => h.CollaboratorId == collabId);
+
+        if (holidayPlan == null)
+            throw new KeyNotFoundException("HolidayPlan not found");
+
+        var period = holidayPlan.HolidayPeriods
+            .FirstOrDefault(p => p.Id == holidayPeriod.Id);
+
+        if (period == null)
+            throw new KeyNotFoundException("HolidayPeriod not found");
+
+        _mapper.Map(holidayPeriod, period);
+        await SaveChangesAsync();
+
+        return _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(period);
+    }
+
     public async Task<IEnumerable<HolidayPlan>> FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(PeriodDate periodDate)
     {
         return await _context.Set<HolidayPlanDataModel>()
