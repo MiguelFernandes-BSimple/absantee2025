@@ -1,5 +1,6 @@
 using Application;
 using Application.DTO;
+using Application.DTO.Collaborator;
 using Application.DTO.Collaborators;
 using Application.Services;
 using Domain.Models;
@@ -19,6 +20,15 @@ public class CollaboratorController : ControllerBase
         _collabService = collabService;
         _holidayPlanService = holidayPlanService;
     }
+
+
+    [HttpPut]
+    public async Task<ActionResult<CollaboratorEditedDTO>> updateCollaborator([FromBody] CollabDetailsDTO newCollabData)
+    {
+        var result = await _collabService.EditCollaborator(newCollabData);
+        if (result == null) return BadRequest("Invalid Arguments");
+        return Ok(result);
+    } 
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Guid>>> Get()
@@ -98,6 +108,23 @@ public class CollaboratorController : ControllerBase
     public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaboratorByPeriod(Guid collaboratorId, [FromQuery] PeriodDate periodDate)
     {
         var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
+
+        return Ok(result);
+    }
+
+        
+    [HttpGet("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaborator(Guid collaboratorId)
+    {
+        var result = await _holidayPlanService.FindHolidayPeriodForCollaborator(collaboratorId);
+
+        return Ok(result);
+    }
+
+    [HttpPut("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> UpdateHolidayPeriodsOfCollaborator(Guid collaboratorId, [FromBody] HolidayPeriodDTO hp)
+    {
+        var result = await _holidayPlanService.UpdateHolidayPeriodForCollaborator(collaboratorId, hp);
 
         return Ok(result);
     }
