@@ -1,7 +1,7 @@
 using Moq;
 using Application.Services;
 using Domain.Models;
-using Application.DTO;
+using Application.DTO.Collaborators;
 
 namespace Application.Tests.CollaboratorServiceTests;
 

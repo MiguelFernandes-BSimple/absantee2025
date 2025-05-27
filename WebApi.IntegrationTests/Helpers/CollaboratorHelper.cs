@@ -1,4 +1,4 @@
-﻿using Application.DTO;
+﻿using Application.DTO.Collaborators;
 using Domain.Models;
 
 namespace WebApi.IntegrationTests.Helpers;

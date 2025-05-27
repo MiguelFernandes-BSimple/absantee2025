@@ -1,5 +1,6 @@
 using System.Net;
 using Application.DTO;
+using Application.DTO.Collaborators;
 using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
 using Xunit;

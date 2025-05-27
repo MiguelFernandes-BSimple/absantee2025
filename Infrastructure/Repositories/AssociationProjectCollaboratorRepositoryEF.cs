@@ -42,6 +42,19 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<As
         return assoc;
     }
 
+    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByCollaboratorAsync(Guid collabId)
+    {
+        IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
+            await _context.Set<AssociationProjectCollaboratorDataModel>()
+                          .Where(a => a.CollaboratorId == collabId)
+                          .ToListAsync();
+
+        IEnumerable<AssociationProjectCollaborator> assocs =
+            assocDM.Select(_mapper.Map<AssociationProjectCollaboratorDataModel, AssociationProjectCollaborator>);
+
+        return assocs;
+    }
+
     public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
     {
         IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =

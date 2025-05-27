@@ -39,7 +39,7 @@ public class HRManagerFactory : IHRManagerFactory
 
         return await Create(userId, periodDateTime);
     }
-    public HRManager Create(User user, PeriodDateTime periodDateTime)
+    public HRManager Create(IUser user, PeriodDateTime periodDateTime)
     {
         if (user.DeactivationDateIsBefore(periodDateTime._finalDate))
             throw new ArgumentException("User deactivation date is before collaborator contract end date.");

@@ -6,6 +6,7 @@ using Domain.Models;
 using WebApi.IntegrationTests.Helpers;
 using Domain.Interfaces;
 using System.Net;
+using Application.DTO.Collaborators;
 
 namespace WebApi.IntegrationTests.Tests;
 

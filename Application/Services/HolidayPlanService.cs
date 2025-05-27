@@ -48,7 +48,7 @@ public class HolidayPlanService
         try
         {
             holidayPeriod = await _holidayPeriodFactory.Create(holidayPlanId, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
-            await _holidayPlanRepository.AddHolidayPeriodAsync(holidayPeriod);
+            await _holidayPlanRepository.AddHolidayPeriodAsync(holidayPlanId, holidayPeriod);
             return _mapper.Map<HolidayPeriod, HolidayPeriodDTO>(holidayPeriod);
         }
         catch (Exception)

@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.DTO.Collaborators;
 using Application.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,13 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetAllCollaborators(Guid projectId)
         {
             var result = await _collaboratorService.FindAllByProject(projectId);
+            return result.ToActionResult();
+        }
+
+        [HttpGet("{projectId}/associations")]
+        public async Task<ActionResult<IEnumerable<AssociationProjectCollaboratorDTO>>> GetAllAssociations(Guid projectId)
+        {
+            var result = await _collaboratorService.FindAllAssociationsByProject(projectId);
             return result.ToActionResult();
         }
 
