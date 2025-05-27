@@ -28,15 +28,21 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
     }
 
     public async Task<HolidayPeriod> AddHolidayPeriodAsync(Guid holidayPlanId, HolidayPeriod holidayPeriod)
-    {        
+    {
+        var holidayPlan = await _context.Set<HolidayPlanDataModel>()
+            .Include(h => h.HolidayPeriods)
+            .FirstOrDefaultAsync(h => h.Id == holidayPlanId);
+
+        if (holidayPlan == null)
+            throw new Exception("Holiday Plan doesn't exist");
+
         var dataModel = _mapper.Map<HolidayPeriod, HolidayPeriodDataModel>(holidayPeriod);
-        dataModel.HolidayPlanDataModelId = holidayPlanId;
 
-        await _context.Set<HolidayPeriodDataModel>().AddAsync(dataModel);
-        
+        holidayPlan.HolidayPeriods.Add(dataModel);
+
         await SaveChangesAsync();
-        return _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(dataModel);
 
+        return _mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(dataModel);
     }
 
     public async Task<IEnumerable<HolidayPlan>> FindAllCollaboratorsWithHolidayPeriodsBetweenDatesAsync(PeriodDate periodDate)
