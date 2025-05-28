@@ -161,28 +161,34 @@ public class CollaboratorService
         return collabs.Select(c => c.Id);
     }
 
-    public async Task<CollaboratorCreatedDto> Create(CreateCollaboratorDto createCollabDto)
+    public async Task<Result<CollaboratorCreatedDto>> Create(CreateCollaboratorDto createCollabDto)
     {
+        try
+        {
+            var user = await _userFactory.Create(createCollabDto.Names, createCollabDto.Surnames, createCollabDto.Email, createCollabDto.deactivationDate);
 
-        var user = await _userFactory.Create(createCollabDto.Names, createCollabDto.Surnames, createCollabDto.Email, createCollabDto.deactivationDate);
+            var createdUser = _userRepository.Add(user);
 
-        if (user == null) return null;
+            var collab = await _collaboratorFactory.Create(createdUser, createCollabDto.PeriodDateTime);
 
-        var createdUser = _userRepository.Add(user);
-        if (createdUser == null) return null;
+            var createdCollab = _collaboratorRepository.Add(collab);
 
-        var collab = await _collaboratorFactory.Create(createdUser, createCollabDto.PeriodDateTime);
-        if (collab == null) return null;
+            var holidayPlan = await _holidayPlanFactory.Create(createdCollab, []);
+            await _holidayPlanRepository.AddAsync(holidayPlan);
 
-        var createdCollab = _collaboratorRepository.Add(collab);
-        if (createdCollab == null) return null;
+            _context.SaveChanges();
 
-        var holidayPlan = await _holidayPlanFactory.Create(createdCollab, []);
-        await _holidayPlanRepository.AddAsync(holidayPlan);
-
-        _context.SaveChanges();
-
-        return new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdCollab.PeriodDateTime);
+            var result = new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdCollab.PeriodDateTime);
+            return Result<CollaboratorCreatedDto>.Success(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<CollaboratorCreatedDto>.Failure(Error.BadRequest(ex.Message));
+        }
+        catch (Exception ex)
+        {
+            return Result<CollaboratorCreatedDto>.Failure(Error.InternalServerError(ex.Message));
+        }
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 

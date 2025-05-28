@@ -90,14 +90,11 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCollaboratorDto collabDto)
+    public async Task<ActionResult<CollaboratorCreatedDto>> Create([FromBody] CreateCollaboratorDto collabDto)
     {
-        // verificações feitas no dto
         var collabCreated = await _collabService.Create(collabDto);
 
-        if (collabCreated == null) return BadRequest();
-
-        return Created("", collabCreated);
+        return collabCreated.ToActionResult();
     }
 
     // endpoint utilizado para testes
