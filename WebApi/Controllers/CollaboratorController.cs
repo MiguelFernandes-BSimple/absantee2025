@@ -54,6 +54,14 @@ public class CollaboratorController : ControllerBase
         return collaborator.ToActionResult();
     }
 
+    [HttpGet("{collaboratorId}/details")]
+    public async Task<ActionResult<CollabDetailsDTO>> GetDetailsById(Guid collaboratorId)
+    {
+        var collaborator = await _collabService.GetDetailsById(collaboratorId);
+
+        return collaborator.ToActionResult();
+    }
+
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<Guid>>> FindBy([FromQuery] string? name, [FromQuery] string? surname)
     {
@@ -82,14 +90,11 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCollaboratorDto collabDto)
+    public async Task<ActionResult<CollaboratorCreatedDto>> Create([FromBody] CreateCollaboratorDto collabDto)
     {
-        // verificações feitas no dto
         var collabCreated = await _collabService.Create(collabDto);
 
-        if (collabCreated == null) return BadRequest();
-
-        return Created("", collabCreated);
+        return collabCreated.ToActionResult();
     }
 
     // endpoint utilizado para testes
@@ -108,6 +113,31 @@ public class CollaboratorController : ControllerBase
     public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaboratorByPeriod(Guid collaboratorId, [FromQuery] PeriodDate periodDate)
     {
         var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
+
+        return Ok(result);
+    }
+
+        
+    [HttpGet("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaborator(Guid collaboratorId)
+    {
+        var result = await _holidayPlanService.FindHolidayPeriodForCollaborator(collaboratorId);
+
+        return Ok(result);
+    }
+
+    [HttpPut("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> UpdateHolidayPeriodsOfCollaborator(Guid collaboratorId, [FromBody] HolidayPeriodDTO hp)
+    {
+        var result = await _holidayPlanService.UpdateHolidayPeriodForCollaborator(collaboratorId, hp);
+
+        return Ok(result);
+    }
+
+    [HttpPost("{collaboratorId}/holidayPlan/holidayPeriod")]
+    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> AddHolidayPeriodForCollaborator(Guid collaboratorId, [FromBody] CreateHolidayPeriodDTO hp)
+    {
+        var result = await _holidayPlanService.AddHolidayPeriod(collaboratorId, hp);
 
         return Ok(result);
     }

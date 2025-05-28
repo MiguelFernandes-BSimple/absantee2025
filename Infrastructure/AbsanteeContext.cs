@@ -42,8 +42,13 @@ namespace Infrastructure
             modelBuilder.Entity<ProjectDataModel>()
                 .OwnsOne(a => a.PeriodDate);
 
-            modelBuilder.Entity<HolidayPeriodDataModel>()
-                .OwnsOne(h => h.PeriodDate);
+            modelBuilder.Entity<HolidayPeriodDataModel>(entity =>
+            {
+                entity.Property(h => h.Id)
+                      .ValueGeneratedNever();
+
+                entity.OwnsOne(h => h.PeriodDate);
+            });
 
             modelBuilder.Entity<TrainingModuleDataModel>()
                 .OwnsMany(t => t.Periods);

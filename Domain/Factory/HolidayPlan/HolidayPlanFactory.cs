@@ -21,13 +21,9 @@ public class HolidayPlanFactory : IHolidayPlanFactory
         _holidayPeriodFactory = holidayPeriodFactory;
     }
 
-    public async Task<HolidayPlan> Create(Guid collaboratorId, List<PeriodDate> periods)
+    public async Task<HolidayPlan> Create(Collaborator collaborator, List<PeriodDate> periods)
     {
-        var collab = _collaboratorRepository.GetById(collaboratorId);
-        if (collab == null)
-            throw new ArgumentException("Collaborator doesn't exist.");
-
-        if (!await _holidayPlanRepository.CanInsertHolidayPlan(collaboratorId))
+        if (!await _holidayPlanRepository.CanInsertHolidayPlan(collaborator.UserId))
             throw new ArgumentException("Holiday plan already exists for this collaborator.");
 
         var holidayPeriods = new List<HolidayPeriod>();
@@ -38,7 +34,7 @@ public class HolidayPlanFactory : IHolidayPlanFactory
             try
             {
                 newPeriod = _holidayPeriodFactory.CreateWithoutHolidayPlan(
-                    collab, period.InitDate, period.FinalDate);
+                    collaborator, period.InitDate, period.FinalDate);
 
             }
             catch (Exception ex)
@@ -55,7 +51,7 @@ public class HolidayPlanFactory : IHolidayPlanFactory
             holidayPeriods.Add(newPeriod);
         }
 
-        return new HolidayPlan(collaboratorId, holidayPeriods);
+        return new HolidayPlan(collaborator.Id, holidayPeriods);
     }
 
     public HolidayPlan Create(IHolidayPlanVisitor visitor)

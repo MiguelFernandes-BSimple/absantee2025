@@ -10,7 +10,6 @@ namespace Infrastructure.DataModel;
 public class HolidayPeriodDataModel : IHolidayPeriodVisitor
 {
     public Guid Id { get; set; }
-    public Guid HolidayPlanDataModelId { get; set; }
     public PeriodDate PeriodDate { get; set; }
 
     public HolidayPeriodDataModel(IHolidayPeriod holidayPeriod)
