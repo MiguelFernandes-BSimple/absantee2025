@@ -24,23 +24,6 @@ public class HolidayPlanService
         _mapper = mapper;
     }
 
-    // NENHUMA UC ????
-    public async Task<HolidayPlanDTO> AddHolidayPlan(CreateHolidayPlanDTO holidayPlanDTO)
-    {
-        HolidayPlan holidayPlan;
-        try
-        {
-            var periodDates = holidayPlanDTO.HolidayPeriods.Select(hp => new PeriodDate(hp.InitDate, hp.FinalDate)).ToList();
-            holidayPlan = await _holidayPlanFactory.Create(holidayPlanDTO.CollaboratorId, periodDates);
-            var result = await _holidayPlanRepository.AddAsync(holidayPlan);
-            return _mapper.Map<HolidayPlan, HolidayPlanDTO>(result);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
     // UC1
     public async Task<HolidayPeriodDTO> AddHolidayPeriod(Guid collabId, CreateHolidayPeriodDTO holidayPeriodDTO)
     {

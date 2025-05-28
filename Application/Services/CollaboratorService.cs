@@ -23,25 +23,23 @@ public class CollaboratorService
     private IAssociationTrainingModuleCollaboratorsRepository _assocTMCRepository;
     private ITrainingModuleRepository _trainingModuleRepository;
     private IProjectRepository _projectRepository;
+    private IHolidayPlanFactory _holidayPlanFactory;
     private AbsanteeContext _context;
     private readonly IMapper _mapper;
 
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory checkCollaboratorFactory, IUserFactory userFactory, IProjectRepository projectRepository, AbsanteeContext context)
+    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository assocTMCRepository, ITrainingModuleRepository trainingModuleRepository, IProjectRepository projectRepository, IHolidayPlanFactory holidayPlanFactory, AbsanteeContext context, IMapper mapper)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
         _collaboratorRepository = collaboratorRepository;
         _userRepository = userRepository;
-        _collaboratorFactory = checkCollaboratorFactory;
-        _projectRepository = projectRepository;
+        _collaboratorFactory = collaboratorFactory;
         _userFactory = userFactory;
-        _context = context;
-    }
-
-    public CollaboratorService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, ICollaboratorRepository collaboratorRepository, IUserRepository userRepository, ICollaboratorFactory collaboratorFactory, IUserFactory userFactory, IAssociationTrainingModuleCollaboratorsRepository trainingModuleCollaboratorsRepository, ITrainingModuleRepository trainingModuleRepository, IProjectRepository projectRepository, AbsanteeContext context, IMapper mapper) : this(associationProjectCollaboratorRepository, holidayPlanRepository, collaboratorRepository, userRepository, collaboratorFactory, userFactory, projectRepository, context)
-    {
-        _assocTMCRepository = trainingModuleCollaboratorsRepository;
+        _assocTMCRepository = assocTMCRepository;
         _trainingModuleRepository = trainingModuleRepository;
+        _projectRepository = projectRepository;
+        _holidayPlanFactory = holidayPlanFactory;
+        _context = context;
         _mapper = mapper;
     }
 
@@ -177,7 +175,10 @@ public class CollaboratorService
         if (collab == null) return null;
 
         var createdCollab = _collaboratorRepository.Add(collab);
-        if (createCollabDto == null) return null;
+        if (createdCollab == null) return null;
+
+        var holidayPlan = await _holidayPlanFactory.Create(createdCollab, []);
+        await _holidayPlanRepository.AddAsync(holidayPlan);
 
         _context.SaveChanges();
 
