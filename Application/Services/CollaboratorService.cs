@@ -84,17 +84,28 @@ public class CollaboratorService
         return Result<IEnumerable<CollabDetailsDTO>>.Success(resultList);
     }
 
-    public async Task<CollaboratorEditedDTO> EditCollaborator(CollabDetailsDTO updatedCollabInfo)
+    public async Task<CollabUpdatedDTO?> EditCollaborator(CollabDetailsDTO dto)
     {
-        var updateCollabDetails = await _collaboratorRepository.UpdateCollaborator(updatedCollabInfo.CollabId, updatedCollabInfo.CollaboratorPeriod);
+        var collab = await _collaboratorRepository.GetByIdAsNoTrackingAsync(dto.CollabId);
+        if (collab == null) return null;
 
-        var updatedUserDetails = await _userRepository.updateUser(updatedCollabInfo.Names, updatedCollabInfo.Surnames, updatedCollabInfo.Email, updatedCollabInfo.UserPeriod, updatedCollabInfo.UserId);
+        var user = await _userRepository.GetByIdAsNoTrackingAsync(dto.UserId);
+        if (user == null) return null;
+
+        user.UpdateEmail(dto.Email);
+        user.UpdateName(dto.Names);
+        user.UpdateSurname(dto.Surnames);
+        user.UpdatePeriod(dto.UserPeriod);
+        collab.UpdatePeriod(dto.CollaboratorPeriod);
+        
+        var updateCollabDetails = _collaboratorRepository.UpdateCollaborator(collab);
+        var updatedUserDetails = _userRepository.UpdateUser(user);
 
         if (updateCollabDetails == null || updatedUserDetails == null) return null;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         
-        return new CollaboratorEditedDTO(updatedCollabInfo.Names, updatedCollabInfo.Surnames, updatedCollabInfo.Email, updatedCollabInfo.UserPeriod, updatedCollabInfo.CollaboratorPeriod);
+        return new CollabUpdatedDTO(dto.CollabId, dto.UserId, dto.Names, dto.Surnames, dto.Email, dto.UserPeriod, dto.CollaboratorPeriod);
     }
 
 

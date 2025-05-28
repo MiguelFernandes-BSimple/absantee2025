@@ -6,7 +6,7 @@ public class Collaborator : ICollaborator
 {
     public Guid Id { get; }
     public Guid UserId { get; }
-    public PeriodDateTime PeriodDateTime { get; }
+    public PeriodDateTime PeriodDateTime { get; set; }
 
     public Collaborator(Guid userId, PeriodDateTime periodDateTime)
     {
@@ -25,5 +25,10 @@ public class Collaborator : ICollaborator
     public bool ContractContainsDates(PeriodDateTime periodDateTime)
     {
         return PeriodDateTime.Contains(periodDateTime);
+    }
+
+    public void UpdatePeriod(PeriodDateTime period)
+    {
+        this.PeriodDateTime = period;
     }
 }

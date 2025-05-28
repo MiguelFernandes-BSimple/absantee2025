@@ -14,20 +14,9 @@ public class User : IUser
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {
-
-        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
-
-        if (!nameRegex.IsMatch(names) || !nameRegex.IsMatch(surnames))
-            throw new ArgumentException("Names or surnames are invalid.");
-
-        try
-        {
-            var emailValidator = new MailAddress(email);
-        }
-        catch (Exception)
-        {
-            throw new ArgumentException("Email is invalid.");
-        }
+        ValidateNameOrSurname(names);
+        ValidateNameOrSurname(surnames);
+        ValidateEmail(email);
 
         deactivationDate ??= DateTime.MaxValue;
 
@@ -49,6 +38,60 @@ public class User : IUser
         Email = email;
         PeriodDateTime = periodDateTime;
     }
+
+    public void UpdateEmail(string email)
+    {
+        if (ValidateEmail(email))
+        {
+            this.Email = email;
+        }
+    }
+
+    public void UpdateName(string name)
+    {
+        if (ValidateNameOrSurname(name))
+        {
+            this.Names = name;
+        }
+    }
+
+    public void UpdateSurname(string surname)
+    {
+        if (ValidateNameOrSurname(surname))
+        {
+            this.Surnames = surname;
+        }
+    }
+
+    public void UpdatePeriod(PeriodDateTime period)
+    {
+        this.PeriodDateTime = period;
+    }
+
+    private bool ValidateNameOrSurname(string nameOrSurname)
+    {
+        Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s]{1,50}$");
+
+        if (!nameRegex.IsMatch(nameOrSurname))
+            throw new ArgumentException("Names or surnames are invalid.");
+
+        return true;
+    }
+
+    private bool ValidateEmail(string email)
+    {
+        try
+        {
+            var emailValidator = new MailAddress(email);
+            return true;
+        }
+        catch (Exception)
+        {
+            throw new ArgumentException("Email is invalid.");
+        }
+    }
+
+
     public bool IsDeactivated()
     {
         return PeriodDateTime.IsFinalDateSmallerThan(DateTime.Now);

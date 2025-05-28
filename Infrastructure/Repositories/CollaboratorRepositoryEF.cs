@@ -87,16 +87,23 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
         return collabs;
     }
 
-    public async Task<Collaborator> UpdateCollaborator(Guid collabId, PeriodDateTime collabPeriod)
+    public async Task<Collaborator?> GetByIdAsNoTrackingAsync(Guid id)
     {
         var collabDm = await _context.Set<CollaboratorDataModel>()
-                                    .FirstOrDefaultAsync(c => c.Id == collabId);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         if (collabDm == null)
             return null;
 
-        collabDm.PeriodDateTime = collabPeriod;
+        var collab = _mapper.Map<CollaboratorDataModel, Collaborator>(collabDm);
+        return collab;
+    }
 
+    public Collaborator? UpdateCollaborator(Collaborator collab)
+    {
+        var collabDm = _mapper.Map<Collaborator, CollaboratorDataModel>(collab);
+        _context.Set<CollaboratorDataModel>().Update(collabDm);
         return _mapper.Map<CollaboratorDataModel, Collaborator>(collabDm);
     }
 }

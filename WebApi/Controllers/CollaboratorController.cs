@@ -23,12 +23,12 @@ public class CollaboratorController : ControllerBase
 
 
     [HttpPut]
-    public async Task<ActionResult<CollaboratorEditedDTO>> updateCollaborator([FromBody] CollabDetailsDTO newCollabData)
+    public async Task<ActionResult<CollabUpdatedDTO>> updateCollaborator([FromBody] CollabDetailsDTO newCollabData)
     {
         var result = await _collabService.EditCollaborator(newCollabData);
         if (result == null) return BadRequest("Invalid Arguments");
         return Ok(result);
-    } 
+    }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Guid>>> Get()

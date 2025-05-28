@@ -95,6 +95,20 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         return user;
     }
 
+    public async Task<User?> GetByIdAsNoTrackingAsync(Guid id)
+    {
+        var userDm = await _context.Set<UserDataModel>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (userDm == null)
+            return null;
+
+        var user = _mapper.Map<UserDataModel, User>(userDm);
+        return user;
+    }
+    
+
     public async Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab)
     {
         var usersDM = await _context.Set<UserDataModel>()
@@ -126,27 +140,10 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
 
     }
 
-    public async Task<User> updateUser(string name, string surname, string email, PeriodDateTime period, Guid userId)
+    public User? UpdateUser(User user)
     {
-        var userDm = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == userId);
-
-        if (userDm == null) return null;
-
-        try
-        {
-            var emailValidator = new MailAddress(email);
-        }
-        catch (Exception)
-        {
-            throw new ArgumentException("Email is invalid.");
-        }
-
-        userDm.Names = name;
-        userDm.Surnames = surname;
-        userDm.Email = email;
-        userDm.PeriodDateTime = period;
-
-        var user = _mapper.Map<UserDataModel, User>(userDm);
-        return user;
+        var userDm = _mapper.Map<User, UserDataModel>(user);
+        _context.Set<UserDataModel>().Update(userDm);
+        return _mapper.Map<UserDataModel, User>(userDm);
     }
 }
