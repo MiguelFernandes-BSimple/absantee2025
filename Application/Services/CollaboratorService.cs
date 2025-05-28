@@ -108,6 +108,30 @@ public class CollaboratorService
         return Result<CollaboratorDTO>.Success(result);
     }
 
+    public async Task<Result<CollabDetailsDTO>> GetDetailsById(Guid id)
+    {
+        var collab = await _collaboratorRepository.GetByIdAsync(id);
+        if (collab == null)
+            return Result<CollabDetailsDTO>.Failure(Error.NotFound("Collab not found"));
+
+        var user = await _userRepository.GetByIdAsync(collab.UserId);
+        if (user == null)
+            return Result<CollabDetailsDTO>.Failure(Error.NotFound("User not found"));
+
+        var result = new CollabDetailsDTO()
+        {
+            CollabId = collab.Id,
+            UserId = user.Id,
+            Names = user.Names,
+            Surnames = user.Surnames,
+            Email = user.Email,
+            UserPeriod = user.PeriodDateTime,
+            CollaboratorPeriod = collab.PeriodDateTime
+        };
+
+        return Result<CollabDetailsDTO>.Success(result);
+    }
+
     public async Task<long> GetCount()
     {
         return await _collaboratorRepository.GetCount();

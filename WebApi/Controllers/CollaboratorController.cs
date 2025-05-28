@@ -54,6 +54,14 @@ public class CollaboratorController : ControllerBase
         return collaborator.ToActionResult();
     }
 
+    [HttpGet("{collaboratorId}/details")]
+    public async Task<ActionResult<CollabDetailsDTO>> GetDetailsById(Guid collaboratorId)
+    {
+        var collaborator = await _collabService.GetDetailsById(collaboratorId);
+
+        return collaborator.ToActionResult();
+    }
+
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<Guid>>> FindBy([FromQuery] string? name, [FromQuery] string? surname)
     {
