@@ -25,7 +25,9 @@ public class CollaboratorController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<CollabUpdatedDTO>> updateCollaborator([FromBody] CollabDetailsDTO newCollabData)
     {
-        var result = await _collabService.EditCollaborator(newCollabData);
+        var collabData = new CollabData(newCollabData.CollabId, newCollabData.UserId, newCollabData.Names, newCollabData.Surnames, newCollabData.Email, newCollabData.UserPeriod, newCollabData.CollaboratorPeriod);
+
+        var result = await _collabService.EditCollaborator(collabData);
         if (result == null) return BadRequest("Invalid Arguments");
         return Ok(result);
     }

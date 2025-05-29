@@ -1,4 +1,5 @@
 ﻿using System.Net.Mail;
+using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -95,20 +96,6 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         return user;
     }
 
-    public async Task<User?> GetByIdAsNoTrackingAsync(Guid id)
-    {
-        var userDm = await _context.Set<UserDataModel>()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == id);
-
-        if (userDm == null)
-            return null;
-
-        var user = _mapper.Map<UserDataModel, User>(userDm);
-        return user;
-    }
-    
-
     public async Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab)
     {
         var usersDM = await _context.Set<UserDataModel>()
@@ -140,10 +127,18 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
 
     }
 
-    public User? UpdateUser(User user)
+    public async Task<User?> UpdateUser(User user)
     {
-        var userDm = _mapper.Map<User, UserDataModel>(user);
-        _context.Set<UserDataModel>().Update(userDm);
-        return _mapper.Map<UserDataModel, User>(userDm);
+        var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == user.Id);
+
+        if (userDM == null) return null;
+
+        userDM.Names = user.Names;
+        userDM.Surnames = user.Surnames;
+        userDM.Email = user.Email;
+        userDM.PeriodDateTime = user.PeriodDateTime;
+
+        _context.Set<UserDataModel>().Update(userDM);
+        return _mapper.Map<UserDataModel, User>(userDM);
     }
 }

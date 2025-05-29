@@ -22,7 +22,6 @@ namespace Domain.IRepository
 
         Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab);
 
-        public User? UpdateUser(User user);
-        Task<User?> GetByIdAsNoTrackingAsync(Guid id);
+        Task<User?> UpdateUser(User user_);
     }
 }
