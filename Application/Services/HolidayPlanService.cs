@@ -15,7 +15,7 @@ public class HolidayPlanService
     private readonly IHolidayPeriodFactory _holidayPeriodFactory;
     private readonly IMapper _mapper;
 
-    public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, IHolidayPlanFactory holidayPlanFactory, IHolidayPeriodFactory holidayPeriodFactory, ICollaboratorRepository collaboratorRepository, IMapper mapper)
+    public HolidayPlanService(IAssociationProjectCollaboratorRepository associationProjectCollaboratorRepository, IHolidayPlanRepository holidayPlanRepository, IHolidayPlanFactory holidayPlanFactory, IHolidayPeriodFactory holidayPeriodFactory, IMapper mapper)
     {
         _associationProjectCollaboratorRepository = associationProjectCollaboratorRepository;
         _holidayPlanRepository = holidayPlanRepository;
@@ -114,7 +114,7 @@ public class HolidayPlanService
  
         return hp; 
     }
-    private async Task<IEnumerable<HolidayPeriod>> GetIntersectingHolidayPeriodsForProjectCollaboratorsAsync(Guid projectId, PeriodDate period)
+    private async Task<IEnumerable<IHolidayPeriod>> GetIntersectingHolidayPeriodsForProjectCollaboratorsAsync(Guid projectId, PeriodDate period)
     {
         var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAndIntersectingPeriodAsync(projectId, period);
         var collaboratorIds = associations.Select(a => a.CollaboratorId).Distinct().ToList();
@@ -128,10 +128,7 @@ public class HolidayPlanService
         {
             var holidayPeriods = await GetIntersectingHolidayPeriodsForProjectCollaboratorsAsync(projectId, period);
 
-            var result = holidayPeriods.Select(h => new HolidayPeriodDTO
-            {
-                PeriodDate = h.PeriodDate.GetIntersection(period)!
-            });
+            var result = holidayPeriods.Select(_mapper.Map<HolidayPeriodDTO>);
 
             return Result<IEnumerable<HolidayPeriodDTO>>.Success(result);
         }

@@ -99,7 +99,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         return result;
     }
 
-    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndIntersectingPeriodAsync(Guid projectId, PeriodDate periodDate)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndIntersectingPeriodAsync(Guid projectId, PeriodDate periodDate)
     {
         IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
             await _context.Set<AssociationProjectCollaboratorDataModel>()

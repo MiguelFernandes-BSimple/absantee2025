@@ -8,20 +8,23 @@ namespace Application.DTO.Collaborators
 {
     public class CollaboratorCreatedDto
     {
-        public Guid Id { get; set; }
+        public Guid CollabId { get; set; }
         public Guid UserId { get; set; }
-        public PeriodDateTime PeriodDateTime { get; set; }
+        public string Names { get; set; }
+        public string Surnames { get; set; }
+        public string Email { get; set; }
+        public PeriodDateTime UserPeriod { get; set; }
+        public PeriodDateTime CollaboratorPeriod { get; set; }
 
-        public CollaboratorCreatedDto(Guid id, Guid userId, PeriodDateTime periodDateTime)
+        public CollaboratorCreatedDto(Guid collabId, Guid userId, string names, string surnames, string email, PeriodDateTime userPeriod, PeriodDateTime collaboratorPeriod)
         {
-            Id = id;
+            CollabId = collabId;
             UserId = userId;
-            PeriodDateTime = periodDateTime;
-        }
-
-        public CollaboratorCreatedDto()
-        {
-
+            Names = names;
+            Surnames = surnames;
+            Email = email;
+            UserPeriod = userPeriod;
+            CollaboratorPeriod = collaboratorPeriod;
         }
 
     }

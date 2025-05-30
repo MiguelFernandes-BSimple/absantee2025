@@ -168,7 +168,7 @@ public class CollaboratorService
         return collabs.Select(c => c.Id);
     }
 
-    public async Task<Result<CollaboratorCreatedDto>> Create(CreateCollaboratorDto createCollabDto)
+    public async Task<Result<CollaboratorCreatedDto>> Create(CollabCreateDataDTO createCollabDto)
     {
         try
         {
@@ -185,7 +185,7 @@ public class CollaboratorService
 
             _context.SaveChanges();
 
-            var result = new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdCollab.PeriodDateTime);
+            var result = new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdUser.Names, createdUser.Surnames, createdUser.Email, createdUser.PeriodDateTime, createdCollab.PeriodDateTime);
             return Result<CollaboratorCreatedDto>.Success(result);
         }
         catch (ArgumentException ex)
