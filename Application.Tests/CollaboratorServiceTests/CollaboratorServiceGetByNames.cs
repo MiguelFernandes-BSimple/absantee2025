@@ -16,10 +16,8 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var name = "Joao";
 
-            //var user1 = new User(user1Id, "Joao", "Afonso", "joao@gmail.com", period);
             var user1 = new Mock<IUser>();
             user1.Setup(u => u.Id).Returns(user1Id);
-            //var user2 = new User(user2Id, "Joao", "Alberto", "joao@gmail.com", period);
             var user2 = new Mock<IUser>();
             user2.Setup(u => u.Id).Returns(user2Id);
 
@@ -28,10 +26,8 @@ namespace Application.Tests.CollaboratorServiceTests
             var collabId1 = Guid.NewGuid();
             var collabId2 = Guid.NewGuid();
 
-            //var collab1 = new Collaborator(collabId1, user1Id, period);
             var collab1 = new Mock<ICollaborator>();
             collab1.Setup(c => c.Id).Returns(collabId1);
-            //var collab2 = new Collaborator(collabId2, user2Id, period);
             var collab2 = new Mock<ICollaborator>();
             collab2.Setup(c => c.Id).Returns(collabId2);
 
@@ -57,12 +53,14 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var name = "Joao";
 
-            var user1 = new User(user1Id, "Joao", "Afonso", "joao@gmail.com", period);
-            var user2 = new User(user2Id, "Joao", "Alberto", "joao@gmail.com", period);
+            var user1 = new Mock<IUser>();
+            user1.Setup(u => u.Id).Returns(user1Id);
+            var user2 = new Mock<IUser>();
+            user2.Setup(u => u.Id).Returns(user2Id);
 
-            UserRepositoryDouble.Setup(repo => repo.GetByNamesAsync(name)).ReturnsAsync(new List<User> { user1, user2 });
+            UserRepositoryDouble.Setup(repo => repo.GetByNamesAsync(name)).ReturnsAsync(new List<IUser> { user1.Object, user2.Object });
 
-            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid> { user1Id, user2Id })).ReturnsAsync(new List<Collaborator>());
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid> { user1Id, user2Id })).ReturnsAsync(new List<ICollaborator>());
 
             // act
             var result = await CollaboratorService.GetByNames(name);

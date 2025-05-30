@@ -33,7 +33,7 @@ public class UserRepositoryEF : GenericRepositoryEF<IUser, User, UserDataModel>,
         return users;
     }
 
-    public async Task<IEnumerable<User>> GetBySurnamesAsync(string surnames)
+    public async Task<IEnumerable<IUser>> GetBySurnamesAsync(string surnames)
     {
         if (string.IsNullOrWhiteSpace(surnames))
             return new List<User>();
@@ -45,7 +45,7 @@ public class UserRepositoryEF : GenericRepositoryEF<IUser, User, UserDataModel>,
         return usersDM.Select(u => _mapper.Map<User>(u));
     }
 
-    public async Task<IEnumerable<User>> GetByNamesAndSurnamesAsync(string names, string surnames)
+    public async Task<IEnumerable<IUser>> GetByNamesAndSurnamesAsync(string names, string surnames)
     {
         if (string.IsNullOrWhiteSpace(names) && string.IsNullOrWhiteSpace(surnames))
             return new List<User>();

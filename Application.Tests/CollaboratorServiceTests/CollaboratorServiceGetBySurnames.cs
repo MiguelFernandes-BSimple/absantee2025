@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
@@ -16,18 +17,22 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var surname = "Afonso";
 
-            var user1 = new User(user1Id, "Joao", "Afonso", "joao@gmail.com", period);
-            var user2 = new User(user2Id, "Manuel", "Afonso", "manuel@gmail.com", period);
+            var user1 = new Mock<IUser>();
+            user1.Setup(u => u.Id).Returns(user1Id);
+            var user2 = new Mock<IUser>();
+            user2.Setup(u => u.Id).Returns(user2Id);
 
-            UserRepositoryDouble.Setup(repo => repo.GetBySurnamesAsync(surname)).ReturnsAsync(new List<User> { user1, user2 });
+            UserRepositoryDouble.Setup(repo => repo.GetBySurnamesAsync(surname)).ReturnsAsync(new List<IUser> { user1.Object, user2.Object });
 
             var collabId1 = Guid.NewGuid();
             var collabId2 = Guid.NewGuid();
 
-            var collab1 = new Collaborator(collabId1, user1Id, period);
-            var collab2 = new Collaborator(collabId2, user2Id, period);
+            var collab1 = new Mock<ICollaborator>();
+            collab1.Setup(c => c.Id).Returns(collabId1);
+            var collab2 = new Mock<ICollaborator>();
+            collab2.Setup(c => c.Id).Returns(collabId2);
 
-            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid> { user1Id, user2Id })).ReturnsAsync(new List<Collaborator> { collab1, collab2 });
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid> { user1Id, user2Id })).ReturnsAsync(new List<ICollaborator> { collab1.Object, collab2.Object });
 
             // act
             var result = await CollaboratorService.GetBySurnames(surname);
@@ -49,12 +54,14 @@ namespace Application.Tests.CollaboratorServiceTests
 
             var surname = "Afonso";
 
-            var user1 = new User(user1Id, "Joao", "Afonso", "joao@gmail.com", period);
-            var user2 = new User(user2Id, "Manuel", "Afonso", "manuel@gmail.com", period);
+            var user1 = new Mock<IUser>();
+            user1.Setup(u => u.Id).Returns(user1Id);
+            var user2 = new Mock<IUser>();
+            user2.Setup(u => u.Id).Returns(user2Id);
 
-            UserRepositoryDouble.Setup(repo => repo.GetBySurnamesAsync(surname)).ReturnsAsync(new List<User> { user1, user2 });
+            UserRepositoryDouble.Setup(repo => repo.GetBySurnamesAsync(surname)).ReturnsAsync(new List<IUser> { user1.Object, user2.Object });
 
-            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid> { user1Id, user2Id })).ReturnsAsync(new List<Collaborator>());
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid> { user1Id, user2Id })).ReturnsAsync(new List<ICollaborator>());
 
             // act
             var result = await CollaboratorService.GetBySurnames(surname);
@@ -70,9 +77,9 @@ namespace Application.Tests.CollaboratorServiceTests
             // arrange
             var surname = "Afonso";
 
-            UserRepositoryDouble.Setup(repo => repo.GetBySurnamesAsync(surname)).ReturnsAsync(new List<User>());
+            UserRepositoryDouble.Setup(repo => repo.GetBySurnamesAsync(surname)).ReturnsAsync(new List<IUser>());
 
-            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid>())).ReturnsAsync(new List<Collaborator>());
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByUsersIdsAsync(new List<Guid>())).ReturnsAsync(new List<ICollaborator>());
 
             // act
             var result = await CollaboratorService.GetBySurnames(surname);
