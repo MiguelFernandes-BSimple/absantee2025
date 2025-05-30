@@ -94,7 +94,9 @@ public class CollaboratorController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CollaboratorCreatedDto>> Create([FromBody] CreateCollaboratorDto collabDto)
     {
-        var collabCreated = await _collabService.Create(collabDto);
+        var createCollabDto = new CollabCreateDataDTO(collabDto.Names, collabDto.Surnames, collabDto.Email, collabDto.deactivationDate, collabDto.PeriodDateTime);
+
+        var collabCreated = await _collabService.Create(createCollabDto);
 
         return collabCreated.ToActionResult();
     }
