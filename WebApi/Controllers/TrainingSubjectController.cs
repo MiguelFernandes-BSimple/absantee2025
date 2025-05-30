@@ -26,4 +26,12 @@ public class TrainingSubjectController : ControllerBase
 
         return addedTS.ToActionResult();
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<TrainingSubjectDTO>>> GetAllTrainingSubjects()
+    {
+        var trainingSubjects = await _trainingSubjectService.GetAll();
+
+        return trainingSubjects.ToActionResult();
+    }
 }

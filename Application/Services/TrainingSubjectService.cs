@@ -40,4 +40,12 @@ public class TrainingSubjectService
         var result = _mapper.Map<TrainingSubject, TrainingSubjectDTO>(ts);
         return Result<TrainingSubjectDTO>.Success(result);
     }
+
+    public async Task<Result<IEnumerable<TrainingSubjectDTO>>> GetAll()
+    {
+        var trainingSubjects = await _trainingSubjectRepository.GetAllAsync();
+        var result = trainingSubjects.Select(_mapper.Map<TrainingSubjectDTO>);
+
+        return Result<IEnumerable<TrainingSubjectDTO>>.Success(result);
+    }
 }
