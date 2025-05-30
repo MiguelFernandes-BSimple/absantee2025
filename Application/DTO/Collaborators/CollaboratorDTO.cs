@@ -8,6 +8,10 @@ namespace Application.DTO.Collaborators
 		public Guid UserId { get; set; }
 		public PeriodDateTime PeriodDateTime { get; set; }
 
+		public CollaboratorDTO()
+		{
+
+		}
 		public CollaboratorDTO(Guid id, Guid userId, PeriodDateTime periodDateTime)
 		{
 			Id = id;

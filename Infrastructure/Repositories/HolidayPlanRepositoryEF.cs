@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain.Interfaces;
 
 namespace Infrastructure.Repositories;
+
 public class HolidayPlanRepositoryEF : GenericRepositoryEF<IHolidayPlan, HolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
 {
     private IMapper _mapper;
@@ -151,7 +152,7 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<IHolidayPlan, Holiday
         }
     }
 
-    public async Task<IEnumerable<HolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days)
+    public async Task<IEnumerable<IHolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days)
     {
         var hpDm = await _context.Set<HolidayPlanDataModel>()
             .Where(hp => hp.HolidayPeriods
@@ -188,16 +189,16 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<IHolidayPlan, Holiday
     }
 
     public async Task<IEnumerable<HolidayPlan>> FindHolidayPlansWithinPeriodAsync(PeriodDate periodDate)
-{
-    var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
-                .Where(hp => hp.HolidayPeriods
-                    .Any(hperiod => periodDate.InitDate <= hperiod.PeriodDate.FinalDate
-                                 && periodDate.FinalDate >= hperiod.PeriodDate.InitDate))
-                .Include(hp => hp.HolidayPeriods)
-                .ToListAsync();
+    {
+        var holidayPlansDMs = await _context.Set<HolidayPlanDataModel>()
+                    .Where(hp => hp.HolidayPeriods
+                        .Any(hperiod => periodDate.InitDate <= hperiod.PeriodDate.FinalDate
+                                     && periodDate.FinalDate >= hperiod.PeriodDate.InitDate))
+                    .Include(hp => hp.HolidayPeriods)
+                    .ToListAsync();
 
-    return holidayPlansDMs.Select(_mapper.Map<HolidayPlanDataModel, HolidayPlan>);
-}
+        return holidayPlansDMs.Select(_mapper.Map<HolidayPlanDataModel, HolidayPlan>);
+    }
 
     public override async Task<IHolidayPlan?> GetByIdAsync(Guid id)
     {

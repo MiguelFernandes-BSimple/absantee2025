@@ -5,10 +5,6 @@ using Domain.Models;
 using Application.DTO;
 using AutoMapper;
 using Infrastructure;
-using System.Collections;
-using Application.DTO.Collaborator;
-using Domain.Visitor;
-using Infrastructure.DataModel;
 using Application.DTO.Collaborators;
 namespace Application.Services;
 
@@ -203,13 +199,21 @@ public class CollaboratorService
     }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
-    public async Task<IEnumerable<CollaboratorDTO>> FindAllWithHolidayPeriodsLongerThan(int days)
+    public async Task<Result<IEnumerable<CollaboratorDTO>>> FindAllWithHolidayPeriodsLongerThan(int days)
     {
-        var holidayPlans = await _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThanAsync(days);
-        var collabIds = holidayPlans.Select(hp => hp.CollaboratorId);
-        var collabs = await _collaboratorRepository.GetByIdsAsync(collabIds);
+        try
+        {
+            var holidayPlans = await _holidayPlanRepository.FindAllWithHolidayPeriodsLongerThanAsync(days);
+            var collabIds = holidayPlans.Select(hp => hp.CollaboratorId);
+            var collabs = await _collaboratorRepository.GetByIdsAsync(collabIds);
 
-        return collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+            return Result<IEnumerable<CollaboratorDTO>>.Success(collabs.Select(_mapper.Map<CollaboratorDTO>));
+
+        }
+        catch (Exception e)
+        {
+            return Result<IEnumerable<CollaboratorDTO>>.Failure(Error.InternalServerError(e.Message));
+        }
     }
 
     // US14 - Como gestor de RH, quero listar os collaboradores que têm de férias num período
@@ -220,7 +224,7 @@ public class CollaboratorService
         var collabIds = holidayPlans.Select(holidayPlans => holidayPlans.CollaboratorId);
         var collabs = await _collaboratorRepository.GetByIdsAsync(collabIds);
 
-        return collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+        return collabs.Select(_mapper.Map<CollaboratorDTO>);
     }
 
     public async Task<Result<IEnumerable<CollaboratorDTO>>> FindAllByProject(Guid projectId)
@@ -230,7 +234,7 @@ public class CollaboratorService
             var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
             var collabsIds = assocs.Select(c => c.CollaboratorId);
             var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
-            var result = collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+            var result = collabs.Select(_mapper.Map<CollaboratorDTO>);
             return Result<IEnumerable<CollaboratorDTO>>.Success(result);
         }
         catch (Exception ex)
@@ -279,7 +283,7 @@ public class CollaboratorService
             var assocs = await _associationProjectCollaboratorRepository.FindAllByProjectAndIntersectingPeriodAsync(projectId, periodDate);
             var collabsIds = assocs.Select(c => c.CollaboratorId);
             var collabs = await _collaboratorRepository.GetByIdsAsync(collabsIds);
-            var result = collabs.Select(_mapper.Map<Collaborator, CollaboratorDTO>);
+            var result = collabs.Select(_mapper.Map<CollaboratorDTO>);
             return Result<IEnumerable<CollaboratorDTO>>.Success(result);
         }
         catch (Exception ex)

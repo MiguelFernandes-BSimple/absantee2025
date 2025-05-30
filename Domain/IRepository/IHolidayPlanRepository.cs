@@ -18,5 +18,5 @@ public interface IHolidayPlanRepository : IGenericRepositoryEF<IHolidayPlan, Hol
     Task<IEnumerable<HolidayPeriod>> FindAllHolidayPeriodsForAllCollaboratorsIntersectingPeriodAsync(List<Guid> collabIds, PeriodDate periodDate);
     public Task<HolidayPlan?> FindHolidayPlanByCollaboratorAsync(Guid collaboratorId);
     public Task<IEnumerable<HolidayPeriod>> FindHolidayPeriodsByCollaboratorAsync(Guid collaboratorId);
-    public Task<IEnumerable<HolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days);
+    public Task<IEnumerable<IHolidayPlan>> FindAllWithHolidayPeriodsLongerThanAsync(int days);
 }

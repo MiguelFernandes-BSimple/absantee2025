@@ -119,7 +119,7 @@ public class CollaboratorController : ControllerBase
         return Ok(result);
     }
 
-        
+
     [HttpGet("{collaboratorId}/holidayPlan/holidayPeriod")]
     public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaborator(Guid collaboratorId)
     {
@@ -161,7 +161,7 @@ public class CollaboratorController : ControllerBase
     {
         var result = await _collabService.FindAllWithHolidayPeriodsLongerThan(days);
 
-        return Ok(result);
+        return result.ToActionResult();
     }
 
 

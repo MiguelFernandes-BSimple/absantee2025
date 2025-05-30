@@ -1,58 +1,93 @@
 ﻿using Application.Services;
 using Moq;
 using Domain.Models;
+using Domain.Interfaces;
+using System.Collections.Generic;
+using Application.DTO.Collaborators;
 
 namespace Application.Tests.CollaboratorServiceTests
 {
     public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan : CollaboratorServiceTestBase
     {
+        // There is an error fetching the elements from DB
+        // Exception is thrown
+        [Fact]
+        public async Task FindAllWithHolidayPeriodsLongerThan_ReturnsFailure_WhenExceptionIsThrown()
+        {
+            // Arrange
+            HolidayPlanRepositoryDouble
+                .Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(It.IsAny<int>()))
+                .ThrowsAsync(new Exception("DB error"));
+
+            // Act
+            var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(It.IsAny<int>());
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Equal("DB error", result.Error!.Message);
+        }
+
+        // Happy path
         [Fact]
         public async Task FindAllWithHolidayPeriodsLongerThan_ReturnsCorrectCollaborators()
         {
-            // arrange
-            var days = 5;
+            // Arrange
+            Mock<IHolidayPlan> holidayPlan1 = new Mock<IHolidayPlan>();
+            Mock<IHolidayPlan> holidayPlan2 = new Mock<IHolidayPlan>();
+            Mock<IHolidayPlan> holidayPlan3 = new Mock<IHolidayPlan>();
 
-            var userId1 = Guid.NewGuid();
-            var collabId1 = Guid.NewGuid();
-            var period1 = new PeriodDateTime(DateTime.UtcNow.AddDays(5), DateTime.UtcNow.AddDays(15));
-            var collab1 = new Collaborator(collabId1, userId1, period1);
+            IEnumerable<IHolidayPlan> holidayPlanList = new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object, holidayPlan3.Object };
 
-            var userId2 = Guid.NewGuid();
-            var collabId2 = Guid.NewGuid();
-            var period2 = new PeriodDateTime(DateTime.UtcNow.AddDays(5), DateTime.UtcNow.AddDays(15));
-            var collab2 = new Collaborator(collabId2, userId2, period2);
+            HolidayPlanRepositoryDouble.Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(It.IsAny<int>())).ReturnsAsync(holidayPlanList);
 
-            var holidayPlans = new List<HolidayPlan>{
-                new HolidayPlan(collabId1, new List<HolidayPeriod> { It.IsAny<HolidayPeriod>() }),
-                new HolidayPlan(collabId2, new List<HolidayPeriod> { It.IsAny<HolidayPeriod>() })
-            };
+            Guid collabId1 = new Guid();
+            Guid collabId2 = new Guid();
+            Guid collabId3 = new Guid();
 
-            HolidayPlanRepositoryDouble.Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(days)).ReturnsAsync(holidayPlans);
+            holidayPlan1.Setup(hp => hp.CollaboratorId).Returns(collabId1);
+            holidayPlan2.Setup(hp => hp.CollaboratorId).Returns(collabId2);
+            holidayPlan3.Setup(hp => hp.CollaboratorId).Returns(collabId3);
 
-            var collabIdsList = new List<Guid> { collabId1, collabId2 };
-            var expectedList = new List<Collaborator> { collab1, collab2 };
+            IEnumerable<Guid> collabIdsList = new List<Guid> { collabId1, collabId2, collabId3 };
 
-            CollaboratorRepositoryDouble.Setup(repo => repo.GetByIdsAsync(collabIdsList)).ReturnsAsync(expectedList);
+            Mock<ICollaborator> collab1 = new Mock<ICollaborator>();
+            Mock<ICollaborator> collab2 = new Mock<ICollaborator>();
+            Mock<ICollaborator> collab3 = new Mock<ICollaborator>();
 
-            // act
-            var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(days);
+            collab1.Setup(c => c.Id).Returns(collabId1);
+            collab2.Setup(c => c.Id).Returns(collabId2);
+            collab3.Setup(c => c.Id).Returns(collabId3);
 
-            // assert
-            Assert.Equal(2, result.Count());
-            Assert.Contains(result, c => c.Id == collab1.Id);
-            Assert.Contains(result, c => c.Id == collab2.Id);
+            IEnumerable<ICollaborator> expectedCollabList = new List<ICollaborator> { collab1.Object, collab2.Object, collab3.Object };
+
+            CollaboratorRepositoryDouble.Setup(repo => repo.GetByIdsAsync(collabIdsList)).ReturnsAsync(expectedCollabList);
+
+            var dto1 = new CollaboratorDTO(collabId1, It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
+            var dto2 = new CollaboratorDTO(collabId2, It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
+            var dto3 = new CollaboratorDTO(collabId3, It.IsAny<Guid>(), It.IsAny<PeriodDateTime>());
+
+            MapperDouble.Setup(mp => mp.Map<CollaboratorDTO>(collab1.Object)).Returns(dto1);
+            MapperDouble.Setup(mp => mp.Map<CollaboratorDTO>(collab2.Object)).Returns(dto2);
+            MapperDouble.Setup(mp => mp.Map<CollaboratorDTO>(collab3.Object)).Returns(dto3);
+
+            IEnumerable<CollaboratorDTO> expectedResult = new List<CollaboratorDTO> { dto1, dto2, dto3 };
+
+            // Act
+            var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(It.IsAny<int>());
+
+            // Assert
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+            Assert.True(result.Value.SequenceEqual(expectedResult));
         }
-
 
         [Fact]
         public async Task FindAllWithHolidayPeriodsLongerThan_WhenCollaboratorsDontHavePeriosLongerThan_ReturnsEmptyList()
         {
             // arrange
-            var days = 5;
-
             var holidayPlans = new List<HolidayPlan> { };
 
-            HolidayPlanRepositoryDouble.Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(days)).ReturnsAsync(holidayPlans);
+            HolidayPlanRepositoryDouble.Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(It.IsAny<int>())).ReturnsAsync(holidayPlans);
 
             var collabIdsList = new List<Guid>();
             var expectedList = new List<Collaborator>();
@@ -60,10 +95,10 @@ namespace Application.Tests.CollaboratorServiceTests
             CollaboratorRepositoryDouble.Setup(repo => repo.GetByIdsAsync(collabIdsList)).ReturnsAsync(expectedList);
 
             // act
-            var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(days);
+            var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(It.IsAny<int>());
 
             // assert
-            Assert.Empty(result);
+            Assert.Empty(result.Value);
         }
     }
 }

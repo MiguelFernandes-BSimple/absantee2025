@@ -53,7 +53,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, Colla
         return collab;
     }
 
-    public async Task<IEnumerable<Collaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
+    public async Task<IEnumerable<ICollaborator>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
                     .Where(c => ids.Contains(c.Id))
