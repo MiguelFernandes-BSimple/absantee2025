@@ -42,4 +42,12 @@ public class TrainingModuleService
 
         return Result<TrainingModuleDTO>.Success(result);
     }
+
+    public async Task<Result<IEnumerable<TrainingModuleDTO>>> GetAllInfo()
+    {
+        var trainingModules = await _trainingModuleRepository.GetAllAsync();
+        var resultList = trainingModules.Select(_mapper.Map<TrainingModuleDTO>);
+
+        return Result<IEnumerable<TrainingModuleDTO>>.Success(resultList);
+    }
 }

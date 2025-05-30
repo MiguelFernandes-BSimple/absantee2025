@@ -62,4 +62,12 @@ public class TrainingModuleController : ControllerBase
 
         return collabs.ToActionResult();
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<TrainingModuleDTO>>> GetAllInfo()
+    {
+        var trainingModules = await _trainingModuleService.GetAllInfo();
+
+        return trainingModules.ToActionResult();
+    }
 }
