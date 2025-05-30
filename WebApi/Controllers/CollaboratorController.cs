@@ -154,7 +154,7 @@ public class CollaboratorController : ControllerBase
     {
         var periodDate = new PeriodDate(initDate, finalDate);
         var result = await _collabService.FindAllWithHolidayPeriodsBetweenDates(periodDate);
-        return Ok(result);
+        return result.ToActionResult();
     }
 
     //US15

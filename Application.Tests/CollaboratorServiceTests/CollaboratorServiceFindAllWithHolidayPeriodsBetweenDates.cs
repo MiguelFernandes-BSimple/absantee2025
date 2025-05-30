@@ -1,25 +1,24 @@
-﻿using Application.Services;
-using Moq;
-using Domain.Models;
-using Domain.Interfaces;
 using Application.DTO.Collaborators;
+using Domain.Interfaces;
+using Domain.Models;
+using Moq;
 
 namespace Application.Tests.CollaboratorServiceTests;
 
-public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan : CollaboratorServiceTestBase
+public class CollaboratorServiceFindAllWithHolidayPeriodsBetweenDates : CollaboratorServiceTestBase
 {
     // There is an error fetching the elements from DB
     // Exception is thrown
     [Fact]
-    public async Task FindAllWithHolidayPeriodsLongerThan_ReturnsFailure_WhenExceptionIsThrown()
+    public async Task FindAllWithHolidayPeriodsBetweenDates_ReturnsFailure_WhenExceptionIsThrown()
     {
         // Arrange
         HolidayPlanRepositoryDouble
-            .Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(It.IsAny<int>()))
+            .Setup(repo => repo.FindHolidayPlansWithinPeriodAsync(It.IsAny<PeriodDate>()))
             .ThrowsAsync(new Exception("DB error"));
 
         // Act
-        var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(It.IsAny<int>());
+        var result = await CollaboratorService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
 
         // Assert
         Assert.False(result.IsSuccess);
@@ -37,7 +36,7 @@ public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan : Collaborat
 
         IEnumerable<IHolidayPlan> holidayPlanList = new List<IHolidayPlan> { holidayPlan1.Object, holidayPlan2.Object, holidayPlan3.Object };
 
-        HolidayPlanRepositoryDouble.Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(It.IsAny<int>())).ReturnsAsync(holidayPlanList);
+        HolidayPlanRepositoryDouble.Setup(repo => repo.FindHolidayPlansWithinPeriodAsync(It.IsAny<PeriodDate>())).ReturnsAsync(holidayPlanList);
 
         Guid collabId1 = new Guid();
         Guid collabId2 = new Guid();
@@ -72,7 +71,7 @@ public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan : Collaborat
         IEnumerable<CollaboratorDTO> expectedResult = new List<CollaboratorDTO> { dto1, dto2, dto3 };
 
         // Act
-        var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(It.IsAny<int>());
+        var result = await CollaboratorService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -86,7 +85,7 @@ public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan : Collaborat
         // arrange
         var holidayPlans = new List<HolidayPlan> { };
 
-        HolidayPlanRepositoryDouble.Setup(repo => repo.FindAllWithHolidayPeriodsLongerThanAsync(It.IsAny<int>())).ReturnsAsync(holidayPlans);
+        HolidayPlanRepositoryDouble.Setup(repo => repo.FindHolidayPlansWithinPeriodAsync(It.IsAny<PeriodDate>())).ReturnsAsync(holidayPlans);
 
         var collabIdsList = new List<Guid>();
         var expectedList = new List<Collaborator>();
@@ -94,7 +93,7 @@ public class CollaboratorServiceFindAllWithHolidayPeriodsLongerThan : Collaborat
         CollaboratorRepositoryDouble.Setup(repo => repo.GetByIdsAsync(collabIdsList)).ReturnsAsync(expectedList);
 
         // act
-        var result = await CollaboratorService.FindAllWithHolidayPeriodsLongerThan(It.IsAny<int>());
+        var result = await CollaboratorService.FindAllWithHolidayPeriodsBetweenDates(It.IsAny<PeriodDate>());
 
         // assert
         Assert.Empty(result.Value);
