@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class RHManagerRepositoryEF : GenericRepositoryEF<HRManager, HRManagerDataModel>, IHRMangerRepository
+public class RHManagerRepositoryEF : GenericRepositoryEF<IHRManager, HRManager, HRManagerDataModel>, IHRMangerRepository
 {
     private readonly IMapper _mapper;
     public RHManagerRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -17,7 +17,7 @@ public class RHManagerRepositoryEF : GenericRepositoryEF<HRManager, HRManagerDat
         _mapper = mapper;
     }
 
-    public override HRManager? GetById(Guid id)
+    public override IHRManager? GetById(Guid id)
     {
         var hrmanagerDM = _context.Set<HRManagerDataModel>().FirstOrDefault(hr => hr.Id == id);
 
@@ -28,7 +28,7 @@ public class RHManagerRepositoryEF : GenericRepositoryEF<HRManager, HRManagerDat
         return hrManager;
     }
 
-    public override async Task<HRManager?> GetByIdAsync(Guid id)
+    public override async Task<IHRManager?> GetByIdAsync(Guid id)
     {
         var hrmanagerDM = await _context.Set<HRManagerDataModel>().FirstOrDefaultAsync(hr => hr.Id == id);
 

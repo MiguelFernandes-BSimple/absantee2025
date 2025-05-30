@@ -1,9 +1,10 @@
+using Domain.Interfaces;
 using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.IRepository;
 
-public interface IHolidayPlanRepository : IGenericRepository<HolidayPlan, IHolidayPeriodVisitor>
+public interface IHolidayPlanRepository : IGenericRepositoryEF<IHolidayPlan, HolidayPlan, IHolidayPeriodVisitor>
 {
     public Task<bool> CanInsertHolidayPlan(Guid collaboratorId);
     public Task<bool> CanInsertHolidayPeriod(Guid holidayPlanId, HolidayPeriod periodDate);

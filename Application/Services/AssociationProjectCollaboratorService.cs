@@ -25,7 +25,7 @@ namespace Application.Services
             {
                 var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
                 var assocCreated = await _assocRepository.AddAsync(assoc);
-                var result = _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>(assocCreated);
+                var result = _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>((AssociationProjectCollaborator)assocCreated);
                 return Result<AssociationProjectCollaboratorDTO>.Success(result);
             } catch(ArgumentException a)
             {

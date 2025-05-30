@@ -6,11 +6,11 @@ namespace Domain.Models;
 
 public class User : IUser
 {
-    public Guid Id { get; set; }
-    public string Names { get; set; }
-    public string Surnames { get; set; }
-    public string Email { get; set; }
-    public PeriodDateTime PeriodDateTime { get; set; }
+    public Guid Id { get; private set; }
+    public string Names { get; private set; }
+    public string Surnames { get; private set; }
+    public string Email { get; private set; }
+    public PeriodDateTime PeriodDateTime { get; private set; }
 
     public User(string names, string surnames, string email, DateTime? deactivationDate)
     {

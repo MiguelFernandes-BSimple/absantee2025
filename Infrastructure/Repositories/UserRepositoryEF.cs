@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserRepository
+public class UserRepositoryEF : GenericRepositoryEF<IUser, User, UserDataModel>, IUserRepository
 {
     private readonly IMapper _mapper;
     public UserRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -19,7 +19,7 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<User>> GetByNamesAsync(string names)
+    public async Task<IEnumerable<IUser>> GetByNamesAsync(string names)
     {
         if (string.IsNullOrWhiteSpace(names))
             return new List<User>();
@@ -74,7 +74,7 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         return user;
     }
 
-    public override User? GetById(Guid id)
+    public override IUser? GetById(Guid id)
     {
         var userDM = _context.Set<UserDataModel>().FirstOrDefault(c => c.Id == id);
 
@@ -85,7 +85,7 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
         return user;
     }
 
-    public override async Task<User?> GetByIdAsync(Guid id)
+    public override async Task<IUser?> GetByIdAsync(Guid id)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == id);
 
@@ -127,7 +127,7 @@ public class UserRepositoryEF : GenericRepositoryEF<User, UserDataModel>, IUserR
 
     }
 
-    public async Task<User?> UpdateUser(User user)
+    public async Task<User?> UpdateUser(IUser user)
     {
         var userDM = await _context.Set<UserDataModel>().FirstOrDefaultAsync(u => u.Id == user.Id);
 

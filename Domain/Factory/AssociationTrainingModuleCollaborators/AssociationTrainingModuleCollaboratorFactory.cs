@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -21,7 +22,7 @@ namespace Domain.Factory
             _trainingModuleRepository = trainingModuleRepository;
         }
 
-        public async Task<AssociationTrainingModuleCollaborator> Create(Guid trainingModuleId, Guid collaboratorId)
+        public async Task<IAssociationTrainingModuleCollaborator> Create(Guid trainingModuleId, Guid collaboratorId)
         {
             var trainingModule = await _trainingModuleRepository.GetByIdAsync(trainingModuleId);
             var collab = await _collaboratorRepository.GetByIdAsync(collaboratorId);

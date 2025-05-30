@@ -1,11 +1,12 @@
-﻿using Domain.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.Factory
 {
     public interface IAssociationTrainingModuleCollaboratorFactory
     {
-        Task<AssociationTrainingModuleCollaborator> Create(Guid trainingModuleId, Guid collaboratorId);
+        Task<IAssociationTrainingModuleCollaborator> Create(Guid trainingModuleId, Guid collaboratorId);
         AssociationTrainingModuleCollaborator Create(IAssociationTrainingModuleCollaboratorVisitor visitor);
     }
 }

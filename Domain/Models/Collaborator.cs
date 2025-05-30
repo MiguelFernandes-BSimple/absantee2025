@@ -6,7 +6,7 @@ public class Collaborator : ICollaborator
 {
     public Guid Id { get; }
     public Guid UserId { get; }
-    public PeriodDateTime PeriodDateTime { get; set; }
+    public PeriodDateTime PeriodDateTime { get; private set; }
 
     public Collaborator(Guid userId, PeriodDateTime periodDateTime)
     {

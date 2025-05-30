@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
-public class TrainingSubjectRepositoryEF : GenericRepositoryEF<TrainingSubject, TrainingSubjectDataModel>, ITrainingSubjectRepository
+public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject, TrainingSubject, TrainingSubjectDataModel>, ITrainingSubjectRepository
 {
     private readonly IMapper _mapper;
     public TrainingSubjectRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -13,7 +14,7 @@ public class TrainingSubjectRepositoryEF : GenericRepositoryEF<TrainingSubject, 
         _mapper = mapper;
     }
 
-    public override TrainingSubject? GetById(Guid id)
+    public override ITrainingSubject? GetById(Guid id)
     {
         try
         {
@@ -32,7 +33,7 @@ public class TrainingSubjectRepositoryEF : GenericRepositoryEF<TrainingSubject, 
         }
     }
 
-    public override async Task<TrainingSubject?> GetByIdAsync(Guid id)
+    public override async Task<ITrainingSubject?> GetByIdAsync(Guid id)
     {
         try
         {

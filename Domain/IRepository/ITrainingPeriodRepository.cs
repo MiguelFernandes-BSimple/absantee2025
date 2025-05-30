@@ -4,7 +4,7 @@ using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface ITrainingPeriodRepository : IGenericRepository<TrainingPeriod, ITrainingPeriodVisitor>
+    public interface ITrainingPeriodRepository : IGenericRepositoryEF<ITrainingPeriod, TrainingPeriod, ITrainingPeriodVisitor>
     {
     }
 }

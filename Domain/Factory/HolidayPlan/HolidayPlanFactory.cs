@@ -21,7 +21,7 @@ public class HolidayPlanFactory : IHolidayPlanFactory
         _holidayPeriodFactory = holidayPeriodFactory;
     }
 
-    public async Task<HolidayPlan> Create(Collaborator collaborator, List<PeriodDate> periods)
+    public async Task<HolidayPlan> Create(ICollaborator collaborator, List<PeriodDate> periods)
     {
         if (!await _holidayPlanRepository.CanInsertHolidayPlan(collaborator.UserId))
             throw new ArgumentException("Holiday plan already exists for this collaborator.");

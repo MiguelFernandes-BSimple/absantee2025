@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
@@ -40,7 +41,7 @@ public class HolidayPeriodFactory : IHolidayPeriodFactory
         return holidayPeriod;
     }
 
-    public HolidayPeriod CreateWithoutHolidayPlan(Collaborator collaborator, DateOnly initDate, DateOnly finalDate)
+    public HolidayPeriod CreateWithoutHolidayPlan(ICollaborator collaborator, DateOnly initDate, DateOnly finalDate)
     {
         PeriodDate periodDate = new PeriodDate(initDate, finalDate);
 

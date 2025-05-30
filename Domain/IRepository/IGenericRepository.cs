@@ -2,19 +2,22 @@
 
 using System.Linq.Expressions;
 
-public interface IGenericRepository<TDomain, TDataModel> where TDomain : class where TDataModel : class
+public interface IGenericRepositoryEF<TInterface, TDomain, TDataModel>
+        where TInterface : class
+        where TDomain : class, TInterface
+        where TDataModel : class
 {
-    TDomain? GetById(Guid id);
-    Task<TDomain?> GetByIdAsync(Guid id);
-    IEnumerable<TDomain> GetAll();
-    Task<IEnumerable<TDomain>> GetAllAsync();
-    TDomain Add(TDomain entity);
-    Task<TDomain> AddAsync(TDomain entity);
-    void AddRange(IEnumerable<TDomain> entities);
-    Task AddRangeAsync(IEnumerable<TDomain> entities);
-    void Remove(TDomain entity);
-    Task RemoveAsync(TDomain entity);
-    void RemoveRange(IEnumerable<TDomain> entities);
-    Task RemoveRangeAsync(IEnumerable<TDomain> entities);
+    TInterface? GetById(Guid id);
+    Task<TInterface?> GetByIdAsync(Guid id);
+    IEnumerable<TInterface> GetAll();
+    Task<IEnumerable<TInterface>> GetAllAsync();
+    TInterface Add(TInterface entity);
+    Task<TInterface> AddAsync(TInterface entity);
+    void AddRange(IEnumerable<TInterface> entities);
+    Task AddRangeAsync(IEnumerable<TInterface> entities);
+    void Remove(TInterface entity);
+    Task RemoveAsync(TInterface entity);
+    void RemoveRange(IEnumerable<TInterface> entities);
+    Task RemoveRangeAsync(IEnumerable<TInterface> entities);
     Task<int> SaveChangesAsync();
 }

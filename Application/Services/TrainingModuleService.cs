@@ -1,6 +1,7 @@
 using Application.DTO.TrainingModule;
 using AutoMapper;
 using Domain.Factory;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 
@@ -21,7 +22,7 @@ public class TrainingModuleService
 
     public async Task<Result<TrainingModuleDTO>> Add(AddTrainingModuleDTO tmDTO)
     {
-        TrainingModule tm;
+        ITrainingModule tm;
 
         try
         {
@@ -37,7 +38,7 @@ public class TrainingModuleService
             return Result<TrainingModuleDTO>.Failure(Error.BadRequest(e.Message));
         }
 
-        var result = _mapper.Map<TrainingModule, TrainingModuleDTO>(tm);
+        var result = _mapper.Map<TrainingModule, TrainingModuleDTO>((TrainingModule)tm);
 
         return Result<TrainingModuleDTO>.Success(result);
     }

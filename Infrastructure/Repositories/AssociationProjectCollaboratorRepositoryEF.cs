@@ -8,7 +8,7 @@ using Infrastructure.DataModel;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>, IAssociationProjectCollaboratorRepository
+public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IAssociationProjectCollaborator, AssociationProjectCollaborator, AssociationProjectCollaboratorDataModel>, IAssociationProjectCollaboratorRepository
 {
     private readonly IMapper _mapper;
 
@@ -18,7 +18,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<As
         _mapper = associationProjectCollaboratorMapper;
     }
 
-    public override AssociationProjectCollaborator? GetById(Guid id)
+    public override IAssociationProjectCollaborator? GetById(Guid id)
     {
         var assocDM = _context.Set<AssociationProjectCollaboratorDataModel>()
                               .FirstOrDefault(a => a.Id == id);
@@ -30,7 +30,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<As
         return assoc;
     }
 
-    public override async Task<AssociationProjectCollaborator?> GetByIdAsync(Guid id)
+    public override async Task<IAssociationProjectCollaborator?> GetByIdAsync(Guid id)
     {
         var assocDM = await _context.Set<AssociationProjectCollaboratorDataModel>()
                               .FirstOrDefaultAsync(a => a.Id == id);

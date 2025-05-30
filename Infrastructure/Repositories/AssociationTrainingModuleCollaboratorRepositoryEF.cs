@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure.DataModel;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class AssociationTrainingModuleCollaboratorRepositoryEF : GenericRepositoryEF<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDataModel>, IAssociationTrainingModuleCollaboratorsRepository
+    public class AssociationTrainingModuleCollaboratorRepositoryEF : GenericRepositoryEF<IAssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDataModel>, IAssociationTrainingModuleCollaboratorsRepository
     {
         private readonly IMapper _mapper;
         public AssociationTrainingModuleCollaboratorRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -14,7 +15,7 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public override AssociationTrainingModuleCollaborator? GetById(Guid id)
+        public override IAssociationTrainingModuleCollaborator? GetById(Guid id)
         {
             var trainingModuleCollabDM = _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
                                     .FirstOrDefault(t => t.Id == id);
@@ -25,7 +26,7 @@ namespace Infrastructure.Repositories
             return _mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>(trainingModuleCollabDM);
         }
 
-        public override async Task<AssociationTrainingModuleCollaborator?> GetByIdAsync(Guid id)
+        public override async Task<IAssociationTrainingModuleCollaborator?> GetByIdAsync(Guid id)
         {
             var trainingModuleCollabDM = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
                                     .FirstOrDefaultAsync(t => t.Id == id);

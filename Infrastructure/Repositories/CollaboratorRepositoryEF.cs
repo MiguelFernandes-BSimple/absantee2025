@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace Infrastructure.Repositories;
 
-public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, CollaboratorDataModel>, ICollaboratorRepository
+public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, Collaborator, CollaboratorDataModel>, ICollaboratorRepository
 {
     private readonly IMapper _mapper;
     public CollaboratorRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
@@ -29,7 +29,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
         return await _context.Set<CollaboratorDataModel>().LongCountAsync();
     }
 
-    public override Collaborator? GetById(Guid id)
+    public override ICollaborator? GetById(Guid id)
     {
         var collabDM = this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefault(c => c.Id == id);
@@ -41,7 +41,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
         return collab;
     }
 
-    public override async Task<Collaborator?> GetByIdAsync(Guid id)
+    public override async Task<ICollaborator?> GetByIdAsync(Guid id)
     {
         var collabDM = await this._context.Set<CollaboratorDataModel>()
                             .FirstOrDefaultAsync(c => c.Id == id);
@@ -64,7 +64,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
         return collabs;
     }
 
-    public async Task<IEnumerable<Collaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids)
+    public async Task<IEnumerable<ICollaborator>> GetByUsersIdsAsync(IEnumerable<Guid> ids)
     {
         var collabsDm = await this._context.Set<CollaboratorDataModel>()
                     .Where(c => ids.Contains(c.UserId))
@@ -87,7 +87,7 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<Collaborator, Collab
         return collabs;
     }
 
-    public async Task<Collaborator?> UpdateCollaborator(Collaborator collab)
+    public async Task<Collaborator?> UpdateCollaborator(ICollaborator collab)
     {
         var collaboratorDM = await _context.Set<CollaboratorDataModel>()
             .FirstOrDefaultAsync(c => c.Id == collab.Id);

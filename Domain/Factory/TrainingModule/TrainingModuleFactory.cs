@@ -1,4 +1,5 @@
-﻿using Domain.IRepository;
+﻿using Domain.Interfaces;
+using Domain.IRepository;
 using Domain.Models;
 using Domain.Visitor;
 
@@ -15,7 +16,7 @@ namespace Domain.Factory
             _moduleRepository = moduleRepository;
         }
 
-        public async Task<TrainingModule> Create(Guid traingSubjectId, List<PeriodDateTime> periods)
+        public async Task<ITrainingModule> Create(Guid traingSubjectId, List<PeriodDateTime> periods)
         {
             var trainingSubject = await _subjectRepository.GetByIdAsync(traingSubjectId);
 

@@ -4,7 +4,7 @@ using Domain.Visitor;
 
 namespace Domain.IRepository;
 
-public interface IAssociationProjectCollaboratorRepository : IGenericRepository<AssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>
+public interface IAssociationProjectCollaboratorRepository : IGenericRepositoryEF<IAssociationProjectCollaborator, AssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>
 {
     public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByCollaboratorAsync(Guid collabId);
     public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId);

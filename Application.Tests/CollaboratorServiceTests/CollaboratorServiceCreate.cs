@@ -1,4 +1,5 @@
 using Application.DTO;
+using Application.DTO.Collaborators;
 using Domain.Models;
 using Moq;
 
@@ -36,7 +37,7 @@ namespace Application.Tests.CollaboratorServiceTests
 
 
             // act
-            var result = await CollaboratorService.Create(collaboratorDto);
+            var result = (await CollaboratorService.Create(collaboratorDto)).Value;
 
             // assert
             Assert.Equal(collab.Id, result.Id);

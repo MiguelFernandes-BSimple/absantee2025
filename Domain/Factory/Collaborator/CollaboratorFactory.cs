@@ -27,7 +27,7 @@ namespace Domain.Factory
             return await Create((User)user, periodDateTime);
         }
 
-        public async Task<Collaborator> Create(User user, PeriodDateTime periodDateTime)
+        public async Task<Collaborator> Create(IUser user, PeriodDateTime periodDateTime)
         {
             if (user.DeactivationDateIsBefore(periodDateTime._finalDate))
                 throw new ArgumentException("User deactivation date is before collaborator contract end date.");

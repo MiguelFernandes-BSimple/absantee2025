@@ -9,19 +9,17 @@ using Domain.Visitor;
 
 namespace Domain.IRepository
 {
-    public interface IUserRepository : IGenericRepository<User, IUserVisitor>
+    public interface IUserRepository : IGenericRepositoryEF<IUser, User, IUserVisitor>
     {
-        Task<IEnumerable<User>> GetByNamesAsync(string names);
+        Task<IEnumerable<IUser>> GetByNamesAsync(string names);
         Task<IEnumerable<User>> GetBySurnamesAsync(string names);
         Task<IEnumerable<User>> GetByNamesAndSurnamesAsync(string names, string surnames);
         Task<User?> GetByEmailAsync(string email);
-        User? GetById(Guid id);
-        Task<User?> GetByIdAsync(Guid id);
         Task<IUser?> ActivationUser(Guid Id, DateTime FinalDate);
         Task<bool> Exists(Guid ID);
 
         Task<IEnumerable<User>> GetByIdsAsync(List<Guid> userIdsOfCollab);
 
-        Task<User?> UpdateUser(User user_);
+        Task<User?> UpdateUser(IUser user_);
     }
 }

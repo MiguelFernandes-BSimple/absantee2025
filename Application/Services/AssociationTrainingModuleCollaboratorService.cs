@@ -1,6 +1,7 @@
 using Application.DTO.AssociationTrainingModuleCollaborator;
 using AutoMapper;
 using Domain.Factory;
+using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
 
@@ -21,7 +22,7 @@ public class AssociationTrainingModuleCollaboratorService
 
     public async Task<Result<AssociationTrainingModuleCollaboratorDTO>> Add(Guid tmId, CreateAssociationTrainingModuleCollaboratorDTO assocDTO)
     {
-        AssociationTrainingModuleCollaborator tmc;
+        IAssociationTrainingModuleCollaborator tmc;
 
         try
         {
@@ -37,7 +38,7 @@ public class AssociationTrainingModuleCollaboratorService
             return Result<AssociationTrainingModuleCollaboratorDTO>.Failure(Error.BadRequest(e.Message));
         }
 
-        var result = _mapper.Map<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>(tmc);
+        var result = _mapper.Map<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>((AssociationTrainingModuleCollaborator)tmc);
         return Result<AssociationTrainingModuleCollaboratorDTO>.Success(result);
     }
 }

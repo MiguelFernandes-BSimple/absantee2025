@@ -3,9 +3,10 @@ using Infrastructure.DataModel;
 using Domain.IRepository;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Domain.Interfaces;
 
 namespace Infrastructure.Repositories;
-public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
+public class HolidayPlanRepositoryEF : GenericRepositoryEF<IHolidayPlan, HolidayPlan, HolidayPlanDataModel>, IHolidayPlanRepository
 {
     private IMapper _mapper;
 
@@ -198,7 +199,7 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
     return holidayPlansDMs.Select(_mapper.Map<HolidayPlanDataModel, HolidayPlan>);
 }
 
-    public override async Task<HolidayPlan?> GetByIdAsync(Guid id)
+    public override async Task<IHolidayPlan?> GetByIdAsync(Guid id)
     {
         var hpDM = await _context.Set<HolidayPlanDataModel>().FirstOrDefaultAsync(hp => hp.Id == id);
 
@@ -209,7 +210,7 @@ public class HolidayPlanRepositoryEF : GenericRepositoryEF<HolidayPlan, HolidayP
         return hp;
     }
 
-    public override HolidayPlan? GetById(Guid id)
+    public override IHolidayPlan? GetById(Guid id)
     {
         var hpDM = _context.Set<HolidayPlanDataModel>().FirstOrDefault(hp => hp.Id == id);
 

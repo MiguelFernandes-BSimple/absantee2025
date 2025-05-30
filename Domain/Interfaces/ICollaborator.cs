@@ -8,4 +8,5 @@ public interface ICollaborator
     public Guid UserId { get; }
     public PeriodDateTime PeriodDateTime { get; }
     public bool ContractContainsDates(PeriodDateTime periodDateTime);
+    public void UpdatePeriod(PeriodDateTime period);
 }

@@ -18,6 +18,8 @@ namespace Application.Tests.CollaboratorServiceTests
         protected Mock<IUserFactory> UserFactoryDouble;
         protected Mock<IAssociationTrainingModuleCollaboratorsRepository> AssociationTrainingModuleCollaboratorsRepositoryDouble;
         protected Mock<ITrainingModuleRepository> TrainingModuleRepositoryDouble;
+        protected Mock<IProjectRepository> ProjectRepositoryDouble;
+        protected Mock<IHolidayPlanFactory> HolidayPlanFactoryDouble;
         protected AbsanteeContext _context;
         protected Mock<IMapper> MapperDouble;
 
@@ -41,6 +43,8 @@ namespace Application.Tests.CollaboratorServiceTests
             UserFactoryDouble = new Mock<IUserFactory>();
             AssociationTrainingModuleCollaboratorsRepositoryDouble = new Mock<IAssociationTrainingModuleCollaboratorsRepository>();
             TrainingModuleRepositoryDouble = new Mock<ITrainingModuleRepository>();
+            ProjectRepositoryDouble = new Mock<IProjectRepository>();
+            HolidayPlanFactoryDouble = new Mock<IHolidayPlanFactory>();
             MapperDouble = new Mock<IMapper>();
 
             CollaboratorService = new CollaboratorService(
@@ -52,6 +56,8 @@ namespace Application.Tests.CollaboratorServiceTests
                 UserFactoryDouble.Object,
                 AssociationTrainingModuleCollaboratorsRepositoryDouble.Object,
                 TrainingModuleRepositoryDouble.Object,
+                ProjectRepositoryDouble.Object,
+                HolidayPlanFactoryDouble.Object,
                 _context,
                 MapperDouble.Object
             );

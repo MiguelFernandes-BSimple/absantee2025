@@ -15,4 +15,8 @@ public interface IUser
     public bool HasNames(string names);
     public bool HasSurnames(string surnames);
     public bool Equals(Object? obj);
+    void UpdateEmail(string email);
+    void UpdateName(string name);
+    void UpdateSurname(string surname);
+    void UpdatePeriod(PeriodDateTime period);
 }

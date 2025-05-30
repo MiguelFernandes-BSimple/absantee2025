@@ -1,8 +1,9 @@
-﻿using Domain.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using Domain.Visitor;
 
 namespace Domain.IRepository;
-public interface IAssociationTrainingModuleCollaboratorsRepository : IGenericRepository<AssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor>
+public interface IAssociationTrainingModuleCollaboratorsRepository : IGenericRepositoryEF<IAssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaborator, IAssociationTrainingModuleCollaboratorVisitor>
 {
     Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByTrainingModuleIds(IEnumerable<Guid> trainingModuleIds);
 }
