@@ -1,48 +1,86 @@
-// using Application.DTO;
-// using Application.DTO.Collaborators;
-// using Domain.Models;
-// using Moq;
+using Application.DTO.Collaborators;
+using Domain.Models;
+using Moq;
 
-// namespace Application.Tests.CollaboratorServiceTests
-// {
-//     public class CollaboratorServiceCreate : CollaboratorServiceTestBase
-//     {
-//         [Fact]
-//         public async Task Create_WhenPassingValidDTO_CreatesCollaborator()
-//         {
-//             // arrange
-//             var period = new PeriodDateTime(DateTime.UtcNow, DateTime.UtcNow.AddDays(30));
-//             var firstName = "firstname";
-//             var lastName = "lastname";
-//             var email = "email@gmail.com";
-//             var deactivationDate = DateTime.UtcNow.AddDays(30);
+namespace Application.Tests.CollaboratorServiceTests;
 
-//             var collaboratorDto = new CreateCollaboratorDto(firstName, lastName, email, deactivationDate, period);
+public class CollaboratorServiceCreate : CollaboratorServiceTestBase
+{
+    [Fact]
+    public async Task Create_ShouldReturnSuccessResult_WhenValidDataProvided()
+    {
+        // Arrange
+        var createDto =
+         new CollabCreateDataDTO("João", "Silva", "joao.silva@email.com", DateTime.UtcNow, new PeriodDateTime(DateTime.UtcNow, DateTime.UtcNow));
 
-//             var userFromFactory = new User(firstName, lastName, email, deactivationDate);
+        var user = new User(Guid.NewGuid(), createDto.Names, createDto.Surnames, createDto.Email, createDto.PeriodDateTime);
 
-//             UserFactoryDouble.Setup(f => f.Create(collaboratorDto.Names, collaboratorDto.Surnames, collaboratorDto.Email, collaboratorDto.deactivationDate)).ReturnsAsync(userFromFactory);
+        var collaborator = new Collaborator(Guid.NewGuid(), user.Id, createDto.PeriodDateTime);
 
-//             var userId = Guid.NewGuid();
-//             var user = new User(userId, firstName, lastName, email, period);
-//             UserRepositoryDouble.Setup(repo => repo.Add(userFromFactory)).Returns(user);
+        var holidayPlan = new HolidayPlan(collaborator.Id, new List<HolidayPeriod>());
 
-//             var collabFromFactory = new Collaborator(userId, period);
-//             CollaboratorFactoryDouble.Setup(f => f.Create(user, period)).ReturnsAsync(collabFromFactory);
+        UserFactoryDouble.Setup(x => x.Create(
+            createDto.Names, createDto.Surnames, createDto.Email, createDto.deactivationDate)).ReturnsAsync(user);
 
-//             var collabId = Guid.NewGuid();
-//             var collab = new Collaborator(collabId, userId, period);
+        UserRepositoryDouble.Setup(x => x.Add(user)).Returns(user);
 
-//             CollaboratorRepositoryDouble.Setup(repo => repo.Add(collabFromFactory)).Returns(collab);
+        CollaboratorFactoryDouble.Setup(x => x.Create(user, createDto.PeriodDateTime)).ReturnsAsync(collaborator);
 
+        CollaboratorRepositoryDouble.Setup(x => x.Add(collaborator)).Returns(collaborator);
 
-//             // act
-//             var result = (await CollaboratorService.Create(collaboratorDto)).Value;
+        HolidayPlanFactoryDouble.Setup(x => x.Create(collaborator, new List<PeriodDate>()))
+            .ReturnsAsync(holidayPlan);
 
-//             // assert
-//             Assert.Equal(collab.Id, result.Id);
-//             Assert.Equal(collab.UserId, result.UserId);
-//             Assert.Equal(collab.PeriodDateTime, result.PeriodDateTime);
-//         }
-//     }
-// }
+        HolidayPlanRepositoryDouble.Setup(x => x.AddAsync(holidayPlan));
+
+        _context.SaveChanges();
+
+        // Act
+        var result = await CollaboratorService.Create(createDto);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.NotNull(result.Value);
+        Assert.Equal(collaborator.Id, result.Value.CollabId);
+        Assert.Equal(user.Id, result.Value.UserId);
+        Assert.Equal(createDto.Email, result.Value.Email);
+    }
+
+    [Fact]
+    public async Task Create_ShouldReturnFailureResult_WhenArgumentExceptionThrown()
+    {
+        // Arrange
+        var createDto =
+         new CollabCreateDataDTO("João", "Silva", "joao.silva@email.com", DateTime.UtcNow, new PeriodDateTime(DateTime.UtcNow, DateTime.UtcNow));
+
+        UserFactoryDouble.Setup(x => x.Create(
+            createDto.Names, createDto.Surnames, createDto.Email, createDto.deactivationDate))
+            .ThrowsAsync(new ArgumentException("Invalid user data"));
+
+        // Act
+        var result = await CollaboratorService.Create(createDto);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal("Invalid user data", result.Error!.Message);
+    }
+
+    [Fact]
+    public async Task Create_ShouldReturnFailureResult_WhenUnexpectedExceptionThrown()
+    {
+        // Arrange
+        var createDto =
+         new CollabCreateDataDTO("João", "Silva", "joao.silva@email.com", DateTime.UtcNow, new PeriodDateTime(DateTime.UtcNow, DateTime.UtcNow));
+
+        UserFactoryDouble.Setup(x => x.Create(
+            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()))
+            .ThrowsAsync(new Exception("Unexpected failure"));
+
+        // Act
+        var result = await CollaboratorService.Create(createDto);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal("Unexpected failure", result.Error!.Message);
+    }
+}

@@ -39,7 +39,37 @@ public class CollaboratorService
         _mapper = mapper;
     }
 
-    //uc9
+    public async Task<Result<CollaboratorCreatedDto>> Create(CollabCreateDataDTO createCollabDto)
+    {
+        try
+        {
+            var user = await _userFactory.Create(createCollabDto.Names, createCollabDto.Surnames, createCollabDto.Email, createCollabDto.deactivationDate);
+
+            var createdUser = _userRepository.Add(user);
+
+            var collab = await _collaboratorFactory.Create(createdUser, createCollabDto.PeriodDateTime);
+
+            var createdCollab = _collaboratorRepository.Add(collab);
+
+            var holidayPlan = await _holidayPlanFactory.Create(createdCollab, []);
+            await _holidayPlanRepository.AddAsync(holidayPlan);
+
+            _context.SaveChanges();
+
+            var result = new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdUser.Names, createdUser.Surnames, createdUser.Email, createdUser.PeriodDateTime, createdCollab.PeriodDateTime);
+            return Result<CollaboratorCreatedDto>.Success(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<CollaboratorCreatedDto>.Failure(Error.BadRequest(ex.Message));
+        }
+        catch (Exception ex)
+        {
+            return Result<CollaboratorCreatedDto>.Failure(Error.InternalServerError(ex.Message));
+        }
+    }
+
+    // uc9 - Como gestor de RH, quero listar todos os colaboradores
     public async Task<Result<IEnumerable<Guid>>> GetAll()
     {
         var collabs = await _collaboratorRepository.GetAllAsync();
@@ -101,7 +131,6 @@ public class CollaboratorService
 
         return new CollabUpdatedDTO(dto.CollabId, dto.UserId, dto.Names, dto.Surnames, dto.Email, dto.UserPeriod, dto.CollaboratorPeriod);
     }
-
 
     public async Task<Result<CollaboratorDTO>> GetById(Guid id)
     {
@@ -168,35 +197,6 @@ public class CollaboratorService
         return collabs.Select(c => c.Id);
     }
 
-    public async Task<Result<CollaboratorCreatedDto>> Create(CollabCreateDataDTO createCollabDto)
-    {
-        try
-        {
-            var user = await _userFactory.Create(createCollabDto.Names, createCollabDto.Surnames, createCollabDto.Email, createCollabDto.deactivationDate);
-
-            var createdUser = _userRepository.Add(user);
-
-            var collab = await _collaboratorFactory.Create(createdUser, createCollabDto.PeriodDateTime);
-
-            var createdCollab = _collaboratorRepository.Add(collab);
-
-            var holidayPlan = await _holidayPlanFactory.Create(createdCollab, []);
-            await _holidayPlanRepository.AddAsync(holidayPlan);
-
-            _context.SaveChanges();
-
-            var result = new CollaboratorCreatedDto(createdCollab.Id, createdCollab.UserId, createdUser.Names, createdUser.Surnames, createdUser.Email, createdUser.PeriodDateTime, createdCollab.PeriodDateTime);
-            return Result<CollaboratorCreatedDto>.Success(result);
-        }
-        catch (ArgumentException ex)
-        {
-            return Result<CollaboratorCreatedDto>.Failure(Error.BadRequest(ex.Message));
-        }
-        catch (Exception ex)
-        {
-            return Result<CollaboratorCreatedDto>.Failure(Error.InternalServerError(ex.Message));
-        }
-    }
 
     //UC15: Como gestor de RH, quero listar os colaboradores que já registaram períodos de férias superiores a x dias 
     public async Task<Result<IEnumerable<CollaboratorDTO>>> FindAllWithHolidayPeriodsLongerThan(int days)
