@@ -34,4 +34,14 @@ public class TrainingSubjectController : ControllerBase
 
         return trainingSubjects.ToActionResult();
     }
+
+    [HttpPut]
+    public async Task<ActionResult<TrainingSubjectDTO>> UpdateTrainingSubject([FromBody] TrainingSubjectDTO newSubject)
+    {
+        var subjectData = new TrainingSubjectDTO(newSubject.Id, newSubject.Subject, newSubject.Description);
+
+        var result = await _trainingSubjectService.UpdateTrainingSubject(subjectData);
+        if (result == null) return BadRequest("Invalid arguments");
+        return Ok(result);
+    }
 }
