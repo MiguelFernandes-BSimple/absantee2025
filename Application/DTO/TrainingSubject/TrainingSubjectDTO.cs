@@ -9,4 +9,11 @@ public record TrainingSubjectDTO
     {
 
     }
+
+    public TrainingSubjectDTO(Guid id, string subject, string description)
+    {
+        Id = id;
+        Subject = subject;
+        Description = description;
+    }
 }

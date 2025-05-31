@@ -6,6 +6,7 @@ using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
+
 public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject, TrainingSubject, TrainingSubjectDataModel>, ITrainingSubjectRepository
 {
     private readonly IMapper _mapper;
@@ -50,6 +51,20 @@ public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject,
         {
             throw;
         }
+    }
+
+    public async Task<TrainingSubject?> UpdateTrainingSubject(ITrainingSubject trainingSubject)
+    {
+        var trainingSubjectDM = await _context.Set<TrainingSubjectDataModel>()
+            .FirstOrDefaultAsync(s => s.Id == trainingSubject.Id);
+
+        if (trainingSubjectDM == null) return null;
+
+        trainingSubjectDM.Subject = trainingSubject.Subject;
+        trainingSubjectDM.Description = trainingSubject.Description;
+
+        _context.Set<TrainingSubjectDataModel>().Update(trainingSubjectDM);
+        return _mapper.Map<TrainingSubjectDataModel, TrainingSubject>(trainingSubjectDM);
     }
 
     public async Task<bool> IsDuplicated(string subject)
