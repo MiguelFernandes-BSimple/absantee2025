@@ -6,6 +6,7 @@ using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
+
 public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, TrainingModule, TrainingModuleDataModel>, ITrainingModuleRepository
 {
     private readonly IMapper _mapper;
@@ -34,6 +35,15 @@ public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, T
             return null;
 
         return _mapper.Map<TrainingModuleDataModel, TrainingModule>(trainingModuleDM);
+    }
+
+    public async Task<IEnumerable<TrainingModule>> GetByIdsAsync(IEnumerable<Guid> moduleIds)
+    {
+        var moduleDMs = await this._context.Set<TrainingModuleDataModel>().Where(m => moduleIds.Contains(m.Id)).ToListAsync();
+
+        var modules = moduleDMs.Select(_mapper.Map<TrainingModuleDataModel, TrainingModule>);
+
+        return modules;
     }
 
     public async Task<IEnumerable<TrainingModule>> GetBySubjectIdAndFinished(Guid subjectId, DateTime date)

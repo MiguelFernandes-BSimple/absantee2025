@@ -47,5 +47,18 @@ namespace Infrastructure.Repositories
 
             return trainingModuleCollaborators;
         }
+
+        public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> FindAllByCollaboratorAsync(Guid collabId)
+        {
+            IEnumerable<AssociationTrainingModuleCollaboratorDataModel> assocDM =
+                await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                              .Where(a => a.CollaboratorId == collabId)
+                              .ToListAsync();
+
+            IEnumerable<AssociationTrainingModuleCollaborator> assocs =
+                assocDM.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
+
+            return assocs;
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace Domain.IRepository
         Task<IEnumerable<TrainingModule>> GetBySubjectIdAndFinished(Guid subjectId, DateTime period);
         public Task<bool> HasOverlappingPeriodsAsync(Guid trainingSubjectId, List<PeriodDateTime> newPeriods);
 
-        Task<IEnumerable<TrainingModule>> GetBySubjectAndAfterDateFinished(Guid  subjectId, DateTime date);
+        Task<IEnumerable<TrainingModule>> GetBySubjectAndAfterDateFinished(Guid subjectId, DateTime date);
+        Task<IEnumerable<TrainingModule>> GetByIdsAsync(IEnumerable<Guid> moduleIds);
+
     }
 }

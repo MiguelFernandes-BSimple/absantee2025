@@ -1,5 +1,6 @@
 using Application;
 using Application.DTO;
+using Application.DTO.AssociationTrainingModuleCollaborator;
 using Application.DTO.Collaborator;
 using Application.DTO.Collaborators;
 using Application.Services;
@@ -119,7 +120,7 @@ public class CollaboratorController : ControllerBase
         return Ok(result);
     }
 
-        
+
     [HttpGet("{collaboratorId}/holidayPlan/holidayPeriod")]
     public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaborator(Guid collaboratorId)
     {
@@ -215,6 +216,17 @@ public class CollaboratorController : ControllerBase
     public async Task<ActionResult<IEnumerable<AssociationProjectCollaboratorDTO>>> GetCollaboratorProjects(Guid id)
     {
         var result = await _collabService.GetCollaboratorProjects(id);
+
+        if (result == null) return BadRequest();
+
+        return Ok(result);
+    }
+
+    // Collaborator Projects
+    [HttpGet("{id}/trainingAssociations")]
+    public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetCollaboratorTrainingModules(Guid id)
+    {
+        var result = await _collabService.GetCollaboratorTrainingModules(id);
 
         if (result == null) return BadRequest();
 

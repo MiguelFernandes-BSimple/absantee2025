@@ -10,6 +10,7 @@ using Application.DTO.Collaborator;
 using Domain.Visitor;
 using Infrastructure.DataModel;
 using Application.DTO.Collaborators;
+using Application.DTO.AssociationTrainingModuleCollaborator;
 namespace Application.Services;
 
 public class CollaboratorService
@@ -426,6 +427,16 @@ public class CollaboratorService
             return currAssoc;
         });
 
+        return result;
+    }
+
+    public async Task<IEnumerable<AssociationTrainingModuleCollaboratorDTO>> GetCollaboratorTrainingModules(Guid collabID)
+    {
+        var assocs = await _assocTMCRepository.FindAllByCollaboratorAsync(collabID);
+        var moduleIds = assocs.Select(a => a.TrainingModuleId);
+        var modules = await _trainingModuleRepository.GetByIdsAsync(moduleIds);
+
+        IEnumerable<AssociationTrainingModuleCollaboratorDTO> result = _mapper.Map<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>(assocs);
         return result;
     }
 }
