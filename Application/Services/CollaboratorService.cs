@@ -273,6 +273,37 @@ public class CollaboratorService
         }
     }
 
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModule(Guid trainingModuleId)
+    {
+        try
+        {
+            var assocs = await _assocTMCRepository.FindAllByTrainingModuleAsync(trainingModuleId);
+            var collabIds = assocs.Select(c => c.CollaboratorId);
+            var collabs = await _collaboratorRepository.GetByIdsAsync(collabIds);
+            var users = await _userRepository.GetByIdsAsync(collabs.Select(c => c.UserId).ToList());
+            var result = assocs.Select(assoc =>
+            {
+                var collab = collabs.First(c => c.Id == assoc.CollaboratorId);
+                var user = users.First(u => u.Id == collab.UserId);
+
+                return new AssociationTrainingModuleCollaboratorDTO
+                {
+                    Id = assoc.Id,
+                    TrainingModuleId = assoc.TrainingModuleId,
+                    TrainingSubject = null!,
+                    Periods = null!,
+                    CollaboratorId = assoc.CollaboratorId,
+                    CollaboratorEmail = user.Email,
+                };
+            });
+            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Success(result);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
+        }
+    }
+
     public async Task<Result<IEnumerable<CollaboratorDTO>>> FindAllByProjectAndBetweenPeriod(Guid projectId, PeriodDate periodDate)
     {
         try

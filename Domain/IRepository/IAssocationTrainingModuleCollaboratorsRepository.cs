@@ -8,5 +8,6 @@ public interface IAssociationTrainingModuleCollaboratorsRepository : IGenericRep
 {
     Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByTrainingModuleIds(IEnumerable<Guid> trainingModuleIds);
     Task<IEnumerable<AssociationTrainingModuleCollaborator>> FindAllByCollaboratorAsync(Guid collabId);
+    Task<IEnumerable<AssociationTrainingModuleCollaborator>> FindAllByTrainingModuleAsync(Guid trainingModuleId);
 
 }
