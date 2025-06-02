@@ -139,11 +139,11 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpPost("{collaboratorId}/holidayPlan/holidayPeriod")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> AddHolidayPeriodForCollaborator(Guid collaboratorId, [FromBody] CreateHolidayPeriodDTO hp)
+    public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriodForCollaborator(Guid collaboratorId, [FromBody] CreateHolidayPeriodDTO hp)
     {
         var result = await _holidayPlanService.AddHolidayPeriod(collaboratorId, hp);
 
-        return Ok(result);
+        return result.ToActionResult();
     }
 
     //US14 

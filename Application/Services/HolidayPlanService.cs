@@ -25,7 +25,7 @@ public class HolidayPlanService
     }
 
     // UC1
-    public async Task<HolidayPeriodDTO> AddHolidayPeriod(Guid collabId, CreateHolidayPeriodDTO holidayPeriodDTO)
+    public async Task<Result<HolidayPeriodDTO>> AddHolidayPeriod(Guid collabId, CreateHolidayPeriodDTO holidayPeriodDTO)
     {
         HolidayPeriod holidayPeriod;
         try
@@ -33,11 +33,12 @@ public class HolidayPlanService
             var holidayPlan = await _holidayPlanRepository.FindHolidayPlanByCollaboratorAsync(collabId);
             holidayPeriod = await _holidayPeriodFactory.Create(holidayPlan!.Id, holidayPeriodDTO.InitDate, holidayPeriodDTO.FinalDate);
             await _holidayPlanRepository.AddHolidayPeriodAsync(holidayPlan.Id, holidayPeriod);
-            return _mapper.Map<HolidayPeriod, HolidayPeriodDTO>(holidayPeriod);
+            var result = _mapper.Map<HolidayPeriod, HolidayPeriodDTO>(holidayPeriod);
+            return Result<HolidayPeriodDTO>.Success(result);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return null;
+            return Result<HolidayPeriodDTO>.Failure(Error.InternalServerError(e.Message));
         }
     }
 
