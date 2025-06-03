@@ -238,10 +238,12 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
         var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
 
-        var period = new PeriodDate(DateOnly.Parse("18/2/2045"), DateOnly.Parse("18/3/2045"));
+        var period = new PeriodDate(DateOnly.Parse("18-02-2045"), DateOnly.Parse("18-03-2045"));
+
+        var createdHolidayPeriodDTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayPlan/holidayPeriod", period);
 
         // Act
-        var result = await GetAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayperiods/includes-date?date=2045/2/20");
+        var result = await GetAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayperiods/includes-date?date=2045-02-20");
 
         // Assert
         Assert.NotNull(result);
