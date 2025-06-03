@@ -8,4 +8,6 @@ public interface IProjectRepository : IGenericRepositoryEF<IProject, Project, IP
 {
     public Task<IEnumerable<Project>> GetByIdAsync(IEnumerable<Guid> projectIds);
     public Task<bool> CheckIfAcronymIsUnique(string acronym);
+    public Task<Project?> UpdateProject(IProject project);
+
 }
