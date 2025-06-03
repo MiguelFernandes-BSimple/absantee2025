@@ -9,10 +9,10 @@ namespace Infrastructure.Repositories;
 
 public class ProjectRepositoryEF : GenericRepositoryEF<IProject, Project, ProjectDataModel>, IProjectRepository
 {
-    private readonly IMapper _ProjectMapper;
+    private readonly IMapper _projectMapper;
     public ProjectRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
-        _ProjectMapper = mapper;
+        _projectMapper = mapper;
     }
 
     public override IProject? GetById(Guid id)
@@ -23,7 +23,7 @@ public class ProjectRepositoryEF : GenericRepositoryEF<IProject, Project, Projec
         if (projectDM == null)
             return null;
 
-        var project = _ProjectMapper.Map<ProjectDataModel, Project>(projectDM);
+        var project = _projectMapper.Map<ProjectDataModel, Project>(projectDM);
         return project;
     }
 
@@ -35,7 +35,7 @@ public class ProjectRepositoryEF : GenericRepositoryEF<IProject, Project, Projec
         if (projectDM == null)
             return null;
 
-        var project = _ProjectMapper.Map<ProjectDataModel, Project>(projectDM);
+        var project = _projectMapper.Map<ProjectDataModel, Project>(projectDM);
         return project;
     }
 
@@ -51,8 +51,26 @@ public class ProjectRepositoryEF : GenericRepositoryEF<IProject, Project, Projec
     {
         var projectDMs = await this._context.Set<ProjectDataModel>().Where(p => projectIds.Contains(p.Id)).ToListAsync();
 
-        var projects = projectDMs.Select(_ProjectMapper.Map<ProjectDataModel, Project>);
+        var projects = projectDMs.Select(_projectMapper.Map<ProjectDataModel, Project>);
 
         return projects;
+    }
+
+    public async Task<Project?> UpdateProject(IProject project)
+    {
+        var projectDM = await _context.Set<ProjectDataModel>()
+                            .FirstOrDefaultAsync(p => p.Id == project.Id);
+
+        if (projectDM == null) return null;
+
+        projectDM.Title = project.Title;
+        projectDM.Acronym = project.Acronym;
+        projectDM.PeriodDate = project.PeriodDate;
+
+        _context.Set<ProjectDataModel>().Update(projectDM);
+        await _context.SaveChangesAsync();
+
+        return _projectMapper.Map<ProjectDataModel, Project>(projectDM);
+
     }
 }

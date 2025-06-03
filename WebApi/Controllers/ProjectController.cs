@@ -105,6 +105,14 @@ namespace WebApi.Controllers
             return result.ToActionResult();
         }
 
+        [HttpPut]
+        public async Task<ActionResult<ProjectDTO>> Update([FromBody] ProjectDTO projectDTO)
+        {
+            var result = await _projectService.EditProject(projectDTO);
+
+            return result.ToActionResult();
+        }
+
         [HttpGet("{projectId}")]
         public async Task<ActionResult<ProjectDTO>> GetById(Guid projectId)
         {
