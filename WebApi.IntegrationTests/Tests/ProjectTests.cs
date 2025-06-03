@@ -377,23 +377,23 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
         var createdAssociationDTO2 = await PostAndDeserializeAsync<AssociationProjectCollaboratorDTO>($"/api/Project/{projectCreatedDTO.Id}/collaborators", associationDTO2);
 
         //Create Holiday Plans with HolidayPeriods
-        var holidayPeriod1 = new PeriodDate
-            (DateOnly.FromDateTime(DateTime.Today.AddMonths(1)),
-            DateOnly.FromDateTime(DateTime.Today.AddMonths(1)).AddDays(5));
-        var holidayPeriods1 = new List<PeriodDate> { holidayPeriod1 };
+        var holidayPeriod1 = new CreateHolidayPeriodDTO()
+        {
+            InitDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(1)),
+            FinalDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(1)).AddDays(5)
+        };
 
-        var createHolidayPlanDTO1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaboratorCreatedDTO1.CollabId, holidayPeriods1);
-        var holidayPlanDTO1 = await PostAndDeserializeAsync<HolidayPlanDTO>(
-            $"/api/holidayplans", createHolidayPlanDTO1);
+        var holidayPeriod2 = new CreateHolidayPeriodDTO()
+        {
+            InitDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(6)),
+            FinalDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(6)).AddDays(10)
+        };
 
-        var holidayPeriod2 = new PeriodDate
-            (DateOnly.FromDateTime(DateTime.Today.AddMonths(6)),
-            DateOnly.FromDateTime(DateTime.Today.AddMonths(6)).AddDays(10));
-        var holidayPeriods2 = new List<PeriodDate> { holidayPeriod2 };
+        var holidayPeriodResponseDTO1 = await PostAndDeserializeAsync<HolidayPeriodDTO>(
+            $"/api/collaborators/{collaboratorCreatedDTO1.CollabId}/holidayPlan/holidayPeriod", holidayPeriod1);
 
-        var createHolidayPlanDTO2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaboratorCreatedDTO2.CollabId, holidayPeriods2);
-        var holidayPlanDTO2 = await PostAndDeserializeAsync<HolidayPlanDTO>(
-            $"/api/holidayplans", createHolidayPlanDTO2);
+        var holidayPeriodResponseDTO2 = await PostAndDeserializeAsync<HolidayPeriodDTO>(
+            $"/api/collaborators/{collaboratorCreatedDTO2.CollabId}/holidayPlan/holidayPeriod", holidayPeriod2);
 
         //Act : Search holiday Periods days by searchPeriod
         var searchPeriod = new PeriodDate
@@ -403,7 +403,7 @@ public class ProjectControllerTests : IntegrationTestBase, IClassFixture<Integra
         };
         //expected is the intersection between searchPeriod and holidayPeriod2
         var expected =
-            searchPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(holidayPeriod2);
+            searchPeriod.GetNumberOfCommonUtilDaysBetweenPeriods(holidayPeriodResponseDTO2.PeriodDate);
 
         var result = await GetAndDeserializeAsync<int>(
             $"api/Project/{projectCreatedDTO.Id}/collaborators/holidays/count/byPeriod" +
