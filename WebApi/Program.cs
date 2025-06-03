@@ -24,7 +24,7 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     );
 
 //Services
-builder.Services.AddScoped<UserService>();
+builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<CollaboratorService>();
 builder.Services.AddTransient<AssociationProjectCollaboratorService>();
 builder.Services.AddTransient<ProjectService>();

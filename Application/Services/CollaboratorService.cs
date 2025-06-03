@@ -69,43 +69,58 @@ public class CollaboratorService
         }
     }
 
-    // uc9 - Como gestor de RH, quero listar todos os colaboradores
+    // UC9 - Como gestor de RH, quero listar todos os colaboradores
     public async Task<Result<IEnumerable<Guid>>> GetAll()
     {
-        var collabs = await _collaboratorRepository.GetAllAsync();
-        var collabIds = collabs.Select(U => U.Id);
+        try
+        {
+            var collabs = await _collaboratorRepository.GetAllAsync();
+            var collabIds = collabs.Select(U => U.Id);
 
-        return Result<IEnumerable<Guid>>.Success(collabIds);
+            return Result<IEnumerable<Guid>>.Success(collabIds);
+        }
+        catch (Exception e)
+        {
+            return Result<IEnumerable<Guid>>.Failure(Error.InternalServerError(e.Message));
+        }
     }
 
     public async Task<Result<IEnumerable<CollabDetailsDTO>>> GetAllInfo()
     {
-        var collabs = await _collaboratorRepository.GetAllAsync();
-        var userIds = collabs.Select(c => c.UserId).ToList();
-        var users = await _userRepository.GetByIdsAsync(userIds);
-
-        var resultList = new List<CollabDetailsDTO>();
-
-        foreach (var collab in collabs)
+        try
         {
-            var user = users.FirstOrDefault(u => u.Id == collab.UserId);
 
-            if (user != null)
+            var collabs = await _collaboratorRepository.GetAllAsync();
+            var userIds = collabs.Select(c => c.UserId).ToList();
+            var users = await _userRepository.GetByIdsAsync(userIds);
+
+            var resultList = new List<CollabDetailsDTO>();
+
+            foreach (var collab in collabs)
             {
-                resultList.Add(new CollabDetailsDTO
-                {
-                    CollabId = collab.Id,
-                    UserId = user.Id,
-                    Names = user.Names,
-                    Surnames = user.Surnames,
-                    Email = user.Email,
-                    UserPeriod = user.PeriodDateTime,
-                    CollaboratorPeriod = collab.PeriodDateTime
-                });
-            }
-        }
+                var user = users.FirstOrDefault(u => u.Id == collab.UserId);
 
-        return Result<IEnumerable<CollabDetailsDTO>>.Success(resultList);
+                if (user != null)
+                {
+                    resultList.Add(new CollabDetailsDTO
+                    {
+                        CollabId = collab.Id,
+                        UserId = user.Id,
+                        Names = user.Names,
+                        Surnames = user.Surnames,
+                        Email = user.Email,
+                        UserPeriod = user.PeriodDateTime,
+                        CollaboratorPeriod = collab.PeriodDateTime
+                    });
+                }
+            }
+
+            return Result<IEnumerable<CollabDetailsDTO>>.Success(resultList);
+        }
+        catch (Exception e)
+        {
+            return Result<IEnumerable<CollabDetailsDTO>>.Failure(Error.InternalServerError(e.Message));
+        }
     }
 
     public async Task<CollabUpdatedDTO?> EditCollaborator(CollabData dto)
@@ -134,36 +149,52 @@ public class CollaboratorService
 
     public async Task<Result<CollaboratorDTO>> GetById(Guid id)
     {
-        var collab = await _collaboratorRepository.GetByIdAsync(id);
-        if (collab == null)
-            return Result<CollaboratorDTO>.Failure(Error.NotFound("User not found"));
-        var result = _mapper.Map<CollaboratorDTO>(collab);
+        try
+        {
+            var collab = await _collaboratorRepository.GetByIdAsync(id);
+            if (collab == null)
+                return Result<CollaboratorDTO>.Failure(Error.NotFound("User not found"));
+            var result = _mapper.Map<CollaboratorDTO>(collab);
 
-        return Result<CollaboratorDTO>.Success(result);
+            return Result<CollaboratorDTO>.Success(result);
+
+        }
+        catch (Exception e)
+        {
+            return Result<CollaboratorDTO>.Failure(Error.InternalServerError(e.Message));
+        }
     }
 
     public async Task<Result<CollabDetailsDTO>> GetDetailsById(Guid id)
     {
-        var collab = await _collaboratorRepository.GetByIdAsync(id);
-        if (collab == null)
-            return Result<CollabDetailsDTO>.Failure(Error.NotFound("Collab not found"));
-
-        var user = await _userRepository.GetByIdAsync(collab.UserId);
-        if (user == null)
-            return Result<CollabDetailsDTO>.Failure(Error.NotFound("User not found"));
-
-        var result = new CollabDetailsDTO()
+        try
         {
-            CollabId = collab.Id,
-            UserId = user.Id,
-            Names = user.Names,
-            Surnames = user.Surnames,
-            Email = user.Email,
-            UserPeriod = user.PeriodDateTime,
-            CollaboratorPeriod = collab.PeriodDateTime
-        };
 
-        return Result<CollabDetailsDTO>.Success(result);
+            var collab = await _collaboratorRepository.GetByIdAsync(id);
+            if (collab == null)
+                return Result<CollabDetailsDTO>.Failure(Error.NotFound("Collab not found"));
+
+            var user = await _userRepository.GetByIdAsync(collab.UserId);
+            if (user == null)
+                return Result<CollabDetailsDTO>.Failure(Error.NotFound("User not found"));
+
+            var result = new CollabDetailsDTO()
+            {
+                CollabId = collab.Id,
+                UserId = user.Id,
+                Names = user.Names,
+                Surnames = user.Surnames,
+                Email = user.Email,
+                UserPeriod = user.PeriodDateTime,
+                CollaboratorPeriod = collab.PeriodDateTime
+            };
+
+            return Result<CollabDetailsDTO>.Success(result);
+        }
+        catch (Exception e)
+        {
+            return Result<CollabDetailsDTO>.Failure(Error.InternalServerError(e.Message));
+        }
     }
 
     public async Task<long> GetCount()
@@ -171,7 +202,7 @@ public class CollaboratorService
         return await _collaboratorRepository.GetCount();
     }
 
-    // uc10
+    // uc10 - Como gestor de RG, quero listar todos os colaboradores que têm determinado nome ou sobrenome
     public async Task<IEnumerable<Guid>> GetByNames(string names)
     {
         var users = await _userRepository.GetByNamesAsync(names);
