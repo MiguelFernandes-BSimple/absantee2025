@@ -12,7 +12,7 @@ public class CollaboratorFactoryTests
     public void WhenCreatingCollaboratorWithValidPeriod_ThenCollaboratorIsCreatedCorrectly()
     {
         // Arrange
-        Mock<User> user = new Mock<User>();
+        var user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
@@ -38,7 +38,7 @@ public class CollaboratorFactoryTests
 
         PeriodDateTime period = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
-        Mock<User> user = new Mock<User>();
+        var user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(period._finalDate)).Returns(true);
         user.Setup(u => u.IsDeactivated()).Returns(false);
         user.Setup(u => u.Id).Returns(userId);
@@ -55,7 +55,7 @@ public class CollaboratorFactoryTests
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 // Act
-                collabFactory.Create(userId, period)
+                collabFactory.Create(user.Object, period)
         );
         Assert.Equal("User deactivation date is before collaborator contract end date.", exception.Message);
     }
@@ -67,8 +67,8 @@ public class CollaboratorFactoryTests
         Guid userId = new Guid();
 
         PeriodDateTime period = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
-
-        Mock<User> user = new Mock<User>();
+    
+        var user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(period._finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(true);
         user.Setup(u => u.Id).Returns(userId);
@@ -84,18 +84,18 @@ public class CollaboratorFactoryTests
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 // Act
-                collabFactory.Create(userId, period)
+                collabFactory.Create(user.Object, period)
         );
         Assert.Equal("User is deactivated.", exception.Message);
     }
 
     [Fact]
-    public async Task WhenCreatingCollaboratorWhereUserDontExists_ThenShowThrowException()
+    public async Task WhenCreatingCollaboratorWhereUserDoesNotExist_ThenShowThrowException()
     {
         // Arrange
         PeriodDateTime period = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
-        Mock<User> user = new Mock<User>();
+        var user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(period._finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
 
@@ -113,7 +113,7 @@ public class CollaboratorFactoryTests
                 // Act
                 collabFactory.Create(It.IsAny<Guid>(), period)
         );
-        Assert.Equal("User dont exists", exception.Message);
+        Assert.Equal("User does not exist", exception.Message);
     }
 
     [Fact]
@@ -124,7 +124,7 @@ public class CollaboratorFactoryTests
 
         PeriodDateTime period = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
-        Mock<User> user = new Mock<User>();
+        var user = new Mock<IUser>();
         user.Setup(u => u.DeactivationDateIsBefore(period._finalDate)).Returns(false);
         user.Setup(u => u.IsDeactivated()).Returns(false);
         user.Setup(u => u.Id).Returns(userId);
@@ -141,7 +141,7 @@ public class CollaboratorFactoryTests
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
             () =>
                 // Act
-                collabFactory.Create(userId, period)
+                collabFactory.Create(user.Object, period)
         );
         Assert.Equal("Collaborator already exists", exception.Message);
     }

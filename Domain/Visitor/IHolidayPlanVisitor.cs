@@ -9,5 +9,5 @@ public interface IHolidayPlanVisitor
 {
     Guid Id { get; }
     Guid CollaboratorId { get; }
-    List<HolidayPeriod> GetHolidayPeriods(IMapper mapper);
+    List<IHolidayPeriod> GetHolidayPeriods(IMapper mapper);
 }

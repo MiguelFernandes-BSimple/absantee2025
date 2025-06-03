@@ -26,11 +26,11 @@ public class HolidayPlanFactory : IHolidayPlanFactory
         if (!await _holidayPlanRepository.CanInsertHolidayPlan(collaborator.UserId))
             throw new ArgumentException("Holiday plan already exists for this collaborator.");
 
-        var holidayPeriods = new List<HolidayPeriod>();
+        var holidayPeriods = new List<IHolidayPeriod>();
 
         foreach (var period in periods)
         {
-            HolidayPeriod newPeriod;
+            IHolidayPeriod newPeriod;
             try
             {
                 newPeriod = _holidayPeriodFactory.CreateWithoutHolidayPlan(

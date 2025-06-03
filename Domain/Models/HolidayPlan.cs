@@ -6,16 +6,16 @@ public class HolidayPlan : IHolidayPlan
 {
     public Guid Id { get; }
     public Guid CollaboratorId { get; }
-    public List<HolidayPeriod> HolidayPeriods { get; }
+    public List<IHolidayPeriod> HolidayPeriods { get; }
 
-    public HolidayPlan(Guid collaboratorId, List<HolidayPeriod> holidayPeriods)
+    public HolidayPlan(Guid collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
         Id = Guid.NewGuid();
         CollaboratorId = collaboratorId;
         HolidayPeriods = holidayPeriods;
     }
 
-    public HolidayPlan(Guid id, Guid collaboratorId, List<HolidayPeriod> holidayPeriods)
+    public HolidayPlan(Guid id, Guid collaboratorId, List<IHolidayPeriod> holidayPeriods)
     {
         Id = id;
         CollaboratorId = collaboratorId;

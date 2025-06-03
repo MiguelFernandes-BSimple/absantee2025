@@ -19,8 +19,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+       var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
@@ -61,8 +61,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
@@ -104,8 +104,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
@@ -147,8 +147,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
@@ -191,8 +191,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
@@ -235,8 +235,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids
@@ -279,8 +279,8 @@ public class AssociationProjectCollaboratorFactoryTests
         Mock<IAssociationProjectCollaboratorRepository> assocRepo = new Mock<IAssociationProjectCollaboratorRepository>();
 
         // Collaborator and Project stubs
-        Mock<Collaborator> collab = new Mock<Collaborator>();
-        Mock<Project> project = new Mock<Project>();
+        var collab = new Mock<ICollaborator>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids

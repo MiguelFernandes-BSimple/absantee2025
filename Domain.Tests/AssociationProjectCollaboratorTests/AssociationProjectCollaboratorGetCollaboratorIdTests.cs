@@ -20,7 +20,7 @@ public class AssociationProjectCollaboratorGetCollaboratorIdTests
             new AssociationProjectCollaborator(collabId, projectId, periodDate);
 
         // Act
-        var result = assoc.Id;
+        var result = assoc.CollaboratorId;
 
         // Assert
         Assert.Equal(collabId, result);

@@ -13,19 +13,21 @@ public class HRManagerFactoryTests
     public async Task WhenPassingValidUserIdAndPeriodDateTime_ThenCreatesHRManager()
     {
         //arrange
-        var userDouble = new Mock<User>();
+        var userDouble = new Mock<IUser>();
+
+        var userRepoDouble = new Mock<IUserRepository>();
+        userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(userDouble.Object);
+
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
         PeriodDateTime periodDateTime = new PeriodDateTime(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
-        var userRepoDouble = new Mock<IUserRepository>();
-        userRepoDouble.Setup(urd => urd.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(userDouble.Object);
-
         var hrFactory = new HRManagerFactory(userRepoDouble.Object);
 
         //act
         var result = await hrFactory.Create(It.IsAny<Guid>(), periodDateTime);
+
         //assert
         Assert.NotNull(result);
     }
@@ -51,7 +53,7 @@ public class HRManagerFactoryTests
     public async Task WhenDeactivationDateIsBeforeInitDate_ThenThrowsException()
     {
         // arrange
-        var userDouble = new Mock<User>();
+        var userDouble = new Mock<IUser>();
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(true);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
@@ -75,7 +77,7 @@ public class HRManagerFactoryTests
     public async Task WhenUserIsDeativated_ThenThrowsException()
     {
         // arrange
-        var userDouble = new Mock<User>();
+        var userDouble = new Mock<IUser>();
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(true);
 
@@ -99,7 +101,7 @@ public class HRManagerFactoryTests
     public async Task WhenPassingValidUserIdAndInitDate_ThenCreatesHRManager()
     {
         // arrange
-        var userDouble = new Mock<User>();
+        var userDouble = new Mock<IUser>();
         userDouble.Setup(ud => ud.DeactivationDateIsBefore(It.IsAny<DateTime>())).Returns(false);
         userDouble.Setup(ud => ud.IsDeactivated()).Returns(false);
 
