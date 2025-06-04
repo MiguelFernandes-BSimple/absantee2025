@@ -1,6 +1,4 @@
-using Application;
 using Application.DTO;
-using Application.DTO.Collaborator;
 using Application.DTO.Collaborators;
 using Application.Services;
 using Domain.Models;
@@ -14,11 +12,13 @@ public class CollaboratorController : ControllerBase
 {
     private readonly CollaboratorService _collabService;
     private readonly HolidayPlanService _holidayPlanService;
+    private readonly AssociationProjectCollaboratorService _associationProjectCollaboratorService;
 
-    public CollaboratorController(CollaboratorService collabService, HolidayPlanService holidayPlanService)
+    public CollaboratorController(CollaboratorService collabService, HolidayPlanService holidayPlanService, AssociationProjectCollaboratorService associationProjectCollaboratorService)
     {
         _collabService = collabService;
         _holidayPlanService = holidayPlanService;
+        _associationProjectCollaboratorService = associationProjectCollaboratorService;
     }
 
 
@@ -221,5 +221,14 @@ public class CollaboratorController : ControllerBase
         if (result == null) return BadRequest();
 
         return Ok(result);
+    }
+
+    // Add project to collaborator - create a new AssociationProjectCollaborator
+    [HttpPost("{id}/projects")]
+    public async Task<ActionResult<AssociationProjectCollaboratorDTO>> CreateAssociationProjectCollaborator(Guid id, [FromBody] CreateAssociationCollaboratorProjectDTO associationDTO)
+    {
+        var result = await _associationProjectCollaboratorService.AddByCollaborator(associationDTO.PeriodDate, id, associationDTO.ProjectId);
+
+        return result.ToActionResult();
     }
 }

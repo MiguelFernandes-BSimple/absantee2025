@@ -92,7 +92,7 @@ namespace WebApi.Controllers
         [HttpPost("{projectId}/collaborators")]
         public async Task<ActionResult<AssociationProjectCollaboratorDTO>> AddCollaborator(Guid projectId, [FromBody] CreateAssociationProjectCollaboratorDTO associationDTO)
         {
-            var result = await _associationProjectCollaboratorService.Add(associationDTO.PeriodDate, associationDTO.CollaboratorId, projectId);
+            var result = await _associationProjectCollaboratorService.AddByProject(associationDTO.PeriodDate, associationDTO.CollaboratorId, projectId);
 
             return result.ToActionResult();
         }
