@@ -159,7 +159,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
 
 
         // act
-        var collabIdList = await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/collaborators/search?name={collabDTO.Names}&surname{collabDTO.Surnames}");
+        var collabIdList = await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/collaborators/search?name={collabDTO.Names}&surname={collabDTO.Surnames}");
 
         // assert
         Assert.NotNull(collabIdList);
