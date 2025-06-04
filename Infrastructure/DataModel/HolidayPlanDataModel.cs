@@ -12,12 +12,12 @@ public class HolidayPlanDataModel : IHolidayPlanVisitor
     public Guid CollaboratorId { get; set; }
     public List<HolidayPeriodDataModel> HolidayPeriods { get; set; } = new List<HolidayPeriodDataModel>();
 
-    public List<HolidayPeriod> GetHolidayPeriods(IMapper _mapper)
+    public List<IHolidayPeriod> GetHolidayPeriods(IMapper _mapper)
     {
         if (HolidayPeriods == null)
-            return new List<HolidayPeriod>();
+            return new List<IHolidayPeriod>();
 
-        return HolidayPeriods.Select(_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>).ToList();
+        return HolidayPeriods.Select(h => (IHolidayPeriod)_mapper.Map<HolidayPeriodDataModel, HolidayPeriod>(h)).ToList();
     }
 
     public HolidayPlanDataModel()
