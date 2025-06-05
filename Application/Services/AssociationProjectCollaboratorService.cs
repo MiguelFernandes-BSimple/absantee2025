@@ -49,10 +49,9 @@ namespace Application.Services
             {
                 var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
                 var assocCreated = await _assocRepository.AddAsync(assoc);
-                var collab = await _collaboratorRepository.GetByIdAsync(collabId);
-                var user = await _userRepository.GetByIdAsync(collab!.UserId);
+                var project = await _projectRepository.GetByIdAsync(projectId);
                 var result = _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>((AssociationProjectCollaborator)assocCreated);
-                result.CollaboratorEmail = user!.Email;
+                result.ProjectAcronym = project!.Acronym;
                 return Result<AssociationProjectCollaboratorDTO>.Success(result);
             }
             catch (ArgumentException a)
@@ -71,9 +70,10 @@ namespace Application.Services
             {
                 var assoc = await _associationProjectCollaboratorFactory.Create(periodDate, collabId, projectId);
                 var assocCreated = await _assocRepository.AddAsync(assoc);
-                var project = await _projectRepository.GetByIdAsync(projectId);
+                var collab = await _collaboratorRepository.GetByIdAsync(collabId);
+                var user = await _userRepository.GetByIdAsync(collab!.UserId);
                 var result = _mapper.Map<AssociationProjectCollaborator, AssociationProjectCollaboratorDTO>((AssociationProjectCollaborator)assocCreated);
-                result.ProjectAcronym = project!.Acronym;
+                result.CollaboratorEmail = user!.Email;
                 return Result<AssociationProjectCollaboratorDTO>.Success(result);
             }
             catch (ArgumentException a)
