@@ -35,6 +35,14 @@ public class TrainingSubjectController : ControllerBase
         return trainingSubjects.ToActionResult();
     }
 
+    [HttpGet("{trainingSubjectId}")]
+    public async Task<ActionResult<TrainingSubjectDTO>> GetById(Guid trainingSubjectId)
+    {
+        var trainingSubject = await _trainingSubjectService.GetById(trainingSubjectId);
+
+        return trainingSubject.ToActionResult();
+    }
+
     [HttpPut]
     public async Task<ActionResult<TrainingSubjectDTO>> UpdateTrainingSubject([FromBody] TrainingSubjectDTO newSubject)
     {

@@ -53,6 +53,17 @@ public class TrainingSubjectService
         return Result<IEnumerable<TrainingSubjectDTO>>.Success(result);
     }
 
+    public async Task<Result<TrainingSubjectDTO>> GetById(Guid id)
+    {
+        var trainingSubject = await _trainingSubjectRepository.GetByIdAsync(id);
+        if (trainingSubject == null)
+        {
+            return Result<TrainingSubjectDTO>.Failure(Error.NotFound("Training subject not found"));
+        }
+        var result = _mapper.Map<TrainingSubjectDTO>(trainingSubject);
+        return Result<TrainingSubjectDTO>.Success(result);
+    }
+
     public async Task<TrainingSubjectDTO?> UpdateTrainingSubject(TrainingSubjectDTO tsDTO)
     {
         var trainingSubject = await _trainingSubjectRepository.GetByIdAsync(tsDTO.Id);
