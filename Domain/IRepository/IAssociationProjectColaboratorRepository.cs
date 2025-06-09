@@ -6,11 +6,11 @@ namespace Domain.IRepository;
 
 public interface IAssociationProjectCollaboratorRepository : IGenericRepositoryEF<IAssociationProjectCollaborator, AssociationProjectCollaborator, IAssociationProjectCollaboratorVisitor>
 {
-    public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByCollaboratorAsync(Guid collabId);
-    public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId);
-    public Task<AssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
-    public Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
+    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByCollaboratorAsync(Guid collabId);
+    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId);
+    public Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
+    public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId);
     public Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndIntersectingPeriodAsync(Guid projectId, PeriodDate periodDate);
-    Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate);
+    Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate);
     public Task<bool> CanInsert(PeriodDate periodDate, Guid collaboratorId, Guid projectId);
 }

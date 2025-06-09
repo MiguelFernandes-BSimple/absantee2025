@@ -1,4 +1,5 @@
 using Application.DTO.Collaborators;
+using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
@@ -17,7 +18,7 @@ public class CollaboratorServiceCreate : CollaboratorServiceTestBase
 
         var collaborator = new Collaborator(Guid.NewGuid(), user.Id, createDto.PeriodDateTime);
 
-        var holidayPlan = new HolidayPlan(collaborator.Id, new List<HolidayPeriod>());
+        var holidayPlan = new HolidayPlan(collaborator.Id, new List<IHolidayPeriod>());
 
         UserFactoryDouble.Setup(x => x.Create(
             createDto.Names, createDto.Surnames, createDto.Email, createDto.deactivationDate)).ReturnsAsync(user);

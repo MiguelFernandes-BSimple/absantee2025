@@ -29,10 +29,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
 
         _associationProjectCollaboratorRepository
             .Setup(a =>
-                a.FindAllByProjectAndIntersectingPeriodAsync(
-                    It.IsAny<Guid>(),
-                    period
-                )
+                a.FindAllByProjectAsync(It.IsAny<Guid>())
             )
             .ReturnsAsync(associationsList);
 
@@ -75,44 +72,47 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
         Assert.True(expected.SequenceEqual(result));
     }
 
-    //[Fact]
-    //public async Task WhenNoHolidayPeriodsForCollaboratorWithinInterval_ThenReturnEmptyList()
-    //{
-    //    // Arrange
-    //    var collaboratorIdList = new List<long>(){
-    //            1
-    //        };
+    [Fact]
+    public async Task WhenNoHolidayPeriodsForCollaboratorWithinInterval_ThenReturnEmptyList()
+    {
+        // Arrange
+        var collaboratorIdList = new List<long>(){
+            1
+        };
 
-    //    var period = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
+        var period = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
-    //    var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
-    //    var associationMock = new Mock<IAssociationProjectCollaborator>();
-    //    var associationsList = new List<IAssociationProjectCollaborator> {
-    //            associationMock.Object
-    //        };
-    //    associationRepoMock
-    //        .Setup(a =>
-    //            a.FindAllByProjectAndBetweenPeriodAsync(
-    //                It.IsAny<long>(),
-    //                period
-    //            )
-    //        )
-    //        .ReturnsAsync(associationsList);
+        var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
+        var associationMock = new Mock<IAssociationProjectCollaborator>();
+        var associationsList = new List<IAssociationProjectCollaborator> {
+            associationMock.Object
+        };
 
-    //    associationMock.Setup(a => a.GetCollaboratorId()).Returns(1);
+        associationRepoMock
+            .Setup(a =>
+                a.FindAllByProjectAsync(
+                    It.IsAny<Guid>(),
+                    period
+                )
+            )
+            .ReturnsAsync(associationsList);
 
-    //    var expected = new List<IHolidayPeriod>();
-    //    var holidayRepoMock = new Mock<IHolidayPlanRepository>();
-    //    holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorIdList, period))
-    //                                .ReturnsAsync(expected);
+        associationMock.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<Guid>());
 
-    //    var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
-    //    // Act
-    //    var result = await holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(
-    //        It.IsAny<long>(),
-    //        period
-    //    );
+        var expected = new List<IHolidayPeriod>();
+        var holidayRepoMock = new Mock<IHolidayPlanRepository>();
+        holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorIdList, period))
+                                    .ReturnsAsync(expected);
 
-    //    Assert.Empty(result);
-    //}
+        var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
+
+        // Act
+        var result = await holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(
+            It.IsAny<Guid>(),
+            period
+        );
+
+        Assert.True(result.IsSuccess);
+        Assert.Empty(result.Value);
+    }
 }

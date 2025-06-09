@@ -42,7 +42,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         return assoc;
     }
 
-    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByCollaboratorAsync(Guid collabId)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByCollaboratorAsync(Guid collabId)
     {
         IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
             await _context.Set<AssociationProjectCollaboratorDataModel>()
@@ -55,7 +55,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         return assocs;
     }
 
-    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAsync(Guid projectId)
     {
         IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
             await _context.Set<AssociationProjectCollaboratorDataModel>()
@@ -68,7 +68,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         return assocs;
     }
 
-    public async Task<AssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
+    public async Task<IAssociationProjectCollaborator?> FindByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
         try
         {
@@ -88,7 +88,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         }
     }
 
-    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAsync(Guid projectId, Guid collaboratorId)
     {
         IEnumerable<AssociationProjectCollaboratorDataModel> assocsDM =
             await FindByCollaboratorAndProject(collaboratorId, projectId).ToListAsync();
@@ -114,7 +114,7 @@ public class AssociationProjectCollaboratorRepositoryEF : GenericRepositoryEF<IA
         return assocs;
     }
 
-    public async Task<IEnumerable<AssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
+    public async Task<IEnumerable<IAssociationProjectCollaborator>> FindAllByProjectAndCollaboratorAndBetweenPeriodAsync(Guid projectId, Guid collaboratorId, PeriodDate periodDate)
     {
         IEnumerable<AssociationProjectCollaboratorDataModel> assocDM =
             await _context.Set<AssociationProjectCollaboratorDataModel>()
