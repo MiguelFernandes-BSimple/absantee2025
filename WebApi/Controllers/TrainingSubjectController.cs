@@ -44,12 +44,17 @@ public class TrainingSubjectController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<TrainingSubjectDTO>> UpdateTrainingSubject([FromBody] TrainingSubjectDTO newSubject)
+    public async Task<ActionResult<TrainingSubjectDTO>>
+    UpdateTrainingSubject([FromBody] TrainingSubjectDTO newSubject)
     {
-        var subjectData = new TrainingSubjectDTO(newSubject.Id, newSubject.Subject, newSubject.Description);
+        if (newSubject.Id == Guid.Empty)
+            return BadRequest("Id is required");
 
-        var result = await _trainingSubjectService.UpdateTrainingSubject(subjectData);
+        var result = await _trainingSubjectService.UpdateTrainingSubject(newSubject);
+
         if (result == null) return BadRequest("Invalid arguments");
         return Ok(result);
     }
+
+
 }

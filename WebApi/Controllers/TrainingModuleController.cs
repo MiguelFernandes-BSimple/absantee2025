@@ -71,6 +71,14 @@ public class TrainingModuleController : ControllerBase
         return trainingModules.ToActionResult();
     }
 
+    [HttpGet("{trainingModuleId}")]
+    public async Task<ActionResult<TrainingModuleDTO>> GetById(Guid trainingModuleId)
+    {
+        var trainingModule = await _trainingModuleService.GetById(trainingModuleId);
+
+        return trainingModule.ToActionResult();
+    }
+
     [HttpGet("{trainingModuleId}/associations")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllAssociations(Guid trainingModuleId)
     {

@@ -50,4 +50,15 @@ public class TrainingModuleService
 
         return Result<IEnumerable<TrainingModuleDTO>>.Success(resultList);
     }
+
+    public async Task<Result<TrainingModuleDTO>> GetById(Guid id)
+    {
+        var trainingModule = await _trainingModuleRepository.GetByIdAsync(id);
+        if (trainingModule == null)
+        {
+            return Result<TrainingModuleDTO>.Failure(Error.NotFound("Training module not found"));
+        }
+        var result = _mapper.Map<TrainingModuleDTO>(trainingModule);
+        return Result<TrainingModuleDTO>.Success(result);
+    }
 }
