@@ -137,8 +137,8 @@ public class CollaboratorService
         user.UpdatePeriod(dto.UserPeriod);
         collab.UpdatePeriod(dto.CollaboratorPeriod);
 
-        var updateCollabDetails = _collaboratorRepository.UpdateCollaborator(collab);
-        var updatedUserDetails = _userRepository.UpdateUser(user);
+        var updateCollabDetails = await _collaboratorRepository.UpdateCollaborator(collab);
+        var updatedUserDetails = await _userRepository.UpdateUser(user);
 
         if (updateCollabDetails == null || updatedUserDetails == null) return null;
 
