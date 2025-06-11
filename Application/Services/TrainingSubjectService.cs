@@ -72,7 +72,7 @@ public class TrainingSubjectService
         trainingSubject.UpdateSubject(tsDTO.Subject);
         trainingSubject.UpdateDescription(tsDTO.Description);
 
-        var updateSubjectDetails = _trainingSubjectRepository.UpdateTrainingSubject(trainingSubject);
+        var updateSubjectDetails = await _trainingSubjectRepository.UpdateTrainingSubject(trainingSubject);
 
         if (updateSubjectDetails == null) return null;
 

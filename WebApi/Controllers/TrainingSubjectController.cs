@@ -44,8 +44,7 @@ public class TrainingSubjectController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<TrainingSubjectDTO>>
-    UpdateTrainingSubject([FromBody] TrainingSubjectDTO newSubject)
+    public async Task<ActionResult<TrainingSubjectDTO>> UpdateTrainingSubject([FromBody] TrainingSubjectDTO newSubject)
     {
         if (newSubject.Id == Guid.Empty)
             return BadRequest("Id is required");
