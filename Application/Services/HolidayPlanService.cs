@@ -128,12 +128,9 @@ public class HolidayPlanService
         try
         {
             var associations = await _associationProjectCollaboratorRepository.FindAllByProjectAsync(projectId);
-            var collabs = associations.Select(a => a.CollaboratorId);
+            var collabs = associations.Select(a => a.CollaboratorId).ToList();
 
-            var holidayPeriodsTask = collabs.Select(async c => await _holidayPlanRepository.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(c, period));
-            var holidayPeriodsRes = await Task.WhenAll(holidayPeriodsTask);
-
-            var holidayPeriods = holidayPeriodsRes.SelectMany(h => h);
+            var holidayPeriods = await _holidayPlanRepository.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collabs, period);
 
             var result = holidayPeriods.Select(_mapper.Map<HolidayPeriodDTO>);
 

@@ -4,6 +4,8 @@ using Application.Services;
 using Moq;
 using Domain.Models;
 using Application.DTO;
+using Domain.Factory;
+using AutoMapper;
 
 namespace Application.Tests.HolidayPlanServiceTests;
 
@@ -36,7 +38,7 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
         var holidayPeriodMock1 = new Mock<IHolidayPeriod>();
         var holidayPeriodMock2 = new Mock<IHolidayPeriod>();
         var holidays = new List<IHolidayPeriod>() { holidayPeriodMock1.Object, holidayPeriodMock2.Object };
-        _holidayPlanRepository.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsIntersectingPeriodAsync(collaboratorsIdsList, period))
+        _holidayPlanRepository.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorsIdsList, period))
                                     .ReturnsAsync(holidays);
 
         var holidayDTO1 = new HolidayPeriodDTO
@@ -76,14 +78,17 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
     public async Task WhenNoHolidayPeriodsForCollaboratorWithinInterval_ThenReturnEmptyList()
     {
         // Arrange
-        var collaboratorIdList = new List<long>(){
-            1
+        var collaboratorIdList = new List<Guid>(){
+            It.IsAny<Guid>()
         };
 
         var period = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         var associationRepoMock = new Mock<IAssociationProjectCollaboratorRepository>();
         var associationMock = new Mock<IAssociationProjectCollaborator>();
+        var holidayPlanFactoryMock = new Mock<IHolidayPlanFactory>();
+        var holidayPeriodFactoryMock = new Mock<IHolidayPeriodFactory>();
+        var mapperMock = new Mock<IMapper>();
         var associationsList = new List<IAssociationProjectCollaborator> {
             associationMock.Object
         };
@@ -91,20 +96,20 @@ public class HolidayPlanServiceFindAllHolidayPeriodsForAllProjectCollaboratorsBe
         associationRepoMock
             .Setup(a =>
                 a.FindAllByProjectAsync(
-                    It.IsAny<Guid>(),
-                    period
+                    It.IsAny<Guid>()
                 )
             )
             .ReturnsAsync(associationsList);
 
-        associationMock.Setup(a => a.GetCollaboratorId()).Returns(It.IsAny<Guid>());
+        associationMock.Setup(a => a.CollaboratorId).Returns(It.IsAny<Guid>());
 
         var expected = new List<IHolidayPeriod>();
         var holidayRepoMock = new Mock<IHolidayPlanRepository>();
         holidayRepoMock.Setup(hr => hr.FindAllHolidayPeriodsForAllCollaboratorsBetweenDatesAsync(collaboratorIdList, period))
                                     .ReturnsAsync(expected);
 
-        var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object);
+        var holidayPlanService = new HolidayPlanService(associationRepoMock.Object, holidayRepoMock.Object,
+            holidayPlanFactoryMock.Object, holidayPeriodFactoryMock.Object, mapperMock.Object);
 
         // Act
         var result = await holidayPlanService.FindAllHolidayPeriodsForAllProjectCollaboratorsBetweenDatesAsync(
