@@ -17,8 +17,4 @@ public class AssociationProjectCollaborator : IAssociationProjectCollaborator
         PeriodDate = periodDate;
     }
 
-    public bool AssociationIntersectPeriod(PeriodDate periodDate)
-    {
-        return PeriodDate.Intersects(periodDate);
-    }
 }

@@ -20,7 +20,7 @@ public class AssociationProjectCollaboratorFactoryTests
 
         // Collaborator and Project stubs
         var collab = new Mock<ICollaborator>();
-       var project = new Mock<IProject>();
+        var project = new Mock<IProject>();
         PeriodDate periodDate = new PeriodDate(It.IsAny<DateOnly>(), It.IsAny<DateOnly>());
 
         // Collab and Project ids

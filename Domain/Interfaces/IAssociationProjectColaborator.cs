@@ -8,5 +8,4 @@ public interface IAssociationProjectCollaborator
     public Guid CollaboratorId { get; }
     public Guid ProjectId { get; }
     public PeriodDate PeriodDate { get; }
-    public bool AssociationIntersectPeriod(PeriodDate periodDate);
 }

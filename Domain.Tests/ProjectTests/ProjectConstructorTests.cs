@@ -1,47 +1,92 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.Interfaces;
 using Domain.Models;
 using Moq;
 
-namespace Domain.Tests.ProjectTests
+namespace Domain.Tests.ProjectTests;
+public class ProjectConstructorTests
 {
-    public class ProjectConstructorTests
+    [Fact]
+    public void WhenPassingValidDataToConstructorWithoutGUID_ThenCreatesProject()
     {
-        [Fact]
-        public void WhenPassingValidData_ThenCreatesProject()
-        {
-            new Project(Guid.NewGuid(), "Title", "TTL", It.IsAny<PeriodDate>());
-        }
+        // Arrange
+        string validTitle = "Title";
+        string validAcronym = "ACR";
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("Este título tem facilmente mais de cinquenta caracteres.")]
-        public void WhenPassingInvalidTitle_ThenThrowsException(string title)
-        {
-            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-                //act
-                new Project(Guid.NewGuid(), title, "PJT", It.IsAny<PeriodDate>())
-            );
+        // Act & Assert
+        new Project(validTitle, validAcronym, It.IsAny<PeriodDate>());
+    }
 
-            Assert.Equal("Invalid Arguments", exception.Message);
-        }
+    [Fact]
+    public void WhenPassingValidDataToConstructorWithGUID_ThenCreatesProject()
+    {
+        // Arrange
+        string validTitle = "Title";
+        string validAcronym = "ACR";
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("pjt")]
-        [InlineData("PJT@")]
-        [InlineData("pjtJtjtjtjt")]
-        public void WhenPassingInvalidAcronym_ThenThrowsException(string acronym)
-        {
-            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-                //act
-                new Project(Guid.NewGuid(), "Title", acronym, It.IsAny<PeriodDate>())
-            );
+        // Act & Assert
+        new Project(Guid.NewGuid(), validTitle, validAcronym, It.IsAny<PeriodDate>());
+    }
 
-            Assert.Equal("Acronym must be 1 to 10 characters long and contain only uppercase letters and digits.", exception.Message);
-        }
+    [Theory]
+    [InlineData("")]
+    [InlineData("Este título tem facilmente mais de cinquenta caracteres.")]
+    public void WhenPassingInvalidTitleToConstructorWithoutGUID_ThenThrowsException(string title)
+    {
+        // Arrange
+        string validAcronym = new string('a', 10);
+        // Assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+            // Act
+            new Project(title, validAcronym, It.IsAny<PeriodDate>())
+
+        );
+
+        Assert.Equal("Title must be between 1 and 50 characters.", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("Este título tem facilmente mais de cinquenta caracteres.")]
+    public void WhenPassingInvalidTitleToConstructorWithGUID_ThenThrowsException(string title)
+    {
+        // Arrange
+        string validAcronym = new string('a', 10);
+        // Assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+            // Act
+            new Project(Guid.NewGuid(), title, validAcronym, It.IsAny<PeriodDate>())
+
+        );
+
+        Assert.Equal("Title must be between 1 and 50 characters.", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("pjt")]
+    [InlineData("PJT@")]
+    [InlineData("pjtJtjtjtjt")]
+    public void WhenPassingInvalidAcronymWithGUID_ThenThrowsException(string acronym)
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+            //act
+            new Project(Guid.NewGuid(), "Title", acronym, It.IsAny<PeriodDate>())
+        );
+
+        Assert.Equal("Acronym must be 1 to 10 characters long and contain only uppercase letters and digits.", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("pjt")]
+    [InlineData("PJT@")]
+    [InlineData("pjtJtjtjtjt")]
+    public void WhenPassingInvalidAcronymWithoutGUID_ThenThrowsException(string acronym)
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+            //act
+            new Project("Title", acronym, It.IsAny<PeriodDate>())
+        );
+
+        Assert.Equal("Acronym must be 1 to 10 characters long and contain only uppercase letters and digits.", exception.Message);
     }
 }
