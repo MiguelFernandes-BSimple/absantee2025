@@ -41,7 +41,7 @@ namespace Domain.Tests.ProjectTests
                 new Project(Guid.NewGuid(), "Title", acronym, It.IsAny<PeriodDate>())
             );
 
-            Assert.Equal("Invalid Arguments", exception.Message);
+            Assert.Equal("Acronym must be 1 to 10 characters long and contain only uppercase letters and digits.", exception.Message);
         }
     }
 }

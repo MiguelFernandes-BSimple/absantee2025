@@ -23,6 +23,9 @@ public class Project : IProject
 
     public Project(Guid id, string title, string acronym, PeriodDate periodDate)
     {
+        ValidateTitle(title);
+        ValidateAcronym(acronym);
+
         Id = id;
         Title = title;
         Acronym = acronym;
