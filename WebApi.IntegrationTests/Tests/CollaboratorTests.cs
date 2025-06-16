@@ -1,19 +1,17 @@
+using System.Net;
 using Application.DTO;
 using Application.DTO.Collaborators;
-using Domain.Interfaces;
 using Domain.Models;
-using System.Net;
 using WebApi.IntegrationTests.Helpers;
 using Xunit;
 
 namespace WebApi.IntegrationTests.Tests;
 
-
-
 public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<IntegrationTestsWebApplicationFactory<Program>>
 {
     public CollaboratorControllerTests(IntegrationTestsWebApplicationFactory<Program> factory) : base(factory.CreateClient())
-    { }
+    {
+    }
 
     [Fact]
     public async Task GetCollaborators_ReturnsOkWithList()
@@ -38,12 +36,12 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
 
         // act
-        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", collabDTO);
+        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO);
 
         // assert
         Assert.NotNull(createdCollabDTO);
-        Assert.Equal(collabDTO.Names, createdCollabDTO.Names);
-        Assert.Equal(collabDTO.Email, createdCollabDTO.Email);
+        Assert.Equal(collabDTO.PeriodDateTime._initDate, createdCollabDTO.PeriodDateTime._initDate);
+        Assert.Equal(collabDTO.PeriodDateTime._finalDate, createdCollabDTO.PeriodDateTime._finalDate);
     }
 
     [Fact]
@@ -102,7 +100,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     {
         // arrange
         var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
-        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", collabDTO);
+        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO);
 
 
         // act
@@ -112,7 +110,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.NotNull(collabIdList);
         Assert.NotEmpty(collabIdList);
         Assert.Single(collabIdList);
-        Assert.Equal(createdCollabDTO.CollabId, collabIdList.First());
+        Assert.Equal(createdCollabDTO.Id, collabIdList.First());
     }
 
     [Fact]
@@ -137,7 +135,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     {
         // arrange
         var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
-        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", collabDTO);
+        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO);
 
 
         // act
@@ -147,7 +145,7 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         Assert.NotNull(collabIdList);
         Assert.NotEmpty(collabIdList);
         Assert.Single(collabIdList);
-        Assert.Equal(createdCollabDTO.CollabId, collabIdList.First());
+        Assert.Equal(createdCollabDTO.Id, collabIdList.First());
     }
 
     [Fact]
@@ -155,17 +153,17 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     {
         // arrange
         var collabDTO = CollaboratorHelper.GenerateRandomCollaboratorDto();
-        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", collabDTO);
+        var createdCollabDTO = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO);
 
 
         // act
-        var collabIdList = await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/collaborators/search?name={collabDTO.Names}&surname={collabDTO.Surnames}");
+        var collabIdList = await GetAndDeserializeAsync<IEnumerable<Guid>>($"/api/collaborators/search?name={collabDTO.Names}&surname{collabDTO.Surnames}");
 
         // assert
         Assert.NotNull(collabIdList);
         Assert.NotEmpty(collabIdList);
         Assert.Single(collabIdList);
-        Assert.Equal(createdCollabDTO.CollabId, collabIdList.First());
+        Assert.Equal(createdCollabDTO.Id, collabIdList.First());
     }
 
     [Fact]
@@ -199,33 +197,32 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     [Fact]
     public async Task FindOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDates_ReturnsPeriods()
     {
-        // Arrange
-        // Create two collaborators and their holiday plans
-        var collaborator1 = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", CollaboratorHelper.GenerateRandomCollaboratorDto());
+        // arrange
+        var initDate = DateOnly.FromDateTime(new DateTime(2025, 5, 10));
+        var finalDate = DateOnly.FromDateTime(new DateTime(2025, 5, 20));
 
-        var collaborator2 = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", CollaboratorHelper.GenerateRandomCollaboratorDto());
+        var collabDTO1 = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var createdCollab1 = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO1);
+        var periodsForCollab1 = new List<PeriodDate> { new PeriodDate(initDate, finalDate) };
+        var holidayPlan1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(createdCollab1.Id, periodsForCollab1);
+        var createdHolidayPlan1 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan1);
 
-        // Define holiday periods for holiday plans 
-        var initDate = DateOnly.FromDateTime(new DateTime(2025, 7, 1));
-        var finalDate = DateOnly.FromDateTime(new DateTime(2025, 7, 10));
-
-        CreateHolidayPeriodDTO period = new CreateHolidayPeriodDTO();
-        period.InitDate = initDate;
-        period.FinalDate = finalDate;
-
-        await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaborator1.CollabId}/holidayPlan/holidayPeriod", period);
-        await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaborator2.CollabId}/holidayPlan/holidayPeriod", period);
+        var collabDTO2 = CollaboratorHelper.GenerateRandomCollaboratorDto();
+        var createdCollab2 = await PostAndDeserializeAsync<CollaboratorDTO>("/api/collaborators", collabDTO2);
+        var periodsForCollab2 = new List<PeriodDate> { new PeriodDate(initDate, finalDate) };
+        var holidayPlan2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(createdCollab2.Id, periodsForCollab2);
+        var createdHolidayPlan2 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan2);
 
         // act
-        var returnedPeriods = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>($"/api/collaborators/holidayperiods/overlaps?collabId1={collaborator1.CollabId}&collabId2={collaborator2.CollabId}&InitDate={initDate:yyyy-MM-dd}&FinalDate={finalDate:yyyy-MM-dd}");
+        var returnedPeriods = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>($"/api/collaborators/holidayperiods/overlaps?collabId1={createdCollab1.Id}&collabId2={createdCollab2.Id}&InitDate={initDate:yyyy-MM-dd}&FinalDate={finalDate:yyyy-MM-dd}");
 
         // assert
         Assert.NotNull(returnedPeriods);
         Assert.NotEmpty(returnedPeriods);
-        foreach (var p in returnedPeriods)
+        foreach (var period in returnedPeriods)
         {
-            Assert.Equal(initDate, p.PeriodDate.InitDate);
-            Assert.Equal(finalDate, p.PeriodDate.FinalDate);
+            Assert.Equal(initDate, period.PeriodDate.InitDate);
+            Assert.Equal(finalDate, period.PeriodDate.FinalDate);
         }
     }
 
@@ -236,14 +233,22 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var init = new DateTime(2045, 2, 1).ToUniversalTime();
         var end = new DateTime(2045, 3, 20).ToUniversalTime();
         var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
-        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
+        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);//espera por retornar o .. 
 
-        var period = new PeriodDate(DateOnly.Parse("18-02-2045"), DateOnly.Parse("18-03-2045"));
+        var period = new PeriodDate(DateOnly.Parse("18/2/2045"),
+                DateOnly.Parse("18/3/2045"));
 
-        var createdHolidayPeriodDTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayPlan/holidayPeriod", period);
+        var holidayPlan = HolidayPlanHelper.GenerateCreateHolidayPlanDto(
+            collaboratorCreatedDTO.CollabId,
+            new List<PeriodDate> {
+                period
+            }
+        );
+
+        var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
 
         // Act
-        var result = await GetAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayperiods/includes-date?date=2045-02-20");
+        var result = await GetAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayperiods/includes-date?date=20/2/2045");
 
         // Assert
         Assert.NotNull(result);
@@ -265,8 +270,14 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var period2 = new PeriodDate(DateOnly.Parse("18/2/2045"),
                 DateOnly.Parse("19/2/2045"));
 
-        var createdHolidayPeriod1DTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayPlan/holidayPeriod", period);
-        var createdHolidayPeriod2DTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayPlan/holidayPeriod", period2);
+        var holidayPlan = HolidayPlanHelper.GenerateCreateHolidayPlanDto(
+            collaboratorCreatedDTO.CollabId,
+            new List<PeriodDate> {
+                period, period2
+            }
+        );
+
+        var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
 
         // Act
         var result = await GetAndDeserializeAsync<List<HolidayPeriodDTO>>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayperiods/longer-than?days=5");
@@ -278,10 +289,47 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
     }
 
     [Fact]
+    public async Task ListCollaboratorHolidayPeriodsBetweenPeriod_Returns200AndObjects()
+    {
+        // Arrange
+        var init = new DateTime(2045, 2, 1).ToUniversalTime();
+        var end = new DateTime(2047, 3, 20).ToUniversalTime();
+        var collaborator = CollaboratorHelper.GenerateRandomCollaboratorDtoWithDates(init, end);
+        var collaboratorCreatedDTO = await PostAndDeserializeAsync<CollaboratorCreatedDto>("api/collaborators", collaborator);
+
+        var period = new PeriodDate(DateOnly.Parse("18/2/2045"),
+               DateOnly.Parse("18/3/2045"));
+        var period2 = new PeriodDate(DateOnly.Parse("5/8/2045"),
+                DateOnly.Parse("10/8/2045"));
+
+        var holidayPlan = HolidayPlanHelper.GenerateCreateHolidayPlanDto(
+            collaboratorCreatedDTO.CollabId,
+            new List<PeriodDate> {
+                period, period2
+            }
+        );
+
+        var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
+
+        // Act
+        var query = $"/api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayPlan/holidayPeriods/ByPeriod?InitDate=2045-01-01&FinalDate=2045-04-01";
+        var result = await GetAndDeserializeAsync<IEnumerable<HolidayPeriodDTO>>(query);
+
+        // Assert
+        var resultList = result.ToList();
+        Assert.Single(resultList);
+
+        var returnedPeriod = resultList.First();
+
+        Assert.Equal(DateOnly.Parse("18/2/2045"), returnedPeriod.PeriodDate.InitDate);
+        Assert.Equal(DateOnly.Parse("18/3/2045"), returnedPeriod.PeriodDate.FinalDate);
+    }
+
+    [Fact]
     public async Task ListCollaboratorsWithHolidayPeriodsLongerThan_Returns200AndObjects()
     {
         // Arrange
-        var iniResult = await GetAndDeserializeAsync<IEnumerable<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
+        var iniResult = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
 
         var init = new DateTime(2045, 2, 1).ToUniversalTime();
         var end = new DateTime(2045, 3, 20).ToUniversalTime();
@@ -291,51 +339,63 @@ public class CollaboratorControllerTests : IntegrationTestBase, IClassFixture<In
         var period = new PeriodDate(DateOnly.Parse("5/2/2045"),
                 DateOnly.Parse("18/2/2045"));
 
-        var createdHolidayPeriod1DTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaboratorCreatedDTO.CollabId}/holidayPlan/holidayPeriod", period);
+        var holidayPlan = HolidayPlanHelper.GenerateCreateHolidayPlanDto(
+           collaboratorCreatedDTO.CollabId,
+           new List<PeriodDate> {
+                period
+           }
+       );
+
+        var holidayPlanDTO = await PostAndDeserializeAsync<CreateHolidayPlanDTO>("api/holidayplans", holidayPlan);
 
         //Act
-        var result = await GetAndDeserializeAsync<IEnumerable<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
+        var result = await GetAndDeserializeAsync<List<CollaboratorDTO>>($"api/collaborators/longer-than?days=5");
 
         // Assert
         Assert.NotNull(result);
         Assert.NotEmpty(result);
         Assert.Contains(result, c => c.Id == collaboratorCreatedDTO.CollabId);
-        Assert.Equal(iniResult.Count() + 1, result.Count());
+        Assert.Equal(iniResult.Count + 1, result.Count);
 
     }
 
     [Fact]
-    public async Task GetCollaboratorsByPeriod_Returns200AndObjects()
+    public async Task GetCollaboratorsByPeriod_ReturnsCollaboratorsOnHolidayDuringPeriod()
     {
         // Arrange
-        // Create two collaborators and their holiday plans
-        var collaborator1 = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", CollaboratorHelper.GenerateRandomCollaboratorDto());
-
-        var collaborator2 = await PostAndDeserializeAsync<CollaboratorCreatedDto>("/api/collaborators", CollaboratorHelper.GenerateRandomCollaboratorDto());
-
-        // Define holiday periods for holiday plans 
         var initDate = DateOnly.FromDateTime(new DateTime(2025, 7, 1));
         var finalDate = DateOnly.FromDateTime(new DateTime(2025, 7, 10));
 
-        CreateHolidayPeriodDTO period1 = new CreateHolidayPeriodDTO();
-        period1.InitDate = initDate;
-        period1.FinalDate = finalDate;
+        // Criação de dois colaboradores
+        var collaborator1 = await PostAndDeserializeAsync<CollaboratorDTO>(
+            "/api/collaborators",
+            CollaboratorHelper.GenerateRandomCollaboratorDto());
 
-        CreateHolidayPeriodDTO outsidePeriod = new CreateHolidayPeriodDTO();
-        outsidePeriod.InitDate = DateOnly.FromDateTime(new DateTime(2025, 8, 1));
-        outsidePeriod.FinalDate = DateOnly.FromDateTime(new DateTime(2025, 8, 10));
+        var collaborator2 = await PostAndDeserializeAsync<CollaboratorDTO>(
+            "/api/collaborators",
+            CollaboratorHelper.GenerateRandomCollaboratorDto());
 
-        var createdHolidayPeriod1DTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaborator1.CollabId}/holidayPlan/holidayPeriod", period1);
-        var createdHolidayPeriod2DTO = await PostAndDeserializeAsync<HolidayPeriodDTO>($"api/collaborators/{collaborator2.CollabId}/holidayPlan/holidayPeriod", outsidePeriod);
+        // Define períodos de férias
+        var period1 = new PeriodDate(initDate, finalDate);
+        var outsidePeriod = new PeriodDate(
+            DateOnly.FromDateTime(new DateTime(2025, 8, 1)),
+            DateOnly.FromDateTime(new DateTime(2025, 8, 10)));
 
-        var query = "/api/collaborators/holidayPlan/holidayPeriods/ByPeriod?InitDate=2025-07-01&FinalDate=2025-07-09";
+        // Cria planos de férias
+        var holidayPlan1 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaborator1.Id, new List<PeriodDate> { period1 });
+        var holidayPlan2 = HolidayPlanHelper.GenerateCreateHolidayPlanDto(collaborator2.Id, new List<PeriodDate> { outsidePeriod });
+
+        var createdHolidayPlan1 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan1);
+        var createdHolidayPlan2 = await PostAndDeserializeAsync<HolidayPlanDTO>("api/holidayplans", holidayPlan2);
+
+        var query = "/api/collaborators/holidayPlan/holidayPeriods/ByPeriod?InitDate=2025-07-1&FinalDate=2025-07-09";
 
         // Act
         var result = await GetAndDeserializeAsync<IEnumerable<CollaboratorDTO>>(query);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Contains(result, c => c.Id == collaborator1.CollabId);
-        Assert.DoesNotContain(result, c => c.Id == collaborator2.CollabId);
+        Assert.Contains(result, c => c.Id == collaborator1.Id);
+        Assert.DoesNotContain(result, c => c.Id == collaborator2.Id);
     }
 }
