@@ -3,13 +3,13 @@ using Application.DTO.TrainingModule;
 using Application.DTO.TrainingSubject;
 using Application.Services;
 using Domain.Factory;
-using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,21 +22,17 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
     );
 
 //Services
-builder.Services.AddTransient<TrainingPeriodService>();
 builder.Services.AddTransient<TrainingSubjectService>();
 builder.Services.AddTransient<TrainingModuleService>();
 
 //Repositories
-builder.Services.AddTransient<ITrainingPeriodRepository, TrainingPeriodRepositoryEF>();
 builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepositoryEF>();
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositoryEF>();
 //Factories
-builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 builder.Services.AddTransient<ITrainingSubjectFactory, TrainingSubjectFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
 
 //Mappers
-builder.Services.AddTransient<TrainingPeriodDataModelConverter>();
 builder.Services.AddTransient<TrainingSubjectDataModelConverter>();
 builder.Services.AddTransient<TrainingModuleDataModelConverter>();
 builder.Services.AddAutoMapper(cfg =>
@@ -45,15 +41,20 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<DataModelMappingProfile>();
 
     //DTO
-    cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
-    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
     cfg.CreateMap<TrainingSubject, TrainingSubjectDTO>();
     cfg.CreateMap<TrainingModule, TrainingModuleDTO>();
-    cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
-            .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
-            .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
 });
+// MassTransit
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<TrainingModuleCreatedConsumer>();
 
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq://localhost");
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

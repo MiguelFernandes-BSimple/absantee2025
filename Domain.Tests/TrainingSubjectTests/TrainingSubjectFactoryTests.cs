@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Factory;
-using Domain.Factory.TrainingPeriodFactory;
 using Domain.IRepository;
 using Domain.Models;
 using Moq;
@@ -41,7 +40,7 @@ namespace Domain.Tests.TrainingSubjectTests
                 // act
                 factory.Create("Subject", "Description")
             );
-            Assert.Equal("Subject must be unique", exception.Message );
+            Assert.Equal("Subject must be unique", exception.Message);
         }
     }
 }

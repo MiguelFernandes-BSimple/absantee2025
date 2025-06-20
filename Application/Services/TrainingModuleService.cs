@@ -1,4 +1,5 @@
 using Application.DTO.TrainingModule;
+using Application.IPublisher;
 using AutoMapper;
 using Domain.Factory;
 using Domain.Interfaces;
@@ -12,6 +13,8 @@ public class TrainingModuleService
     private readonly ITrainingModuleRepository _trainingModuleRepository;
     private readonly ITrainingModuleFactory _trainingModuleFactory;
     private readonly IMapper _mapper;
+    private readonly IMessagePublisher _publisher;
+
 
     public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingModuleFactory trainingModuleFactory, IMapper mapper)
     {
@@ -40,6 +43,18 @@ public class TrainingModuleService
 
         var result = _mapper.Map<TrainingModule, TrainingModuleDTO>((TrainingModule)tm);
 
+        await _publisher.PublishCreatedTrainingModuleMessageAsync(result.Id, result.TrainingSubjectId, result.Periods.First());
+
         return Result<TrainingModuleDTO>.Success(result);
+    }
+    public async Task SubmitAsync(Guid subjectId, PeriodDateTime periodDateTime)
+    {
+        var trainingModule = await _trainingModuleFactory.Create(
+            subjectId,
+            new List<PeriodDateTime> { periodDateTime }
+        );
+
+        await _trainingModuleRepository.AddAsync(trainingModule);
+        await _trainingModuleRepository.SaveChangesAsync();
     }
 }

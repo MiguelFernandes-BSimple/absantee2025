@@ -8,7 +8,6 @@ namespace Infrastructure
     {
         public virtual DbSet<TrainingSubjectDataModel> TrainingSubjects { get; set; }
         public virtual DbSet<TrainingModuleDataModel> TrainingModules { get; set; }
-        public virtual DbSet<TrainingPeriodDataModel> TrainingPeriods { get; set; }
 
 
         public AbsanteeContext(DbContextOptions<AbsanteeContext> options) : base(options)
@@ -17,8 +16,6 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TrainingPeriodDataModel>()
-                .OwnsOne(a => a.PeriodDate);
 
             modelBuilder.Entity<TrainingModuleDataModel>()
                 .OwnsMany(t => t.Periods);

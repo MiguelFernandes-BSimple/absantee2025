@@ -9,9 +9,6 @@ public class DataModelMappingProfile : Profile
 {
     public DataModelMappingProfile()
     {
-        CreateMap<TrainingPeriod, TrainingPeriodDataModel>();
-        CreateMap<TrainingPeriodDataModel, TrainingPeriod>()
-            .ConvertUsing<TrainingPeriodDataModelConverter>();
         CreateMap<TrainingSubject, TrainingSubjectDataModel>();
         CreateMap<TrainingSubjectDataModel, TrainingSubject>()
             .ConvertUsing<TrainingSubjectDataModelConverter>();

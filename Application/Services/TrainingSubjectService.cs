@@ -40,4 +40,14 @@ public class TrainingSubjectService
         var result = _mapper.Map<TrainingSubject, TrainingSubjectDTO>(ts);
         return Result<TrainingSubjectDTO>.Success(result);
     }
+    public async Task SubmitAsync(string subject, string description)
+    {
+        var TrainingSubject = await _trainingSubjectFactory.Create(
+            subject,
+            description
+        );
+
+        await _trainingSubjectRepository.AddAsync(TrainingSubject);
+        await _trainingSubjectRepository.SaveChangesAsync();
+    }
 }
