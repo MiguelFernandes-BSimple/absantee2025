@@ -11,14 +11,10 @@ namespace WebApi.Controllers;
 public class CollaboratorController : ControllerBase
 {
     private readonly CollaboratorService _collabService;
-    private readonly HolidayPlanService _holidayPlanService;
-    private readonly AssociationProjectCollaboratorService _associationProjectCollaboratorService;
 
-    public CollaboratorController(CollaboratorService collabService, HolidayPlanService holidayPlanService, AssociationProjectCollaboratorService associationProjectCollaboratorService)
+    public CollaboratorController(CollaboratorService collabService)
     {
         _collabService = collabService;
-        _holidayPlanService = holidayPlanService;
-        _associationProjectCollaboratorService = associationProjectCollaboratorService;
     }
 
 
@@ -112,40 +108,6 @@ public class CollaboratorController : ControllerBase
 
         return NotFound("No collaborators found");
     }
-    //UC13
-    [HttpGet("{collaboratorId}/holidayPlan/holidayPeriods/ByPeriod")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaboratorByPeriod(Guid collaboratorId, [FromQuery] PeriodDate periodDate)
-    {
-        var result = await _collabService.FindHolidayPeriodsByCollaboratorBetweenDatesAsync(collaboratorId, periodDate);
-
-        return Ok(result);
-    }
-
-
-    [HttpGet("{collaboratorId}/holidayPlan/holidayPeriod")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetHolidayPeriodsOfCollaborator(Guid collaboratorId)
-    {
-        var result = await _holidayPlanService.FindHolidayPeriodForCollaborator(collaboratorId);
-
-        return Ok(result);
-    }
-
-    [HttpPut("{collaboratorId}/holidayPlan/holidayPeriod")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> UpdateHolidayPeriodsOfCollaborator(Guid collaboratorId, [FromBody] HolidayPeriodDTO hp)
-    {
-        var result = await _holidayPlanService.UpdateHolidayPeriodForCollaborator(collaboratorId, hp);
-
-        return Ok(result);
-    }
-
-    [HttpPost("{collaboratorId}/holidayPlan/holidayPeriod")]
-    public async Task<ActionResult<HolidayPeriodDTO>> AddHolidayPeriodForCollaborator(Guid collaboratorId, [FromBody] CreateHolidayPeriodDTO hp)
-    {
-        var result = await _holidayPlanService.AddHolidayPeriod(collaboratorId, hp);
-
-        return result.ToActionResult();
-    }
-
     //US14 
     [HttpGet("holidayPlan/holidayPeriods/ByPeriod")]
     public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetCollaboratorsByPeriod(
@@ -162,72 +124,6 @@ public class CollaboratorController : ControllerBase
     public async Task<ActionResult<IEnumerable<CollaboratorDTO>>> GetWithHolidayPeriodsLongerThan(int days)
     {
         var result = await _collabService.FindAllWithHolidayPeriodsLongerThan(days);
-
-        return result.ToActionResult();
-    }
-
-
-    // UC17 Get: api/collaborators/foo/holidayperiods/includes-date?date=bar
-    [HttpGet("{id}/holidayperiods/includes-date")]
-    public async Task<ActionResult<HolidayPeriod?>> GetHolidayPeriodContainingDay(Guid id, string date)
-    {
-        var dateOnly = DateOnly.Parse(date);
-        var result = await _holidayPlanService.FindHolidayPeriodForCollaboratorThatContainsDay(id, dateOnly);
-
-        if (result != null)
-            return Ok(result);
-
-        return NotFound();
-    }
-
-    // UC18 Get: api/collaborators/foo/holidayperiods/longer-than?days=bar
-    [HttpGet("{id}/holidayperiods/longer-than")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriod>>> GetHolidayPeriodLongerThan(Guid id, string days)
-    {
-        var amount = int.Parse(days);
-        var result = await _holidayPlanService.FindAllHolidayPeriodsForCollaboratorLongerThan(id, amount);
-
-        return Ok(result);
-    }
-
-    // UC19 Get: api/collaborators/holidayperiods/include-weekends?
-    [HttpGet("{id}/holidayperiods/includes-weekends")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriod>>> GetHolidayPeriodsBetweenThatIncludeWeeknds(Guid id, PeriodDate periodDate)
-    {
-        var result = await _holidayPlanService.FindAllHolidayPeriodsForCollaboratorBetweenDatesThatIncludeWeekendsAsync(id, periodDate);
-        return Ok(result);
-    }
-
-    // uc20 
-    [HttpGet("holidayperiods/overlaps")]
-    public async Task<ActionResult<IEnumerable<HolidayPeriodDTO>>> GetOverlapingPeriodsBetween(
-        [FromQuery] Guid collabId1,
-        [FromQuery] Guid collabId2,
-        [FromQuery] PeriodDate periodDate)
-    {
-        var periods = await _holidayPlanService.FindAllOverlappingHolidayPeriodsBetweenTwoCollaboratorsBetweenDatesAsync(collabId1, collabId2, periodDate);
-
-        if (periods == null) return BadRequest();
-
-        return Ok(periods);
-    }
-
-    // Collaborator Projects
-    [HttpGet("{id}/associations")]
-    public async Task<ActionResult<IEnumerable<AssociationProjectCollaboratorDTO>>> GetCollaboratorProjects(Guid id)
-    {
-        var result = await _collabService.GetCollaboratorProjects(id);
-
-        if (result == null) return BadRequest();
-
-        return Ok(result);
-    }
-
-    // Add project to collaborator - create a new AssociationProjectCollaborator
-    [HttpPost("{id}/projects")]
-    public async Task<ActionResult<AssociationProjectCollaboratorDTO>> CreateAssociationProjectCollaborator(Guid id, [FromBody] CreateAssociationCollaboratorProjectDTO associationDTO)
-    {
-        var result = await _associationProjectCollaboratorService.AddByCollaborator(associationDTO.PeriodDate, id, associationDTO.ProjectId);
 
         return result.ToActionResult();
     }
