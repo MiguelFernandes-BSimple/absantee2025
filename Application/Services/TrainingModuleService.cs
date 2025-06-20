@@ -19,27 +19,4 @@ public class TrainingModuleService
         _trainingModuleFactory = trainingModuleFactory;
         _mapper = mapper;
     }
-
-    public async Task<Result<TrainingModuleDTO>> Add(AddTrainingModuleDTO tmDTO)
-    {
-        ITrainingModule tm;
-
-        try
-        {
-            tm = await _trainingModuleFactory.Create(tmDTO.TrainingSubjectId, tmDTO.Periods);
-            tm = await _trainingModuleRepository.AddAsync(tm);
-        }
-        catch (ArgumentException a)
-        {
-            return Result<TrainingModuleDTO>.Failure(Error.BadRequest(a.Message));
-        }
-        catch (Exception e)
-        {
-            return Result<TrainingModuleDTO>.Failure(Error.BadRequest(e.Message));
-        }
-
-        var result = _mapper.Map<TrainingModule, TrainingModuleDTO>((TrainingModule)tm);
-
-        return Result<TrainingModuleDTO>.Success(result);
-    }
 }

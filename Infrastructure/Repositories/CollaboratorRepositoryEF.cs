@@ -3,7 +3,6 @@ using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.DataModel;
-using Domain.Visitor;
 using AutoMapper;
 
 namespace Infrastructure.Repositories;
@@ -87,16 +86,43 @@ public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, Colla
         return collabs;
     }
 
-    public async Task<Collaborator?> UpdateCollaborator(ICollaborator collab)
+    public ICollaborator Add(ICollaborator entity)
     {
-        var collaboratorDM = await _context.Set<CollaboratorDataModel>()
-            .FirstOrDefaultAsync(c => c.Id == collab.Id);
+        throw new NotImplementedException();
+    }
 
-        if (collaboratorDM == null) return null;
+    public Task<ICollaborator> AddAsync(ICollaborator entity)
+    {
+        throw new NotImplementedException();
+    }
 
-        collaboratorDM.PeriodDateTime = collab.PeriodDateTime;
+    public void AddRange(IEnumerable<ICollaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
 
-        _context.Set<CollaboratorDataModel>().Update(collaboratorDM);
-        return _mapper.Map<CollaboratorDataModel, Collaborator>(collaboratorDM);
+    public Task AddRangeAsync(IEnumerable<ICollaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(ICollaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RemoveAsync(ICollaborator entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveRange(IEnumerable<ICollaborator> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RemoveRangeAsync(IEnumerable<ICollaborator> entities)
+    {
+        throw new NotImplementedException();
     }
 }

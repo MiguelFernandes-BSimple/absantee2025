@@ -18,26 +18,4 @@ public class TrainingSubjectService
         _trainingSubjectFactory = trainingSubjectFactory;
         _mapper = mapper;
     }
-
-    public async Task<Result<TrainingSubjectDTO>> Add(AddTrainingSubjectDTO tsDTO)
-    {
-        TrainingSubject ts;
-
-        try
-        {
-            ts = await _trainingSubjectFactory.Create(tsDTO.Subject, tsDTO.Description);
-            await _trainingSubjectRepository.AddAsync(ts);
-        }
-        catch (ArgumentException a)
-        {
-            return Result<TrainingSubjectDTO>.Failure(Error.BadRequest(a.Message));
-        }
-        catch (Exception e)
-        {
-            return Result<TrainingSubjectDTO>.Failure(Error.InternalServerError(e.Message));
-        }
-
-        var result = _mapper.Map<TrainingSubject, TrainingSubjectDTO>(ts);
-        return Result<TrainingSubjectDTO>.Success(result);
-    }
 }
