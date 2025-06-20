@@ -20,28 +20,6 @@ public class TrainingModuleController : ControllerBase
         _collaboratorService = collaboratorService;
     }
 
-    // US 30: Como Gestor de Formação, quero definir um Módulo de Formação (Training Module): 
-    //        - assunto, 
-    //        - lista de vários períodos (com horas)
-    // POST api/trainingmodules
-    [HttpPost]
-    public async Task<ActionResult<TrainingModuleDTO>> AddTrainingModule(AddTrainingModuleDTO tmDTO)
-    {
-        var addedTS = await _trainingModuleService.Add(tmDTO);
-
-        return addedTS.ToActionResult();
-    }
-
-    // US 31: Como Gestor de Formação, quero inscrever um colaborador num módulo de formação
-    // POST api/trainingmodules/{id}/collaborators
-    [HttpPost("{trainingModuleId}/collaborators")]
-    public async Task<ActionResult<AssociationTrainingModuleCollaboratorDTO>> AddCollaboratorToModule(Guid trainingModuleId, [FromBody] CreateAssociationTrainingModuleCollaboratorDTO assocDTO)
-    {
-        var createdAssoc = await _assocTMCService.Add(trainingModuleId, assocDTO);
-
-        return createdAssoc.ToActionResult();
-    }
-
     // UC32: Como Gestor de Formação, quero listar todos os colaboradores ativos que não têm qualquer formação terminada em determinado tema
     // GET api/trainingmodules/{id}/collaborators/active/no-training-done
     [HttpGet("not-completed/subjects/{id}/collaborators/active/")]
