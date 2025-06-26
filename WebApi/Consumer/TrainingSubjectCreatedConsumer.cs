@@ -1,10 +1,12 @@
 using Application.Services;
 using WebApi;
 using MassTransit;
+using WebApi.Message;
 
 public class TrainingSubjectCreatedConsumer : IConsumer<TrainingSubjectMessage>
 {
     private readonly TrainingSubjectService _trainingSubjectService;
+    private static readonly string InstanceId = InstanceInfo.InstanceId;
 
     public TrainingSubjectCreatedConsumer(TrainingSubjectService trainingSubjectService)
     {
@@ -12,7 +14,12 @@ public class TrainingSubjectCreatedConsumer : IConsumer<TrainingSubjectMessage>
     }
     public async Task Consume(ConsumeContext<TrainingSubjectMessage> context)
     {
+        Console.WriteLine(">>> Mensagem recebida no consumer");
+
+        var senderId = context.Headers.Get<string>("SenderId");
+        if (senderId == InstanceInfo.InstanceId)
+            return;
         var msg = context.Message;
-        await _trainingSubjectService.SubmitAsync(msg.Subject, msg.Description);
+        await _trainingSubjectService.SubmitAsync(msg.Id, msg.Subject, msg.Description);
     }
 }

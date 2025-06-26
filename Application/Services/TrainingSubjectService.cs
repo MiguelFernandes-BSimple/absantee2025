@@ -24,7 +24,7 @@ public class TrainingSubjectService
 
         try
         {
-            ts = await _trainingSubjectFactory.Create(tsDTO.Subject, tsDTO.Description);
+            ts = await _trainingSubjectFactory.Create(tsDTO.id, tsDTO.Subject, tsDTO.Description);
             await _trainingSubjectRepository.AddAsync(ts);
         }
         catch (ArgumentException a)
@@ -39,9 +39,10 @@ public class TrainingSubjectService
         var result = _mapper.Map<TrainingSubject, TrainingSubjectDTO>(ts);
         return Result<TrainingSubjectDTO>.Success(result);
     }
-    public async Task SubmitAsync(string subject, string description)
+    public async Task SubmitAsync(Guid id, string subject, string description)
     {
         var TrainingSubject = await _trainingSubjectFactory.Create(
+            id,
             subject,
             description
         );

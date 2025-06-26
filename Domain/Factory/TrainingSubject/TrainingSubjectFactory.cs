@@ -13,12 +13,12 @@ public class TrainingSubjectFactory : ITrainingSubjectFactory
         _repository = repository;
     }
 
-    public async Task<TrainingSubject> Create(string subject, string description)
+    public async Task<TrainingSubject> Create(Guid id, string subject, string description)
     {
         if (await _repository.IsDuplicated(subject))
             throw new ArgumentException("Subject must be unique");
 
-        return new TrainingSubject(subject, description);
+        return new TrainingSubject(id, subject, description);
     }
 
     public TrainingSubject Create(ITrainingSubjectVisitor trainingSubjectVisitor)

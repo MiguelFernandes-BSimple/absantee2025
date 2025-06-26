@@ -62,6 +62,7 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<TrainingModuleCreatedConsumer>();
+    x.AddConsumer<TrainingSubjectCreatedConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

@@ -5,7 +5,7 @@ namespace Domain.Factory;
 
 public interface ITrainingSubjectFactory
 {
-    Task<TrainingSubject> Create(string subject, string description);
+    Task<TrainingSubject> Create(Guid id, string subject, string description);
     TrainingSubject Create(ITrainingSubjectVisitor trainingSubjectVisitor);
 }
 

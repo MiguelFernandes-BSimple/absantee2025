@@ -14,31 +14,6 @@ public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject,
     {
         _mapper = mapper;
     }
-
-    public TrainingSubjectRepositoryEF(DbContext context, IMapper mapper) : base(context, mapper)
-    {
-    }
-
-    public ITrainingSubject Add(ITrainingSubject entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ITrainingSubject> AddAsync(ITrainingSubject entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void AddRange(IEnumerable<ITrainingSubject> entities)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task AddRangeAsync(IEnumerable<ITrainingSubject> entities)
-    {
-        throw new NotImplementedException();
-    }
-
     public override ITrainingSubject? GetById(Guid id)
     {
         try
@@ -81,25 +56,5 @@ public class TrainingSubjectRepositoryEF : GenericRepositoryEF<ITrainingSubject,
     {
         return await _context.Set<TrainingSubjectDataModel>()
                        .AnyAsync(t => t.Subject.Equals(subject));
-    }
-
-    public void Remove(ITrainingSubject entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveAsync(ITrainingSubject entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void RemoveRange(IEnumerable<ITrainingSubject> entities)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveRangeAsync(IEnumerable<ITrainingSubject> entities)
-    {
-        throw new NotImplementedException();
     }
 }
