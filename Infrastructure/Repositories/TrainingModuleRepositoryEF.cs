@@ -6,12 +6,17 @@ using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
+
 public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, TrainingModule, TrainingModuleDataModel>, ITrainingModuleRepository
 {
     private readonly IMapper _mapper;
     public TrainingModuleRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
     {
         _mapper = mapper;
+    }
+
+    public TrainingModuleRepositoryEF(DbContext context, IMapper mapper) : base(context, mapper)
+    {
     }
 
     public override ITrainingModule? GetById(Guid id)
@@ -85,5 +90,45 @@ public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, T
         }
 
         return false;
+    }
+
+    public ITrainingModule Add(ITrainingModule entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ITrainingModule> AddAsync(ITrainingModule entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddRange(IEnumerable<ITrainingModule> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AddRangeAsync(IEnumerable<ITrainingModule> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(ITrainingModule entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RemoveAsync(ITrainingModule entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveRange(IEnumerable<ITrainingModule> entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RemoveRangeAsync(IEnumerable<ITrainingModule> entities)
+    {
+        throw new NotImplementedException();
     }
 }

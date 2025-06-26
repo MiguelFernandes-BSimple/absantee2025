@@ -11,6 +11,8 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
+using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +58,17 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<TrainingModule, TrainingModuleDTO>();
     cfg.CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>();
 });
+// MassTransit
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<TrainingModuleCreatedConsumer>();
 
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq://localhost");
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

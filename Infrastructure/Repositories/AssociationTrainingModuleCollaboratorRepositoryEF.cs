@@ -15,6 +15,30 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
+        public AssociationTrainingModuleCollaboratorRepositoryEF(DbContext context, IMapper mapper) : base(context, mapper)
+        {
+        }
+
+        public IAssociationTrainingModuleCollaborator Add(IAssociationTrainingModuleCollaborator entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAssociationTrainingModuleCollaborator> AddAsync(IAssociationTrainingModuleCollaborator entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddRange(IEnumerable<IAssociationTrainingModuleCollaborator> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddRangeAsync(IEnumerable<IAssociationTrainingModuleCollaborator> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IAssociationTrainingModuleCollaborator? GetById(Guid id)
         {
             var trainingModuleCollabDM = _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
@@ -46,6 +70,26 @@ namespace Infrastructure.Repositories
             var trainingModuleCollaborators = trainingModuleCollaboratorsDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
 
             return trainingModuleCollaborators;
+        }
+
+        public void Remove(IAssociationTrainingModuleCollaborator entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync(IAssociationTrainingModuleCollaborator entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveRange(IEnumerable<IAssociationTrainingModuleCollaborator> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveRangeAsync(IEnumerable<IAssociationTrainingModuleCollaborator> entities)
+        {
+            throw new NotImplementedException();
         }
     }
 }

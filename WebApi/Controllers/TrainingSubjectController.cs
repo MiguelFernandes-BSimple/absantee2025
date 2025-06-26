@@ -14,4 +14,18 @@ public class TrainingSubjectController : ControllerBase
     {
         _trainingSubjectService = trainingSubjectService;
     }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Guid>>> Get()
+    {
+        var trainingSubjectService = await _trainingSubjectService.GetAll();
+
+        return trainingSubjectService.ToActionResult();
+    }
+    [HttpGet("{subjectId}")]
+    public async Task<ActionResult<TrainingSubjectDTO>> GetById(Guid subjectId)
+    {
+        var trainingSubject = await _trainingSubjectService.GetById(subjectId);
+
+        return trainingSubject.ToActionResult();
+    }
 }

@@ -143,4 +143,11 @@ public class CollaboratorService
 
         return collabs;
     }
+    public async Task SubmitAsync(Guid id, Guid userId, PeriodDateTime period)
+    {
+        var collaborator = _collaboratorFactory.Create(id, userId, period);
+        await _collaboratorRepository.AddAsync(collaborator);
+        await _collaboratorRepository.SaveChangesAsync();
+    }
+
 }
