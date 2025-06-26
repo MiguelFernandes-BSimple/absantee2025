@@ -10,11 +10,12 @@ using Infrastructure.Repositories;
 using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
 using MassTransit;
+using Domain.Factory.TrainingPeriodFactory;
+using Application.IPublisher;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AbsanteeContext>(opt =>
@@ -24,17 +25,23 @@ builder.Services.AddDbContext<AbsanteeContext>(opt =>
 //Services
 builder.Services.AddTransient<TrainingSubjectService>();
 builder.Services.AddTransient<TrainingModuleService>();
+builder.Services.AddTransient<TrainingPeriodService>();
+
+builder.Services.AddTransient<IMessagePublisher, MassTransitPublisher>();
 
 //Repositories
+builder.Services.AddTransient<ITrainingPeriodRepository, TrainingPeriodRepositoryEF>();
 builder.Services.AddTransient<ITrainingSubjectRepository, TrainingSubjectRepositoryEF>();
 builder.Services.AddTransient<ITrainingModuleRepository, TrainingModuleRepositoryEF>();
 //Factories
 builder.Services.AddTransient<ITrainingSubjectFactory, TrainingSubjectFactory>();
 builder.Services.AddTransient<ITrainingModuleFactory, TrainingModuleFactory>();
+builder.Services.AddTransient<ITrainingPeriodFactory, TrainingPeriodFactory>();
 
 //Mappers
 builder.Services.AddTransient<TrainingSubjectDataModelConverter>();
 builder.Services.AddTransient<TrainingModuleDataModelConverter>();
+builder.Services.AddTransient<TrainingPeriodDataModelConverter>();
 builder.Services.AddAutoMapper(cfg =>
 {
     //DataModels
@@ -43,6 +50,12 @@ builder.Services.AddAutoMapper(cfg =>
     //DTO
     cfg.CreateMap<TrainingSubject, TrainingSubjectDTO>();
     cfg.CreateMap<TrainingModule, TrainingModuleDTO>();
+
+    cfg.CreateMap<TrainingPeriod, TrainingPeriodDTO>();
+    cfg.CreateMap<TrainingPeriodDTO, TrainingPeriod>();
+    cfg.CreateMap<TrainingPeriod, CreateTrainingPeriodDTO>()
+            .ForMember(dest => dest.InitDate, opt => opt.MapFrom(src => src.PeriodDate.InitDate))
+            .ForMember(dest => dest.FinalDate, opt => opt.MapFrom(src => src.PeriodDate.FinalDate));
 });
 // MassTransit
 builder.Services.AddMassTransit(x =>
@@ -58,6 +71,7 @@ builder.Services.AddMassTransit(x =>
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 

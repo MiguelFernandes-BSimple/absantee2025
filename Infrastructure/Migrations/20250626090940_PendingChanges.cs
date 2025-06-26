@@ -6,23 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CHANGES : Migration
+    public partial class PendingChanges : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "HRManagers",
+                name: "TrainingPeriods",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PeriodDateTime__initDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PeriodDateTime__finalDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    PeriodDate_InitDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    PeriodDate_FinalDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HRManagers", x => x.Id);
+                    table.PrimaryKey("PK_TrainingPeriods", x => x.Id);
                 });
         }
 
@@ -30,7 +29,7 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HRManagers");
+                name: "TrainingPeriods");
         }
     }
 }

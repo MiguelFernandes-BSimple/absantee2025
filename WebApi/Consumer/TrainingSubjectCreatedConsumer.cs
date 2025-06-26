@@ -12,6 +12,9 @@ public class TrainingSubjectCreatedConsumer : IConsumer<TrainingSubjectMessage>
     }
     public async Task Consume(ConsumeContext<TrainingSubjectMessage> context)
     {
+        var senderId = context.Headers.Get<string>("SenderId");
+        if (senderId == InstanceInfo.InstanceId)
+            return;
         var msg = context.Message;
         await _trainingSubjectService.SubmitAsync(msg.Subject, msg.Description);
     }

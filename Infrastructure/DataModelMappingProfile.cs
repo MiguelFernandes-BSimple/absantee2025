@@ -15,6 +15,9 @@ public class DataModelMappingProfile : Profile
         CreateMap<TrainingModule, TrainingModuleDataModel>();
         CreateMap<TrainingModuleDataModel, TrainingModule>()
             .ConvertUsing<TrainingModuleDataModelConverter>();
+            CreateMap<TrainingPeriod, TrainingPeriodDataModel>();
+        CreateMap<TrainingPeriodDataModel, TrainingPeriod>()
+            .ConvertUsing<TrainingPeriodDataModelConverter>();
     }
 
 }

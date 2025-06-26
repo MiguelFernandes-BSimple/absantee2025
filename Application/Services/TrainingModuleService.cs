@@ -16,11 +16,12 @@ public class TrainingModuleService
     private readonly IMessagePublisher _publisher;
 
 
-    public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingModuleFactory trainingModuleFactory, IMapper mapper)
+    public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingModuleFactory trainingModuleFactory, IMapper mapper, IMessagePublisher publisher)
     {
         _trainingModuleRepository = trainingModuleRepository;
         _trainingModuleFactory = trainingModuleFactory;
         _mapper = mapper;
+        _publisher = publisher;
     }
 
     public async Task<Result<TrainingModuleDTO>> Add(AddTrainingModuleDTO tmDTO)
@@ -40,18 +41,18 @@ public class TrainingModuleService
         {
             return Result<TrainingModuleDTO>.Failure(Error.BadRequest(e.Message));
         }
+        await _publisher.PublishCreatedTrainingModuleMessageAsync(tm.Id, tm.TrainingSubjectId, tm.Periods);
+
 
         var result = _mapper.Map<TrainingModule, TrainingModuleDTO>((TrainingModule)tm);
 
-        await _publisher.PublishCreatedTrainingModuleMessageAsync(result.Id, result.TrainingSubjectId, result.Periods.First());
-
         return Result<TrainingModuleDTO>.Success(result);
     }
-    public async Task SubmitAsync(Guid subjectId, PeriodDateTime periodDateTime)
+    public async Task SubmitAsync(Guid subjectId, List<PeriodDateTime> periods)
     {
         var trainingModule = await _trainingModuleFactory.Create(
             subjectId,
-            new List<PeriodDateTime> { periodDateTime }
+            periods
         );
 
         await _trainingModuleRepository.AddAsync(trainingModule);

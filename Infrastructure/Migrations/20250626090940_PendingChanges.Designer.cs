@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AbsanteeContext))]
-    [Migration("20250620095357_PendingChanges")]
+    [Migration("20250626090940_PendingChanges")]
     partial class PendingChanges
     {
         /// <inheritdoc />
@@ -37,6 +37,17 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TrainingModules");
+                });
+
+            modelBuilder.Entity("Infrastructure.DataModel.TrainingPeriodDataModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TrainingPeriods");
                 });
 
             modelBuilder.Entity("Infrastructure.DataModel.TrainingSubjectDataModel", b =>
@@ -86,6 +97,31 @@ namespace Infrastructure.Migrations
                         });
 
                     b.Navigation("Periods");
+                });
+
+            modelBuilder.Entity("Infrastructure.DataModel.TrainingPeriodDataModel", b =>
+                {
+                    b.OwnsOne("Domain.Models.PeriodDate", "PeriodDate", b1 =>
+                        {
+                            b1.Property<Guid>("TrainingPeriodDataModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateOnly>("FinalDate")
+                                .HasColumnType("date");
+
+                            b1.Property<DateOnly>("InitDate")
+                                .HasColumnType("date");
+
+                            b1.HasKey("TrainingPeriodDataModelId");
+
+                            b1.ToTable("TrainingPeriods");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TrainingPeriodDataModelId");
+                        });
+
+                    b.Navigation("PeriodDate")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
