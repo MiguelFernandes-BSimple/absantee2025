@@ -16,6 +16,6 @@ public class TrainingModuleCreatedConsumer : IConsumer<TrainingModuleMessage>
         if (senderId == InstanceInfo.InstanceId)
             return;
         var msg = context.Message;
-        await _trainingModuleService.SubmitAsync(msg.SubjectId, msg.Periods);
+        await _trainingModuleService.SubmitAsync(msg.Id, msg.SubjectId, msg.Periods);
     }
 }

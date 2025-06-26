@@ -44,8 +44,15 @@ public class TrainingSubjectService
         var result = _mapper.Map<TrainingSubject, TrainingSubjectDTO>(ts);
         return Result<TrainingSubjectDTO>.Success(result);
     }
-    public async Task SubmitAsync(string subject, string description)
+    public async Task SubmitAsync(Guid Id, string subject, string description)
     {
+
+        var exists = await _trainingSubjectRepository.ExistsAsync(Id);
+        if (exists)
+        {
+            throw new ArgumentException($"Training subject with name {subject} already exists.");
+        }
+
         var TrainingSubject = await _trainingSubjectFactory.Create(
             subject,
             description

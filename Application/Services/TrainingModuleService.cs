@@ -48,8 +48,14 @@ public class TrainingModuleService
 
         return Result<TrainingModuleDTO>.Success(result);
     }
-    public async Task SubmitAsync(Guid subjectId, List<PeriodDateTime> periods)
+    public async Task SubmitAsync(Guid Id, Guid subjectId, List<PeriodDateTime> periods)
     {
+        var exists = await _trainingModuleRepository.ExistsAsync(Id);
+        if (exists)
+        {
+            throw new ArgumentException($"Training subject with name {subjectId} already exists.");
+        }
+
         var trainingModule = await _trainingModuleFactory.Create(
             subjectId,
             periods

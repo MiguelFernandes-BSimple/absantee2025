@@ -6,6 +6,7 @@ using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
+
 public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, TrainingModule, TrainingModuleDataModel>, ITrainingModuleRepository
 {
     private readonly IMapper _mapper;
@@ -85,5 +86,10 @@ public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, T
         }
 
         return false;
+    }
+
+    public async Task<bool> ExistsAsync(Guid id)
+    {
+        return await _context.Set<TrainingSubjectDataModel>().AnyAsync(ts => ts.Id == id);
     }
 }

@@ -2,6 +2,7 @@ using Domain.Models;
 using WebApi;
 using MassTransit;
 using Application.IPublisher;
+using WebApi.Message;
 
 public class MassTransitPublisher : IMessagePublisher
 {

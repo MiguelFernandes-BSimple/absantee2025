@@ -1,6 +1,7 @@
 using Application.Services;
 using WebApi;
 using MassTransit;
+using WebApi.Message;
 
 public class TrainingSubjectCreatedConsumer : IConsumer<TrainingSubjectMessage>
 {
@@ -16,6 +17,6 @@ public class TrainingSubjectCreatedConsumer : IConsumer<TrainingSubjectMessage>
         if (senderId == InstanceInfo.InstanceId)
             return;
         var msg = context.Message;
-        await _trainingSubjectService.SubmitAsync(msg.Subject, msg.Description);
+        await _trainingSubjectService.SubmitAsync(msg.Id, msg.Subject, msg.Description);
     }
 }
