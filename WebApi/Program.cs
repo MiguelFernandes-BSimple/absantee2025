@@ -19,10 +19,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+var environment = builder.Environment.EnvironmentName;
 
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 builder.Services.AddDbContext<AbsanteeContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
+
 
 //Services
 builder.Services.AddTransient<CollaboratorService>();
@@ -67,7 +74,12 @@ builder.Services.AddMassTransit(x =>
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("rabbitmq://localhost");
-        cfg.ConfigureEndpoints(context);
+        var instance = InstanceInfo.InstanceId;
+        cfg.ReceiveEndpoint($"trainingMicroService-query-{instance}", e =>
+        {
+            e.ConfigureConsumer<TrainingModuleCreatedConsumer>(context);
+            e.ConfigureConsumer<TrainingSubjectCreatedConsumer>(context);
+        });
     });
 });
 
