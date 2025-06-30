@@ -17,7 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+var environment = builder.Environment.EnvironmentName;
 
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 builder.Services.AddDbContext<AbsanteeContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
@@ -64,11 +70,19 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<TrainingSubjectCreatedConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host("rabbitmq://localhost");
-        cfg.ConfigureEndpoints(context);
-    });
+   {
+       cfg.Host("rabbitmq://localhost");
+       var instance = InstanceInfo.InstanceId;
+       cfg.ReceiveEndpoint($"trainingMicroService-cmd-{instance}", e =>
+       {
+           e.ConfigureConsumer<TrainingSubjectCreatedConsumer>(context);
+           e.ConfigureConsumer<TrainingModuleCreatedConsumer>(context);
+       });
+   });
 });
+builder.Services.AddScoped<IMessagePublisher, MassTransitPublisher>();
+//sender:
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

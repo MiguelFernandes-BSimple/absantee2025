@@ -16,7 +16,11 @@ public class MassTransitPublisher : IMessagePublisher
     public async Task PublishCreatedTrainingModuleMessageAsync(Guid id, Guid subjectId, List<PeriodDateTime> periods)
     {
         var eventMessage = new TrainingModuleMessage(id, subjectId, periods);
-        await _publishEndpoint.Publish(eventMessage);
+        await _publishEndpoint.Publish(eventMessage,
+         context =>
+            {
+                context.Headers.Set("SenderId", InstanceInfo.InstanceId);
+            });
     }
 
     public async Task PublishCreatedTrainingSubjectMessageAsync(Guid id, String description, String subject)
